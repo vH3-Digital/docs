@@ -1,0 +1,201 @@
+---
+title: MCP Server
+description: Connect any MCP-compatible AI client — Claude Desktop, Cursor, custom agents — directly to the VH3 intelligence layer
+---
+
+# MCP Server
+
+The VH3 AI MCP server exposes the full intelligence layer as [Model Context Protocol](https://modelcontextprotocol.io) tools. Any MCP-compatible client — Claude Desktop, Cursor, a custom agent, or your own toolchain — can connect directly without building middleware.
+
+Once connected, the client gets the same tools used by the Connie assistant: `investigate`, `aggregate_jobs`, `jobs_feed`, `sentinels_run`, `reports_generate`, `search_outcomes`, and more — with all credentials and routing handled server-side.
+
+## Server details
+
+| Property | Value |
+|---|---|
+| **Server URL** | `https://api.vh3connect.io/api:kP8T1CK7/mcp` |
+| **Transport** | HTTP (Streamable HTTP, MCP spec 2025-03-26) |
+| **Auth** | `company_id` + `api_key` passed as headers (see below) |
+| **Protocol version** | MCP 2025-03-26 |
+
+## Quick start — Claude Desktop
+
+<Steps>
+  <Step title="Open your Claude Desktop config">
+    On macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+    On Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+    Create the file if it does not exist.
+  </Step>
+  <Step title="Add the VH3 server">
+    ```json claude_desktop_config.json
+    {
+      "mcpServers": {
+        "vh3-ai": {
+          "command": "npx",
+          "args": ["-y", "mcp-remote", "https://api.vh3connect.io/api:kP8T1CK7/mcp"],
+          "env": {
+            "VH3_COMPANY_ID": "your-company-id",
+            "VH3_API_KEY": "your-api-key"
+          }
+        }
+      }
+    }
+    ```
+
+    Replace `your-company-id` and `your-api-key` with your real credentials. See [Authentication](/authentication) if you don't have them yet.
+  </Step>
+  <Step title="Restart Claude Desktop">
+    Quit and reopen Claude Desktop. You should see a hammer icon (🔨) in the chat input — click it to confirm the VH3 tools are listed.
+  </Step>
+  <Step title="Test with a query">
+    Try: *"How many jobs did we complete last week, broken down by engineer?"*
+
+    Claude will call `aggregate_jobs` with `metric: job_count`, `groupBy: engineer`, `period: last_week` and return a cited answer.
+  </Step>
+</Steps>
+
+## Quick start — Cursor
+
+Add the server to your Cursor MCP configuration. Go to **Cursor Settings → MCP** and add:
+
+```json Cursor MCP config
+{
+  "vh3-ai": {
+    "url": "https://api.vh3connect.io/api:kP8T1CK7/mcp",
+    "headers": {
+      "x-vh3-company-id": "your-company-id",
+      "x-vh3-api-key": "your-api-key"
+    }
+  }
+}
+```
+
+<Note>
+For Cursor, prefer using environment variables rather than inline credentials. Set `VH3_COMPANY_ID` and `VH3_API_KEY` in your shell profile, then reference them in the header values with `$VH3_COMPANY_ID` syntax if your Cursor version supports it — or use [Cursor Rules](/agent-kits/cursor-rules) alongside the MCP connection to keep credentials out of config files.
+</Note>
+
+## Available tools
+
+Once connected, these tools are available in any MCP-compatible client:
+
+| Tool | Description | Typical latency |
+|---|---|---|
+| `investigate` | Hybrid diagnostic — root cause analysis, cited evidence, ranked recommendations | 10–17 s |
+| `aggregate_jobs` | Compute metrics over jobs with period shorthand and comparison | < 3 s |
+| `jobs_feed` | Fetch individual job records with filters | < 3 s |
+| `sentinels_run` | Run early-warning sentinels, return only triggered alerts | 3–8 s |
+| `reports_generate` | Generate structured operational reports (start_of_day, close_of_business, etc.) | 10–17 s |
+| `search_outcomes` | Semantic search over outcome text — find similar fault descriptions | < 2 s |
+| `search_persons` | Look up engineers, contacts, or customers by name, email, or phone | < 1 s |
+| `weather_for_job` | Get weather context for a specific job's time and location | < 2 s |
+| `weather_for_site` | Get weather context for a site over a date range | < 2 s |
+
+<Warning>
+`investigate` and `reports_generate` have 10–17s expected latency when `includeNarrative: true`. Some MCP clients have aggressive timeouts. If you see tool call failures on these endpoints, check your client's timeout setting and increase it to at least 25 seconds.
+</Warning>
+
+## Authentication
+
+The MCP server reads credentials from request headers. Two header names are accepted:
+
+| Header | Value |
+|---|---|
+| `x-vh3-company-id` | Your company ID |
+| `x-vh3-api-key` | Your API key |
+
+Credentials are scoped per-request — each tool call is independently authenticated. There is no session token to manage.
+
+<Warning>
+Never commit your `company_id` or `api_key` to source control. Use environment variables and reference them from your MCP client configuration. Most clients support `$ENV_VAR` substitution in config files.
+</Warning>
+
+## Using the MCP server from custom agents
+
+For agents built with the Anthropic SDK, OpenAI Agents SDK, or similar frameworks:
+
+<CodeGroup>
+
+```python Python (Anthropic SDK)
+import anthropic
+
+client = anthropic.Anthropic()
+
+response = client.beta.messages.create(
+    model="claude-opus-4-5",
+    max_tokens=4096,
+    tools=[
+        {
+            "type": "computer_20241022",  # placeholder — use mcp tool type
+        }
+    ],
+    mcp_servers=[
+        {
+            "type": "url",
+            "url": "https://api.vh3connect.io/api:kP8T1CK7/mcp",
+            "name": "vh3-ai",
+            "authorization_token": None,  # auth via headers below
+            "extra_headers": {
+                "x-vh3-company-id": os.environ["VH3_COMPANY_ID"],
+                "x-vh3-api-key": os.environ["VH3_API_KEY"],
+            },
+        }
+    ],
+    messages=[{"role": "user", "content": "What needs attention today?"}],
+)
+```
+
+```typescript TypeScript (fetch transport)
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+
+const transport = new StreamableHTTPClientTransport(
+  new URL("https://api.vh3connect.io/api:kP8T1CK7/mcp"),
+  {
+    requestInit: {
+      headers: {
+        "x-vh3-company-id": process.env.VH3_COMPANY_ID!,
+        "x-vh3-api-key": process.env.VH3_API_KEY!,
+      },
+    },
+  }
+);
+
+const client = new Client({ name: "my-agent", version: "1.0.0" });
+await client.connect(transport);
+
+const tools = await client.listTools();
+console.log(tools); // lists all VH3 tools
+```
+
+</CodeGroup>
+
+## Tool selection guide for agents
+
+When your agent receives a free-form question and needs to decide which tool to call:
+
+| Question pattern | Tool |
+|---|---|
+| "why / root cause / what's causing / investigate" | `investigate` |
+| "how many / rate / trend / top / compare / period over period" | `aggregate_jobs` |
+| "show me / list / find / get jobs" | `jobs_feed` |
+| "what needs attention / alerts / sentinels" | `sentinels_run` |
+| "generate report / briefing / debrief / weekly summary" | `reports_generate` |
+| "similar to / fault like / what else looks like" | `search_outcomes` |
+| Ambiguous / unclear | `aggregate_jobs` first, then offer `investigate` |
+
+For a full system prompt you can paste directly into your agent, see the [Claude.ai Projects](/agent-kits/claude-projects) and [n8n Agent Prompts](/agent-kits/n8n-agents) kits — both include routing logic optimised for agent use.
+
+## Pairing with AGENTS.md
+
+If you're using the MCP server inside a Cursor or Claude Code session, pair it with the [AGENTS.md](/agent-kits/agents-md) file in your project root. The MCP server handles execution; AGENTS.md handles routing logic, field name correctness, and the rules around what IDs to expose to users.
+
+<CardGroup cols={2}>
+  <Card title="MCP Server (this page)" icon="plug">
+    Handles *execution* — connects the client to the actual API, manages auth, returns real data.
+  </Card>
+  <Card title="AGENTS.md" icon="robot">
+    Handles *reasoning* — tells the agent which tool to call, which parameters to pass, and how to present results.
+  </Card>
+</CardGroup>

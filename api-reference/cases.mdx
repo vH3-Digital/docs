@@ -1,0 +1,187 @@
+---
+title: Cases
+description: Case management for multi-step operational workflows
+---
+
+# Cases
+
+The Cases endpoints provide a lightweight case management system for tracking multi-step operational workflows — escalations, customer complaints, follow-up work, and anything that spans multiple jobs or interactions.
+
+## POST /cases/create
+
+Create a new case.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `title` | string | Yes | Case title |
+| `type` | string | Yes | Case type (e.g. `escalation`, `complaint`, `follow_up`) |
+| `description` | string | No | Detailed description |
+| `priority` | string | No | Priority level (`low`, `medium`, `high`, `critical`) |
+| `actor_type` | string | No | Who created the case (`user`, `system`, `automation`) |
+| `actor_id` | integer | No | ID of the creating actor |
+| `tags` | object | No | Tags for categorisation |
+| `metadata` | object | No | Arbitrary metadata |
+| `due_date` | number | No | Due date (unix timestamp) |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/cases/create" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "title": "Repeat boiler failure at Tesco Manchester",
+    "type": "escalation",
+    "priority": "high",
+    "description": "Third callout in 6 weeks for the same unit. Needs senior engineer assessment."
+  }'
+```
+
+---
+
+## GET /cases/list
+
+List cases with optional filtering.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `status` | string | No | Filter by status |
+| `type` | string | No | Filter by case type |
+| `priority` | string | No | Filter by priority |
+| `owner_id` | integer | No | Filter by case owner |
+| `search` | string | No | Full-text search across case titles and descriptions |
+| `page` | integer | No | Page number |
+| `per_page` | integer | No | Results per page |
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/cases/list" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "status=open" \
+  --data-urlencode "priority=high"
+```
+
+---
+
+## GET /cases/search
+
+Full-text search across all cases.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/cases/search" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "q=boiler Manchester"
+```
+
+---
+
+## GET /cases/{case_id}
+
+Retrieve a specific case with full details.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+---
+
+## PATCH /cases/{case_id}
+
+Update a case (title, description, priority, status, etc.).
+
+```bash
+curl -X PATCH "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "priority": "critical"
+  }'
+```
+
+---
+
+## POST /cases/{case_id}/transition
+
+Transition a case to a new status.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001/transition" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "status": "resolved"
+  }'
+```
+
+---
+
+## POST /cases/{case_id}/comments
+
+Add a comment to a case.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001/comments" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "body": "Senior engineer booked for Friday. Parts on order."
+  }'
+```
+
+---
+
+## GET /cases/{case_id}/activity
+
+Retrieve the full activity timeline for a case — all updates, comments, transitions, and linked items.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001/activity" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+---
+
+## POST /cases/{case_id}/participants
+
+Add a participant to a case.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001/participants" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "user_id": "user-42"
+  }'
+```
+
+---
+
+## POST /cases/{case_id}/items
+
+Link an item (job, contact, site) to a case.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001/items" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "item_type": "job",
+    "item_id": "12345"
+  }'
+```

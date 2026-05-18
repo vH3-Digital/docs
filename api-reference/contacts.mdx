@@ -1,0 +1,67 @@
+---
+title: Contacts
+description: Contact feed and detail lookup
+---
+
+# Contacts
+
+The Contacts endpoints provide access to the people associated with your operation — engineers, customers, site contacts, and other stakeholders enriched from your FMS and connected systems.
+
+## GET /contacts/feed
+
+Returns a paginated feed of contacts for your company.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `page_size` | integer | No | Results per page |
+| `page_number` | integer | No | Page number |
+| `q` | string | No | Search query (name, reference) |
+| `contact_id` | string | No | Filter by specific contact |
+| `reference` | string | No | Filter by contact reference |
+| `contact_group_id` | string | No | Filter by contact group |
+| `account_status` | string | No | Filter by account status |
+| `compact` | boolean | No | Return compact response |
+
+**Example:**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/contacts/feed" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "page_size=20" \
+  --data-urlencode "q=tesco"
+```
+
+---
+
+## GET /contacts/{contact_id}
+
+Returns the full contact record including associated jobs, sites, and AI-generated summary.
+
+**Path parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `contact_id` | string | Yes | The contact identifier |
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `include_summary` | boolean | No | Include AI-generated contact summary |
+| `compact` | boolean | No | Return compact response |
+
+**Example:**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/contacts/456" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "include_summary=true"
+```

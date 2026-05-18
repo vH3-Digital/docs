@@ -1,0 +1,96 @@
+---
+title: Sentinels
+description: Understanding and configuring proactive monitoring
+---
+
+# Sentinels Guide
+
+Sentinels are VH3 AI's proactive monitoring layer. They continuously analyse your operational data to detect emerging risks and growth opportunities — before they become entrenched problems or missed revenue.
+
+You discover SLA pain at month-end. The pattern was visible in week two. Sentinels close that gap.
+
+## How sentinels work
+
+Every sentinel is a **pure database read** — a structured query against your knowledge graph that evaluates a specific operational signal against configurable thresholds. There is no AI cost at the detection layer; intelligence is used only if you choose to generate a narrative explanation of what was detected.
+
+<Steps>
+  <Step title="Detection">
+    The sentinel query runs against your graph — looking for the pattern it's designed to detect (e.g. repeat visits at a site exceeding threshold).
+  </Step>
+  <Step title="Scoring">
+    Results are scored by severity. Each sentinel has a default threshold that determines what counts as a trigger vs. noise.
+  </Step>
+  <Step title="Delivery">
+    Triggered results are available via the API, and can be routed to Slack, Teams, email, or WhatsApp via automation.
+  </Step>
+</Steps>
+
+## Configuration
+
+Every sentinel supports these configuration parameters:
+
+| Parameter | Description |
+|-----------|-------------|
+| `threshold` | Minimum severity to trigger (higher = fewer, more critical results) |
+| `lookbackDays` | How far back to analyse (default varies by sentinel) |
+| `limit` | Maximum results to return |
+| `excludeFilters` | Exclude specific engineers, sites, or customers from results |
+
+## Operational sentinels
+
+Thirteen operational sentinels monitor for emerging risks across engineers, sites, customers, and SLAs:
+
+### Engineer performance slip
+Detects engineers whose SLA punctuality or completion quality has degraded compared to their historical baseline. Catches problems early — before a pattern becomes a client complaint.
+
+### Site deterioration
+Identifies sites where fault frequency or repeat visits are trending upward. Surfaces sites that may need a planned maintenance visit rather than continued reactive attendance.
+
+### SLA breach cluster
+Finds concentrated SLA breaches — by geography, engineer, customer, or time period. Distinguishes between isolated misses and systemic problems.
+
+### Scheduling drift
+Flags jobs where planned vs. actual timings are diverging — catch planning assumptions that no longer match reality.
+
+### Data quality issues
+Surfaces anomalies in job records that may indicate extraction or ingestion problems — keep your intelligence layer clean.
+
+## Growth opportunity sentinels
+
+Six growth sentinels surface revenue opportunities hiding in your operational history:
+
+### Dormant customer
+Identifies customers with no recent job activity who previously had regular engagement — potential re-engagement or churn risk before they formally leave.
+
+### Overdue service interval
+Flags equipment or sites that have passed their recommended service interval — maintenance contract upsell opportunities.
+
+### Single-service cross-sell
+Finds customers using only one service line when your business offers multiple — cross-sell candidates with evidence of engagement.
+
+### Engineer-flagged follow-up
+Surfaces jobs where engineers noted "follow up," "recommend," or "return visit" — quotes that should have happened but might have been missed.
+
+### Seasonal buying patterns
+Identifies customers whose service rhythms suggest upcoming seasonal needs — proactive outreach before they call someone else.
+
+### Geographic upsell clusters
+Finds neighbourhoods where one scheduled visit would make multiple nearby follow-ups economical — route density opportunities.
+
+## Automation
+
+Sentinel results are most powerful when routed automatically. Common patterns:
+
+- **Daily Slack digest** — summary of all sentinel triggers posted to an ops channel each morning
+- **Email alerts** — critical sentinels (SLA breach cluster, site deterioration) sent to account managers immediately
+- **Weekly report inclusion** — sentinel results embedded in weekly operational reports
+- **Case creation** — high-severity triggers automatically create a case for follow-up
+- **WhatsApp notifications** — urgent alerts routed to field managers on the move
+
+All of these are achievable via the VH3 AI n8n nodes (100+ pre-built templates) or direct API integration.
+
+## From reactive to continuous
+
+Traditional reporting: someone spends Monday morning building a spreadsheet that's already out of date by Tuesday.
+
+Sentinel-powered operations: patterns surface in their second week, not their second month. The intelligence writes itself.

@@ -1,0 +1,120 @@
+---
+title: n8n Community Node
+description: Automate field service intelligence with the official VH3 AI n8n node
+---
+
+# n8n Community Node
+
+The VH3 AI n8n community node ([`n8n-nodes-vh3ai`](https://github.com/VH3DIGITAL/n8n-nodes-vh3ai)) is the primary automation surface for the platform. It is published on npm, free to install, and works on self-hosted n8n, n8n Cloud, or a VH3-managed instance.
+
+The node provides a single unified credential type that covers both the BigChange API and the VH3 AI intelligence layer. Every operation is clearly labelled in the dropdown so builders can mix direct FMS operations with intelligence layer calls in the same workflow. The node is marked `usableAsTool: true`, which means n8n AI agents can call it directly without any additional configuration.
+
+## Installation
+
+**Self-hosted n8n:** go to Settings → Community Nodes, click Install, and enter:
+
+```
+n8n-nodes-vh3ai
+```
+
+**n8n Cloud:** search for **VH3 AI** in the community nodes section.
+
+**Manual / development:**
+
+```bash
+cd n8n-nodes-vh3ai
+npm install && npm run build && npm link
+
+mkdir -p ~/.n8n/custom && cd ~/.n8n/custom
+npm init -y
+npm link n8n-nodes-vh3ai
+n8n start
+```
+
+## What you can do from a workflow
+
+<CardGroup cols={2}>
+  <Card title="BigChange operations" icon="gear">
+    Full read/write access to jobs, contacts, engineers, vehicles, worksheets, invoices, quotes, notes, stock, and reference data. List, get, create, edit, cancel, schedule — the complete operational surface.
+  </Card>
+  <Card title="VH3 AI intelligence" icon="brain">
+    Semantic search, enriched job feed, aggregated metrics, sentinels, reports, briefings, Connie chat, case management, email triage, intelligence profiles, pulse snapshots, and weather context for jobs and sites.
+  </Card>
+  <Card title="LLM-optimised payloads" icon="bolt">
+    Every read operation has a Simplify toggle. When on, the API returns compact payloads: empty values stripped, nested structures flattened, custom fields collapsed. Smaller tokens, lower cost, better agent performance.
+  </Card>
+  <Card title="AI agent compatible" icon="robot">
+    The node generates a VH3 AI Tool variant automatically. Drop it into any n8n AI agent as a tool and the agent can query jobs, run sentinels, search history, chat with Connie, and more — no extra wiring required.
+  </Card>
+</CardGroup>
+
+## Available resources
+
+### BigChange API
+
+| Resource | Operations |
+|----------|------------|
+| **Job** | List · Get · Create · Edit · Cancel · Schedule · Start · Set Result · Status History · Constraints · Stock |
+| **Contact** | List · Get · Create · Edit · Stop/Unstop · Groups |
+| **Engineer** | List · Get · Create · Update · Groups |
+| **Vehicle** | List · Get · Create · Update |
+| **Worksheet** | List Definitions · Get · Questions · Answers |
+| **Invoice** | List · Get · Create · Edit · Cancel · Mark Sent/Paid · Line Items |
+| **Quote** | List · Get · Create · Edit · Mark Sent/Accepted/Rejected · Line Items |
+| **Note** | List · Get · Create · Edit · Progress Update · Types |
+| **Person** | List · Get · Create · Edit · Consent History |
+| **Job Group** | List · Get · Create · Edit · Complete · Financially Complete · Status History |
+| **Stock** | Categories · Stock Details · Stock Items · Movements · Suppliers |
+| **Reference Data** | Department Codes · Nominal Codes |
+| **Job Type** | List · Get |
+
+### VH3 AI Intelligence
+
+| Resource | Operations |
+|----------|------------|
+| **Search** | Search Outcomes · Search Intake · Autocomplete |
+| **Job Feed** | List Feed · Get Enriched Job · Aggregate Jobs (metrics, grouping, period-over-period) |
+| **Sentinels** | Run All · Run Single · List Registry · Get Latest Results |
+| **Reports** | Generate Report · List Report Sections |
+| **Briefing** | Generate Engineer Pre-Visit Briefing |
+| **Account Report** | Generate Monthly Account Review |
+| **Connie** | Chat · List Sessions · Get Messages · Search History |
+| **Cases** | Create · Get · Update · List · Search · Transition · Comments · Activity · Items · Participants |
+| **Email** | Classify · Ingest Portal Email · List Triage Categories |
+| **Intelligence** | List Profiles · Get Profile · Generate Profiles |
+| **Investigate** | Run Investigation (hybrid graph + semantic) |
+| **Pulse** | Get Business Health Snapshot |
+| **Weather** | For Job · For Site · Forecast · Historical |
+
+## Credentials
+
+The node uses a single **VH3 AI API** credential for all operations:
+
+| Field | Description | Default |
+|-------|-------------|---------|
+| `API Key` | Your VH3 API key | — |
+| `Company ID` | Your tenant ID | — |
+| `Base URL` | VH3 Connect gateway | `https://api.vh3connect.io` |
+| `FSI Base URL` | Intelligence API | `https://api.vh3connect.io/api:kP8T1CK7` |
+
+## Hosting options
+
+You do not need to run your own n8n infrastructure to use the node. VH3 AI offers managed hosting at `{your-company}.n8n.vh3.ai` with the node pre-installed, credentials pre-configured, and 100+ workflow templates ready to activate.
+
+If you prefer to run your own instance — self-hosted or n8n Cloud — install the community node and point it at your credentials. Either path gives you the same node, the same operations, and the same intelligence layer underneath.
+
+| Model | Description |
+|-------|-------------|
+| **Managed by VH3 AI** | Hosted at `{company}.n8n.vh3.ai`. Node pre-installed, credentials configured, templates included. |
+| **Bring Your Own Instance** | Self-hosted or n8n Cloud. Install `n8n-nodes-vh3ai` via Community Nodes and add your credentials. |
+
+## Source and package
+
+<CardGroup cols={2}>
+  <Card title="GitHub" icon="github" href="https://github.com/VH3DIGITAL/n8n-nodes-vh3ai">
+    Source code, changelog, and contribution guide.
+  </Card>
+  <Card title="npm" icon="box" href="https://www.npmjs.com/package/n8n-nodes-vh3ai">
+    Package page, version history, and install instructions.
+  </Card>
+</CardGroup>

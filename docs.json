@@ -1,72 +1,84 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "VH3 AI",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#A379E7",
+    "light": "#C4A6F0",
+    "dark": "#7B4FC4"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
-              "index",
+              "introduction",
+              "intelligence-layer",
               "quickstart",
-              "development"
+              "authentication"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Automation",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "native-integrations",
+              "n8n-node"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Agent Starter Kits",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/components",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "Agent ready",
-            "pages": [
-              "agent-ready/prompt",
-              "agent-ready/visibility",
-              "agent-ready/contextual",
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "agent-kits/overview",
+              "agent-kits/agents-md",
+              "agent-kits/cursor-rules",
+              "agent-kits/mcp-setup",
+              "agent-kits/claude-projects",
+              "agent-kits/n8n-agents"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "API Reference",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/overview"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Endpoints",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/search",
+              "api-reference/jobs",
+              "api-reference/contacts",
+              "api-reference/sentinels",
+              "api-reference/reports",
+              "api-reference/briefings",
+              "api-reference/connie",
+              "api-reference/cases",
+              "api-reference/teams",
+              "api-reference/users",
+              "api-reference/user-auth"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/semantic-search",
+              "guides/sentinels",
+              "guides/reports",
+              "guides/connie"
             ]
           }
         ]
@@ -75,14 +87,9 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Status",
+          "href": "https://status.vh3.ai",
+          "icon": "signal"
         }
       ]
     }
@@ -91,36 +98,28 @@
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
+  "api": {
+    "openapi": "openapi.json",
+    "mdx": {
+      "server": "https://api.vh3connect.io/api:kP8T1CK7"
+    }
+  },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@vh3.ai"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://app.vh3connect.io"
     }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "linkedin": "https://www.linkedin.com/company/vh3ai"
     }
   }
 }

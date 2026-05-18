@@ -1,0 +1,225 @@
+---
+title: Users
+description: User management — list, invite, update roles, and remove users from your company
+---
+
+# Users
+
+The Users endpoints manage the team members associated with your company. They use the standard `company_id` + `api_key` authentication, the same as all other VH3 AI endpoints.
+
+**Base URL:** `https://api.vh3connect.io/api:kP8T1CK7`
+
+<Warning>
+  These endpoints are **server-side only**. The `api_key` must never be sent from a browser, mobile app, or any client-side code. If you are building an interactive front-end, use the [User Authentication (JWT)](/api-reference/user-auth) endpoints instead — your users log in once and every subsequent call uses a Bearer token, with no API key in the browser.
+</Warning>
+
+---
+
+## GET /users/list
+
+List all active (non-archived) users for your company.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/users/list" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+**Response:**
+
+```json
+[
+  {
+    "id": 42,
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "email": "jane@example.com",
+    "username": "jsmith",
+    "role": "admin",
+    "profile_picture": { "url": null }
+  },
+  {
+    "id": 43,
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john@example.com",
+    "username": "jdoe",
+    "role": "standard",
+    "profile_picture": { "url": null }
+  }
+]
+```
+
+---
+
+## GET /users/invites
+
+List pending (not yet accepted) invitations for your company.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/users/invites" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+**Response:**
+
+```json
+[
+  {
+    "id": "uuid-token-id",
+    "company_id": "your-company-id",
+    "email": "newuser@example.com",
+    "role": "standard",
+    "created_at": "2026-05-17T19:57:00Z",
+    "expires_at": "2026-06-17T19:57:00Z",
+    "accepted_at": null
+  }
+]
+```
+
+---
+
+## POST /users/invite
+
+Invite a user to your company by email. Sends an invitation email via SendGrid with an accept link. If the email address already exists in the system without a company, they are immediately linked to your company.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `email` | email | Yes | Email address to invite |
+| `role` | string | Yes | Role to assign: `admin`, `manager`, `standard`, `engineer` |
+| `company_name` | string | Yes | Your company display name — shown in the invitation email |
+| `inviter_name` | string | Yes | Name of the person sending the invite — shown in the invitation email |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/users/invite" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "email": "newuser@example.com",
+    "role": "standard",
+    "company_name": "Acme Field Services",
+    "inviter_name": "Jane Smith"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "message": "Invitation sent to newuser@example.com"
+}
+```
+
+**Error responses:**
+
+| Status | Error | Cause |
+|--------|-------|-------|
+| `400` | `User already exists in the system` | Email exists and already belongs to a company |
+| `400` | `User has already been invited` | A pending invite for this email already exists |
+| `400` | `Failed to send invitation email` | SendGrid delivery failure |
+
+---
+
+## PUT /users/{user_id}/role
+
+Update the role of a user within your company. Returns the updated user record.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `user_id` | string | Yes | ID of the user to update |
+| `role` | string | Yes | New role: `admin`, `manager`, `standard`, `engineer`, `developer` |
+
+```bash
+curl -X PUT "https://api.vh3connect.io/api:kP8T1CK7/users/42/role" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "user_id": "42",
+    "role": "manager"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "id": 42,
+  "first_name": "Jane",
+  "last_name": "Smith",
+  "email": "jane@example.com",
+  "username": "jsmith",
+  "role": "manager",
+  "profile_picture": { "url": null }
+}
+```
+
+**Error responses:**
+
+| Status | Error | Cause |
+|--------|-------|-------|
+| `401` | `User not found or does not belong to this company` | `user_id` invalid or belongs to a different tenant |
+
+---
+
+## DELETE /users/{user_id}
+
+Archive (soft-delete) a user. The user's record is preserved but `is_archived` is set to `true` — they can no longer log in and will not appear in `GET /users/list`.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `user_id` | string | Yes | ID of the user to archive |
+
+```bash
+curl -X DELETE "https://api.vh3connect.io/api:kP8T1CK7/users/43" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "user_id": "43"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "user_id": "43"
+}
+```
+
+**Error responses:**
+
+| Status | Error | Cause |
+|--------|-------|-------|
+| `401` | `User not found or does not belong to this company` | `user_id` invalid or belongs to a different tenant |

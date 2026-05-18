@@ -1,0 +1,137 @@
+---
+title: Connie
+description: Conversational AI assistant with full operational context
+---
+
+# Connie
+
+Connie is VH3 AI's conversational assistant. She has access to the full knowledge graph, semantic search, reports, and sentinel results — and responds to questions in natural language with cited, data-backed answers.
+
+## POST /connie/chat
+
+Send a message to Connie and receive a response grounded in your operational data.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `message` | string | Yes | Your question or instruction |
+| `session_id` | string | No | Session identifier for conversation continuity |
+| `user_id` | string | No | Identifier for the user asking |
+| `user_name` | string | No | Display name (personalises responses) |
+| `user_company_name` | string | No | Company name for context |
+| `summary` | string | No | Prior conversation summary (for long sessions) |
+| `contact_id` | string | No | Scope to a specific customer context |
+| `current_job_reference` | string | No | Job currently being discussed |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/chat" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "message": "Which sites had the most repeat visits in the last 30 days?",
+    "session_id": "session-abc-123",
+    "user_name": "Sarah"
+  }'
+```
+
+**Example questions Connie can answer:**
+
+- "Which engineers are consistently late on HVAC jobs?"
+- "What is the repeat failure rate at Tesco sites?"
+- "Has anyone seen this fault before?" (with a description)
+- "Show me the top 5 customers by job volume this quarter"
+- "What happened at the Manchester site last week?"
+- "Give me a performance summary for engineer John Smith"
+
+<Info>
+  Connie maintains conversation context within a session. Follow-up questions like "What about last month?" reference the previous exchange automatically.
+</Info>
+
+---
+
+## POST /connie/chat/voice
+
+Send a voice interaction to Connie — designed for voice-first interfaces where the input is a transcribed audio message. Optimised for concise, text-to-speech-friendly responses.
+
+**Request body:**
+
+Same fields as `/connie/chat`.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/chat/voice" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "message": "How many jobs did we complete yesterday?",
+    "session_id": "voice-session-001"
+  }'
+```
+
+---
+
+## POST /connie/generate-summary
+
+Generate an AI summary for a contact — useful for pre-call preparation or account review.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `contact_id` | string | Yes | Contact to summarise |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/generate-summary" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "contact_id": "contact-789"
+  }'
+```
+
+---
+
+## POST /connie/history/search
+
+Search across past conversation history.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/history/search" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query_text": "SLA breach discussion"
+  }'
+```
+
+---
+
+## GET /connie/sessions
+
+List chat sessions for a company.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/connie/sessions" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+---
+
+## GET /connie/sessions/{session_id}/messages
+
+Retrieve all messages for a specific session.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/connie/sessions/session-abc-123/messages" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```

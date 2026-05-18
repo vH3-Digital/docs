@@ -1,0 +1,79 @@
+---
+title: Connie
+description: Getting the most from the conversational AI assistant
+---
+
+# Connie Guide
+
+Connie is VH3 AI's conversational assistant — a natural language interface to your full operational record. She has access to the knowledge graph, semantic search, reports, and sentinel results, and responds with cited, data-backed answers.
+
+## What Connie can do
+
+Connie can answer any question that the underlying data supports:
+
+**Performance questions:**
+- "Which engineers had the best first-time-fix rate this quarter?"
+- "How is Mike performing compared to last month?"
+- "Show me the top 5 engineers by SLA punctuality"
+
+**Site and customer questions:**
+- "What happened at the Manchester Tesco site last week?"
+- "Which customers have the most repeat visits?"
+- "Give me the job history for site XYZ"
+
+**Diagnostic questions:**
+- "Has anyone seen this fault before?" (with a description)
+- "What usually fixes a boiler intermittent lockout?"
+- "Find similar jobs to this one"
+
+**Operational questions:**
+- "How many jobs did we complete yesterday?"
+- "What's our average response time this month?"
+- "Which areas have the heaviest workload right now?"
+
+## Session management
+
+Connie maintains conversation context within a session. Use a consistent `sessionId` to enable multi-turn conversations:
+
+```json
+{
+  "companyId": "your-company-id",
+  "message": "Which sites had the most repeat visits last month?",
+  "sessionId": "ops-review-2024-11"
+}
+```
+
+Follow-up messages with the same `sessionId` will reference prior context:
+
+```json
+{
+  "companyId": "your-company-id",
+  "message": "What about the month before?",
+  "sessionId": "ops-review-2024-11"
+}
+```
+
+## Tips for effective questions
+
+<CardGroup cols={2}>
+  <Card title="Be specific about time" icon="calendar">
+    "Last 30 days" is better than "recently." Connie infers date ranges when possible, but explicit is always better.
+  </Card>
+  <Card title="Name entities directly" icon="user">
+    Use engineer names, site names, or customer names when you know them. Connie resolves fuzzy matches but exact is faster.
+  </Card>
+  <Card title="Ask follow-ups" icon="messages">
+    Connie maintains context. After getting a list, ask "Tell me more about the third one" or "What caused that?"
+  </Card>
+  <Card title="Request formats" icon="table">
+    Ask for tables, summaries, or comparisons. "Compare Mike and Sarah's performance this quarter" works.
+  </Card>
+</CardGroup>
+
+## Citations
+
+Every Connie response includes citations back to the underlying records — job IDs, report sections, or graph nodes that the answer was derived from. This ensures transparency and verifiability.
+
+## Voice interface
+
+Connie is also available via voice — use the `/connie/chat/voice` endpoint for voice-first integrations. The experience is identical; the input is simply a transcription rather than typed text.

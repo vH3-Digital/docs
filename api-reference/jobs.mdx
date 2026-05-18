@@ -1,0 +1,103 @@
+---
+title: Jobs
+description: Job feed and job details
+---
+
+# Jobs
+
+The Jobs endpoints provide access to your enriched job records — including AI-extracted fault types, outcomes, timings, and relationships to engineers, sites, and customers.
+
+## GET /jobs/feed
+
+Returns a paginated feed of enriched jobs for your company, ordered by most recent.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `page_size` | integer | No | Results per page |
+| `page_number` | integer | No | Page number |
+| `contact_id` | string | No | Filter by customer contact |
+| `resource_id` | string | No | Filter by engineer/resource |
+| `type_id` | string | No | Filter by job type |
+| `category_id` | string | No | Filter by job category |
+| `status` | string | No | Filter by job status |
+| `result` | string | No | Filter by job result |
+| `compact` | boolean | No | Return compact response (fewer fields) |
+
+**Example:**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "page_size=20" \
+  --data-urlencode "page_number=1"
+```
+
+---
+
+## GET /jobs/{job_id}
+
+Returns the full enriched record for a specific job, including AI-extracted fields, graph relationships, and timing data.
+
+**Path parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `job_id` | string | Yes | The job identifier |
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `include_worksheets` | boolean | No | Include worksheet data |
+| `compact` | boolean | No | Return compact response |
+
+**Example:**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/12345" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "include_worksheets=true"
+```
+
+---
+
+## POST /aggregate/jobs
+
+Job metrics with groupBy dimensions and period comparison — powers dashboard charts and trend analysis.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `metric` | string | Yes | Metric to compute (e.g. `count`, `sla_punctuality`, `first_time_fix`) |
+| `time_axis` | string | No | Time bucketing (`day`, `week`, `month`) |
+| `period` | string | No | Period to analyse (e.g. `last_30_days`, `last_quarter`) |
+| `compare_to` | string | No | Comparison period (e.g. `previous_period`) |
+| `group_by` | string | No | Dimension to group by (`engineer`, `customer`, `job_type`, `site`) |
+| `filters` | object | No | Additional filters |
+| `limit` | integer | No | Max groups to return |
+
+**Example:**
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/aggregate/jobs" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "metric": "count",
+    "time_axis": "week",
+    "period": "last_30_days",
+    "group_by": "engineer"
+  }'
+```

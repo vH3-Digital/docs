@@ -1,0 +1,46 @@
+---
+title: Briefings
+description: Pre-visit engineer briefings with full operational context
+---
+
+# Briefings
+
+The Briefings endpoint generates a comprehensive pre-visit briefing for an engineer attending a site. It pulls together job history, site context, equipment records, weather forecast, recent communications, and diagnostic precedents into a single package.
+
+## POST /briefing/generate
+
+Generate a pre-visit briefing for a specific job.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `job_id` | integer | Yes | Job to generate briefing for |
+| `contact_id` | integer | Yes | Customer contact for the job |
+| `force_regenerate_summary` | boolean | No | Force regeneration even if a cached briefing exists |
+| `job_payload` | object | No | Additional job data to include in the briefing context |
+
+**Example:**
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/briefing/generate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "job_id": 12345,
+    "contact_id": 678
+  }'
+```
+
+**Response includes:**
+
+- Site summary and access requirements
+- Previous job history at this site
+- Related fault patterns and diagnostic precedents
+- Equipment profile
+- Weather forecast for the scheduled date
+- Recent communications related to this job
+- Engineer-specific context (past experience at this site)

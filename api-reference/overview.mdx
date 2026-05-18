@@ -1,0 +1,109 @@
+---
+title: API Reference
+description: Overview of the VH3 AI API surface
+---
+
+# API Reference
+
+The VH3 AI API exposes the full intelligence layer through a RESTful interface. All endpoints require `company_id` and `api_key` on every request.
+
+The intelligence produced by this API can be consumed directly, or composed into automations via our n8n nodes. **100+ pre-built workflow templates** cover common patterns: daily report distribution, sentinel alert routing, FM portal email triage, job-feed sync to BI, and more.
+
+## Base URL
+
+```
+https://api.vh3connect.io/api:kP8T1CK7
+```
+
+## Authentication
+
+Every request includes your two credentials:
+- **`company_id`** — your tenant identifier
+- **`api_key`** — your tenant API key
+
+For `POST` endpoints, these go in the JSON body. For `GET` endpoints, they go as query parameters.
+
+## Endpoint groups
+
+| Group | Description |
+|-------|-------------|
+| [Search](/api-reference/search) | Semantic and keyword search across job outcomes, intake text, and summaries |
+| [Jobs](/api-reference/jobs) | Job feed, job details, and aggregation |
+| [Contacts](/api-reference/contacts) | Contact feed and contact detail lookup |
+| [Sentinels](/api-reference/sentinels) | Run and query proactive sentinel monitors — continuous pattern detection |
+| [Reports](/api-reference/reports) | Generate daily, weekly, and account-level reports |
+| [Briefings](/api-reference/briefings) | Pre-visit engineer briefings with full site context |
+| [Connie](/api-reference/connie) | Conversational AI — ask questions, get cited answers |
+| [Cases](/api-reference/cases) | Case management — create, track, and resolve operational cases |
+| [Teams](/api-reference/teams) | Team management — members, entity linking, access scoping |
+
+## Request format
+
+### POST endpoints
+
+```json
+{
+  "company_id": "your-company-id",
+  "api_key": "your-api-key",
+  "query_text": "boiler fault",
+  "limit": 10
+}
+```
+
+### GET endpoints
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+## Error format
+
+```json
+{
+  "code": "ERROR_CODE_INPUT_ERROR",
+  "message": "Missing param: company_id",
+  "payload": {
+    "param": "company_id"
+  }
+}
+```
+
+| Status code | Meaning |
+|-------------|---------|
+| `400` | Bad request — missing or invalid parameters |
+| `401` | Unauthorised — invalid API key |
+| `404` | Not found — resource does not exist for your tenant |
+| `409` | Conflict — a task is already running for this resource |
+| `422` | Validation error — request understood but semantically invalid |
+| `429` | Rate limited — too many requests |
+| `500` | Server error — contact support |
+
+## Pagination
+
+List endpoints use `limit`/`offset` or `page_size`/`page_number`:
+
+```json
+{
+  "company_id": "your-company-id",
+  "api_key": "your-api-key",
+  "page_size": 20,
+  "page_number": 1
+}
+```
+
+## Task-based endpoints
+
+Long-running operations (backfill, welcome pack, reports) return a `task_id` immediately. Poll the corresponding status endpoint to track progress:
+
+```json
+{
+  "task_id": "abc-123",
+  "status": "running",
+  "progress": 45,
+  "message": "Processing batch 5 of 11"
+}
+```
+
+Possible statuses: `pending`, `running`, `completed`, `failed`, `cancelled`.

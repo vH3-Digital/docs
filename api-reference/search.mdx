@@ -1,0 +1,159 @@
+---
+title: Search
+description: Semantic and keyword search across your operational history
+---
+
+# Search
+
+The Search endpoints let you find relevant past jobs, outcomes, and intake records by describing what you're looking for in natural language. The platform uses hybrid search — combining semantic (meaning-based) and BM25 (keyword) retrieval — to surface relevant results even when terminology differs.
+
+## POST /search/outcomes
+
+Search across AI-enriched job outcomes. This is the primary search endpoint for finding jobs by what happened, what was done, or what the result was.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `query_text` | string | Yes | Natural language search query |
+| `limit` | integer | No | Max results to return (default: 10) |
+| `type_id` | string | No | Filter by job type |
+| `category_id` | string | No | Filter by job category |
+| `resource_id` | string | No | Filter by engineer/resource |
+| `contact_id` | string | No | Filter by customer contact |
+| `site_key` | string | No | Filter by site |
+| `cleanup` | boolean | No | Whether to clean the results metadata |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query_text": "air conditioning unit not cooling",
+    "limit": 5
+  }'
+```
+
+---
+
+## POST /search/intake
+
+Search across raw job intake text — the original fault descriptions as entered by dispatchers or customers.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `query_text` | string | Yes | Natural language search query |
+| `limit` | integer | No | Max results to return (default: 10) |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/intake" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query_text": "heating system tripping",
+    "limit": 5
+  }'
+```
+
+---
+
+## POST /search/intake/enriched
+
+Semantic search over job intake text with Neo4j graph enrichment — returns richer context by joining graph relationships to each result.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `query_text` | string | Yes | Natural language search query |
+| `limit` | integer | No | Max results to return |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/intake/enriched" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query_text": "fire alarm fault",
+    "limit": 5
+  }'
+```
+
+---
+
+## GET /search/autocomplete
+
+Fuzzy / phonetic / email-aware lookup across contacts, persons (site contacts
+and account holders), engineers, jobs, and taxonomy entities. Returns results
+grouped by entity type plus a flat `results[]` array for back-compat.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `q` | string | Yes | Search text — name, postcode, email address, UUID personId, phone, reference, or numeric id |
+| `limit` | integer | No | Max results per group (default 10, max 50) |
+| `types` | string | No | Comma-separated entity filter: `contact,person,engineer,job,job_type,job_category,contact_group,resource_group` |
+
+**Search capabilities:**
+
+- **Name / phonetic** — `Smyth` finds `Smith`; `PureGym` finds `Pure Gym`
+- **Email** — type a full or partial email (`ric@vezzahub.com`, `ric@`) to
+  find the matching person directly. Results carry `matchedVia: "email"`.
+- **UUID / personId** — paste a standard UUID to resolve the person directly
+  via their `ids` array. Returns `matchedVia: "person_id"` with score 1.0.
+- **Postcode** — UK postcodes with or without a space (`NN10 5AB` / `NN105AB`)
+- **Reference** — job reference or order number prefix
+- **Numeric id** — bare integer resolves `contactId`, `resourceId`, or `jobId`
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/search/autocomplete" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "q=ric@vezzahub.com" \
+  --data-urlencode "limit=10"
+```
+
+The response groups results under `groups.contacts`, `groups.people`,
+`groups.engineers`, `groups.jobs`, `groups.jobTypes`, `groups.jobCategories`,
+`groups.contactGroups`, and `groups.resourceGroups`. Each result includes a
+`matchedVia` field indicating why it was returned (`name`, `email`,
+`person_id`, `postcode`, `phonetic`, `reference`, `id`, `site_bridge`, etc.).
+
+---
+
+## POST /search/summary-sections
+
+Search across report summary sections — useful for finding previously generated intelligence summaries.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `query_text` | string | Yes | Search query |
+| `limit` | integer | No | Max results (default: 10) |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/summary-sections" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query_text": "HVAC performance Q3",
+    "limit": 5
+  }'
+```

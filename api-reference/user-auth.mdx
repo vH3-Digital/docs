@@ -1,0 +1,276 @@
+---
+title: User Authentication (JWT)
+description: Per-user login and JWT session management for interactive applications built on VH3
+---
+
+# User Authentication (JWT)
+
+These endpoints provide per-user login and JWT session management for **interactive applications** — custom front-ends, customer portals, and embedded tools where individual users need to sign in and maintain a session.
+
+**Base URL:** `https://api.vh3connect.io/api:lBQnyyZL`
+
+<Info>
+  Login requires only `email` and `password`. The user's tenant is resolved server-side. After login, every call uses `Authorization: Bearer <token>` — no API key is ever sent from the client.
+</Info>
+
+<Note>
+  Need to manage users from a back-end script or integration (no user session)? Use the [Users](/api-reference/users) endpoints on the main FSI API with `company_id` + `api_key`. Those endpoints are **server-side only** — the API key must never appear in client-side code.
+</Note>
+
+---
+
+## POST /auth/login
+
+Authenticate a user with email and password. Returns a JWT token valid for 24 hours. The user's tenant is resolved server-side from their account — no API key is required from the client.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `email` | email | Yes | User email address |
+| `password` | string | Yes | User password |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:lBQnyyZL/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "securepassword"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "authToken": "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0..."
+}
+```
+
+**Error responses:**
+
+| Status | Error | Cause |
+|--------|-------|-------|
+| `401` | `Invalid email or password` | Wrong email, wrong password, or no account found |
+| `401` | `Account is deactivated` | User has been archived |
+
+---
+
+## POST /auth/refresh
+
+Refresh an expiring JWT token. Returns a new token with a fresh 24-hour expiry.
+
+**Headers:**
+
+| Header | Value |
+|--------|-------|
+| `Authorization` | `Bearer <token>` |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:lBQnyyZL/auth/refresh" \
+  -H "Authorization: Bearer eyJhbGciOi..."
+```
+
+**Response:**
+
+```json
+{
+  "authToken": "eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0..."
+}
+```
+
+---
+
+## GET /auth/me
+
+Get the current user profile from the JWT token. Includes the user's company information.
+
+**Headers:**
+
+| Header | Value |
+|--------|-------|
+| `Authorization` | `Bearer <token>` |
+
+```bash
+curl "https://api.vh3connect.io/api:lBQnyyZL/auth/me" \
+  -H "Authorization: Bearer eyJhbGciOi..."
+```
+
+**Response:**
+
+```json
+{
+  "id": 42,
+  "first_name": "Jane",
+  "last_name": "Smith",
+  "company_id": "abc-123-def",
+  "email": "jane@example.com",
+  "role": "admin",
+  "phone": null,
+  "profile_picture": { "url": null },
+  "_company": {
+    "id": "abc-123-def",
+    "name": "Acme Field Services"
+  }
+}
+```
+
+---
+
+## POST /users/invite
+
+Invite a new user by email to the authenticated user's company. Returns an invitation token valid for 7 days. **Requires `admin` or `developer` role.**
+
+**Headers:**
+
+| Header | Value |
+|--------|-------|
+| `Authorization` | `Bearer <token>` |
+
+**Request body:**
+
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `email` | email | Yes | — | Email address to invite |
+| `role` | string | No | `standard` | Role to assign: `admin`, `manager`, `standard`, `engineer` |
+| `first_name` | string | No | — | First name of the invited user |
+| `last_name` | string | No | — | Last name of the invited user |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:lBQnyyZL/users/invite" \
+  -H "Authorization: Bearer eyJhbGciOi..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "newuser@example.com",
+    "role": "standard",
+    "first_name": "John",
+    "last_name": "Doe"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "email": "newuser@example.com",
+  "role": "standard",
+  "invite_token": "eyJhbGciOi...",
+  "expires_in": 604800
+}
+```
+
+**Error responses:**
+
+| Status | Error | Cause |
+|--------|-------|-------|
+| `401` | `Only admin users can invite new users` | Requesting user is not admin/developer |
+| `400` | `A user with this email already exists` | Duplicate email |
+
+---
+
+## GET /users/list
+
+List all active users belonging to the authenticated user's company. Supports pagination. **Requires `admin` or `developer` role.**
+
+**Headers:**
+
+| Header | Value |
+|--------|-------|
+| `Authorization` | `Bearer <token>` |
+
+**Query parameters:**
+
+| Param | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `page` | integer | No | `1` | Page number |
+| `per_page` | integer | No | `25` | Items per page |
+
+```bash
+curl "https://api.vh3connect.io/api:lBQnyyZL/users/list?page=1&per_page=25" \
+  -H "Authorization: Bearer eyJhbGciOi..."
+```
+
+**Response:**
+
+```json
+{
+  "items": [
+    {
+      "id": 42,
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "email": "jane@example.com",
+      "role": "admin",
+      "phone": null,
+      "profile_picture": { "url": null },
+      "email_verified": true
+    },
+    {
+      "id": 43,
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "john@example.com",
+      "role": "standard",
+      "phone": null,
+      "profile_picture": { "url": null },
+      "email_verified": true
+    }
+  ],
+  "curPage": 1,
+  "nextPage": null,
+  "prevPage": null
+}
+```
+
+---
+
+## DELETE /users/{user_id}
+
+Soft-delete a user by setting their account to archived. The user will no longer be able to log in. Cannot delete your own account. **Requires `admin` or `developer` role.**
+
+**Headers:**
+
+| Header | Value |
+|--------|-------|
+| `Authorization` | `Bearer <token>` |
+
+**Path parameters:**
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `user_id` | integer | ID of the user to delete |
+
+```bash
+curl -X DELETE "https://api.vh3connect.io/api:lBQnyyZL/users/43" \
+  -H "Authorization: Bearer eyJhbGciOi..."
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "user_id": 43
+}
+```
+
+**Error responses:**
+
+| Status | Error | Cause |
+|--------|-------|-------|
+| `401` | `Only admin users can delete users` | Requesting user is not admin/developer |
+| `400` | `Cannot delete your own account` | `user_id` matches the authenticated user |
+| `400` | `User not found` | No user with this ID |
+| `401` | `Cannot delete users from another company` | Target user belongs to a different tenant |
+
+---
+
+## Roles reference
+
+| Role | Data access | User management |
+|------|-------------|-----------------|
+| `admin` | Full | Invite, list, delete users |
+| `developer` | Full | Invite, list, delete users |
+| `manager` | Full | No |
+| `standard` | Full | No |
+| `engineer` | Full | No |

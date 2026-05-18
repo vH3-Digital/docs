@@ -1,0 +1,125 @@
+---
+title: The Intelligence Layer
+description: Four memory primitives, one operational picture — why VH3 AI is a synthesis layer, not a retrieval tool
+---
+
+# The Intelligence Layer
+
+There is a problem every team building AI agents at scale eventually runs into, and it does not announce itself cleanly.
+
+The agents work. They give answers. They pass the demo. Then usage grows and something starts to feel wrong — costs climbing faster than value, answers that should be fast taking too long, context re-assembled from scratch on every run as though the system has no memory of what happened before.
+
+This is not a model quality problem. It is an architecture problem. And it is one we ran into ourselves.
+
+By late 2024, VH3 AI had production AI agents running against real field service operations — V1 chatbot-style interfaces processing hundreds of thousands of jobs across multiple large clients. What we learned over that period, and particularly in the months that followed, was that the classic retrieval approach — semantic search over job records, answer from the closest chunks — was not enough for the kind of operational work field service agents actually need to do.
+
+A chatbot that answers "how many jobs did we complete last week?" is a different machine from an agent that prepares a site briefing, investigates a recurring fault pattern, monitors for emerging SLA risk, and synthesises five years of operational history into a coherent picture. The first can run on retrieval. The second needs something else.
+
+That something else is what the intelligence layer is.
+
+## The retrieval problem
+
+The AI infrastructure market is converging on this same diagnosis. Semantic search vendors are shipping knowledge layers and new query contracts. Enterprise software companies are writing billion-euro cheques for graph and tabular data infrastructure. The shared recognition is that agents built on chatbot-era memory systems hit a ceiling — they spend most of their compute budget re-assembling context they should already have.
+
+The root cause is straightforward. Classic retrieval — embed a query, find the closest chunks, pass them to a model — was designed for question-answering. One question, one lookup, one answer. Agents run tasks. They cross-reference entities, check history, evaluate patterns, and produce recommendations. That workflow needs a different kind of memory.
+
+It needs a **retrieval contract**: the agent receives operating context — a prepared bundle of resolved, current, authoritative information — rather than fragments it has to reassemble on every run.
+
+VH3 AI is built around that contract. Four complementary memory primitives, combined into a single synthesis layer.
+
+## The four primitives
+
+### 1. Relational memory — the knowledge graph
+
+Some of the most important questions in field service are structurally relational. Which engineer has worked at this site before? Which sites share a parent customer? Which jobs cluster around the same asset? Which fault patterns connect across engineers who have never worked together?
+
+These are graph questions. The answer does not live in any single document — it lives in the connections between entities. Vector similarity cannot find them. Keyword search cannot find them. They require a data structure that understands relationships natively.
+
+The VH3 AI knowledge graph links every job to its engineer, site, customer, outcome, equipment, and history — traversable in any direction, from any starting point. Entity resolution handles the messy reality of source data written by different people across different systems: "Tesco PLC", "Tesco Stores", and "Tesco Express Watford" resolve to the same customer. The same fault described differently across twenty engineers resolves to the same underlying pattern.
+
+The graph is not a reporting layer. It is the foundation everything else is built on.
+
+### 2. Semantic memory — meaning-based search
+
+Not every question is relational. Some questions are about similarity — faults that look like other faults, job outcomes that resemble precedents in the history, descriptions that match without sharing a single keyword.
+
+The VH3 AI semantic index stores every fault description, job note, worksheet answer, and engineer observation as a vector embedding. "Boiler intermittent fault" finds jobs recorded as "heating system cutting out sporadically" or "intermittent heating loss." Precedent discovery across language that was never standardised, at any scale, with no keyword configuration required.
+
+Critically, this runs on top of the knowledge graph — not as a separate retrieval layer. A semantic search does not return raw chunks from a document store. It returns graph-linked records: jobs with their engineers, their sites, their outcomes, their history, all already resolved and connected.
+
+### 3. Structured memory — enriched operational records
+
+Field service data arrives messy. Fault descriptions are free text. Worksheet answers are inconsistent. The same outcome appears in three different formats depending on who completed the job and which device they used.
+
+Every job that enters the VH3 AI pipeline passes through an enrichment process once. Fault type is extracted and classified. Work performed is structured. Equipment involved is identified. The operational outcome is resolved. The resulting record is compact, token-efficient, and ready to be read by any downstream agent, report, or automation without re-extraction.
+
+This is the pre-computation principle. The expensive interpretive work happens when the data arrives, not when a question is asked. Every report, briefing, automation, and agent query that touches that job reads the same prepared artefact. One enrichment, unlimited consumption, no degradation.
+
+### 4. Temporal memory — continuous monitoring
+
+The intelligence layer does not wait to be asked. Sentinels run continuously against the full operational record, watching for the patterns that matter: performance slips, site deterioration, SLA drift, dormant customers, overdue service intervals, emerging fault clusters, growth signals hidden in job history.
+
+When a pattern crosses a threshold, it surfaces as an actionable alert — not a dashboard metric for someone to find, but a signal delivered to the right person at the right time. The temporal layer is always on. It does not cost a model call to operate. It does not require a question to trigger it.
+
+This is memory that acts, not just answers.
+
+## How the primitives combine
+
+The power of the synthesis layer is not in any one primitive. It is in how they work together.
+
+A **pre-visit engineer briefing** draws from all four:
+- Relational: every prior job at this site, who attended, what the outcome was
+- Semantic: similar faults seen elsewhere in the operation, with precedents
+- Structured: the compacted record of the last three visits, token-efficient and ready
+- Temporal: any active sentinel alerts for this site or customer
+
+The engineer does not receive a search result. They receive operating context — assembled, resolved, current, and scoped to the work they are about to do.
+
+A **fault investigation** works the same way. The relational layer provides the job history and engineer connections. The semantic layer finds similar incidents across the operation. The structured layer supplies the classified fault data. The temporal layer flags whether this pattern is new or recurring.
+
+An **account review** synthesises the relational picture of every job linked to a customer against the structured performance data, semantic patterns in communication history, and temporal alerts about dormancy or risk.
+
+None of these workflows work reliably on a single retrieval primitive. They require synthesis.
+
+## Pre-computation and the cost of retrieval
+
+There is a second reason this architecture matters: cost.
+
+Most AI tools in field service re-run the full pipeline on every interaction. New session, new search, new context assembly, new model call. Every user query, every automation run, every report generation starts from zero. Cost grows linearly with usage.
+
+VH3 AI is built the other way. Enrichment happens once, at ingest. The graph is built once, at onboarding, and maintained incrementally. The compacted record is produced once and read everywhere. A hundred users asking questions from the same foundation costs less per query than one user asking from a system that rebuilds context on every call.
+
+The practical result: onboarding the second team does not double the AI cost. Wiring in another automation does not triple it. The per-query cost goes down as usage goes up, because more consumers are sharing work that has already been done.
+
+## Mature on day one
+
+The intelligence layer is most valuable when it is mature — when it has enough history to surface patterns, resolve conflicts, and produce reliable synthesis. With VH3 AI, that maturity is delivered as part of onboarding.
+
+Up to five years of operational history — every job, every outcome, every engineer record, every site and customer relationship — is ingested, enriched, and connected into the graph before go-live. Every entity is resolved. Every relationship is mapped. Every historical conflict in the source data is reconciled.
+
+Your agents do not start from a standing start. They start from a substrate that already understands your operation with years of depth.
+
+From that point, every new job flows through the same enrichment pipeline and joins the graph. The understanding compounds. But it never had to warm up.
+
+## What this means for builders
+
+The intelligence layer is exposed through a full API and an MCP surface. Every primitive is queryable. Bring your own model, your own framework, your own agents.
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="code" href="/api-reference/overview">
+    Every primitive accessible via REST. Semantic search, graph queries, enriched job feed, sentinel runs, report generation.
+  </Card>
+  <Card title="MCP Server" icon="plug" href="/agent-kits/mcp-setup">
+    Connect any MCP-compatible agent directly to the intelligence layer. No middleware.
+  </Card>
+  <Card title="Agent Starter Kits" icon="robot" href="/agent-kits/overview">
+    Drop-in AGENTS.md, Cursor rules, and Claude Project instructions to make any AI tool VH3-fluent in minutes.
+  </Card>
+  <Card title="n8n Community Node" icon="webhook" href="/n8n-node">
+    The intelligence layer as a native n8n node. 100+ workflow templates. PRO operations connect directly to enriched data.
+  </Card>
+</CardGroup>
+
+When you build on the intelligence layer, you are starting from a prepared, resolved, always-current understanding of the operation — not from a search index you have to query your way through. Your agents read. They do not scavenge.
+
+That is the difference between access and understanding.

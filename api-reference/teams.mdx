@@ -1,0 +1,268 @@
+---
+title: Teams
+description: Team management, membership, and entity scoping
+---
+
+# Teams
+
+The Teams endpoints manage organisational teams — groups of users that can be scoped to specific customers, sites, or other entities. Teams enable access control and filtered views across the platform.
+
+## GET /teams/list
+
+List all teams for your company.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `purpose` | string | No | Filter by team purpose |
+| `search` | string | No | Search by team name |
+| `page` | integer | No | Page number |
+| `per_page` | integer | No | Results per page |
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/list" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+---
+
+## POST /teams/create
+
+Create a new team.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `name` | string | Yes | Team name |
+| `description` | string | No | Team description |
+| `purpose` | string | No | Team purpose/category |
+| `metadata` | object | No | Arbitrary metadata |
+| `actor_type` | string | No | Who created the team (`user`, `system`) |
+| `actor_id` | integer | No | ID of the creating actor |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/create" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "name": "North Region",
+    "description": "Engineers and accounts in the northern region"
+  }'
+```
+
+---
+
+## GET /teams/{team_id}
+
+Retrieve a specific team with its members and linked entities.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+---
+
+## PATCH /teams/{team_id}
+
+Update team details.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `name` | string | No | New team name |
+| `description` | string | No | Updated description |
+| `purpose` | string | No | Updated purpose |
+| `metadata` | object | No | Updated metadata |
+| `is_active` | boolean | No | Activate or deactivate the team |
+
+```bash
+curl -X PATCH "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "name": "North Region — HVAC"
+  }'
+```
+
+---
+
+## GET /teams/{team_id}/members
+
+List all members of a team.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/members" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+---
+
+## POST /teams/{team_id}/members
+
+Add a member to a team.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `user_id` | integer | Yes | User to add |
+| `role` | string | Yes | Role within team (`member`, `admin`) |
+| `is_default_team` | boolean | No | Set as default team for this user |
+| `actor_type` | string | No | Who performed the action |
+| `actor_id` | integer | No | ID of the acting user |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/members" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "user_id": 42,
+    "role": "member"
+  }'
+```
+
+---
+
+## DELETE /teams/{team_id}/members/{membership_id}
+
+Remove a member from a team.
+
+```bash
+curl -X DELETE "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/members/membership-99" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key"
+  }'
+```
+
+---
+
+## GET /teams/{team_id}/entities
+
+List all entities linked to a team.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `type` | string | No | Filter by entity type |
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/entities" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+---
+
+## POST /teams/{team_id}/entities
+
+Link an entity (customer, site, job type) to a team.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `entity_type` | string | Yes | Entity type (e.g. `customer`, `site`, `job_type`) |
+| `entity_id` | string | Yes | Entity identifier |
+| `label` | string | No | Display label for this link |
+| `context` | string | No | Additional context |
+| `metadata` | object | No | Arbitrary metadata |
+| `actor_type` | string | No | Who performed the action |
+| `actor_id` | integer | No | ID of the acting user |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/entities" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "entity_type": "customer",
+    "entity_id": "contact-456"
+  }'
+```
+
+---
+
+## DELETE /teams/{team_id}/entities/{link_id}
+
+Unlink an entity from a team.
+
+```bash
+curl -X DELETE "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/entities/link-77" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key"
+  }'
+```
+
+---
+
+## GET /teams/search
+
+Search teams by name or description.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `q` | string | Yes | Search term |
+| `page` | integer | No | Page number |
+| `per_page` | integer | No | Results per page |
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/search" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "q=north region"
+```
+
+---
+
+## GET /entities/{entity_type}/{entity_id}/teams
+
+Find which teams a given entity belongs to (reverse lookup).
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/entities/customer/contact-456/teams" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+---
+
+## GET /users/{user_id}/teams
+
+Get all teams a specific user belongs to.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/users/42/teams" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```

@@ -1,0 +1,124 @@
+---
+title: Sentinels
+description: Proactive operational and growth opportunity monitoring
+---
+
+# Sentinels
+
+Sentinels are proactive monitors that continuously watch your operational data for emerging risks and revenue opportunities. They run as pure database queries with zero AI cost at the detection layer — thresholds, exclusion filters, and result limits are all configurable per tenant.
+
+## Sentinel types
+
+### Operational (13 sentinels)
+
+| Sentinel | What it detects |
+|----------|----------------|
+| `engineer_performance_slip` | Engineers whose completion rates or SLA punctuality have degraded |
+| `site_deterioration` | Sites with increasing fault frequency or repeat visits |
+| `sla_breach_cluster` | Concentrated SLA breaches by geography, engineer, or customer |
+| `scheduling_drift` | Growing gaps between job creation and completion |
+| `repeat_visit_spike` | Abnormal repeat visit rates for specific job types or sites |
+| `first_time_fix_decline` | Drop in first-time-fix rates by engineer or job category |
+| `response_time_degradation` | Increasing time between job raised and first attendance |
+| `workload_imbalance` | Uneven job distribution across engineers |
+| `completion_rate_drop` | Falling job completion rates |
+| `customer_complaint_pattern` | Emerging complaint clusters |
+| `equipment_failure_trend` | Recurring equipment failures at specific sites |
+| `certification_gap` | Engineers approaching or past certification expiry |
+| `data_quality_alert` | Missing or inconsistent data in recent job records |
+
+### Growth opportunity (6 sentinels)
+
+| Sentinel | What it detects |
+|----------|----------------|
+| `dormant_customer` | Customers with no recent activity who may be ready for re-engagement |
+| `overdue_service_interval` | Equipment or sites past their recommended service interval |
+| `single_service_cross_sell` | Customers using only one service line — cross-sell candidates |
+| `engineer_flagged_follow_up` | Follow-on work flagged by engineers in job notes |
+| `seasonal_buying_pattern` | Historical patterns suggesting upcoming demand |
+| `geographic_upsell_cluster` | Concentration of existing customers near prospects |
+
+## POST /sentinels/run
+
+Execute one or more sentinels against your data and return current results.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `sentinel_ids` | object | No | Specific sentinels to run (omit to run all) |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/sentinels/run" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "sentinel_ids": ["site_deterioration", "engineer_performance_slip"]
+  }'
+```
+
+To run all sentinels, omit `sentinel_ids`:
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/sentinels/run" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key"
+  }'
+```
+
+---
+
+## POST /sentinels/run/{sentinel_id}
+
+Run a single named sentinel.
+
+**Path parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `sentinel_id` | string | Yes | Sentinel identifier (from tables above) |
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/sentinels/run/dormant_customer" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key"
+  }'
+```
+
+---
+
+## GET /sentinels/registry
+
+Returns all available sentinel definitions and their configuration.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/sentinels/registry" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+---
+
+## GET /sentinels/results
+
+Returns the latest cached sentinel results for your tenant.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/sentinels/results" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```

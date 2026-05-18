@@ -1,55 +1,38 @@
-# Mintlify Starter Kit
+# VH3 AI — Docs source
 
-Use the starter kit to get your docs deployed and ready to customize.
+This folder is the **source of truth** for the public Mintlify docs site
+hosted at `docs.vh3.ai`.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+## How publishing works
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+```
+edit here  →  commit to main  →  .github/workflows/sync-docs.yml
+                              →  mirrors to github.com/vh3-digital/docs
+                              →  Mintlify auto-deploys
+```
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+Only edit MDX/JSON/asset files **inside this `docs-site/` folder**. The
+mirror repo (`vh3-ai/docs`) is auto-generated — never commit to it
+directly, the next sync will overwrite it.
 
-## AI-assisted writing
-
-Set up your AI coding tool to work with Mintlify:
+## Local preview
 
 ```bash
-npx skills add https://mintlify.com/docs
+cd docs-site
+npx mint dev
 ```
 
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
+Opens the docs at `http://localhost:3000` with hot reload.
 
-See the [AI tools guides](/ai-tools) for tool-specific setup.
+## Adding a page
 
-## Development
+1. Create the `.mdx` file in the appropriate subfolder (`api-reference/`,
+   `guides/`, `agent-kits/`, etc.).
+2. Add its slug to the relevant group in `docs.json` → `navigation.tabs`.
+3. Commit and push to `main`. The sync workflow handles the rest.
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+## Required secrets (set in monorepo → Settings → Secrets and variables → Actions)
 
-```
-npm i -g mint
-```
-
-Run the following command at the root of your documentation, where your `docs.json` is located:
-
-```
-mint dev
-```
-
-View your local preview at `http://localhost:3000`.
-
-## Publishing changes
-
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
-
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+| Secret | Purpose |
+|---|---|
+| `DOCS_REPO_TOKEN` | Fine-grained PAT with `contents: write` on `vh3-digital/docs` |

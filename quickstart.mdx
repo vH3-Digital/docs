@@ -1,81 +1,138 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
-icon: 'rocket'
+title: Quickstart
+description: Make your first API call to VH3 AI in under 5 minutes
 ---
 
-## Get started in three steps
+# Quickstart
 
-Get your documentation site running locally and make your first customization.
+This guide walks you through making your first API call to the VH3 AI intelligence layer.
 
-### Step 1: Set up your local environment
+## Prerequisites
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+You need:
+- Your **company ID** (provided during onboarding)
+- Your **API key** (provided during onboarding)
 
-### Step 2: Deploy your changes
+## 1. Search your job history
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+The semantic search endpoint lets you find relevant past jobs by describing what you're looking for in natural language. The platform uses hybrid search — combining semantic (meaning-based) and BM25 (keyword) retrieval.
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+<CodeGroup>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+```bash cURL
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query_text": "boiler intermittent fault",
+    "limit": 5
+  }'
+```
 
-### Step 3: Go live
+```javascript Node.js
+const response = await fetch(
+  "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes",
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      company_id: "your-company-id",
+      api_key: "your-api-key",
+      query_text: "boiler intermittent fault",
+      limit: 5,
+    }),
+  }
+);
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+const results = await response.json();
+console.log(results);
+```
 
-## Next steps
+```python Python
+import requests
 
-Now that you have your docs running, explore these key features:
+response = requests.post(
+    "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes",
+    json={
+        "company_id": "your-company-id",
+        "api_key": "your-api-key",
+        "query_text": "boiler intermittent fault",
+        "limit": 5,
+    },
+)
 
-<CardGroup cols={2}>
+print(response.json())
+```
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+</CodeGroup>
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+This finds relevant past jobs even if they were recorded as "heating system cutting out" or "CH unit tripping intermittently."
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+## 2. Get sentinel alerts
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+Check what operational risks or growth opportunities the platform has detected:
 
-</CardGroup>
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/sentinels/run" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "sentinel": "engineer_performance_slip"
+  }'
+```
+
+## 3. Ask Connie a question
+
+Use the conversational AI endpoint to ask operational questions in natural language:
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/chat" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "message": "Which engineers had the most repeat visits last month?",
+    "session_id": "quickstart-session-1"
+  }'
+```
+
+Connie responds with a data-backed answer, citing the underlying records.
+
+## 4. List your jobs from the FMS
+
+The VH3 API gives you direct access to your FMS data (BigChange, Joblogic, etc.):
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/list" \
+  -H "X-Api-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "pageNumber": 1,
+    "pageSize": 20,
+    "sortBy": "createdAt",
+    "direction": "descending"
+  }'
+```
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  The FSI intelligence endpoints use `company_id` + `api_key` in the request body. The VH3 FMS endpoints use `X-Api-Key` in the header. See [Authentication](/authentication) for full details.
 </Note>
+
+## What's next?
+
+<CardGroup cols={2}>
+  <Card title="Search API" icon="magnifying-glass" href="/api-reference/search">
+    Full reference for semantic and keyword search endpoints.
+  </Card>
+  <Card title="Sentinels" icon="bell" href="/api-reference/sentinels">
+    Configure and query all 19 sentinel monitors.
+  </Card>
+  <Card title="Connie" icon="message-bot" href="/api-reference/connie">
+    Conversational AI with full operational context.
+  </Card>
+  <Card title="Reports" icon="chart-line" href="/api-reference/reports">
+    Generate and retrieve automated operational reports.
+  </Card>
+</CardGroup>

@@ -1,0 +1,71 @@
+---
+title: Reports
+description: Automated operational reporting
+---
+
+# Reports
+
+The Reports endpoints let you generate automated operational reports. Eight report types are available — covering daily operations, weekly summaries, and account-level performance analysis.
+
+## Report types
+
+| Type | Description |
+|------|-------------|
+| `daily_operations` | Daily job completions, SLA performance, and notable events |
+| `weekly_summary` | Weekly trends, engineer rankings, and operational highlights |
+| `account_monthly` | Per-customer monthly performance report |
+| `executive_health` | Five-dimension health check across up to 3 years of history |
+| `engineer_performance` | Individual engineer performance breakdown |
+| `site_health` | Site-level fault and maintenance trends |
+| `customer_intelligence` | Customer relationship and risk summary |
+| `sentinel_digest` | Summary of all sentinel triggers in period |
+
+## POST /reports/generate
+
+Trigger generation of a report.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `report_type` | string | Yes | Report type identifier (from table above) |
+| `sections` | array | No | Specific sections to include (omit for all) |
+| `date` | string | No | Report date (YYYY-MM-DD) |
+| `include_narrative` | boolean | No | Include AI-generated narrative text |
+| `contact_id` | integer | No | Scope to a specific customer (for account reports) |
+| `month` | string | No | Month to report on (YYYY-MM) |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/reports/generate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "report_type": "weekly_summary",
+    "date": "2024-11-10",
+    "include_narrative": true
+  }'
+```
+
+---
+
+## GET /reports/sections
+
+Returns available report sections and their metadata.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `report_type` | string | No | Filter sections by report type |
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/reports/sections" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "report_type=weekly_summary"
+```
