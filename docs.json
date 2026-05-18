@@ -19,7 +19,8 @@
               "introduction",
               "intelligence-layer",
               "quickstart",
-              "authentication"
+              "authentication",
+              "pricing"
             ]
           },
           {
@@ -121,5 +122,8 @@
     "socials": {
       "linkedin": "https://www.linkedin.com/company/vh3ai"
     }
+  },
+  "settings": {
+    "customScripts": ["/stripe-pricing.js"]
   }
 }
