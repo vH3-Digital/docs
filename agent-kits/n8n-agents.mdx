@@ -1,314 +1,225 @@
 ---
 title: n8n Agent Prompts
-description: System prompts and tool definitions for n8n AI Agent nodes that call the VH3 API as HTTP tools
+description: System prompts for n8n AI Agent workflows using the VH3 AI community node
 ---
 
 # n8n Agent Prompts
 
-The n8n **AI Agent** node lets you wire up an LLM-powered agent inside a workflow, with custom tools that call external APIs. This kit gives you the exact system prompt and HTTP Request Tool definitions needed to make that agent fluent in the VH3 API.
+VH3 AI is built to be extended. The intelligence layer (enriched jobs, operational memory, discovery, sentinels, reports) sits underneath Connie, your API, and native integrations. **n8n** is where you wire that layer into the rest of your stack: Slack, email, CRM, spreadsheets, scheduling, and the thousand-plus apps your team already uses.
+
+The [verified VH3 AI community node](https://n8n.io/integrations/vh3-ai/) puts field service operations and AI on the same canvas. Install it once, connect your credentials, and build deterministic workflows or LLM-powered agents without a proprietary workflow builder or a development queue.
 
 <Note>
-This kit assumes familiarity with n8n's AI Agent and HTTP Request Tool nodes. If you're new to n8n, see the [n8n Community Node](/n8n-node) guide for the pre-built VH3 node which handles a lot of this automatically.
+[Check the community node pack here](https://n8n.io/integrations/vh3-ai/) for the full action list, install steps, and n8n's integration overview. For installation, hosting, and templates, see the [n8n Community Node](/n8n-node) guide.
 </Note>
 
-## When to use this vs the n8n Community Node
+## Why n8n is the obvious extension layer
 
-| Use the [n8n Community Node](/n8n-node) when... | Use this Agent kit when... |
+| What you get | Why it matters |
 |---|---|
-| You want pre-built operations (Run Sentinel, Generate Report, etc.) | You want an LLM to *decide* which VH3 endpoint to call |
-| Your workflow is deterministic (cron → action → notify) | The trigger is a free-form question (Slack mention, email, webhook) |
-| You don't want LLM costs on every workflow run | You're building a conversational interface or assistant |
+| **Production automation** | Scheduling, branching, retries, and observability on a platform teams already run in anger |
+| **Visual + optional code** | Operations can build on the canvas; technical teams can version workflows when they need to |
+| **1,000+ connectors** | Route VH3 intelligence to Gmail, Outlook, Slack, Teams, HubSpot, Xero, Google Sheets, and the rest of your stack |
+| **VH3 node + AI Tool** | 150+ operations (jobs, contacts, sentinels, reports, Connie, cases, email triage) with descriptions the agent reads at runtime |
+| **Included on your plan** | Full n8n automation platform from VH3 API tier upward; community node free to install |
+| **Templates and managed hosting** | 100+ starter workflows, or `{your-company}.n8n.vh3.ai` with the node pre-installed |
+
+You do not need a closed "AI workflow" product on top of VH3. n8n is the open automation layer; the community node is the bridge. Native integrations handle sync inside the platform; n8n handles **your** routing, alerts, and custom logic.
+
+<Tip>
+Use **deterministic** VH3 AI nodes (cron → sentinel → Slack) when the steps are fixed. Add an **AI Agent** node when the trigger is a free-form question (Slack mention, chat, webhook). Same substrate, different control surface.
+</Tip>
+
+## The community node in n8n
+
+Once installed, VH3 AI appears in the node panel with triggers, actions, and an AI Tool variant for agent workflows.
+
+<Frame caption="VH3 AI in the n8n node panel: verified community node with 150+ actions across field service and intelligence operations.">
+  <img
+    src="https://cdn.prod.website-files.com/66f62ac0b4dbc96bb348eb73/6a0c8ff9436a5637570f3416_vh3%20ai%20n8n%20node.png"
+    alt="n8n node details panel showing the installed VH3 AI community node with action categories such as Account Report, Briefing, and Case"
+  />
+</Frame>
+
+A typical automation chains Outlook or Slack with VH3 ingest, classification, and job operations, then branches on status before notifying your team.
+
+<Frame caption="Example workflow: email ingest through VH3 AI, status routing, and downstream job operations.">
+  <img
+    src="https://cdn.prod.website-files.com/66f62ac0b4dbc96bb348eb73/6a0c908685b409a9a4132e27_vh3%20ai%20n8n%20workflow.png"
+    alt="n8n workflow canvas connecting Microsoft Outlook trigger to VH3 AI ingest, status switch, and further VH3 job nodes"
+  />
+</Frame>
+
+## When to use the node directly vs an AI Agent
+
+| Use VH3 AI nodes in the workflow when... | Add an AI Agent node when... |
+|---|---|
+| Steps are fixed (daily report, sentinel digest, email triage pipeline) | The user asks in natural language (Slack mention, chat, webhook body) |
+| You want no LLM cost on every run | The model should choose which VH3 operation fits the question |
+| You are syncing data to CRM, sheets, or storage | You are building a conversational ops assistant |
 
 ## Architecture
 
 ```
-Trigger (Slack mention / webhook / chat)
+Trigger (Slack mention / webhook / schedule / chat)
    ↓
 AI Agent node
-   ├── Language Model (OpenAI / Anthropic / Gemini)
-   ├── Memory (Buffer Window)
+   ├── Language Model (OpenAI / Anthropic / Gemini, BYOK)
+   ├── Memory (Buffer Window, optional)
    ├── System Prompt ← from this page
-   └── Tools
-       ├── HTTP Request Tool: investigate
-       ├── HTTP Request Tool: aggregate_jobs
-       ├── HTTP Request Tool: jobs_feed
-       ├── HTTP Request Tool: sentinels_run
-       └── HTTP Request Tool: reports_generate
+   └── VH3 AI Tool (community node)
    ↓
-Reply (Slack / Email / Chat response)
+Reply or next workflow step (Slack, email, case, etc.)
 ```
+
+Tool names, parameters, and when to use each operation live on the **VH3 AI Tool** sub-node. The system prompt below shapes behaviour, identity rules, and response quality. Do not duplicate parameter lists in the prompt.
+
+## Quick setup
+
+<Steps>
+  <Step title="Install the community node">
+    Self-hosted: Settings → Community Nodes → `n8n-nodes-vh3ai`. n8n Cloud: search **VH3 AI**. Or use a [managed VH3 n8n instance](/n8n-node#hosting-options). See [Check the community node pack here](https://n8n.io/integrations/vh3-ai/).
+  </Step>
+  <Step title="Add VH3 AI API credentials">
+    API Key and Company ID from your VH3 account. See [Credentials](/n8n-node#credentials) on the n8n node page.
+  </Step>
+  <Step title="Create an AI Agent workflow">
+    Add a trigger, an **AI Agent** node, your language model, and connect the **VH3 AI Tool** generated from the community node.
+  </Step>
+  <Step title="Paste the system prompt">
+    Copy the [system message](#the-system-prompt) into the agent's System Message field. Optionally append the [routing appendix](#optional-routing-appendix).
+  </Step>
+  <Step title="Scope memory to the conversation">
+    Use Buffer Window memory with `sessionKey` set to channel or user id so follow-ups keep context.
+  </Step>
+</Steps>
 
 ## The system prompt
 
-Paste this into the **System Message** field of the AI Agent node.
+Paste this into the **System Message** field of the AI Agent node. It contains no workflow expressions: credentials and tool wiring stay in n8n.
+
+<Tip>
+Copy the whole block. The section order (role → how you work → time axis → identity → response style) is intentional.
+</Tip>
 
 ````markdown System Message
-You are a field service operations assistant. You have HTTP tools to
-query the VH3 AI intelligence layer for {{ $credentials.vh3Api.companyName }}.
+You are the field service operations assistant for this organisation.
+You have tools connected to the VH3 AI intelligence layer: an enriched,
+always-current operational model of jobs, engineers, customers, places,
+outcomes, and timing.
 
-The graph holds jobs, engineers, sites, customers, outcomes, and timing
-data. Every tool call automatically passes through company_id and api_key
-from credentials — you do not need to add them.
+Before answering operational questions, call the appropriate tool and use
+real data from the results. Never invent numbers. If a tool fails, say
+the lookup failed and offer a different angle.
 
-## Tool selection
+## How you work
 
-- "why / root cause / what's causing" → use `investigate`
-- "how many / rate / trend / top / compare" → use `aggregate_jobs`
-- "this week vs last week / period over period" → use `aggregate_jobs` with compareTo
-- "show me / list / find job" → use `jobs_feed`
-- "what alerts / what needs attention" → use `sentinels_run`
-- "generate report / briefing / debrief" → use `reports_generate`
+Discovery first when the question is lookup or precedent-shaped.
+Use search, job feed, autocomplete, or customer knowledge tools when
+the user wants similar jobs, a list, or a specific record.
 
-## Critical defaults
+Synthesis when the question needs diagnosis or narrative.
+Use investigate, Connie, or report generation when the user asks why,
+what is causing, or wants a briefing with cited evidence. These calls
+take longer; set brief expectations if needed.
 
-When calling `aggregate_jobs`:
-- Default `timeAxis` to "actualStartAt" for any retrospective question
-- Use "actualEndAt" for completion / throughput questions
-- ONLY use "createdAt" for intake / demand volume questions
-- ONLY use "plannedStartAt" for forward-looking scheduling
-- Both "createdAt" and "plannedStartAt" include phantom jobs that were
-  never worked — never use them for performance analysis
+Metrics and comparisons.
+Use aggregation tools for how many, rate, trend, top, and period-over-
+period questions. Prefer tool defaults for time axis unless the user is
+clearly asking about scheduling (upcoming) or intake (demand).
 
-## Identity rules
+## Time axis (critical)
 
-Never expose internal IDs (companyId, jobId, resourceId, siteKey, contactId)
-in responses. Use:
-- Engineer names ("Tyler French"), not resourceId
-- Job references ("FAB303178"), not jobId
-- Site addresses, not siteKey
-- Customer / job type names, not contactId / typeId
+For backward-looking performance and workload, prefer when field work
+actually started or finished, not when records were created or jobs were
+only planned. Planned and created timestamps include jobs that were never
+worked; do not use them for performance analysis unless the user is asking
+about pipeline or scheduling.
 
-## Response style
+For period comparisons (this week vs last week), use the tool comparison
+parameters rather than inventing date ranges. If the current period is
+partial, say so before drawing firm conclusions.
 
-1. Lead with the headline / answer
-2. Cite specific job references and engineer names from the tool results
-3. Use tables for lists of jobs, engineers, or sites
-4. For comparisons, lead with the delta direction ("up 12%", "down 7.5%")
-5. End with an offered next step ("Want me to investigate why?")
-6. Plain English. No "Great question!" preamble. British spellings.
+## Identity and scoping
 
-If a tool call fails, tell the user the lookup failed and offer to try
-a different angle. Never invent numbers.
+Everything is contact-centric: customers are contacts; places are addresses
+under a customer. Scope by customer name, job reference, engineer name,
+and date range when the user provides them.
+
+Never show internal identifiers in replies (database IDs, linkage keys).
+Use job references, engineer names, customer names, and site addresses.
+
+## How to respond
+
+1. Lead with the headline answer in one sentence.
+2. Support with cited job references, names, and places from tool output.
+3. Use tables for lists of jobs, engineers, or sites.
+4. For comparisons, lead with direction and magnitude (up 12%, down 7%).
+5. End with one offered next step (investigate further, run sentinels, etc.).
+6. Plain English. British spellings. No filler preamble.
+
+If confidence is low or data is thin, say what would sharpen the answer.
 ````
 
-## HTTP Request Tool definitions
+## Optional routing appendix
 
-Each tool below is a separate **HTTP Request Tool** node connected to the AI Agent.
+Paste this **below** the main system message if you want a short reminder without repeating tool parameter docs. Tool descriptions on the VH3 AI Tool node remain the source of truth.
 
-### Tool 1 — `investigate`
+````markdown Routing appendix
+## Tool choice (summary)
 
-<CodeGroup>
+- Why / root cause / what is driving → investigate (or Connie for dialogue)
+- How many / rate / trend / top / compare → aggregate jobs
+- Show / list / find a job or account → job feed or search tools
+- What needs attention / alerts → run sentinels
+- Briefing / debrief / report → generate report
+- Similar past work / precedent → semantic search on outcomes or customer sections
 
-```json Configuration
-{
-  "name": "investigate",
-  "description": "Run a hybrid investigation for diagnostic, root-cause, or 'why' questions. Returns headline finding, cited evidence with job references, ranked recommendations, and confidence score. Latency 10-17s with narrative. Use ONLY for analytical questions — not for simple lookups or counts.",
-  "method": "POST",
-  "url": "https://api.vh3connect.io/api:kP8T1CK7/investigate",
-  "timeout": 25000,
-  "body": {
-    "question": "{{ $fromAI('question', 'The user question in full natural language', 'string') }}",
-    "company_id": "={{ $credentials.vh3Api.companyId }}",
-    "api_key": "={{ $credentials.vh3Api.apiKey }}"
-  }
-}
-```
-
-</CodeGroup>
-
-### Tool 2 — `aggregate_jobs`
-
-<CodeGroup>
-
-```json Configuration
-{
-  "name": "aggregate_jobs",
-  "description": "Compute metrics over jobs. Supports period shorthand (today, this_week, last_month, etc.) and period-over-period comparison. Use for 'how many', 'rate', 'trend', 'top', 'compare' questions. Metrics: job_count, completion_rate, first_visit_fix_rate, avg_start_delta_mins, avg_end_delta_mins. GroupBy: engineer, site, type, vertical, day, week, month. ALWAYS pass timeAxis — use 'actualStartAt' as default.",
-  "method": "POST",
-  "url": "https://api.vh3connect.io/api:kP8T1CK7/aggregate/jobs",
-  "timeout": 10000,
-  "body": {
-    "company_id": "={{ $credentials.vh3Api.companyId }}",
-    "api_key": "={{ $credentials.vh3Api.apiKey }}",
-    "metric": "{{ $fromAI('metric', 'job_count | completion_rate | first_visit_fix_rate | avg_start_delta_mins | avg_end_delta_mins', 'string') }}",
-    "timeAxis": "{{ $fromAI('timeAxis', 'actualStartAt (default) | actualEndAt | plannedStartAt | createdAt', 'string') }}",
-    "period": "{{ $fromAI('period', 'today | yesterday | this_week | last_week | this_month | last_month | last_7_days | last_30_days | last_90_days', 'string') }}",
-    "compareTo": "{{ $fromAI('compareTo', 'previous_period | same_period_last_week | same_period_last_month — only set if user asked for a comparison', 'string') }}",
-    "groupBy": "{{ $fromAI('groupBy', 'status | result | type | category | engineer | site | vertical | day | week | month — omit for overall total', 'string') }}",
-    "limit": "{{ $fromAI('limit', 'Max rows to return, default 50', 'number') }}"
-  }
-}
-```
-
-</CodeGroup>
-
-### Tool 3 — `jobs_feed`
-
-<CodeGroup>
-
-```json Configuration
-{
-  "name": "jobs_feed",
-  "description": "Fetch individual job records with filters. Use for 'show me', 'list', 'find', 'get' questions. Filters: reference, siteKey, resourceId, contactId, status, result, vertical, startDate, endDate.",
-  "method": "GET",
-  "url": "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed",
-  "timeout": 10000,
-  "qs": {
-    "company_id": "={{ $credentials.vh3Api.companyId }}",
-    "api_key": "={{ $credentials.vh3Api.apiKey }}",
-    "reference": "{{ $fromAI('reference', 'Specific job reference like FAB303178 — optional', 'string') }}",
-    "siteKey": "{{ $fromAI('siteKey', 'Site identifier — optional', 'string') }}",
-    "status": "{{ $fromAI('status', 'completedOk | completedWithIssues | inProgress | notStarted — optional', 'string') }}",
-    "limit": "{{ $fromAI('limit', 'Max records, default 25', 'number') }}",
-    "sort": "createdAt_desc"
-  }
-}
-```
-
-</CodeGroup>
-
-### Tool 4 — `sentinels_run`
-
-<CodeGroup>
-
-```json Configuration
-{
-  "name": "sentinels_run",
-  "description": "Run early-warning sentinels for the tenant. Returns only triggered sentinels (empty array = all clear). Use for 'what needs attention', 'run alerts', 'check for issues'. Can scope to specific sentinel IDs if user asks about one category.",
-  "method": "POST",
-  "url": "https://api.vh3connect.io/api:kP8T1CK7/sentinels/run",
-  "timeout": 15000,
-  "body": {
-    "company_id": "={{ $credentials.vh3Api.companyId }}",
-    "api_key": "={{ $credentials.vh3Api.apiKey }}",
-    "sentinelIds": "{{ $fromAI('sentinelIds', 'Optional array of specific sentinel IDs to run — leave empty to run all', 'json') }}"
-  }
-}
-```
-
-</CodeGroup>
-
-### Tool 5 — `reports_generate`
-
-<CodeGroup>
-
-```json Configuration
-{
-  "name": "reports_generate",
-  "description": "Generate a structured operational report. Types: start_of_day, midday, close_of_business, day_review, start_of_week, midweek, end_of_week, account_monthly. Latency 10-17s with narrative. Use for 'generate report', 'briefing', 'debrief', 'weekly summary'.",
-  "method": "POST",
-  "url": "https://api.vh3connect.io/api:kP8T1CK7/reports/generate",
-  "timeout": 25000,
-  "body": {
-    "company_id": "={{ $credentials.vh3Api.companyId }}",
-    "api_key": "={{ $credentials.vh3Api.apiKey }}",
-    "reportType": "{{ $fromAI('reportType', 'start_of_day | midday | close_of_business | day_review | start_of_week | midweek | end_of_week | account_monthly', 'string') }}",
-    "date": "{{ $fromAI('date', 'YYYY-MM-DD — defaults to today', 'string') }}",
-    "includeNarrative": true
-  }
-}
-```
-
-</CodeGroup>
-
-## Wiring it up — n8n-as-code
-
-If you're using the [n8n-as-code](https://github.com/n8nac/n8n-as-code) workflow management approach (see `AGENTS.md` in the repo root), here's the full workflow file pattern:
-
-```typescript vh3-slack-agent.workflow.ts
-import { workflow, node, links } from '@n8n-as-code/transformer';
-
-@workflow({ name: 'VH3 Slack Agent', active: true })
-export class Vh3SlackAgent {
-  @node({ name: 'Slack Trigger', type: 'n8n-nodes-base.slackTrigger', version: 1, position: [0, 0] })
-  SlackTrigger = { events: ['app_mention'] };
-
-  @node({ name: 'VH3 Agent', type: '@n8n/n8n-nodes-langchain.agent', version: 3.1, position: [220, 0] })
-  Vh3Agent = {
-    promptType: 'define',
-    text: '={{ $json.event.text }}',
-    options: {
-      systemMessage: `<paste the system message from above>`,
-    },
-  };
-
-  @node({ name: 'OpenAI', type: '@n8n/n8n-nodes-langchain.lmChatOpenAi', version: 1.3, position: [220, 200] })
-  OpenaiModel = { model: { mode: 'list', value: 'gpt-4o' }, options: {} };
-
-  @node({ name: 'Memory', type: '@n8n/n8n-nodes-langchain.memoryBufferWindow', version: 1.3, position: [320, 200] })
-  Memory = { sessionIdType: 'customKey', sessionKey: '={{ $json.event.channel }}', contextWindowLength: 10 };
-
-  @node({ name: 'Investigate', type: 'n8n-nodes-base.httpRequestTool', version: 4.2, position: [420, 200] })
-  InvestigateTool = { /* paste investigate config */ };
-
-  @node({ name: 'Aggregate Jobs', type: 'n8n-nodes-base.httpRequestTool', version: 4.2, position: [520, 200] })
-  AggregateTool = { /* paste aggregate_jobs config */ };
-
-  @node({ name: 'Slack Reply', type: 'n8n-nodes-base.slack', version: 2.2, position: [440, 0] })
-  SlackReply = {
-    resource: 'message',
-    operation: 'post',
-    channel: '={{ $json.event.channel }}',
-    text: '={{ $json.output }}',
-  };
-
-  @links()
-  defineRouting() {
-    this.SlackTrigger.out(0).to(this.Vh3Agent.in(0));
-    this.Vh3Agent.out(0).to(this.SlackReply.in(0));
-    this.Vh3Agent.uses({
-      ai_languageModel: this.OpenaiModel.output,
-      ai_memory: this.Memory.output,
-      ai_tool: [
-        this.InvestigateTool.output,
-        this.AggregateTool.output,
-      ],
-    });
-  }
-}
-```
-
-<Warning>
-The AI Agent node connects sub-nodes (`ai_languageModel`, `ai_memory`, `ai_tool`) via `.uses()`, **not** `.out().to()`. Using `.out().to()` for these will produce broken connections. See the project-wide `AGENTS.md` for the full n8n-as-code rules.
-</Warning>
-
-## Credential setup
-
-Create an n8n credential called `vh3Api` with two fields:
-
-| Field | Value |
-|---|---|
-| `companyId` | Your company ID |
-| `apiKey` | Your API key |
-| `companyName` (optional) | Your company name — used in the system prompt |
-
-All HTTP Request Tools reference these via `={{ $credentials.vh3Api.companyId }}` and `={{ $credentials.vh3Api.apiKey }}`. Credentials never appear in the workflow JSON.
+Follow each tool's description for parameters. Do not guess internal IDs.
+````
 
 ## Testing the agent
 
-Once wired up, test with these messages in your trigger channel:
+Once wired up, try these in your trigger channel:
 
-| Message | Should trigger |
+| Message | Expected behaviour |
 |---|---|
-| *"How many jobs did we complete last week?"* | `aggregate_jobs` with period=last_week |
-| *"Why are roofing jobs running late?"* | `investigate` |
-| *"Show me job FAB303178"* | `jobs_feed` with reference filter |
-| *"What needs attention today?"* | `sentinels_run` |
-| *"Generate today's start-of-day briefing"* | `reports_generate` with reportType=start_of_day |
+| *"How many jobs did we complete last week?"* | Aggregation over completed work, with sensible time axis |
+| *"Why are roofing jobs running late?"* | Investigation or diagnostic synthesis with citations |
+| *"Show me job FAB303178"* | Job feed or lookup by reference |
+| *"What needs attention today?"* | Sentinels |
+| *"Generate today's start-of-day briefing"* | Report generation |
 
 ## Performance notes
 
 <CardGroup cols={2}>
-  <Card title="Set timeouts correctly" icon="clock">
-    `/investigate` and `/reports/generate` with narrative: 25s. Other endpoints: 10–15s. Default n8n HTTP timeout (5s) will fail.
+  <Card title="Timeouts" icon="clock">
+    Investigation and reports with narrative often need 20 to 25 seconds. Set the VH3 tool or workflow timeout accordingly; default short timeouts will fail on synthesis endpoints.
   </Card>
-  <Card title="Memory matters" icon="brain">
-    Use `memoryBufferWindow` with `contextWindowLength: 10` and `sessionKey` scoped to the channel/user. Without memory, follow-up questions like "drill into roofing" lose context.
+  <Card title="Memory" icon="brain">
+    Use Buffer Window memory with `contextWindowLength: 10` and `sessionKey` scoped to the channel or user. Without memory, follow-ups like "drill into roofing" lose context.
   </Card>
-  <Card title="Watch token costs" icon="coins">
-    Each tool call adds tokens. The system prompt is large — consider trimming to the routing table only once your team is fluent.
+  <Card title="Token costs" icon="coins">
+    Each tool call adds tokens. The VH3 AI Tool descriptions carry routing detail; keep the system prompt focused on behaviour and identity, not parameter enums.
   </Card>
-  <Card title="Use streaming where supported" icon="bolt">
-    Some channels (Slack, Teams) support message editing — stream partial responses to feel snappier on 17s `/investigate` calls.
+  <Card title="Discovery vs synthesis" icon="bolt">
+    Prefer fast tools (search, feed, sentinels) for triggers and filters; reserve investigate and narrative reports for steps that need language. See [Operational discovery](/guides/operational-discovery).
+  </Card>
+</CardGroup>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="n8n Community Node" icon="puzzle-piece" href="/n8n-node">
+    Install, credentials, hosting, and operation list.
+  </Card>
+  <Card title="Community node on n8n.io" icon="link" href="https://n8n.io/integrations/vh3-ai/">
+    Verified integration page and full action catalogue.
+  </Card>
+  <Card title="Building on the layer" icon="layer-group" href="/guides/building-on-the-layer">
+    Citizen builders, substrate, and programmatic access.
+  </Card>
+  <Card title="MCP setup" icon="plug" href="/agent-kits/mcp-setup">
+    Same intelligence surface for Claude Desktop and Cursor.
   </Card>
 </CardGroup>
