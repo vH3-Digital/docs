@@ -250,18 +250,6 @@ When your agent receives a free-form question and needs to decide which tool to 
 
 For a full system prompt you can paste directly into your agent, see the [Claude.ai Projects](/agent-kits/claude-projects) and [n8n Agent Prompts](/agent-kits/n8n-agents) kits — both include routing logic optimised for agent use.
 
-## Migrating from MCP v1
-
-If you are using the previous MCP server (v1) with `company_id` + `api_key` header authentication, you can migrate to v2:
-
-1. **Get an MCP token** using the steps above
-2. **Update your server URL** to `https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse`
-3. **Switch to `mcp-remote` transport** — replace any `url`/`headers` config with the `command`/`args` pattern using `npx -y mcp-remote` (see Claude Desktop or Cursor config above)
-4. **Replace header auth** — remove `x-vh3-company-id` and `x-vh3-api-key` headers; the Bearer token is passed via `--header` in the `mcp-remote` args
-5. **Update tool names** — v2 tools drop the `vh3_` prefix (e.g. `vh3_aggregate_jobs` becomes `aggregate_jobs`)
-
-The v1 server remains operational. You can migrate at your own pace.
-
 ## Pairing with AGENTS.md
 
 If you're using the MCP server inside a Cursor or Claude Code session, pair it with the [AGENTS.md](/agent-kits/agents-md) file in your project root. The MCP server handles execution; AGENTS.md handles routing logic, field name correctness, and the rules around what IDs to expose to users.
