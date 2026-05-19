@@ -96,6 +96,21 @@ Different tools expose different levels of provenance:
 
 Search tools return **hits linked to operational records**, not disconnected chunks. Your UI can show reference, customer, site, and outcome snippets from `output` while Connie summarises in prose.
 
+On the **Connie agent path only**, `search_outcomes` and `search_intake` hits are truncated to a compact allowlist (REST `POST /search/outcomes` still returns the full Weaviate payload). Typical fields per hit:
+
+| Field | Role |
+|-------|------|
+| `jobRef` | Job reference for citations and drill-down |
+| `contactName` | Customer/site label as shown on the job |
+| `contactId` | Chaining to `contact_snapshot`, `job_detail`, etc. |
+| `summary` | Plain-language outcome/intake summary |
+| `actualStartAt` / `actualEndAt` | Visit timing (outcomes) |
+| `createdAt` | Creation time (intake, when present) |
+| `subVertical`, `status`, `result`, `score` | Classification and relevance |
+| `jobId`, `typeId`, `categoryId`, `resourceId` | IDs for follow-up tools |
+
+Verbose blobs (`text`, `companyId`) and opaque keys (`siteKey`) are omitted on the agent path to save context tokens.
+
 ### Investigation
 
 Investigation-style tools return a **headline**, **confidence**, **recommendations**, and an **evidence** list with job references. That is the pattern for "why" questions: synthesis with explicit citations, not a single opaque paragraph.

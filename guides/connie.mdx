@@ -84,7 +84,7 @@ Connie is built for production economics (especially with [BYOK](/pricing)):
 
 - **Intent routing** classifies messages so lightweight turns do not always invoke the full agent and tool suite.
 - **Prompt caching** keeps stable instructions cacheable across tenants while per-request context stays separate.
-- **Truncated tool payloads** return compact, LLM-ready shapes from feeds, search, and aggregates so context windows are not filled with empty fields and nested noise.
+- **Truncated tool payloads** return compact, LLM-ready shapes from feeds, search, and aggregates so context windows are not filled with empty fields and nested noise. Semantic search hits include `contactName`, `jobRef`, and visit dates so answers can name sites and cite references without extra lookups.
 - **Discovery-first tools** (`search_outcomes`, `jobs_aggregate`, `job_feed`, autocomplete, customer summary sections) handle lookups without running narrative investigation unless the question requires it.
 
 Every chat response includes **usage** (`inputTokens`, `outputTokens`, `cacheReadTokens`, `cacheCreationTokens`) so you can see what a turn cost on your provider account.
