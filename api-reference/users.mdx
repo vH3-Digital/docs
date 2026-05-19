@@ -1,6 +1,6 @@
 ---
 title: Users
-description: User management — list, invite, update roles, and remove users from your company
+description: User management, list, invite, update roles, and remove users from your company
 ---
 
 # Users
@@ -10,7 +10,7 @@ The Users endpoints manage the team members associated with your company. They u
 **Base URL:** `https://api.vh3connect.io/api:kP8T1CK7`
 
 <Warning>
-  These endpoints are **server-side only**. The `api_key` must never be sent from a browser, mobile app, or any client-side code. If you are building an interactive front-end, use the [User Authentication (JWT)](/api-reference/user-auth) endpoints instead — your users log in once and every subsequent call uses a Bearer token, with no API key in the browser.
+  These endpoints are **server-side only**. The `api_key` must never be sent from a browser, mobile app, or any client-side code. If you are building an interactive front-end, use the [User Authentication (JWT)](/api-reference/user-auth) endpoints instead, your users log in once and every subsequent call uses a Bearer token, with no API key in the browser.
 </Warning>
 
 ---
@@ -106,8 +106,8 @@ Invite a user to your company by email. Sends an invitation email via SendGrid w
 | `api_key` | string | Yes | Your tenant API key |
 | `email` | email | Yes | Email address to invite |
 | `role` | string | Yes | Role to assign: `admin`, `manager`, `standard`, `engineer` |
-| `company_name` | string | Yes | Your company display name — shown in the invitation email |
-| `inviter_name` | string | Yes | Name of the person sending the invite — shown in the invitation email |
+| `company_name` | string | Yes | Your company display name, shown in the invitation email |
+| `inviter_name` | string | Yes | Name of the person sending the invite, shown in the invitation email |
 
 ```bash
 curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/users/invite" \
@@ -189,7 +189,7 @@ curl -X PUT "https://api.vh3connect.io/api:kP8T1CK7/users/42/role" \
 
 ## DELETE /users/{user_id}
 
-Archive (soft-delete) a user. The user's record is preserved but `is_archived` is set to `true` — they can no longer log in and will not appear in `GET /users/list`.
+Archive (soft-delete) a user. The user's record is preserved but `is_archived` is set to `true`, they can no longer log in and will not appear in `GET /users/list`.
 
 **Request body:**
 

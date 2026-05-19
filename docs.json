@@ -2,6 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "VH3 AI",
+  "description": "Field service intelligence API and documentation: operational graph, semantic search, aggregation, sentinels, reports, Connie, agent starter kits, and OpenAPI reference for jobs, engineers, sites, and customers.",
   "colors": {
     "primary": "#A379E7",
     "light": "#C4A6F0",
@@ -38,6 +39,7 @@
               "agent-kits/cursor-rules",
               "agent-kits/mcp-setup",
               "agent-kits/claude-projects",
+              "agent-kits/claude-skills",
               "agent-kits/n8n-agents"
             ]
           }
@@ -80,7 +82,8 @@
               "guides/building-on-the-layer",
               "guides/sentinels",
               "guides/reports",
-              "guides/connie"
+              "guides/connie",
+              "guides/agent-observability"
             ]
           }
         ]
@@ -123,6 +126,20 @@
     "socials": {
       "linkedin": "https://www.linkedin.com/company/vh3ai"
     }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "assistant",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "add-mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "settings": {
     "customScripts": ["/stripe-pricing.js"]

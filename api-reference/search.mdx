@@ -5,7 +5,7 @@ description: Semantic and keyword search across your operational history
 
 # Search
 
-The Search endpoints let you find relevant past jobs, outcomes, and intake records by describing what you're looking for in natural language. The platform uses hybrid search — combining semantic (meaning-based) and BM25 (keyword) retrieval — to surface relevant results even when terminology differs.
+The Search endpoints let you find relevant past jobs, outcomes, and intake records by describing what you're looking for in natural language. The platform uses hybrid search, combining meaning-based matching with keyword retrieval, to surface relevant results even when terminology differs.
 
 ## POST /search/outcomes
 
@@ -40,7 +40,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes" \
 
 ## POST /search/intake
 
-Search across raw job intake text — the original fault descriptions as entered by dispatchers or customers.
+Search across raw job intake text, the original fault descriptions as entered by dispatchers or customers.
 
 **Request body:**
 
@@ -66,7 +66,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/intake" \
 
 ## POST /search/intake/enriched
 
-Semantic search over job intake text with Neo4j graph enrichment — returns richer context by joining graph relationships to each result.
+Semantic search over job intake text with knowledge graph enrichment, returns richer context by joining graph relationships to each result.
 
 **Request body:**
 
@@ -102,20 +102,20 @@ grouped by entity type plus a flat `results[]` array for back-compat.
 |-------|------|----------|-------------|
 | `company_id` | string | Yes | Your tenant identifier |
 | `api_key` | string | Yes | Your tenant API key |
-| `q` | string | Yes | Search text — name, postcode, email address, UUID personId, phone, reference, or numeric id |
+| `q` | string | Yes | Search text, name, postcode, email address, UUID personId, phone, reference, or numeric id |
 | `limit` | integer | No | Max results per group (default 10, max 50) |
 | `types` | string | No | Comma-separated entity filter: `contact,person,engineer,job,job_type,job_category,contact_group,resource_group` |
 
 **Search capabilities:**
 
-- **Name / phonetic** — `Smyth` finds `Smith`; `PureGym` finds `Pure Gym`
-- **Email** — type a full or partial email (`ric@vezzahub.com`, `ric@`) to
+- **Name / phonetic:** `Smyth` finds `Smith`; `PureGym` finds `Pure Gym`
+- **Email:** type a full or partial email (`ric@vezzahub.com`, `ric@`) to
   find the matching person directly. Results carry `matchedVia: "email"`.
-- **UUID / personId** — paste a standard UUID to resolve the person directly
+- **UUID / personId:** paste a standard UUID to resolve the person directly
   via their `ids` array. Returns `matchedVia: "person_id"` with score 1.0.
-- **Postcode** — UK postcodes with or without a space (`NN10 5AB` / `NN105AB`)
-- **Reference** — job reference or order number prefix
-- **Numeric id** — bare integer resolves `contactId`, `resourceId`, or `jobId`
+- **Postcode:** UK postcodes with or without a space (`NN10 5AB` / `NN105AB`)
+- **Reference:** job reference or order number prefix
+- **Numeric id:** bare integer resolves `contactId`, `resourceId`, or `jobId`
 
 ```bash
 curl -G "https://api.vh3connect.io/api:kP8T1CK7/search/autocomplete" \

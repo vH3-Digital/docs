@@ -35,7 +35,7 @@ n8n start
 
 <CardGroup cols={2}>
   <Card title="BigChange operations" icon="gear">
-    Full read/write access to jobs, contacts, engineers, vehicles, worksheets, invoices, quotes, notes, stock, and reference data. List, get, create, edit, cancel, schedule — the complete operational surface.
+    Full read/write access to jobs, contacts, engineers, vehicles, worksheets, invoices, quotes, notes, stock, and reference data. List, get, create, edit, cancel, schedule, the complete operational surface.
   </Card>
   <Card title="VH3 AI intelligence" icon="brain">
     Semantic search, enriched job feed, aggregated metrics, sentinels, reports, briefings, Connie chat, case management, email triage, intelligence profiles, pulse snapshots, and weather context for jobs and sites.
@@ -44,7 +44,7 @@ n8n start
     Every read operation has a Simplify toggle. When on, the API returns compact payloads: empty values stripped, nested structures flattened, custom fields collapsed. Smaller tokens, lower cost, better agent performance.
   </Card>
   <Card title="AI agent compatible" icon="robot">
-    The node generates a VH3 AI Tool variant automatically. Drop it into any n8n AI agent as a tool and the agent can query jobs, run sentinels, search history, chat with Connie, and more — no extra wiring required.
+    The node generates a VH3 AI Tool variant automatically. Drop it into any n8n AI agent as a tool and the agent can query jobs, run sentinels, search history, chat with Connie, and more, no extra wiring required.
   </Card>
 </CardGroup>
 
@@ -92,8 +92,8 @@ The node uses a single **VH3 AI API** credential for all operations:
 
 | Field | Description | Default |
 |-------|-------------|---------|
-| `API Key` | Your VH3 API key | — |
-| `Company ID` | Your tenant ID | — |
+| `API Key` | Your VH3 API key | None |
+| `Company ID` | Your tenant ID | None |
 | `Base URL` | VH3 Connect gateway | `https://api.vh3connect.io` |
 | `FSI Base URL` | Intelligence API | `https://api.vh3connect.io/api:kP8T1CK7` |
 
@@ -101,7 +101,7 @@ The node uses a single **VH3 AI API** credential for all operations:
 
 You do not need to run your own n8n infrastructure to use the node. VH3 AI offers managed hosting at `{your-company}.n8n.vh3.ai` with the node pre-installed, credentials pre-configured, and 100+ workflow templates ready to activate.
 
-If you prefer to run your own instance — self-hosted or n8n Cloud — install the community node and point it at your credentials. Either path gives you the same node, the same operations, and the same intelligence layer underneath.
+If you prefer to run your own instance, self-hosted or n8n Cloud, install the community node and point it at your credentials. Either path gives you the same node, the same operations, and the same intelligence layer underneath.
 
 | Model | Description |
 |-------|-------------|

@@ -5,22 +5,46 @@ description: Ready-to-use configurations for connecting AI agents and coding ass
 
 # Agent Starter Kits
 
-VH3 AI exposes the full intelligence layer — graph, semantic index, aggregation, sentinels, reports — through a standard API and an MCP surface. These starter kits give your AI tools the exact configuration they need to use that surface correctly from day one.
+VH3 AI exposes the full intelligence layer, graph, semantic index, aggregation, sentinels, reports, through a standard API and an MCP surface. These starter kits give your AI tools the exact configuration they need to use that surface correctly from day one.
 
 Each kit is self-contained. Pick the one that matches how your team works.
+
+## For AI agents (documentation)
+
+This site is optimised for LLMs and coding agents. Use these endpoints to learn the VH3 API — they search **documentation only**, not your live field service data.
+
+| Resource | URL |
+|---|---|
+| Site index | [docs.vh3.ai/llms.txt](https://docs.vh3.ai/llms.txt) |
+| Full docs (single file) | [docs.vh3.ai/llms-full.txt](https://docs.vh3.ai/llms-full.txt) |
+| Any page as Markdown | Add `.md` to the page URL, or use **Copy page** in the header menu |
+| Documentation MCP | [docs.vh3.ai/mcp](https://docs.vh3.ai/mcp) |
+
+<Note>
+**Two different MCP servers.** The URL above is Mintlify's **documentation** MCP (search and read these docs). To query live jobs, sentinels, and reports, use the [VH3 product MCP](/agent-kits/mcp-setup) with your tenant JWT — not the docs MCP.
+</Note>
+
+<Prompt description="Install the VH3 documentation skill for Claude Code, Cursor, or other agents." actions={["copy", "cursor"]}>
+npx skills add https://docs.vh3.ai
+</Prompt>
+
+On any page, open the **contextual menu** (top of page) to copy the page as Markdown, open it in Claude or ChatGPT, or connect the documentation MCP to Cursor or VS Code in one click.
 
 <CardGroup cols={2}>
   <Card title="AGENTS.md" icon="robot" href="/agent-kits/agents-md">
     A drop-in context file for AI coding agents (Cursor, Claude Code, GitHub Copilot). Tells the agent which endpoint to call for which question, the correct field names, and the API conventions.
   </Card>
   <Card title="Cursor Rules" icon="code" href="/agent-kits/cursor-rules">
-    Three `.cursor/rules/` files that shape every VH3-related code generation in Cursor — domain vocabulary, API call patterns, and n8n workflow conventions.
+    Three `.cursor/rules/` files that shape every VH3-related code generation in Cursor, domain vocabulary, API call patterns, and n8n workflow conventions.
   </Card>
   <Card title="MCP Server" icon="plug" href="/agent-kits/mcp-setup">
     Connect any MCP-compatible client (Claude Desktop, Cursor, custom agents) directly to the VH3 intelligence layer. No middleware required.
   </Card>
   <Card title="Claude.ai Projects" icon="message-bot" href="/agent-kits/claude-projects">
-    Project instructions for Claude.ai — for operations managers who want to query VH3 in plain English without writing code.
+    Project instructions for Claude.ai, for operations managers who want to query VH3 in plain English without writing code.
+  </Card>
+  <Card title="Claude Skills" icon="sparkles" href="/agent-kits/claude-skills">
+    Anthropic SKILL.md template for Claude Code and MCP clients — tool routing, valid parameters, and ops response format.
   </Card>
   <Card title="n8n Agent Prompts" icon="webhook" href="/agent-kits/n8n-agents">
     System prompts for n8n AI Agent workflows using the VH3 AI community node and 1,000+ app connectors.
@@ -34,13 +58,14 @@ Each kit is self-contained. Pick the one that matches how your team works.
 | You're a developer using Cursor | [AGENTS.md](/agent-kits/agents-md) + [Cursor Rules](/agent-kits/cursor-rules) |
 | You want to connect Claude Desktop or another MCP client | [MCP Server](/agent-kits/mcp-setup) |
 | You're building an AI-powered Claude.ai workspace for your ops team | [Claude.ai Projects](/agent-kits/claude-projects) |
+| You're using Claude Code or Anthropic-format skills with the VH3 MCP server | [Claude Skills](/agent-kits/claude-skills) |
 | You're building automations in n8n with an LLM decision layer | [n8n Agent Prompts](/agent-kits/n8n-agents) |
 | You want everything | Start with AGENTS.md, add MCP, then layer in the tool-specific kits |
 
 ## What the kits don't do
 
-These kits configure AI tools to use the VH3 API correctly. They do not replace the API itself — you still need a valid `company_id` and `api_key` to make calls. See [Authentication](/authentication) for how to obtain those.
+These kits configure AI tools to use the VH3 API correctly. They do not replace the API itself, you still need a valid `company_id` and `api_key` to make calls. See [Authentication](/authentication) for how to obtain those.
 
 <Note>
-The kits reference endpoints from the [API Reference](/api-reference/overview). If an endpoint behaves unexpectedly, cross-check the spec there — the starter kits are tuned for the current API version.
+The kits reference endpoints from the [API Reference](/api-reference/overview). If an endpoint behaves unexpectedly, cross-check the spec there, the starter kits are tuned for the current API version.
 </Note>

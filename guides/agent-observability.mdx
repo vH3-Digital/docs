@@ -1,0 +1,172 @@
+---
+title: Agent observability
+description: Why evidenced tool use matters when AI agents run real operations, and how VH3 AI surfaces provenance
+---
+
+# Agent observability
+
+Non-deterministic systems are now part of running a field service business: routing assistants, diagnostic copilots, account briefings, and workflow agents that decide which API to call. They are fallible, like people, though often faster and more consistent on repetitive analysis. The operational mistake is treating the **final message** as the record.
+
+You need to see **where the data came from**, **which tools ran**, and **what they returned** before you act on a recommendation, forward a briefing to a client, or open a case.
+
+<Card title="Connie" icon="message-bot" href="/guides/connie">
+  VH3 AI's flagship agent: long-running context, tool harness, and cited answers.
+</Card>
+
+## The trust model
+
+| Approach | What the user sees | Risk |
+|----------|-------------------|------|
+| **Black-box chat** | A paragraph of confident prose | No audit trail; hallucinated numbers look real |
+| **Dashboard only** | Charts without narrative | Context and "why" live in someone's head |
+| **Evidenced agent** | Answer plus structured tool results and citations | Reviewable, replayable, UI-friendly |
+
+VH3 AI is built for the third row. Connie (and the same patterns on the API) returns:
+
+1. **Natural language** for the human (headline, tables, next steps).
+2. **`toolsUsed`** so you know which capabilities were invoked.
+3. **`toolCallOutputs`** with the structured payload from each tool in that turn.
+4. **`usage`** so token cost is visible on your provider account (BYOK-friendly).
+5. **Diagnostic blocks** (when applicable) explaining how opening context was assembled.
+
+The assistant text is the **interpretation**. The tool outputs are the **evidence**.
+
+## Why this matters in field service
+
+Operational decisions have consequences: dispatch changes, client calls, SLA credits, engineer callbacks, compliance sign-off. An agent that says "completion rate is down 12%" without traceability is unusable in a dispute. An agent that shows the aggregation window, the metric definition, and the underlying job references is **operations-grade**.
+
+The same applies to **investigations** and **customer summaries**: the value is not only the headline ("roofing jobs are stalling at quote stage") but the **jobs cited**, the **confidence** stated, and the ability to open those records in your own UI.
+
+## What the API returns
+
+On [`POST /connie/chat`](/api-reference/connie) (and voice equivalents), a typical successful turn includes:
+
+| Field | Purpose |
+|-------|---------|
+| `response` | Markdown answer for the user |
+| `sessionId` | Thread identifier for follow-ups |
+| `toolsUsed` | Ordered list of tool names executed this turn |
+| `toolCallOutputs` | Array of `{ toolName, toolUseId, output }` with full structured results |
+| `usage` | `inputTokens`, `outputTokens`, `cacheReadTokens`, `cacheCreationTokens` |
+| `route` | How the message was classified (e.g. simple vs full agent), when routing is enabled |
+| `summaryContext` | How customer opening context was built (server-enriched vs client fallback) |
+| `preseedContext` | How company operating rules were loaded |
+
+Example shape (abbreviated):
+
+```json
+{
+  "sessionId": "session-abc-123",
+  "response": "Last week you completed **218** jobs, up from **195** the prior week...",
+  "toolsUsed": ["jobs_aggregate"],
+  "toolCallOutputs": [
+    {
+      "toolName": "jobs_aggregate",
+      "toolUseId": "toolu_01...",
+      "output": {
+        "total": 218,
+        "compareTo": { "total": 195, "deltaPercent": 11.8 }
+      }
+    }
+  ],
+  "usage": {
+    "inputTokens": 4200,
+    "outputTokens": 380,
+    "cacheReadTokens": 3100,
+    "cacheCreationTokens": 0
+  }
+}
+```
+
+Your application can render `toolCallOutputs` as tables, trend cards, or job lists **without parsing the markdown**.
+
+<Note>
+`toolCallOutputs` is additive. Existing integrations that only read `response` keep working. New UIs should treat structured outputs as the source of truth for numbers and lists.
+</Note>
+
+## Evidence inside tool results
+
+Different tools expose different levels of provenance:
+
+### Aggregations and feeds
+
+`jobs_aggregate`, `job_feed`, and related tools return **counts, groups, and rows** with labels suitable for display. Connie is instructed to prefer correct **time axes** for field work (actual start/end vs planned vs created) and to note partial periods when comparing weeks.
+
+### Search and precedent
+
+Search tools return **hits linked to operational records**, not disconnected chunks. Your UI can show reference, customer, site, and outcome snippets from `output` while Connie summarises in prose.
+
+### Investigation
+
+Investigation-style tools return a **headline**, **confidence**, **recommendations**, and an **evidence** list with job references. That is the pattern for "why" questions: synthesis with explicit citations, not a single opaque paragraph.
+
+### Customer knowledge
+
+Customer Summary tools return **sectioned knowledge** (overview, patterns, risk, and related themes). `summaryContext` on the chat response tells you whether the opening block was server-enriched with recent jobs or supplied by the client.
+
+## Tool recall across a session
+
+Substantive tool results in a session can be **persisted and recalled** so later turns do not always repeat the same expensive calls. From an observability perspective, that means:
+
+- Turn 1: investigation on a customer issue → evidence stored.
+- Turn 3: "show me that table again" → recall or re-fetch with continuity.
+
+You still inspect `toolsUsed` on each turn to see whether the agent re-ran a tool or answered from session context.
+
+## Generative UI and operational dashboards
+
+VH3 Connect and integrator apps can map `toolCallOutputs` to **typed UI components** (metrics, job lists, investigation panels, report sections). The contract is: **one tool invocation → one serialisable payload → one renderer**.
+
+That pattern matters because:
+
+- **Numbers in the UI** come from JSON, not from regex on markdown.
+- **Drill-down** uses the same `output` the agent saw.
+- **Accessibility and export** (PDF, email) can reuse structured data.
+
+You do not need to expose internal schema names in customer docs; you do need to know that **structured outputs are first-class**, not an afterthought.
+
+## Routing and cost transparency
+
+When semantic routing is enabled, `route` describes how the message was classified before the full agent ran. Simple acknowledgements may skip the tool loop entirely; analytical questions use the full harness. That is observability for **cost and behaviour**, not only for correctness.
+
+Combine `route` with `usage` to answer: "Was this an expensive turn? Did we need tools at all?"
+
+## Practices for reviewers and builders
+
+<Steps>
+  <Step title="Show the evidence by default">
+    In internal tools, render `toolCallOutputs` beneath or beside the assistant message. Hide only in consumer-facing views where space is tight, with a "View source data" affordance.
+  </Step>
+  <Step title="Never log secrets">
+    API keys belong server-side. Log `sessionId`, `toolsUsed`, and redacted outputs in your own audit store if required for compliance.
+  </Step>
+  <Step title="Align timeouts with synthesis">
+    Investigation and narrative reports take longer than discovery. Observability includes **latency**: if `toolsUsed` is empty and `response` is vague, check for timeout or guardrail routing.
+  </Step>
+  <Step title="Use discovery to verify">
+    For high-stakes checks, cross-call [`POST /search/outcomes`](/api-reference/search) or job feed endpoints with the same scope Connie used. Same substrate, deterministic replay.
+  </Step>
+</Steps>
+
+## Humans and agents together
+
+Agents will not replace accountability. They **compress time to insight** when the harness is sound: prepared data, correct tools, cited results, and transparent usage. Observability is how you keep them **accountable** as you deploy them into dispatch, account management, and leadership workflows.
+
+Fallibility does not disappear. It becomes **visible**, which is the difference between a demo and production.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Connie guide" icon="message-bot" href="/guides/connie">
+    Capabilities, sessions, and efficient use of the layer.
+  </Card>
+  <Card title="Operational discovery" icon="magnifying-glass" href="/guides/operational-discovery">
+    Deterministic search and entity resolution for verification.
+  </Card>
+  <Card title="Intelligence layer" icon="layer-group" href="/intelligence-layer">
+    Prepared operational memory vs classic retrieval.
+  </Card>
+  <Card title="Connie API" icon="code" href="/api-reference/connie">
+    Full request and response fields.
+  </Card>
+</CardGroup>

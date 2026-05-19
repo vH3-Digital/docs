@@ -5,7 +5,15 @@ description: Conversational AI assistant with full operational context
 
 # Connie
 
-Connie is VH3 AI's conversational assistant. She has access to the full knowledge graph, semantic search, reports, and sentinel results — and responds to questions in natural language with cited, data-backed answers.
+Connie is VH3 AI's conversational assistant. She has access to the full knowledge graph, semantic search, reports, and sentinel results, and responds to questions in natural language with cited, data-backed answers.
+
+<Card title="Connie guide" icon="message-bot" href="/guides/connie">
+  Capabilities, sessions, and how Connie uses the intelligence layer.
+</Card>
+
+<Card title="Agent observability" icon="eye" href="/guides/agent-observability">
+  `toolCallOutputs`, usage, and verifying provenance in production UIs.
+</Card>
 
 ## POST /connie/chat
 
@@ -48,14 +56,14 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/chat" \
 - "Give me a performance summary for engineer John Smith"
 
 <Info>
-  Connie maintains conversation context within a session. Follow-up questions like "What about last month?" reference the previous exchange automatically.
+  Connie maintains conversation context within a session. Follow-up questions like "What about last month?" reference the previous exchange automatically. Each response can include `toolCallOutputs` (structured results per tool) and `usage` (token counts). See [Agent observability](/guides/agent-observability).
 </Info>
 
 ---
 
 ## POST /connie/chat/voice
 
-Send a voice interaction to Connie — designed for voice-first interfaces where the input is a transcribed audio message. Optimised for concise, text-to-speech-friendly responses.
+Send a voice interaction to Connie, designed for voice-first interfaces where the input is a transcribed audio message. Optimised for concise, text-to-speech-friendly responses.
 
 **Request body:**
 
@@ -76,7 +84,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/chat/voice" \
 
 ## POST /connie/generate-summary
 
-Generate an AI summary for a contact — useful for pre-call preparation or account review.
+Generate an AI summary for a contact, useful for pre-call preparation or account review.
 
 **Request body:**
 

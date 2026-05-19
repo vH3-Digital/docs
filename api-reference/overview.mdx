@@ -18,8 +18,8 @@ https://api.vh3connect.io/api:kP8T1CK7
 ## Authentication
 
 Every request includes your two credentials:
-- **`company_id`** — your tenant identifier
-- **`api_key`** — your tenant API key
+- **`company_id`:** your tenant identifier
+- **`api_key`:** your tenant API key
 
 For `POST` endpoints, these go in the JSON body. For `GET` endpoints, they go as query parameters.
 
@@ -30,12 +30,12 @@ For `POST` endpoints, these go in the JSON body. For `GET` endpoints, they go as
 | [Search](/api-reference/search) | Semantic and keyword search across job outcomes, intake text, and summaries |
 | [Jobs](/api-reference/jobs) | Job feed, job details, and aggregation |
 | [Contacts](/api-reference/contacts) | Contact feed and contact detail lookup |
-| [Sentinels](/api-reference/sentinels) | Run and query proactive sentinel monitors — continuous pattern detection |
+| [Sentinels](/api-reference/sentinels) | Run and query proactive sentinel monitors, continuous pattern detection |
 | [Reports](/api-reference/reports) | Generate daily, weekly, and account-level reports |
 | [Briefings](/api-reference/briefings) | Pre-visit engineer briefings with full site context |
-| [Connie](/api-reference/connie) | Conversational AI — ask questions, get cited answers |
-| [Cases](/api-reference/cases) | Case management — create, track, and resolve operational cases |
-| [Teams](/api-reference/teams) | Team management — members, entity linking, access scoping |
+| [Connie](/api-reference/connie) | Conversational AI, ask questions, get cited answers |
+| [Cases](/api-reference/cases) | Case management, create, track, and resolve operational cases |
+| [Teams](/api-reference/teams) | Team management, members, entity linking, access scoping |
 
 ## Request format
 
@@ -72,13 +72,13 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
 
 | Status code | Meaning |
 |-------------|---------|
-| `400` | Bad request — missing or invalid parameters |
-| `401` | Unauthorised — invalid API key |
-| `404` | Not found — resource does not exist for your tenant |
-| `409` | Conflict — a task is already running for this resource |
-| `422` | Validation error — request understood but semantically invalid |
-| `429` | Rate limited — too many requests |
-| `500` | Server error — contact support |
+| `400` | Bad request, missing or invalid parameters |
+| `401` | Unauthorised, invalid API key |
+| `404` | Not found, resource does not exist for your tenant |
+| `409` | Conflict, a task is already running for this resource |
+| `422` | Validation error, request understood but semantically invalid |
+| `429` | Rate limited, too many requests |
+| `500` | Server error, contact support |
 
 ## Pagination
 

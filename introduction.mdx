@@ -3,7 +3,11 @@ title: Introduction
 description: The AI infrastructure layer for field service organisations
 ---
 
-# VH3 AI — Field Service Intelligence
+# VH3 AI: Field Service Intelligence
+
+<Tip>
+**Building with AI tools?** This site exposes [llms.txt](https://docs.vh3.ai/llms.txt), Markdown exports (`.md` on any URL), and a [documentation MCP](https://docs.vh3.ai/mcp) for searching these docs. For live operational data, use the [Agent Starter Kits](/agent-kits/overview) and [product MCP](/agent-kits/mcp-setup) — not the docs MCP.
+</Tip>
 
 VH3 AI is to field service what Cursor is to software development. Not a replacement. A harness.
 
@@ -17,21 +21,21 @@ VH3 AI is that infrastructure. It is not a reporting tool. It is not an FMS add-
 
 **Understands the domain.** Every record is mapped into a structured model of what actually happens in a field service operation: the jobs, the people, the sites, the outcomes, the relationships between them. The model does not change between integrations. Whether you run one FMS or several, the intelligence layer speaks one language and maintains one consistent picture of the business.
 
-**Connects structure and meaning.** Four complementary memory primitives work together underneath. Relational memory links every job to its engineer, site, customer, outcome, and history, traversable in any direction. Semantic memory indexes fault descriptions, job notes, and worksheet answers by meaning rather than keywords. Structured memory holds the enriched, classified record produced once at ingest and read by every downstream agent and report. Temporal memory watches continuously for emerging patterns and surfaces signals before anyone has to search for them. Any question that requires crossing more than one of these — and most real operational questions do — draws from all four. We built all four.
+**Connects structure and meaning.** Four complementary memory primitives work together underneath. Relational memory links every job to its engineer, site, customer, outcome, and history, traversable in any direction. Semantic memory indexes fault descriptions, job notes, and worksheet answers by meaning rather than keywords. Structured memory holds the enriched, classified record produced once at ingest and read by every downstream agent and report. Temporal memory watches continuously for emerging patterns and surfaces signals before anyone has to search for them. Any question that requires crossing more than one of these, and most real operational questions do, draws from all four. We built all four.
 
 **Learns continuously.** Data flows in and is enriched as it arrives. Entity resolution handles the messy reality of source data written by different people across different systems on different days. The intelligence compounds with every new record. You do not configure it once and wait. It keeps up with the operation as it runs.
 
-The result is a persistent, reliable, always-current picture of the business — context and understanding that every team, tool, and agent in the organisation can draw from simultaneously.
+The result is a persistent, reliable, always-current picture of the business, context and understanding that every team, tool, and agent in the organisation can draw from simultaneously.
 
 ## Why this architecture matters now
 
-The AI infrastructure market is running into a problem that anyone who has deployed agents at real scale will recognise. Agents built on classic retrieval — semantic search over raw records, answer from the closest chunks — work in a demo. They struggle when they need to do real operational work: cross-referencing history, synthesising patterns across hundreds of thousands of jobs, producing reliable answers under conditions the chatbot era was never designed for.
+The AI infrastructure market is running into a problem that anyone who has deployed agents at real scale will recognise. Agents built on classic retrieval, semantic search over raw records, answer from the closest chunks, work in a demo. They struggle when they need to do real operational work: cross-referencing history, synthesising patterns across hundreds of thousands of jobs, producing reliable answers under conditions the chatbot era was never designed for.
 
-We know this because we lived it. VH3 AI had production AI agents running against real operations by late 2024. Processing hundreds of thousands of jobs across multiple large clients made the limits of that approach visible in ways that a pilot never would. Over that period and into early 2025, it became clear that what field service agents actually need is not better retrieval — it is a different kind of memory altogether.
+We know this because we lived it. VH3 AI had production AI agents running against real operations by late 2024. Processing hundreds of thousands of jobs across multiple large clients made the limits of that approach visible in ways that a pilot never would. Over that period and into early 2025, it became clear that what field service agents actually need is not better retrieval, it is a different kind of memory altogether.
 
 Not search results. Operating context. Assembled, resolved, current, and scoped to the work at hand.
 
-That is what the intelligence layer provides. Four complementary memory primitives — relational, semantic, structured, and temporal — combined into a synthesis layer that agents read rather than query their way through. The market is converging on this diagnosis: Pinecone recently acknowledged that semantic search alone is not enough for production agents. SAP spent over a billion euros on structured data infrastructure. Microsoft and Google are both pushing graph-based retrieval. VH3 AI built this because we ran into the ceiling ourselves, at scale, before it had a name.
+That is what the intelligence layer provides. Four complementary memory primitives, relational, semantic, structured, and temporal, combined into a synthesis layer that agents read rather than query their way through. The market is converging on this diagnosis: Pinecone recently acknowledged that semantic search alone is not enough for production agents. SAP spent over a billion euros on structured data infrastructure. Microsoft and Google are both pushing graph-based retrieval. VH3 AI built this because we ran into the ceiling ourselves, at scale, before it had a name.
 
 [Read how the intelligence layer works →](/intelligence-layer)
 
@@ -47,9 +51,9 @@ To make building on top of this practical from day one, VH3 AI ships with authen
 
 Most AI tools in this market hide their costs. The vendor buys tokens from a model provider, marks them up, and buries the difference inside a seat fee or a platform fee. You never see the line item. You never know what you are actually paying for.
 
-We take a different position. AI consumption should be transparent, predictable, and proportional to what you actually use — the same way electricity or bandwidth works.
+We take a different position. AI consumption should be transparent, predictable, and proportional to what you actually use, the same way electricity or bandwidth works.
 
-The platform fee covers everything the intelligence layer does internally: enrichment, entity resolution, relationship mapping, continuous monitoring, goal and rules management, third-party system context, and all the AI built into the platform's own tooling. That is included. There are no per-seat licenses. Pricing is based on job volume and a small number of capability tiers — because the value of the platform scales with the operation, not with headcount.
+The platform fee covers everything the intelligence layer does internally: enrichment, entity resolution, relationship mapping, continuous monitoring, goal and rules management, third-party system context, and all the AI built into the platform's own tooling. That is included. There are no per-seat licenses. Pricing is based on job volume and a small number of capability tiers, because the value of the platform scales with the operation, not with headcount.
 
 The variable part is agentic consumption. When you use Connie or any of the AI agents, those calls pass through your own model provider key. You see the exact cost of every conversation. You choose which model to use. You change it whenever you want. No margin in the middle, no opaque bundle hiding the spend. We have a [pricing calculator](/pricing) that makes the full economics visible before you commit to anything.
 
@@ -69,7 +73,7 @@ The VH3 AI API is the single point of access to everything the intelligence laye
 
 <CardGroup cols={2}>
   <Card title="Hybrid Intelligence" icon="magnifying-glass">
-    Four memory primitives working together: graph traversal for relational questions, semantic search for meaning-based fault discovery, enriched structured records for every downstream consumer, and continuous temporal monitoring for emerging patterns. Operating context delivered to agents — not search results to query through.
+    Four memory primitives working together: graph traversal for relational questions, semantic search for meaning-based fault discovery, enriched structured records for every downstream consumer, and continuous temporal monitoring for emerging patterns. Operating context delivered to agents, not search results to query through.
   </Card>
   <Card title="Sentinels" icon="bell">
     Continuous monitoring for emerging risks and revenue opportunities. Performance slips, site deterioration, SLA patterns, dormant customers, growth signals. Pattern detection at the data layer with no AI cost.
@@ -92,16 +96,16 @@ The VH3 AI API is the single point of access to everything the intelligence laye
 
 <Steps>
   <Step title="Connect">
-    VH3 AI connects to your field service management platform via API. Historical data — typically two to three years — is imported on onboarding. Live data flows in continuously from that point.
+    VH3 AI connects to your field service management platform via API. Historical data, typically two to three years, is imported on onboarding. Live data flows in continuously from that point.
   </Step>
   <Step title="Enrich">
-    Every job passes through the AI enrichment pipeline once. Fault type, work performed, equipment involved, operational outcome — all extracted and structured. Relationships are resolved and linked to the right customer, site, and history, even when source data is inconsistent.
+    Every job passes through the AI enrichment pipeline once. Fault type, work performed, equipment involved, operational outcome, all extracted and structured. Relationships are resolved and linked to the right customer, site, and history, even when source data is inconsistent.
   </Step>
   <Step title="Connect and index">
-    Enriched records flow into all four memory primitives simultaneously. The knowledge graph links every entity relationally. The semantic index makes meaning-based fault discovery possible across millions of job notes. Structured records are compacted and ready for any downstream consumer. Temporal sentinels begin watching from the first record. Every query — relational, semantic, structured, or pattern-based — works against the same underlying data.
+    Enriched records flow into all four memory primitives simultaneously. The knowledge graph links every entity relationally. The semantic index makes meaning-based fault discovery possible across millions of job notes. Structured records are compacted and ready for any downstream consumer. Temporal sentinels begin watching from the first record. Every query, relational, semantic, structured, or pattern-based, works against the same underlying data.
   </Step>
   <Step title="Monitor">
-    Sentinels run continuously — the platform's always-on tap on the shoulder. They watch for performance slips, site deterioration, SLA patterns, dormant customers, overdue service intervals, and growth opportunities. When something needs attention, they surface it. No one has to think to look.
+    Sentinels run continuously, the platform's always-on tap on the shoulder. They watch for performance slips, site deterioration, SLA patterns, dormant customers, overdue service intervals, and growth opportunities. When something needs attention, they surface it. No one has to think to look.
   </Step>
   <Step title="Deliver">
     Eight report types, 13 operational sentinels, 6 growth opportunity sentinels, pre-visit briefings, and conversational answers all read from the same foundation. Choose the delivery surface that fits your team: API, automation, chat, scheduled email, Slack, or Teams.
@@ -112,7 +116,7 @@ The VH3 AI API is the single point of access to everything the intelligence laye
 
 Field service businesses lose institutional knowledge constantly. An engineer retires and takes thirty years of fault patterns with them. A contracts manager leaves and the context behind every difficult client relationship goes with them. A new joiner spends their first six months drinking from a fire hose, trying to piece together how the operation works from conversations, inboxes, and tribal memory.
 
-VH3 AI changes that equation. Because everything the business does flows into the intelligence layer — every job, every outcome, every pattern, every relationship — the knowledge does not live in anyone's head. It lives in the platform. It compounds over time. And it is available to everyone who needs it, at the moment they need it.
+VH3 AI changes that equation. Because everything the business does flows into the intelligence layer, every job, every outcome, every pattern, every relationship, the knowledge does not live in anyone's head. It lives in the platform. It compounds over time. And it is available to everyone who needs it, at the moment they need it.
 
 A new engineer gets a pre-visit briefing that includes every fault ever seen at that site, what fixed it, and who attended. A new ops manager can ask natural language questions about how the operation has run over the past three years and get cited, data-backed answers. Someone onboarding into an account management role can pull a full history of every customer relationship, communication pattern, and outstanding risk in minutes rather than months.
 
@@ -122,7 +126,7 @@ The platform supports onboarding, offboarding, and upskilling as first-class fun
 
 VH3 AI ingests and normalises data regardless of which FMS sits underneath. The intelligence layer speaks one language. The source system does not matter.
 
-**Live today:** BigChange — full ingestion, polling, discovery, enrichment, and entity resolution.
+**Live today:** BigChange, full ingestion, polling, discovery, enrichment, and entity resolution.
 
 **Roadmap:** Joblogic, Simpro, Jobber, Uptick, ServiceNow, Commusoft, and others. Multi-FMS ingestion into a single intelligence layer is supported for organisations running more than one system.
 
@@ -142,7 +146,7 @@ VH3 AI ingests and normalises data regardless of which FMS sits underneath. The 
     Learn how API keys and tenant scoping work.
   </Card>
   <Card title="Native Integrations" icon="plug" href="/native-integrations">
-    Connect accounting, CRM, email, storage, and communication tools — activated in a single step, no developer involvement.
+    Connect accounting, CRM, email, storage, and communication tools, activated in a single step, no developer involvement.
   </Card>
   <Card title="n8n Community Node" icon="webhook" href="/n8n-node">
     Install the node, browse available operations, and choose a hosting model.

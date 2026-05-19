@@ -1,11 +1,11 @@
 ---
 title: Cursor Rules
-description: Drop-in .cursor/rules/ files that make Cursor's code generation VH3-aware — correct field names, proper error handling, n8n workflow conventions
+description: Drop-in .cursor/rules/ files that make Cursor's code generation VH3-aware, correct field names, proper error handling, n8n workflow conventions
 ---
 
 # Cursor Rules
 
-Cursor reads `.cursor/rules/*.mdc` files automatically and applies them to chats based on the rule's scope. Unlike [AGENTS.md](/agent-kits/agents-md), which is conversational context, Cursor rules apply specifically to **code generation** — they shape what Cursor *writes*, not just what it *says*.
+Cursor reads `.cursor/rules/*.mdc` files automatically and applies them to chats based on the rule's scope. Unlike [AGENTS.md](/agent-kits/agents-md), which is conversational context, Cursor rules apply specifically to **code generation:** they shape what Cursor *writes*, not just what it *says*.
 
 Drop the three files below into `.cursor/rules/` and any code Cursor generates in that project will use the right parameter names, handle the right errors, and follow the VH3 API conventions.
 
@@ -13,7 +13,7 @@ Drop the three files below into `.cursor/rules/` and any code Cursor generates i
 **Use rules + AGENTS.md together.** AGENTS.md tells the agent which endpoint to call for which question. Cursor rules ensure the code it writes around those calls is correct.
 </Note>
 
-## File 1 — `vh3-api-domain.mdc` (always apply)
+## File 1: `vh3-api-domain.mdc` (always apply)
 
 This rule gives Cursor persistent VH3 vocabulary. It applies to every chat in the project.
 
@@ -25,7 +25,7 @@ description: VH3 AI API domain vocabulary, schemas, and field names. Always appl
 alwaysApply: true
 ---
 
-# VH3 AI — Domain Model
+# VH3 AI: Domain Model
 
 All code in this project integrates with the VH3 AI intelligence layer.
 Use these exact names and types when generating API calls, type
@@ -41,24 +41,24 @@ definitions, or data models.
 
 ## Entities
 
-- `Job` — id: `jobId` (int), external ref: `reference` (string, e.g. "FAB303178")
-- `Engineer` — id: `resourceId` (string), display: `name`
-- `Site` — id: `siteKey` (string), display: `siteAddress`
-- `Customer` — id: `contactId` (int), display: `name`
-- `JobGroup` — id: `jobGroupId` (int), groups related visits
-- `ParentCustomer` — id: name string (e.g. "Whitbread PLC")
+- `Job`, id: `jobId` (int), external ref: `reference` (string, e.g. "FAB303178")
+- `Engineer`, id: `resourceId` (string), display: `name`
+- `Site`, id: `siteKey` (string), display: `siteAddress`
+- `Customer`, id: `contactId` (int), display: `name`
+- `JobGroup`, id: `jobGroupId` (int), groups related visits
+- `ParentCustomer`, id: name string (e.g. "Whitbread PLC")
 
 ## Job key fields
 
 - `reference`, `jobId`, `companyId`
-- `status` — completedOk, completedWithIssues, inProgress, notStarted
-- `result` — "Job Complete", "Pricing required", "Parts required", "No access"
-- `vertical` — security | fire_life_safety | mep | building_fabric |
+- `status`, completedOk, completedWithIssues, inProgress, notStarted
+- `result`, "Job Complete", "Pricing required", "Parts required", "No access"
+- `vertical`, security | fire_life_safety | mep | building_fabric |
   utilities | soft_services | it_comms | other
 - Timing: `plannedStartAt`, `actualStartAt`, `startDeltaMins`, `endDeltaMins`
-- `processedOutcome` — long-form text, always truncate before display
+- `processedOutcome`, long-form text, always truncate before display
 
-## CRITICAL — never invent parameter names
+## CRITICAL: never invent parameter names
 
 Use exactly these names (camelCase, NOT snake_case for filter fields):
 
@@ -89,11 +89,11 @@ last_month, last_7_days, last_30_days, last_90_days.
 
 CompareTo: previous_period, same_period_last_week, same_period_last_month.
 
-## timeAxis — CRITICAL default
+## timeAxis: CRITICAL default
 
 Default `timeAxis = "actualStartAt"` for any retrospective question.
 Other values: actualEndAt (completions), plannedStartAt (forward-looking
-only — includes phantom jobs), createdAt (intake only), scheduledAt
+only, includes phantom jobs), createdAt (intake only), scheduledAt
 (dispatching).
 
 ## Error envelope
@@ -115,7 +115,7 @@ Never expose `companyId`, `jobId`, `resourceId`, `siteKey`, `contactId`,
 
 </CodeGroup>
 
-## File 2 — `vh3-api-calls.mdc` (TypeScript / JavaScript / Python)
+## File 2: `vh3-api-calls.mdc` (TypeScript / JavaScript / Python)
 
 This rule applies when writing API integration code in `.ts`, `.js`, or `.py` files.
 
@@ -123,16 +123,16 @@ This rule applies when writing API integration code in `.ts`, `.js`, or `.py` fi
 
 ````markdown .cursor/rules/vh3-api-calls.mdc
 ---
-description: VH3 API call patterns — auth, timeouts, retries, error handling
+description: VH3 API call patterns, auth, timeouts, retries, error handling
 globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.py"]
 alwaysApply: false
 ---
 
-# VH3 API — Code Patterns
+# VH3 API: Code Patterns
 
 When writing code that calls the VH3 API, follow these patterns.
 
-## Auth — always from env
+## Auth: always from env
 
 ```ts
 const VH3_BASE = "https://api.vh3connect.io/api:kP8T1CK7";
@@ -140,7 +140,7 @@ const VH3_COMPANY_ID = process.env.VH3_COMPANY_ID!;
 const VH3_API_KEY = process.env.VH3_API_KEY!;
 ```
 
-Throw a clear error if either is missing at module load — do not let
+Throw a clear error if either is missing at module load, do not let
 requests fail with 400 at runtime.
 
 ## Standard POST helper
@@ -181,14 +181,14 @@ The `/investigate` and `/reports/generate` endpoints with narrative have
 ## Retry policy
 
 Retry on 429, 502, 504 with exponential backoff (1s, 2s, 4s, max 3 attempts).
-Do NOT retry 400, 401, 404, 422 — they will not succeed.
+Do NOT retry 400, 401, 404, 422, they will not succeed.
 
 ## Pagination
 
 `/jobs/feed` is paginated. Use `page_size` (default 20, max 200) and
 `page_number`. Stop when returned array length < page_size.
 
-## Period helpers — never compute date ranges manually
+## Period helpers: never compute date ranges manually
 
 For `/aggregate/jobs`, use the `period` shorthand instead of computing
 startDate/endDate. The server handles ISO week boundaries, partial
@@ -202,12 +202,12 @@ periods, and timezone correctness.
 When generating types for API responses, mark optional fields as such
 (many endpoints return optional engineer/customer/site data). Use the
 OpenAPI spec at `https://api.vh3connect.io/openapi.json` as the source
-of truth — do not infer types from one example response.
+of truth, do not infer types from one example response.
 ````
 
 </CodeGroup>
 
-## File 3 — `vh3-n8n-workflows.mdc` (n8n workflows)
+## File 3: `vh3-n8n-workflows.mdc` (n8n workflows)
 
 For projects using [n8n-as-code](/n8n-node) to build VH3 workflows.
 
@@ -220,7 +220,7 @@ globs: ["**/*.workflow.ts"]
 alwaysApply: false
 ---
 
-# VH3 API — n8n Workflow Patterns
+# VH3 API: n8n Workflow Patterns
 
 When generating n8n nodes that call the VH3 API, follow these patterns.
 
@@ -230,7 +230,7 @@ Create an n8n credential called `vh3Api` with two fields: `companyId`
 and `apiKey`. Reference in nodes via `{{ $credentials.vh3Api.companyId }}`
 and `{{ $credentials.vh3Api.apiKey }}`. Never put these in node parameters.
 
-## HTTP Request node — VH3 POST pattern
+## HTTP Request node: VH3 POST pattern
 
 ```ts
 @node({
@@ -264,22 +264,21 @@ RunSentinels = {
 | New-job semantic context | POST /search/outcomes triggered by FMS webhook | webhook |
 | Weekly account report | POST /reports/generate (account_monthly) | Monday 09:00 |
 
-## AI Agent node — use VH3 as a tool
+## AI Agent node: use VH3 as a tool
 
-When wiring an AI Agent node, register VH3 endpoints as HTTP Request Tools.
-Always pass through `company_id` and `api_key` from credentials, and
-include a tool description that tells the model when to use it.
+When wiring an AI Agent node, connect the **VH3 AI Tool** sub-node from the
+community node (`n8n-nodes-vh3ai`). Tool names, parameters, and routing
+hints live on the tool definitions; do not duplicate them in the system prompt.
 
-See [n8n Agent Prompts](/agent-kits/n8n-agents) for ready-to-paste
-system prompts and tool descriptions.
+See [n8n Agent Prompts](/agent-kits/n8n-agents) for ready-to-paste system prompts.
 
 ## NEVER
 
 - ❌ Never hardcode `company_id` or `api_key` in workflow JSON
-- ❌ Never use the HTTP Request node's "raw body" mode — use parameters
+- ❌ Never use the HTTP Request node's "raw body" mode, use parameters
   so credentials show as `={{ $credentials... }}` not plaintext
 - ❌ Never set HTTP timeout < 20000ms for /investigate or /reports/generate
-- ❌ Never commit a workflow with a populated credential — push will reject
+- ❌ Never commit a workflow with a populated credential, push will reject
 ````
 
 </CodeGroup>
@@ -321,5 +320,5 @@ system prompts and tool descriptions.
 </CardGroup>
 
 <Warning>
-The `globs` field uses the project-relative pattern. If your integration code lives in a subdirectory (e.g. `apps/api/src/`), the patterns still match — Cursor walks the whole tree.
+The `globs` field uses the project-relative pattern. If your integration code lives in a subdirectory (e.g. `apps/api/src/`), the patterns still match, Cursor walks the whole tree.
 </Warning>

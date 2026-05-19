@@ -5,23 +5,23 @@ description: Per-user login and JWT session management for interactive applicati
 
 # User Authentication (JWT)
 
-These endpoints provide per-user login and JWT session management for **interactive applications** — custom front-ends, customer portals, and embedded tools where individual users need to sign in and maintain a session.
+These endpoints provide per-user login and JWT session management for **interactive applications:** custom front-ends, customer portals, and embedded tools where individual users need to sign in and maintain a session.
 
 **Base URL:** `https://api.vh3connect.io/api:lBQnyyZL`
 
 <Info>
-  Login requires only `email` and `password`. The user's tenant is resolved server-side. After login, every call uses `Authorization: Bearer <token>` — no API key is ever sent from the client.
+  Login requires only `email` and `password`. The user's tenant is resolved server-side. After login, every call uses `Authorization: Bearer <token>`, no API key is ever sent from the client.
 </Info>
 
 <Note>
-  Need to manage users from a back-end script or integration (no user session)? Use the [Users](/api-reference/users) endpoints on the main FSI API with `company_id` + `api_key`. Those endpoints are **server-side only** — the API key must never appear in client-side code.
+  Need to manage users from a back-end script or integration (no user session)? Use the [Users](/api-reference/users) endpoints on the main FSI API with `company_id` + `api_key`. Those endpoints are **server-side only:** the API key must never appear in client-side code.
 </Note>
 
 ---
 
 ## POST /auth/login
 
-Authenticate a user with email and password. Returns a JWT token valid for 24 hours. The user's tenant is resolved server-side from their account — no API key is required from the client.
+Authenticate a user with email and password. Returns a JWT token valid for 24 hours. The user's tenant is resolved server-side from their account, no API key is required from the client.
 
 **Request body:**
 
@@ -131,10 +131,10 @@ Invite a new user by email to the authenticated user's company. Returns an invit
 
 | Field | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
-| `email` | email | Yes | — | Email address to invite |
+| `email` | email | Yes | None | Email address to invite |
 | `role` | string | No | `standard` | Role to assign: `admin`, `manager`, `standard`, `engineer` |
-| `first_name` | string | No | — | First name of the invited user |
-| `last_name` | string | No | — | Last name of the invited user |
+| `first_name` | string | No | None | First name of the invited user |
+| `last_name` | string | No | None | Last name of the invited user |
 
 ```bash
 curl -X POST "https://api.vh3connect.io/api:lBQnyyZL/users/invite" \

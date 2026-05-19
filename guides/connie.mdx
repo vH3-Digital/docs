@@ -1,79 +1,194 @@
 ---
 title: Connie
-description: Getting the most from the conversational AI assistant
+description: VH3 AI's flagship operations agent with long-running context, evidenced answers, and efficient use of your intelligence layer
 ---
 
-# Connie Guide
+# Connie
 
-Connie is VH3 AI's conversational assistant — a natural language interface to your full operational record. She has access to the knowledge graph, semantic search, reports, and sentinel results, and responds with cited, data-backed answers.
+Connie is VH3 AI's flagship conversational agent: a field service operations specialist wired into your full intelligence layer. She is not a generic chatbot over exports. She reads the same enriched operational model as search, sentinels, reports, and automations, and she is built to run for real work: multi-turn reviews, account prep, diagnostics, and follow-through that depends on what was said five minutes ago.
+
+<Card title="Operational discovery" icon="magnifying-glass" href="/guides/operational-discovery">
+  Fast precedent search and entity resolution (no LLM). Connie calls these when she needs facts; she synthesises when you need narrative.
+</Card>
+
+<Card title="Why observability matters" icon="eye" href="/guides/agent-observability">
+  How to verify Connie's answers: tool outputs, citations, usage, and structured evidence.
+</Card>
+
+## Connie on the harness
+
+VH3 AI separates **discovery** from **synthesis**:
+
+| Layer | Role | Typical speed | LLM? |
+|-------|------|---------------|------|
+| **Discovery** | Search, autocomplete, feeds, customer knowledge sections | Sub-second | No |
+| **Synthesis** | Explain, compare, investigate, brief, recommend | Seconds | Yes (your key) |
+
+Connie lives in the synthesis layer, but she is disciplined about when to spend tokens. Simple greetings and meta questions can be answered without a full tool loop. Analytical questions trigger the right operational tools. Heavy diagnostic work routes to investigation flows that return structured evidence, not guesswork.
+
+That split is what makes the agent practical at scale: the expensive interpretation runs on **prepared** data (enriched once at ingest), not on re-reading raw field system exports every turn.
+
+## Long-running, continuous context
+
+Operations conversations are not one-shot Q&A. Connie is designed for sessions that unfold.
+
+**Session continuity.** Pass a stable `session_id` on every turn. The platform keeps conversation history for that session, scoped to your tenant, so follow-ups like "what about last month?" or "drill into the third site" stay grounded in the same thread.
+
+**Durable chat history.** When enabled, sessions can be restored across requests so users are not limited to a single browser tab or device lifetime.
+
+**Opening context on new sessions.** When you start a session with a customer in scope, the server can inject:
+
+- **Company operating context** (terminology, rules, and preferences your organisation configured).
+- **Customer Summary** plus **recent completed jobs** since that summary was generated, so turn one is not stale.
+
+You can still pass a `summary` from your app; the server enriches it when possible and reports how that block was built (see [Agent observability](/guides/agent-observability)).
+
+**Contact-scoped by default.** From a customer or job view, Connie defaults queries to that contact unless you ask a company-wide question. That matches how account managers and coordinators actually work.
+
+```json
+{
+  "company_id": "your-company-id",
+  "api_key": "your-api-key",
+  "message": "What recurring issues have we seen here in the last 90 days?",
+  "session_id": "account-review-acme-2025-03",
+  "contact_id": "12345",
+  "user_name": "Sarah"
+}
+```
+
+Follow-up in the same session:
+
+```json
+{
+  "company_id": "your-company-id",
+  "api_key": "your-api-key",
+  "message": "Which engineer has the best completion rate on those jobs?",
+  "session_id": "account-review-acme-2025-03",
+  "contact_id": "12345"
+}
+```
+
+## Memory that compounds, not amnesia
+
+Connie benefits from the same **operational memory** as the rest of the platform:
+
+- Jobs are **enriched once** (fault patterns, outcomes, links to customer, site, engineer, equipment).
+- **Customer Summary** knowledge is stored in modular sections and refreshed on schedule or when job drift thresholds are met.
+- **Tool outputs** from substantive calls in a session can be retained and recalled so she does not repeat expensive lookups when you revisit the same thread.
+
+This is not "the model learning weights overnight." It is **your organisation's intelligence layer getting richer** and Connie reading that layer on every turn, including what happened earlier in the session.
+
+## Efficient token use
+
+Connie is built for production economics (especially with [BYOK](/pricing)):
+
+- **Intent routing** classifies messages so lightweight turns do not always invoke the full agent and tool suite.
+- **Prompt caching** keeps stable instructions cacheable across tenants while per-request context stays separate.
+- **Truncated tool payloads** return compact, LLM-ready shapes from feeds, search, and aggregates so context windows are not filled with empty fields and nested noise.
+- **Discovery-first tools** (`search_outcomes`, `jobs_aggregate`, `job_feed`, autocomplete, customer summary sections) handle lookups without running narrative investigation unless the question requires it.
+
+Every chat response includes **usage** (`inputTokens`, `outputTokens`, `cacheReadTokens`, `cacheCreationTokens`) so you can see what a turn cost on your provider account.
+
+## Fully evidenced answers
+
+Connie is instructed to **cite job references and names**, never internal database IDs in user-facing text. Behind the narrative:
+
+- **Investigation** returns headline findings, ranked recommendations, confidence, and **evidence** tied to real job references.
+- **Search and feed tools** return graph-linked records, not orphaned text snippets.
+- **`toolCallOutputs`** on the API response exposes the structured JSON from each tool invocation in that turn, so your UI can render tables, charts, and drill-downs instead of trusting prose alone.
+
+If a tool fails, she is instructed to say so and offer another angle, not invent numbers.
+
+<Warning>
+Treat the assistant message as the summary, not the source of truth. Use `toolCallOutputs`, job references in the text, and your own drill-down into discovery endpoints to verify anything that affects commercial or safety decisions.
+</Warning>
 
 ## What Connie can do
 
-Connie can answer any question that the underlying data supports:
+Connie can answer any question the underlying data supports. Examples by shape of work:
 
-**Performance questions:**
+### Performance and trends
+
 - "Which engineers had the best first-time-fix rate this quarter?"
 - "How is Mike performing compared to last month?"
-- "Show me the top 5 engineers by SLA punctuality"
+- "Show me the top five engineers by SLA punctuality."
+- "How many jobs did we complete yesterday versus the same day last week?"
 
-**Site and customer questions:**
-- "What happened at the Manchester Tesco site last week?"
+### Sites and customers
+
+- "What happened at the Manchester site last week?"
 - "Which customers have the most repeat visits?"
-- "Give me the job history for site XYZ"
+- "Give me the job history for this account."
+- "How does this customer's failure rate compare to the company average?"
 
-**Diagnostic questions:**
+### Diagnostic and precedent
+
 - "Has anyone seen this fault before?" (with a description)
 - "What usually fixes a boiler intermittent lockout?"
-- "Find similar jobs to this one"
+- "Find similar jobs to this one."
+- "Why are roofing jobs running late?" (investigation-style synthesis)
 
-**Operational questions:**
-- "How many jobs did we complete yesterday?"
-- "What's our average response time this month?"
-- "Which areas have the heaviest workload right now?"
+### Operational actions (where enabled)
 
-## Session management
+Depending on your tenant and integrations, Connie can also drive **email drafts**, **notifications**, **briefings**, **account reports**, **presentations**, and lookups into connected systems (CRM, mail) through the same tool harness. See the [Connie API](/api-reference/connie) for endpoints and fields.
 
-Connie maintains conversation context within a session. Use a consistent `sessionId` to enable multi-turn conversations:
+## Specialist capabilities
 
-```json
-{
-  "companyId": "your-company-id",
-  "message": "Which sites had the most repeat visits last month?",
-  "sessionId": "ops-review-2024-11"
-}
-```
+Connie orchestrates **specialist delegates** for focused work (for example structured email generation, voice-oriented responses, and deeper analytical passes). You interact with one assistant; the platform routes complex sub-tasks without you managing multiple bots.
 
-Follow-up messages with the same `sessionId` will reference prior context:
-
-```json
-{
-  "companyId": "your-company-id",
-  "message": "What about the month before?",
-  "sessionId": "ops-review-2024-11"
-}
-```
+Voice is first-class: use [`POST /connie/chat/voice`](/api-reference/connie) or real-time voice integrations where deployed. Responses are tuned for spoken delivery while using the same operational tools underneath.
 
 ## Tips for effective questions
 
 <CardGroup cols={2}>
   <Card title="Be specific about time" icon="calendar">
-    "Last 30 days" is better than "recently." Connie infers date ranges when possible, but explicit is always better.
+    "Last 30 days" beats "recently." Connie infers ranges when she can, but explicit dates reduce ambiguity.
   </Card>
   <Card title="Name entities directly" icon="user">
-    Use engineer names, site names, or customer names when you know them. Connie resolves fuzzy matches but exact is faster.
+    Use engineer names, site addresses, or customer names when you know them. Autocomplete resolves fuzzy input; exact names are faster.
   </Card>
   <Card title="Ask follow-ups" icon="messages">
-    Connie maintains context. After getting a list, ask "Tell me more about the third one" or "What caused that?"
+    Keep the same `session_id`. After a list, ask "Tell me more about the third one" or "What caused that?"
   </Card>
-  <Card title="Request formats" icon="table">
-    Ask for tables, summaries, or comparisons. "Compare Mike and Sarah's performance this quarter" works.
+  <Card title="Request format" icon="table">
+    Ask for tables, comparisons, or bullet recommendations. "Compare Mike and Sarah this quarter" works well.
   </Card>
 </CardGroup>
 
-## Citations
+## Field service playbook
 
-Every Connie response includes citations back to the underlying records — job IDs, report sections, or graph nodes that the answer was derived from. This ensures transparency and verifiability.
+| You want | Example prompt | What Connie typically does |
+|----------|----------------|---------------------------|
+| Quick count | "How many completed jobs last week?" | Aggregation with sensible time axis |
+| Account prep | "Summarise risk for this customer" | Customer summary + recent jobs + synthesis |
+| Precedent | "Similar callouts for intermittent lockout" | Semantic search on outcomes or intake |
+| Root cause | "Why is SLA slipping in the North?" | Investigation with cited evidence |
+| Briefing | "What should the engineer know before tomorrow's visit?" | Job detail, weather, history, narrative |
 
-## Voice interface
+## Building with Connie
 
-Connie is also available via voice — use the `/connie/chat/voice` endpoint for voice-first integrations. The experience is identical; the input is simply a transcription rather than typed text.
+| Surface | Best for |
+|---------|----------|
+| **VH3 Connect** | Embedded ops UI with generative components from `toolCallOutputs` |
+| **API** | Custom portals, mobile, partner apps |
+| **MCP** | Claude Desktop, Cursor, coding agents ([MCP setup](/agent-kits/mcp-setup)) |
+| **n8n** | Slack or Teams assistants ([n8n Agent Prompts](/agent-kits/n8n-agents)) |
+
+Use [Agent observability](/guides/agent-observability) when you build UIs or compliance workflows that must show **why** an answer was given.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Connie API" icon="code" href="/api-reference/connie">
+    Request fields, sessions, voice, and history search.
+  </Card>
+  <Card title="Intelligence layer" icon="layer-group" href="/intelligence-layer">
+    Why relational, semantic, structured, and temporal memory matter.
+  </Card>
+  <Card title="Building on the layer" icon="hammer" href="/guides/building-on-the-layer">
+    Discovery vs synthesis for builders and integrators.
+  </Card>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Tenant keys, JWT for interactive apps, BYOK.
+  </Card>
+</CardGroup>

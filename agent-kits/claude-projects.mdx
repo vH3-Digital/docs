@@ -1,6 +1,6 @@
 ---
 title: Claude.ai Projects
-description: Project instructions for non-technical users — paste once into a Claude.ai Project and operations managers can query VH3 in plain English
+description: Project instructions for non-technical users, paste once into a Claude.ai Project and operations managers can query VH3 in plain English
 ---
 
 # Claude.ai Projects
@@ -8,7 +8,7 @@ description: Project instructions for non-technical users — paste once into a 
 For ops managers, account directors, and anyone who isn't writing code: this kit turns a [Claude.ai Project](https://claude.ai) into a VH3-fluent assistant. Paste the instructions once. After that, anyone on your team can ask questions in plain English and get cited, data-backed answers.
 
 <Note>
-**No code required.** This is the lowest-friction path to using VH3 from a chat interface. Built for the non-technical persona — engineers, operations managers, account managers.
+**No code required.** This is the lowest-friction path to using VH3 from a chat interface. Built for the non-technical persona, engineers, operations managers, account managers.
 </Note>
 
 ## Setup
@@ -34,7 +34,7 @@ For ops managers, account directors, and anyone who isn't writing code: this kit
 ## The project instructions
 
 <Tip>
-Copy the whole block. Do not edit the structure — the order of sections (identity → what you can ask → how I'll respond → boundaries) is how Claude reasons about its role.
+Copy the whole block. Do not edit the structure, the order of sections (identity → what you can ask → how I'll respond → boundaries) is how Claude reasons about its role.
 </Tip>
 
 ````markdown Project instructions
@@ -52,7 +52,7 @@ engineers, and sites in your responses. Never make up numbers.
 - company_id: {{YOUR_COMPANY_ID}}
 - api_key:    {{YOUR_API_KEY}}
 
-Pass these on every tool call automatically — the user should never have
+Pass these on every tool call automatically, the user should never have
 to provide them.
 
 ## What you can answer
@@ -65,7 +65,7 @@ Operational questions like:
 - "What's the backlog for [customer]?"
 - "Show me jobs at [site] over the last month"
 - "What happened with job [reference]?"
-- "Run the sentinels — what needs attention today?"
+- "Run the sentinels, what needs attention today?"
 - "Generate today's close-of-business report"
 - "Did weather affect the jobs at [site] yesterday?"
 - "Which sites have recurring faults?"
@@ -81,7 +81,7 @@ Operational questions like:
 4. **For comparisons, lead with the delta.** "Completions are up 12%
    this week (218 vs 195 last week)."
 5. **Flag partial periods.** If today is Wednesday and you're showing
-   "this week", say so — the numbers will increase.
+   "this week", say so, the numbers will increase.
 6. **End with a next step.** Offer to drill deeper, investigate
    root causes, or generate a fuller report.
 
@@ -90,9 +90,9 @@ Operational questions like:
 - ❌ Never expose internal database IDs (companyId, jobId, resourceId,
   siteKey, contactId). Use names and references.
 - ❌ Never dump raw JSON. Synthesise into prose, tables, or bullets.
-- ❌ Never guess numbers if a tool call fails — tell the user the lookup
+- ❌ Never guess numbers if a tool call fails, tell the user the lookup
   failed and offer to try a different angle.
-- ❌ Never default to "createdAt" for performance questions — use
+- ❌ Never default to "createdAt" for performance questions, use
   actualStartAt for real-activity questions.
 
 ## Tool selection guide
@@ -105,7 +105,7 @@ Operational questions like:
 | "What alerts / what needs attention" | sentinels_run |
 | "Generate report" | reports_generate |
 | "Weather for job / site" | weather_for_job / weather_for_site |
-| Ambiguous — could go either way | aggregate_jobs first, then offer investigate |
+| Ambiguous, could go either way | aggregate_jobs first, then offer investigate |
 
 ## Voice
 
@@ -116,7 +116,7 @@ answer. Use British English spellings.
 
 ## Example questions to paste first
 
-Once the project is set up, these are the questions to try first — they showcase the breadth of what's possible.
+Once the project is set up, these are the questions to try first, they showcase the breadth of what's possible.
 
 <AccordionGroup>
   <Accordion title="Performance and ranking">
@@ -127,7 +127,7 @@ Once the project is set up, these are the questions to try first — they showca
   <Accordion title="Diagnostic / root cause">
     - *"Why are drainage jobs taking longer than planned?"*
     - *"What's driving the increase in pricing-required outcomes for Whitbread sites?"*
-    - *"We've had three callouts at site [address] this quarter — what's going on?"*
+    - *"We've had three callouts at site [address] this quarter, what's going on?"*
   </Accordion>
   <Accordion title="Reports and briefings">
     - *"Generate today's start-of-day briefing."*
@@ -152,10 +152,10 @@ Here's the kind of response you should expect once the project is set up correct
 
 > **Roofing job delays are driven by three main factors: complex repairs requiring specialists, the need for structural surveys and pricing approvals, and adverse weather conditions.**
 >
-> Out of completed-with-issues roofing jobs in the last 90 days, **1,661** ended with "Pricing required" and **1,215** remain "Job ongoing" — the majority of non-completions are diagnostic visits that couldn't resolve the issue on-site.
+> Out of completed-with-issues roofing jobs in the last 90 days, **1,661** ended with "Pricing required" and **1,215** remain "Job ongoing", the majority of non-completions are diagnostic visits that couldn't resolve the issue on-site.
 >
 > **Key findings:**
-> - Over 1,600 roofing jobs end at the quoting stage because damage is too extensive to fix without approval — storm damage with 50+ broken slates (FAB303318), incorrectly lapped felt needing scaffolding (J305209), or failing cob walls requiring structural surveys (FAB303178).
+> - Over 1,600 roofing jobs end at the quoting stage because damage is too extensive to fix without approval, storm damage with 50+ broken slates (FAB303318), incorrectly lapped felt needing scaffolding (J305209), or failing cob walls requiring structural surveys (FAB303178).
 > - Weather is a recurring delay factor (FABQ307891 was stalled by adverse weather).
 > - Multi-trade complexity adds procurement and scheduling delays.
 >
@@ -172,13 +172,13 @@ Note: headline first, evidence cited with specific job refs, ranked recommendati
 
 <CardGroup cols={2}>
   <Card title="Share the project" icon="users">
-    Claude.ai Projects can be shared across your team. Everyone who joins inherits the instructions and the connected tools — no per-person setup.
+    Claude.ai Projects can be shared across your team. Everyone who joins inherits the instructions and the connected tools, no per-person setup.
   </Card>
   <Card title="Lock down credentials" icon="lock">
     Instead of pasting the API key into instructions, use the [MCP server config](/agent-kits/mcp-setup) with credentials in environment variables. Then the project instructions reference the tool, not the secret.
   </Card>
   <Card title="Train on your vocabulary" icon="graduation-cap">
-    Add a "Local vocabulary" section to the instructions — if your team calls verticals "Trades" or "Disciplines", tell the agent.
+    Add a "Local vocabulary" section to the instructions, if your team calls verticals "Trades" or "Disciplines", tell the agent.
   </Card>
   <Card title="Set defaults" icon="gear">
     If most questions are about one parent customer or one region, add defaults: "When no customer is specified, default to Whitbread PLC."
@@ -186,5 +186,5 @@ Note: headline first, evidence cited with specific job refs, ranked recommendati
 </CardGroup>
 
 <Note>
-For a more powerful setup, pair this project with [Connie](/api-reference/connie) — VH3's purpose-built conversational layer. Connie has all this routing intelligence built in, plus generative UI rendering. The Claude.ai project is for teams who prefer to stay in their existing AI chat tool.
+For a more powerful setup, pair this project with [Connie](/api-reference/connie), VH3's purpose-built conversational layer. Connie has all this routing intelligence built in, plus generative UI rendering. The Claude.ai project is for teams who prefer to stay in their existing AI chat tool.
 </Note>

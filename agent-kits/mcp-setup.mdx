@@ -1,13 +1,13 @@
 ---
 title: MCP Server
-description: Connect any MCP-compatible AI client — Claude Desktop, Cursor, custom agents — directly to the VH3 intelligence layer
+description: Connect any MCP-compatible AI client, Claude Desktop, Cursor, custom agents, directly to the VH3 intelligence layer
 ---
 
 # MCP Server
 
-The VH3 AI MCP server exposes the full intelligence layer as [Model Context Protocol](https://modelcontextprotocol.io) tools. Any MCP-compatible client — Claude Desktop, Cursor, a custom agent, or your own toolchain — can connect directly without building middleware.
+The VH3 AI MCP server exposes the full intelligence layer as [Model Context Protocol](https://modelcontextprotocol.io) tools. Any MCP-compatible client, Claude Desktop, Cursor, a custom agent, or your own toolchain, can connect directly without building middleware.
 
-Once connected, the client gets the same tools used by the Connie assistant: `investigate`, `aggregate_jobs`, `jobs_feed`, `run_sentinels`, `reports_generate`, `search_outcomes`, and more — with all credentials and routing handled server-side via JWT authentication.
+Once connected, the client gets the same tools used by the Connie assistant: `investigate`, `aggregate_jobs`, `jobs_feed`, `run_sentinels`, `reports_generate`, `search_outcomes`, and more, with all credentials and routing handled server-side via JWT authentication.
 
 ## Server details
 
@@ -53,7 +53,7 @@ Before connecting any client, you need a long-lived MCP token (valid for 90 days
   </Step>
 </Steps>
 
-## Quick start — Claude Desktop
+## Quick start: Claude Desktop
 
 Claude Desktop connects to the VH3 MCP server via SSE using the `mcp-remote` proxy (installed automatically via `npx`).
 
@@ -86,7 +86,7 @@ Claude Desktop connects to the VH3 MCP server via SSE using the `mcp-remote` pro
     Replace `YOUR_MCP_TOKEN` with the token you obtained in the previous step. See [Get your MCP token](#get-your-mcp-token) above.
   </Step>
   <Step title="Restart Claude Desktop">
-    Quit and reopen Claude Desktop. You should see a hammer icon in the chat input — click it to confirm all 19 VH3 tools are listed.
+    Quit and reopen Claude Desktop. You should see a hammer icon in the chat input, click it to confirm all 19 VH3 tools are listed.
   </Step>
   <Step title="Test with a query">
     Try: *"How many jobs did we complete last week, broken down by engineer?"*
@@ -96,10 +96,10 @@ Claude Desktop connects to the VH3 MCP server via SSE using the `mcp-remote` pro
 </Steps>
 
 <Note>
-The `mcp-remote` package handles the SSE transport and Bearer token header injection. It is fetched on first use via `npx -y` — no manual installation needed. Requires Node.js 18+.
+The `mcp-remote` package handles the SSE transport and Bearer token header injection. It is fetched on first use via `npx -y`, no manual installation needed. Requires Node.js 18+.
 </Note>
 
-## Quick start — Cursor
+## Quick start: Cursor
 
 Add the server to your Cursor MCP configuration. Go to **Cursor Settings > MCP** and add:
 
@@ -119,12 +119,12 @@ Add the server to your Cursor MCP configuration. Go to **Cursor Settings > MCP**
 ```
 
 <Note>
-Prefer using environment variables rather than inline tokens. Set `VH3_MCP_TOKEN` in your shell profile, then reference `Bearer $VH3_MCP_TOKEN` in the args array — or use [Cursor Rules](/agent-kits/cursor-rules) alongside the MCP connection to keep tokens out of config files.
+Prefer using environment variables rather than inline tokens. Set `VH3_MCP_TOKEN` in your shell profile, then reference `Bearer $VH3_MCP_TOKEN` in the args array, or use [Cursor Rules](/agent-kits/cursor-rules) alongside the MCP connection to keep tokens out of config files.
 </Note>
 
 ## Available tools
 
-Once connected, these tools are available in any MCP-compatible client. No `company_id` or `api_key` inputs are needed — credentials are resolved automatically from your JWT.
+Once connected, these tools are available in any MCP-compatible client. No `company_id` or `api_key` inputs are needed, credentials are resolved automatically from your JWT.
 
 ### FSI Intelligence
 
@@ -135,7 +135,7 @@ Once connected, these tools are available in any MCP-compatible client. No `comp
 | `search_outcomes` | Semantic search over job outcome text | < 2 s |
 | `search_autocomplete` | Fast typeahead across jobs, contacts, engineers, sites | < 1 s |
 | `contacts_feed` | Paginated contact list with free-text search | < 3 s |
-| `contact_detail` | Full contact detail with optional Weaviate summary | < 3 s |
+| `contact_detail` | Full contact detail with optional stored summary | < 3 s |
 | `weather_for_job` | Weather conditions for a job's location and time | < 2 s |
 | `company_snapshot` | Company profile and FSI platform health | < 2 s |
 | `reports_generate` | Operational reports (start_of_day, close_of_business, etc.) | 10–17 s |
@@ -174,7 +174,7 @@ The MCP server uses JWT Bearer token authentication. Tokens are obtained via the
 | **Token lifetime** | 90 days |
 | **Scope** | Automatically resolves your user, company, and API credentials |
 
-The JWT encodes your user identity. All tool calls are automatically scoped to your company — no `company_id` or `api_key` parameters are needed. Cross-tenant access is impossible.
+The JWT encodes your user identity. All tool calls are automatically scoped to your company, no `company_id` or `api_key` parameters are needed. Cross-tenant access is impossible.
 
 <Warning>
 Never commit your MCP token to source control. Use environment variables and reference them from your MCP client configuration.
@@ -248,7 +248,7 @@ When your agent receives a free-form question and needs to decide which tool to 
 | "invoices / billing / payments" | `list_invoices` or `get_invoice` |
 | Ambiguous / unclear | `aggregate_jobs` first, then offer `investigate` |
 
-For a full system prompt you can paste directly into your agent, see the [Claude.ai Projects](/agent-kits/claude-projects) and [n8n Agent Prompts](/agent-kits/n8n-agents) kits — both include routing logic optimised for agent use.
+For a full system prompt you can paste directly into your agent, see the [Claude.ai Projects](/agent-kits/claude-projects) and [n8n Agent Prompts](/agent-kits/n8n-agents) kits, both include routing logic optimised for agent use.
 
 ## Pairing with AGENTS.md
 
@@ -256,9 +256,9 @@ If you're using the MCP server inside a Cursor or Claude Code session, pair it w
 
 <CardGroup cols={2}>
   <Card title="MCP Server (this page)" icon="plug">
-    Handles *execution* — connects the client to the actual API, manages auth, returns real data.
+    Handles *execution*, connects the client to the actual API, manages auth, returns real data.
   </Card>
   <Card title="AGENTS.md" icon="robot">
-    Handles *reasoning* — tells the agent which tool to call, which parameters to pass, and how to present results.
+    Handles *reasoning*, tells the agent which tool to call, which parameters to pass, and how to present results.
   </Card>
 </CardGroup>

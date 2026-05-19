@@ -1,11 +1,11 @@
 ---
 title: Native Integrations
-description: Connect the tools your business already uses — no middleware, no developer involvement
+description: Connect the tools your business already uses, no middleware, no developer involvement
 ---
 
 # Native Integrations
 
-VH3 AI connects to the tools your business already runs on. Not through middleware, not through point-to-point custom code, and not through a workflow builder. Native integrations are activated directly inside the platform — each user connects their own accounts, or an admin connects shared accounts at the organisation level, and the intelligence layer immediately starts drawing from those sources.
+VH3 AI connects to the tools your business already runs on. Not through middleware, not through point-to-point custom code, and not through a workflow builder. Native integrations are activated directly inside the platform, each user connects their own accounts, or an admin connects shared accounts at the organisation level, and the intelligence layer immediately starts drawing from those sources.
 
 Every new connection makes the intelligence richer. The platform does not treat integrations as data pipes. It treats them as additional context that deepens the operational picture.
 
@@ -13,9 +13,9 @@ Every new connection makes the intelligence richer. The platform does not treat 
 
 Integrations in VH3 AI operate at two levels:
 
-**Per-user connections.** Each team member can authenticate their own accounts — personal Gmail, Google Drive, Outlook, calendar — so their individual context flows into the intelligence layer. Pre-visit briefings can pull from the email thread between that engineer and the client. Reports can reference documents in a personal Drive folder. The intelligence is scoped to what that user has connected, not a shared service account.
+**Per-user connections.** Each team member can authenticate their own accounts, personal Gmail, Google Drive, Outlook, calendar, so their individual context flows into the intelligence layer. Pre-visit briefings can pull from the email thread between that engineer and the client. Reports can reference documents in a personal Drive folder. The intelligence is scoped to what that user has connected, not a shared service account.
 
-**Organisation-level connections.** Shared tools — accounting platforms, CRM, project management, communication channels — are connected once by an admin and made available across the organisation. Xero connects once and real invoice and payment data starts flowing into financial reporting. Slack connects once and sentinel alerts start routing to the right channels automatically.
+**Organisation-level connections.** Shared tools, accounting platforms, CRM, project management, communication channels, are connected once by an admin and made available across the organisation. Xero connects once and real invoice and payment data starts flowing into financial reporting. Slack connects once and sentinel alerts start routing to the right channels automatically.
 
 Connections are activated with a single authentication step inside the platform. No API keys to manage. No developer involvement. No waiting on a roadmap.
 
@@ -73,11 +73,11 @@ Connections are activated with a single authentication step inside the platform.
 
 Every integration in VH3 AI handles its own authentication lifecycle automatically. OAuth tokens are issued, stored encrypted, and refreshed silently in the background. Users never see an expired connection. Credentials are never exposed to the application layer.
 
-**Per-user authentication** means each team member holds their own OAuth grant. When an engineer connects their Gmail account, that grant belongs to them. Their email threads are visible in their briefings. Nobody else sees their mail. When they leave the organisation, their connection is revoked and their credentials purged — no residual access, no manual cleanup required.
+**Per-user authentication** means each team member holds their own OAuth grant. When an engineer connects their Gmail account, that grant belongs to them. Their email threads are visible in their briefings. Nobody else sees their mail. When they leave the organisation, their connection is revoked and their credentials purged, no residual access, no manual cleanup required.
 
 **Organisation-level authentication** works the same way at the admin tier. A shared Slack workspace is connected once. A Xero account is authorised once. The token is maintained, refreshed, and monitored centrally. If a token expires or an auth flow fails, the platform surfaces it as an alert rather than letting downstream intelligence silently degrade.
 
-**Permission scoping** is built into every connection. The platform requests only the scopes it needs for the intelligence tasks it performs — read access to Drive documents does not become write access; calendar read does not become calendar write. Customers can review and audit the exact scopes in use for each integration from the Connections dashboard.
+**Permission scoping** is built into every connection. The platform requests only the scopes it needs for the intelligence tasks it performs, read access to Drive documents does not become write access; calendar read does not become calendar write. Customers can review and audit the exact scopes in use for each integration from the Connections dashboard.
 
 This means you can roll out integrations to a team of any size without managing OAuth infrastructure, without building token refresh logic, and without worrying about what happens when someone's Google password changes.
 
@@ -85,23 +85,23 @@ This means you can roll out integrations to a team of any size without managing 
 
 Connecting an integration is the start, not the end. VH3 AI maintains continuous, managed sync for every connected source so the intelligence layer stays current without manual intervention.
 
-**Backfill on connect.** When a new integration is connected, the platform immediately begins ingesting historical data — email history, document archives, CRM records — scoped to the period relevant to the intelligence layer. You do not start from a blank slate. The context that already exists in those tools is pulled in and linked to the operational graph.
+**Backfill on connect.** When a new integration is connected, the platform immediately begins ingesting historical data, email history, document archives, CRM records, scoped to the period relevant to the intelligence layer. You do not start from a blank slate. The context that already exists in those tools is pulled in and linked to the operational graph.
 
-**Ongoing sync.** After the initial backfill, changes in connected tools flow in continuously. A new invoice in Xero appears in financial reporting. A new document in Google Drive gets indexed and linked to the relevant site. A new Pipedrive deal gets connected to the associated customer in the knowledge graph. The sync frequency is managed by the platform — no polling configuration required.
+**Ongoing sync.** After the initial backfill, changes in connected tools flow in continuously. A new invoice in Xero appears in financial reporting. A new document in Google Drive gets indexed and linked to the relevant site. A new Pipedrive deal gets connected to the associated customer in the knowledge graph. The sync frequency is managed by the platform, no polling configuration required.
 
-**Bidirectional where it matters.** Some connections write back as well as read. Sentinel findings can create tasks in Asana or Jira. Case updates can push activity to a Pipedrive deal. Report outputs can be filed to a designated Google Drive folder. The intelligence layer does not just consume from connected tools — it can act through them.
+**Bidirectional where it matters.** Some connections write back as well as read. Sentinel findings can create tasks in Asana or Jira. Case updates can push activity to a Pipedrive deal. Report outputs can be filed to a designated Google Drive folder. The intelligence layer does not just consume from connected tools, it can act through them.
 
 **Sync health monitoring.** Every connected integration has a health status visible to admins. If a source goes offline, a rate limit is hit, or a schema change in a third-party API breaks a field mapping, the platform flags it. Sync failures do not silently corrupt the intelligence layer. They surface as actionable alerts.
 
 ## What each connection adds
 
-The integrations above are foundations, not endpoints. What they provide today is connectivity — data flowing in, messages flowing out. What they grow into is intelligence.
+The integrations above are foundations, not endpoints. What they provide today is connectivity, data flowing in, messages flowing out. What they grow into is intelligence.
 
-A Xero connection today syncs invoice records. As the intelligence layer builds context, it connects payment patterns to specific customers, engineers, and job types — so commercial performance and operational performance are read from the same picture.
+A Xero connection today syncs invoice records. As the intelligence layer builds context, it connects payment patterns to specific customers, engineers, and job types, so commercial performance and operational performance are read from the same picture.
 
-A Gmail connection today links email threads to jobs. Over time, it becomes part of the pre-visit briefing — "here is what was said in the last three emails with this facilities manager before the last visit."
+A Gmail connection today links email threads to jobs. Over time, it becomes part of the pre-visit briefing, "here is what was said in the last three emails with this facilities manager before the last visit."
 
-A Google Drive connection today makes documents searchable. It becomes the compliance layer — certificates, RAMS, site access instructions, and service reports linked to the right site and surfaced automatically when they are relevant.
+A Google Drive connection today makes documents searchable. It becomes the compliance layer, certificates, RAMS, site access instructions, and service reports linked to the right site and surfaced automatically when they are relevant.
 
 Every tool you connect makes the intelligence richer. Not another silo. The same operational brain, with wider reach.
 

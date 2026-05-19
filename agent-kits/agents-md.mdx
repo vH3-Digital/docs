@@ -1,16 +1,16 @@
 ---
 title: AGENTS.md
-description: A drop-in context file that makes AI coding agents (Cursor, Claude Code, GitHub Copilot) fluent in the VH3 API — correct endpoints, field names, and routing logic
+description: A drop-in context file that makes AI coding agents (Cursor, Claude Code, GitHub Copilot) fluent in the VH3 API, correct endpoints, field names, and routing logic
 ---
 
 # AGENTS.md
 
-`AGENTS.md` is a plain Markdown file placed at the root of your project. AI coding agents — Cursor, Claude Code, GitHub Copilot Chat, and others — read it automatically and use it as persistent context for the session. It tells the agent which endpoint to call for which question, which field names are correct, and how to behave when something goes wrong.
+`AGENTS.md` is a plain Markdown file placed at the root of your project. AI coding agents, Cursor, Claude Code, GitHub Copilot Chat, and others, read it automatically and use it as persistent context for the session. It tells the agent which endpoint to call for which question, which field names are correct, and how to behave when something goes wrong.
 
 Drop the file once. Every agent that touches the project gets it.
 
 <Note>
-**AGENTS.md is conversational context.** It guides the agent's *reasoning* — which tool to call, which parameter to use. For shaping generated *code*, pair it with [Cursor Rules](/agent-kits/cursor-rules), which apply at the code-generation level.
+**AGENTS.md is conversational context.** It guides the agent's *reasoning*, which tool to call, which parameter to use. For shaping generated *code*, pair it with [Cursor Rules](/agent-kits/cursor-rules), which apply at the code-generation level.
 </Note>
 
 ## The file
@@ -18,11 +18,11 @@ Drop the file once. Every agent that touches the project gets it.
 Copy this into `AGENTS.md` at your project root. Replace `{{YOUR_COMPANY_ID}}` and `{{YOUR_API_KEY}}` with your real credentials, or leave them as placeholders and pass them via environment variables.
 
 <Tip>
-Keep the section order. AI agents parse this top-to-bottom — identity and credentials first, routing second, field names third, boundaries last. Reordering degrades adherence.
+Keep the section order. AI agents parse this top-to-bottom, identity and credentials first, routing second, field names third, boundaries last. Reordering degrades adherence.
 </Tip>
 
 ````markdown AGENTS.md
-# VH3 AI — Field Service Intelligence
+# VH3 AI: Field Service Intelligence
 
 You have access to the VH3 AI intelligence layer for this project.
 Use the tools below to answer operational questions about jobs,
@@ -35,7 +35,7 @@ engineers, sites, customers, and outcomes.
 - api_key:    {{YOUR_API_KEY}}
 
 Pass both on every request. POST: in the JSON body. GET: as query params.
-NEVER hardcode credentials in generated code — read from environment
+NEVER hardcode credentials in generated code, read from environment
 variables `VH3_COMPANY_ID` and `VH3_API_KEY`.
 
 ## Tool routing
@@ -54,7 +54,7 @@ variables `VH3_COMPANY_ID` and `VH3_API_KEY`.
 When the question is ambiguous, default to `aggregate/jobs` first, then
 offer to run `investigate` if the user wants root-cause analysis.
 
-## Field names (CRITICAL — never invent these)
+## Field names (CRITICAL: never invent these)
 
 Entity IDs:
 - Job:             `jobId` (int), external ref: `reference` (string, e.g. "FAB303178")
@@ -73,17 +73,17 @@ Job status values: completedOk | completedWithIssues | inProgress | notStarted
 Job result examples: "Job Complete" | "Pricing required" | "Parts required" | "No access"
 Verticals: security | fire_life_safety | mep | building_fabric | utilities | soft_services | it_comms | other
 
-## timeAxis — CRITICAL default
+## timeAxis: CRITICAL default
 
 Default `timeAxis = "actualStartAt"` for retrospective performance questions.
-- `actualEndAt` — use for completion / throughput questions
-- `plannedStartAt` — ONLY for forward-looking scheduling (includes phantom jobs)
-- `createdAt` — ONLY for intake / demand volume questions
+- `actualEndAt`, use for completion / throughput questions
+- `plannedStartAt`, ONLY for forward-looking scheduling (includes phantom jobs)
+- `createdAt`, ONLY for intake / demand volume questions
 
 Both `createdAt` and `plannedStartAt` include jobs that were never worked
 (phantom bookings). NEVER use them for performance or completion rate questions.
 
-## aggregate/jobs — allowed metrics
+## aggregate/jobs: allowed metrics
 
 job_count | completion_rate | first_visit_fix_rate |
 avg_start_delta_mins | avg_end_delta_mins
@@ -109,7 +109,7 @@ compareTo: previous_period | same_period_last_week | same_period_last_month
 
 Default 5s timeouts WILL fail on /investigate and /reports/generate.
 
-## Identity rules — NEVER expose internal IDs
+## Identity rules: NEVER expose internal IDs
 
 Do not return companyId, jobId, resourceId, siteKey, contactId, typeId,
 or categoryId in user-facing output. Use:
@@ -130,7 +130,7 @@ Not retryable: 400, 401, 404, 422
 
 - ❌ Never use snake_case field names in POST bodies for v2 endpoints
 - ❌ Never use `createdAt` as timeAxis for performance questions
-- ❌ Never call /investigate for a simple count question — it's expensive
+- ❌ Never call /investigate for a simple count question, it's expensive
 - ❌ Never expose internal IDs in responses
 - ❌ Never hardcode company_id or api_key in generated code
 ````
@@ -154,10 +154,10 @@ AGENTS.md handles routing and reasoning. [Cursor Rules](/agent-kits/cursor-rules
 
 <CardGroup cols={2}>
   <Card title="AGENTS.md (this file)" icon="robot">
-    *"Which endpoint should I call for this question?"* — routing, defaults, field names, error handling patterns.
+    *"Which endpoint should I call for this question?"*, routing, defaults, field names, error handling patterns.
   </Card>
   <Card title="Cursor Rules (.mdc)" icon="code">
-    *"What code should I generate?"* — TypeScript helpers, retry logic, timeout values, n8n node configurations.
+    *"What code should I generate?"*, TypeScript helpers, retry logic, timeout values, n8n node configurations.
   </Card>
 </CardGroup>
 
@@ -169,4 +169,4 @@ The AGENTS.md above tracks the current API version. When you upgrade or add endp
 2. Add any new field names or status values to the relevant sections.
 3. Update timeout guidance if the endpoint has a different latency profile.
 
-You do not need to regenerate the whole file — AI agents handle incremental updates well as long as the section structure stays consistent.
+You do not need to regenerate the whole file, AI agents handle incremental updates well as long as the section structure stays consistent.

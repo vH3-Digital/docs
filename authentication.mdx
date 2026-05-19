@@ -1,14 +1,22 @@
 ---
 title: Authentication
-description: How to authenticate with the VH3 AI API — tenant credentials for server-to-server, and per-user JWT for interactive applications
+description: How to authenticate with the VH3 AI API, tenant credentials for server-to-server, and per-user JWT for interactive applications
 ---
 
 # Authentication
 
+<Visibility for="agents">
+**API auth (server-to-server):** pass `company_id` and `api_key` on every data API request. POST: JSON body. GET: query parameters. Base host: `https://api.vh3connect.io`. Never hardcode credentials in generated code — use `VH3_COMPANY_ID` and `VH3_API_KEY` environment variables.
+
+**Interactive apps:** use User Auth JWT only (`Authorization: Bearer`). Never send `api_key` from browser or mobile client code. Tenant is resolved server-side after login.
+
+**Docs vs live data:** this page describes API authentication. To search *documentation*, use `https://docs.vh3.ai/mcp` or `https://docs.vh3.ai/llms.txt` — not the VH3 product MCP.
+</Visibility>
+
 VH3 AI supports two authentication models depending on your use case:
 
-1. **API Authentication** — `company_id` + `api_key` on every request, for server-to-server integrations and API calls
-2. **User Authentication** — per-user login returning a JWT, for interactive applications and custom front-ends
+1. **API Authentication:** `company_id` + `api_key` on every request, for server-to-server integrations and API calls
+2. **User Authentication:** per-user login returning a JWT, for interactive applications and custom front-ends
 
 ## Base URL
 
@@ -24,10 +32,14 @@ All VH3 AI data endpoints require two credentials on every request: your **compa
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `company_id` | string | Your tenant identifier — identifies your organisation |
-| `api_key` | string | Your tenant API key — authenticates the request |
+| `company_id` | string | Your tenant identifier, identifies your organisation |
+| `api_key` | string | Your tenant API key, authenticates the request |
 
 These are passed on every request. For `POST` endpoints, they go in the JSON body. For `GET` endpoints, they go as query parameters.
+
+<Visibility for="agents">
+Required on every VH3 data endpoint unless using Bearer JWT on User Auth–scoped routes. Missing either field returns HTTP 400 with `Missing param`.
+</Visibility>
 
 ### POST example (most endpoints)
 
@@ -59,7 +71,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
 
 ## User Authentication
 
-For interactive applications — custom dashboards, customer portals, embedded tools — VH3 provides per-user authentication with JWT tokens. Users log in with email and password only. The tenant is resolved server-side from their account. After login, every call from the client uses the JWT — no API key is ever involved in client-side code.
+For interactive applications, custom dashboards, customer portals, embedded tools, VH3 provides per-user authentication with JWT tokens. Users log in with email and password only. The tenant is resolved server-side from their account. After login, every call from the client uses the JWT, no API key is ever involved in client-side code.
 
 ### How it works
 
@@ -71,7 +83,7 @@ sequenceDiagram
 
     App->>Auth: POST /auth/login (email, password)
     Auth-->>App: { authToken: "eyJ..." }
-    Note over App: Tenant resolved server-side — JWT used for everything
+    Note over App: Tenant resolved server-side, JWT used for everything
     App->>Auth: GET /auth/me (Authorization: Bearer token)
     Auth-->>App: { id, first_name, last_name, email, role, ... }
     App->>API: POST /connie/chat (Authorization: Bearer token)
@@ -80,7 +92,7 @@ sequenceDiagram
 
 ### Login
 
-Authenticate a user with email and password. The user's tenant is resolved server-side — no API key is required from the client.
+Authenticate a user with email and password. The user's tenant is resolved server-side, no API key is required from the client.
 
 ```bash
 curl -X POST "https://api.vh3connect.io/api:lBQnyyZL/auth/login" \
@@ -99,7 +111,7 @@ curl -X POST "https://api.vh3connect.io/api:lBQnyyZL/auth/login" \
 }
 ```
 
-Store the `authToken` in your application (e.g. `httpOnly` cookie in production). All subsequent requests use `Authorization: Bearer <token>` — no API key is ever sent from the client.
+Store the `authToken` in your application (e.g. `httpOnly` cookie in production). All subsequent requests use `Authorization: Bearer <token>`, no API key is ever sent from the client.
 
 ### Token refresh
 
@@ -153,7 +165,7 @@ JWT tokens issued by the User Auth API:
 | Claim | Description |
 |-------|-------------|
 | `id` | User ID (integer) |
-| `company` | Company ID (UUID) — the tenant the user belongs to |
+| `company` | Company ID (UUID), the tenant the user belongs to |
 | `iss` | Token issuer |
 | `exp` | Expiry timestamp (24 hours from issue) |
 
@@ -184,11 +196,11 @@ VH3 provides two ways to manage users depending on your integration type:
 
 | Use case | Endpoint set | Auth |
 |----------|-------------|------|
-| **Back-end / server-to-server** — cron jobs, admin scripts, integrations | [`GET /users/list`, `POST /users/invite`, `PUT /users/{id}/role`, `DELETE /users/{id}`](/api-reference/users) on `api:kP8T1CK7` | `company_id` + `api_key` (server-side only — never sent from a browser) |
-| **Interactive front-end** — custom dashboards, portals, embedded tools | [`POST /users/invite`, `GET /users/list`, `DELETE /users/{id}`](/api-reference/user-auth) on `api:lBQnyyZL` | Bearer JWT — no API key in client code |
+| **Back-end / server-to-server:** cron jobs, admin scripts, integrations | [`GET /users/list`, `POST /users/invite`, `PUT /users/{id}/role`, `DELETE /users/{id}`](/api-reference/users) on `api:kP8T1CK7` | `company_id` + `api_key` (server-side only, never sent from a browser) |
+| **Interactive front-end:** custom dashboards, portals, embedded tools | [`POST /users/invite`, `GET /users/list`, `DELETE /users/{id}`](/api-reference/user-auth) on `api:lBQnyyZL` | Bearer JWT, no API key in client code |
 
 <Warning>
-  Never call the `api:kP8T1CK7` user management endpoints from a browser or mobile app — doing so exposes your API key in client-side code. Use the JWT-authenticated equivalents on `api:lBQnyyZL` instead.
+  Never call the `api:kP8T1CK7` user management endpoints from a browser or mobile app, doing so exposes your API key in client-side code. Use the JWT-authenticated equivalents on `api:lBQnyyZL` instead.
 </Warning>
 
 The section below covers the JWT-based variants for interactive applications. For the server-side `company_id` + `api_key` variants, see the [Users API reference](/api-reference/users).
@@ -282,7 +294,7 @@ curl -X DELETE "https://api.vh3connect.io/api:lBQnyyZL/users/42" \
 
 | Role | Permissions |
 |------|-------------|
-| `admin` | Full access — can invite, list, and delete users |
+| `admin` | Full access, can invite, list, and delete users |
 | `developer` | Same as admin |
 | `manager` | Standard data access, no user management |
 | `standard` | Standard data access, no user management |
@@ -294,8 +306,8 @@ curl -X DELETE "https://api.vh3connect.io/api:lBQnyyZL/users/42" \
 
 During onboarding you receive:
 
-- **Company ID** — your unique tenant identifier
-- **API Key** — your tenant authentication key
+- **Company ID:** your unique tenant identifier
+- **API Key:** your tenant authentication key
 
 Both are provided by your account manager or visible in your VH3 Connect dashboard settings.
 
@@ -315,22 +327,28 @@ All errors follow a consistent format:
 
 | Status code | Meaning |
 |-------------|---------|
-| `400` | Bad request — missing or invalid parameters |
-| `401` | Unauthorised — invalid API key or expired token |
-| `403` | Forbidden — insufficient role permissions |
-| `404` | Not found — resource does not exist for your tenant |
-| `409` | Conflict — a task is already running for this resource |
-| `422` | Validation error — request understood but semantically invalid |
-| `429` | Rate limited — too many requests |
-| `500` | Server error — contact support |
+| `400` | Bad request, missing or invalid parameters |
+| `401` | Unauthorised, invalid API key or expired token |
+| `403` | Forbidden, insufficient role permissions |
+| `404` | Not found, resource does not exist for your tenant |
+| `409` | Conflict, a task is already running for this resource |
+| `422` | Validation error, request understood but semantically invalid |
+| `429` | Rate limited, too many requests |
+| `500` | Server error, contact support |
 
 ## Security
 
+<Visibility for="agents">
+- HTTPS only. Rotate API keys via account manager; do not log or echo keys in tool output.
+- JWT `exp` is 24h; refresh before expiry. Claims: `id` (user), `company` (tenant UUID).
+- Server-side user management: `api:kP8T1CK7` + `company_id`/`api_key`. Client-side user management: `api:lBQnyyZL` + Bearer only.
+</Visibility>
+
 <Info>
-  Your API key is tenant-scoped and grants access to your organisation's data only. Treat it like a password — store it in server-side environment variables only. **Never include it in client-side code, browser bundles, or mobile apps.** For interactive front-ends, use [User Authentication (JWT)](/api-reference/user-auth) — users log in with email and password only, and the API key is never involved.
+  Your API key is tenant-scoped and grants access to your organisation's data only. Treat it like a password, store it in server-side environment variables only. **Never include it in client-side code, browser bundles, or mobile apps.** For interactive front-ends, use [User Authentication (JWT)](/api-reference/user-auth), users log in with email and password only, and the API key is never involved.
 </Info>
 
 - All requests must use HTTPS
 - API keys can be rotated on request via your account manager
-- JWT tokens expire after 24 hours — use the refresh endpoint to obtain a new token before expiry
-- Store JWT tokens securely — use `httpOnly` cookies in production, or `localStorage` only for development
+- JWT tokens expire after 24 hours, use the refresh endpoint to obtain a new token before expiry
+- Store JWT tokens securely, use `httpOnly` cookies in production, or `localStorage` only for development
