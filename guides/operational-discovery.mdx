@@ -1,0 +1,271 @@
+---
+title: Operational discovery
+description: Search, precedent ranking, entity resolution, and customer intelligence on your operational model
+---
+
+# Operational discovery
+
+For years, people said every business is a technology business. Now every business is a software business. Field service is no exception: the value is in the jobs, the relationships, and the decisions made in the van and on the phone. VH3 AI turns that history into **operational memory** your teams and agents can query, automate, and build on.
+
+The gap is rarely missing data. It is missing **infrastructure** that connects records, resolves them to the right customer, and makes precedents retrievable in the moment someone needs them.
+
+VH3 AI provides that infrastructure: a dedicated operational model scoped to your organisation. Discovery on that model is built for speed and repeatability. It is not a large language model call. Typical discovery requests complete in under a second. Interpretation and narrative sit in agents such as Connie, reports, and investigations, which read the same prepared substrate.
+
+<Card title="Before you search" icon="layer-group" href="/intelligence-layer">
+  How relational, semantic, structured, and temporal memory combine into one operational picture.
+</Card>
+
+## Why discovery is different from chat on exports
+
+Most teams have tried one of these:
+
+- Keyword search in the field management system (exact words, ten ways to describe the same fault, no match).
+- A generic AI chat over exported spreadsheets (similar text, no thread, no customer context, no durable model).
+
+Neither gives you operational memory: precedents linked to the customer, the place, the engineer, and the outcome, available to every tool and automation.
+
+VH3 AI separates two jobs:
+
+| Layer | What it does | Typical speed | Uses an LLM? |
+|-------|----------------|---------------|--------------|
+| **Discovery** | Find similar jobs, resolve entities, rank precedents, scope by customer | Sub-second | No |
+| **Synthesis** | Explain, brief, investigate, narrate, recommend next steps | Seconds | Yes (your key, your model) |
+
+That split is deliberate. Discovery should be fast, cheap, and dependable enough to embed in dispatch screens, automations, and pre-visit flows. Synthesis should run only when someone needs a composed answer.
+
+<Note>
+Your enriched operational model belongs to your organisation. It is isolated per tenant, exportable, and intended to outlive any single field system or UI. Discovery and agents both read from that model, not from a vendor-owned black box.
+</Note>
+
+## The contact-centred operational model
+
+Everything in the intelligence layer resolves around the **customer (contact)**. A retail chain, a housing block, and a single-site café are contacts in your model. **Places** are addresses and locations linked to that contact: where work happened, described in language your teams already use.
+
+Records stay connected so jobs, outcomes, engineers, and places align even when source systems spell names differently. In documentation and customer-facing apps, prefer:
+
+- **Customer / contact** (`contact_id`) for scoping
+- **Place** (address, postcode) for human-readable context
+- **Engineer** (`resource_id`) when filtering by who attended
+
+Do not expose internal linkage identifiers in end-user interfaces.
+
+<Tip>
+When scoping search, start from the customer wherever possible. "Everything we have done for this account" maps cleanly to `contact_id` filters on discovery endpoints.
+</Tip>
+
+## Four discovery capabilities (one substrate)
+
+Discovery is not a single search box. It is four complementary capabilities on the same enriched data.
+
+### 1. Precedent discovery (meaning plus keywords)
+
+Find jobs that **resemble** a fault or outcome, even when nobody used the same words twice.
+
+**Field service intuition:** A call handler types "combi losing flame after fan runs." The platform surfaces jobs described as "intermittent heat," "boiler lockout," or "CH unit tripping," because matching combines **meaning and terminology**, not keywords alone.
+
+**Best for:** First-time fix support, pre-visit research, technical precedent across the operation.
+
+| Endpoint | Searches | When to use |
+|----------|----------|-------------|
+| `POST /search/outcomes` | Enriched outcomes (what was found and done) | "How was this fixed before?" |
+| `POST /search/intake` | Original fault descriptions | "What was reported?" |
+| `POST /search/intake/enriched` | Intake plus connected context per hit | When you need the thread, not just the snippet |
+| `POST /search/summary-sections` | Customer knowledge sections (see below) | Account themes, risk, equipment patterns |
+
+### 2. Entity resolution (finding the right record)
+
+Resolve **customers, people, engineers, and jobs** when names are misspelled, abbreviated, or inconsistent across systems.
+
+**Field service intuition:** Dispatch hears "Pure Gym Manchester" while the CRM says "PureGym Ltd." Resolution matches **sound-alike and look-alike** names, postcodes, partial emails, and references so the right contact is selected before anyone runs a broader search.
+
+**Best for:** Call handling, email triage, automations that must attach work to the correct account.
+
+**Primary endpoint:** `GET /search/autocomplete`
+
+This path uses **multi-strategy entity resolution**: phonetic and fuzzy text matching, postcode normalisation, email and reference lookups, and cross-checks against the operational graph. Strategies combine heuristically; you receive a ranked candidate list.
+
+Inbound email and portal traffic uses the same resolution philosophy: extracted names and addresses are matched back to **contacts** in your model so new work lands on the right account.
+
+### 3. Connected results (structure, not isolated text)
+
+A useful precedent is never just a paragraph. It is a **job** tied to a **customer**, a **place**, an **engineer**, and an **outcome**.
+
+Enriched search responses attach that context so briefings, cases, and Connie do not rebuild relationships on every request. That is why discovery on VH3 AI is closer to operational memory than to document retrieval.
+
+**Field service example (connected intelligence):**
+
+> "Show me every job Engineer Patel completed for Tesco in the last twelve months, and how each one went."
+
+That question is relational and structured. Aggregations and Connie handle the traversal; discovery endpoints help when you start from **language** ("repeat fire panel faults at Tesco stores") and then narrow by `contact_id` and date range.
+
+### 4. Continuous signals (temporal memory)
+
+Not every insight should wait for a search.
+
+**Sentinels** evaluate patterns on the graph continuously: performance slips, repeat visits, dormant accounts, overdue rhythms, engineer-flagged follow-ups. Detection is a **structured read** at the data layer (no LLM cost at detection time).
+
+**Agents pick up from there.** Connie, automations, or case workflows consume sentinel output, run discovery for precedents, and open **cases** for human follow-through. Search finds what happened before; sentinels flag what is changing now.
+
+## Customer knowledge base (modular, searchable, kept current)
+
+Each customer can have a **Customer Summary**: a structured knowledge object stored in the intelligence layer, not only in a PDF or a one-off chat.
+
+The summary is split into **seven independent sections**, each indexed for discovery on its own:
+
+| Section key | Typical content |
+|-------------|-----------------|
+| `customer_overview` | Account context, locations, primary service needs |
+| `job_history_patterns` | Job types, frequency, reactive vs planned balance |
+| `systems_equipment` | On-site systems, makes and models |
+| `key_analyses` | Recurring issues, root causes, maintenance themes |
+| `operational_performance` | Engineer performance, punctuality, scheduling |
+| `communication_summary` | Contacts, access issues, escalation patterns |
+| `risk_opportunity` | Risks, opportunities, quick wins vs strategic actions |
+
+<Note>
+Each section has its own searchable index. You can query **one dimension** (for example equipment profiles only) or search across all sections. Results are ranked and scored like job precedent search, without invoking an LLM.
+</Note>
+
+**Keeping summaries current**
+
+- Summaries are generated from the operational graph and enriched jobs, then stored for reuse.
+- **Incremental refresh** updates accounts when job volume or age thresholds indicate drift, so Connie and APIs do not rely on stale narratives.
+- When Connie opens a conversation, the platform can inject the stored summary **plus** a compact list of jobs completed since the summary was generated, so the picture stays current without regenerating the full report every time.
+
+**API paths**
+
+| Action | Endpoint |
+|--------|----------|
+| Search sections by meaning | `POST /search/summary-sections` (optional section key filter) |
+| Fetch full summary for one contact | `GET /search/summary-sections/by-contact/{company_id}/{contact_id}` |
+| Regenerate or refresh the knowledge base | `POST /backfill/summary-kb` (async; see API reference) |
+
+<Tip>
+Use section-scoped search for portfolio questions: "Which accounts mention recurring boiler issues in risk sections?" Use the by-contact GET when you need the full account brief in one call.
+</Tip>
+
+## Ranking and similarity (without exposing the engine)
+
+Job similarity and result ordering use **hybrid ranking**: signals from meaning-based matching and exact-term matching are fused into one ordered list. You do not maintain synonym lists or search dictionaries. Narrative text is indexed once at ingest and ranked against the same representation at query time.
+
+<Note>
+We do not publish internal fusion weights, index schemas, or enrichment prompts. Reliability comes from the operational model (resolved entities, structured outcomes, graph links), not from a one-off embedding trick.
+</Note>
+
+What you can rely on in product terms:
+
+- **Precedent quality** improves as history grows and entities resolve more cleanly.
+- **Exact references** (asset tags, model numbers, product codes) still rank strongly when they appear in worksheets.
+- **Scoping** (customer, date range, job type, engineer) sharpens results more than clever query wording alone.
+
+## Field service query playbook
+
+Write queries the way you would brief a colleague. Then scope to the customer or date range when you know them.
+
+### Call handler / dispatcher
+
+| Situation | Example query | Endpoint |
+|-----------|---------------|----------|
+| New callout, need precedents | `intermittent heating loss unit not maintaining temperature` | `/search/outcomes` |
+| Only original wording matters | `tenant reported no hot water since yesterday` | `/search/intake` |
+| Wrong customer name on phone | Resolve "Smith Security" / "Smyth Alarms" | `/search/autocomplete` |
+
+### Engineer (pre-visit)
+
+| Situation | Example query | Scoping |
+|-----------|---------------|---------|
+| Same account as last month | `repeat fault fire alarm panel isolate` | Filter by `contact_id` |
+| Unfamiliar kit on worksheet | `CCURE 9000 access controller fault` | Outcomes search; exact kit names help the keyword leg |
+
+### Operations manager
+
+| Situation | Example query | What to combine |
+|-----------|---------------|-----------------|
+| Pattern across an account | `escalating repeat attendance same equipment` | Outcomes search + sentinel digest |
+| Account review prep | `HVAC performance decline` | `/search/summary-sections` + account monthly report |
+
+### Commercial / account manager
+
+| Situation | Example query | What to combine |
+|-----------|---------------|-----------------|
+| Evidence for QBR | `SLA punctuality and repeat visits` | Summary sections + account monthly report |
+| Quiet account | (no search required) | Dormant-customer sentinel, then Connie for narrative |
+
+## Scoping search in the API
+
+Combine natural language with structured filters. Use **snake_case** field names as in the API reference.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query_text": "water leak from ceiling void",
+    "limit": 10,
+    "contact_id": "your-contact-id"
+  }'
+```
+
+<Tip>
+Broad fault language finds precedents across the operation. Tight filters (customer, date range, job type) turn precedents into account-specific or place-specific context.
+</Tip>
+
+## When discovery ends and synthesis begins
+
+| You need | Use |
+|----------|-----|
+| A ranked list of similar past jobs | `POST /search/outcomes` or `/search/intake/enriched` |
+| To resolve a misspelled customer or person | `GET /search/autocomplete` |
+| Themes across account knowledge sections | `POST /search/summary-sections` |
+| A cited narrative, comparison, or "why" | Connie (`POST /connie/chat`) or `POST /investigate` |
+| What changed this week without asking | `POST /sentinels/run` |
+| Structured follow-through | Cases API (escalations, complaints, multi-step work) |
+
+<Note>
+`/investigate` and Connie with tools are synthesis paths (multi-step, higher latency). Set client timeouts accordingly (see Agent Starter Kits). Discovery endpoints are the fast first hop.
+</Note>
+
+## How agents use discovery
+
+Connie and automation agents orchestrate the layer:
+
+1. **Sentinels** surface a pattern (for example repeat visits on an account).
+2. **Discovery** retrieves precedents, similar outcomes, or relevant summary sections.
+3. **Structured records** supply compact job context without re-reading raw worksheets.
+4. **Connie or a case** turns evidence into a briefing, a Slack message, or owned follow-up.
+
+Teams and case management add **ownership and workflow**: assign a case to a regional team, link jobs and sentinel triggers as case items, progress through review states. That is how AI integration becomes operational process, not a one-off chat.
+
+## Data sovereignty and why discovery stays fast
+
+VH3 AI builds **your** operational model alongside your field systems:
+
+- Enrichment and entity resolution run when data lands, not on every search.
+- Rankings and graph reads use that prepared layer.
+- LLM spend is reserved for interpretation, not for "find jobs like this."
+
+If you change field systems later, the model and history remain yours to connect to the new source. Discovery, sentinels, and agents keep reading the same substrate.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Intelligence layer" icon="layer-group" href="/intelligence-layer">
+    Four memory primitives and the synthesis contract.
+  </Card>
+  <Card title="Search API" icon="code" href="/api-reference/search">
+    Request fields, endpoints, and examples.
+  </Card>
+  <Card title="Building on the layer" icon="hammer" href="/guides/building-on-the-layer">
+    Citizen builders, coding agents, integrations, and secure extensibility.
+  </Card>
+  <Card title="Connie" icon="message-bot" href="/guides/connie">
+    Conversational synthesis with citations.
+  </Card>
+  <Card title="Sentinels" icon="bell" href="/guides/sentinels">
+    Continuous pattern detection at the data layer.
+  </Card>
+  <Card title="Native integrations" icon="plug" href="/native-integrations">
+    Connect inboxes, calendars, CRM, and storage into the same model.
+  </Card>
+</CardGroup>

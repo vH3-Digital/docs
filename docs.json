@@ -76,7 +76,8 @@
           {
             "group": "Guides",
             "pages": [
-              "guides/semantic-search",
+              "guides/operational-discovery",
+              "guides/building-on-the-layer",
               "guides/sentinels",
               "guides/reports",
               "guides/connie"
@@ -125,5 +126,11 @@
   },
   "settings": {
     "customScripts": ["/stripe-pricing.js"]
-  }
+  },
+  "redirects": [
+    {
+      "source": "/guides/semantic-search",
+      "destination": "/guides/operational-discovery"
+    }
+  ]
 }

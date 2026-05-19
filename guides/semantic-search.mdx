@@ -1,66 +1,10 @@
 ---
 title: Semantic Search
-description: How to get the most from VH3 AI's hybrid search engine
+description: This guide has moved to Operational discovery
 ---
 
-# Semantic Search Guide
+# Semantic search
 
-VH3 AI's search is hybrid — it combines **semantic search** (understanding meaning) with **BM25 keyword search** (matching exact terms). This means you get relevant results whether you describe a problem conceptually or use specific technical terminology.
+This content has moved to **[Operational discovery](/guides/operational-discovery)**.
 
-## How it works
-
-When you submit a search query, the platform:
-
-1. **Embeds your query** into a vector representation using the same model that embedded all job text at ingestion time
-2. **Runs BM25** keyword matching in parallel for exact term hits
-3. **Fuses the results** using reciprocal rank fusion to produce a single ranked list
-
-This means "boiler intermittent fault" will find jobs recorded as "heating system cutting out," "CH unit tripping intermittently," or "combi boiler loss of flame."
-
-## Tips for effective queries
-
-### Describe the problem, not the solution
-
-<Tabs>
-  <Tab title="Good">
-    "air conditioning not cooling despite running"
-  </Tab>
-  <Tab title="Less effective">
-    "AC repair"
-  </Tab>
-</Tabs>
-
-### Use natural language
-
-The search engine understands context. Write queries the way you'd describe the problem to a colleague.
-
-### Combine with filters
-
-For precision, combine semantic queries with structured filters:
-
-```json
-{
-  "companyId": "your-company-id",
-  "query": "water leak from ceiling",
-  "filters": {
-    "startDate": "2024-01-01",
-    "endDate": "2024-06-30",
-    "siteKey": "site-tesco-manchester"
-  }
-}
-```
-
-## Search types
-
-| Endpoint | Searches across | Best for |
-|----------|----------------|----------|
-| `/search/outcomes` | AI-enriched job outcomes | "What happened?" / "How was it fixed?" |
-| `/search/intake` | Raw fault descriptions | "What was reported?" |
-| `/search/summary-sections` | Generated report summaries | Finding previous analysis |
-
-## Use cases
-
-- **Pre-visit preparation** — search for similar past faults at a site before attending
-- **Diagnostic support** — find how similar problems were resolved historically
-- **Trend detection** — search for a fault pattern and see if it's emerging across sites
-- **Knowledge transfer** — new engineers searching the collective experience of the team
+That guide covers precedent search, entity resolution, customer knowledge sections, and how discovery connects to agents, sentinels, and cases on the intelligence layer.

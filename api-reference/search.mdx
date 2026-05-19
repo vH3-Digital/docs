@@ -22,8 +22,7 @@ Search across AI-enriched job outcomes. This is the primary search endpoint for 
 | `type_id` | string | No | Filter by job type |
 | `category_id` | string | No | Filter by job category |
 | `resource_id` | string | No | Filter by engineer/resource |
-| `contact_id` | string | No | Filter by customer contact |
-| `site_key` | string | No | Filter by site |
+| `contact_id` | string | No | Filter by customer (contact). Preferred scope for account-level precedent search |
 | `cleanup` | boolean | No | Whether to clean the results metadata |
 
 ```bash
@@ -136,7 +135,7 @@ The response groups results under `groups.contacts`, `groups.people`,
 
 ## POST /search/summary-sections
 
-Search across report summary sections — useful for finding previously generated intelligence summaries.
+Hybrid search across **Customer Summary** knowledge sections. Each customer can have up to seven modular sections (overview, job history, equipment, analyses, performance, communication, risk). Each section is indexed independently so you can search one dimension or all of them. Results are ranked without an LLM call.
 
 **Request body:**
 
@@ -144,7 +143,9 @@ Search across report summary sections — useful for finding previously generate
 |-------|------|----------|-------------|
 | `company_id` | string | Yes | Your tenant identifier |
 | `api_key` | string | Yes | Your tenant API key |
-| `query_text` | string | Yes | Search query |
+| `query_text` | string | Yes | Natural language search query |
+| `section_key` | string | No | Limit search to one section (e.g. `risk_opportunity`, `systems_equipment`) |
+| `contact_id` | string | No | Scope to one customer |
 | `limit` | integer | No | Max results (default: 10) |
 
 ```bash
@@ -153,7 +154,21 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/summary-sections" \
   -d '{
     "company_id": "your-company-id",
     "api_key": "your-api-key",
-    "query_text": "HVAC performance Q3",
+    "query_text": "recurring boiler issues on PPM contracts",
+    "section_key": "risk_opportunity",
     "limit": 5
   }'
 ```
+
+---
+
+## GET /search/summary-sections/by-contact/{company_id}/{contact_id}
+
+Return the full stored Customer Summary for one contact (all sections). Use when you need the complete account brief in a single call rather than a ranked search.
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/search/summary-sections/by-contact/your-company-id/your-contact-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+Summaries are generated from the operational graph and refreshed incrementally via `POST /backfill/summary-kb`. See [Operational discovery](/guides/operational-discovery) for how summaries stay current in Connie sessions.

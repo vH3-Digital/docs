@@ -1,0 +1,226 @@
+---
+title: Building on the layer
+description: Citizen builders, coding agents, and integrations on a secure operational substrate
+---
+
+# Building on the layer
+
+For years, people said every business is a technology business. Now every business is a software business. The shift in field service is not "add a chatbot to the FMS." It is **own an operational model** that every team, agent, and application can trust, then extend it with workflows and software your organisation controls.
+
+VH3 AI is designed as **substrate**:
+
+- Jobs and relationships are enriched once and stored in infrastructure scoped to your organisation.
+- Fast discovery (search, similarity, entity resolution, customer knowledge sections) reads that model without an LLM.
+- Agents, reports, and automations read the same model when they need language and narrative.
+- Connected tools (email, calendar, CRM, storage, field systems) feed **entities back** into the same graph through managed sync and resolution.
+
+This guide is for **builders**: operations staff using no-code tools, and technical staff using Claude Code, Cursor, or similar coding agents.
+
+<Card title="Operational discovery" icon="magnifying-glass" href="/guides/operational-discovery">
+  How search, customer knowledge sections, and entity resolution work on the layer.
+</Card>
+
+## What integrating AI should mean in field service
+
+| Maturity | What the business has |
+|----------|------------------------|
+| **Level 1: Access** | Exports and dashboards; questions wait for manual analysis |
+| **Level 2: Ask** | Chat over files; answers are not durable or shared |
+| **Level 3: Model** | Persistent graph, enriched jobs, fast discovery, sentinels |
+| **Level 4: Operate** | Agents, automations, cases, custom apps on the same substrate |
+
+VH3 AI targets levels 3 and 4. Level 2 is where cost and trust break down: every session re-interprets raw text, and nothing belongs to the organisation in a structured form.
+
+<Note>
+**Data sovereignty** means your enriched operational intelligence is tenant-isolated, portable, and usable outside a single vendor UI. You can connect your own models (BYOK), your own automations, and your own applications. The platform fee covers the intelligence layer; agent token spend stays visible on your provider account.
+</Note>
+
+## Three builder paths (same foundation)
+
+<CardGroup cols={3}>
+  <Card title="Operations builders" icon="user">
+    n8n, templates, Connie in Claude Projects. Solve local problems without a development queue.
+  </Card>
+  <Card title="Coding agents" icon="code">
+    Cursor, Claude Code, MCP. Generate apps and integrations against a documented API.
+  </Card>
+  <Card title="Product engineers" icon="server">
+    Direct API integration, custom UIs, partner solutions. Full control, full responsibility.
+  </Card>
+</CardGroup>
+
+All three paths call the **same APIs** and read the **same operational model**. Nothing forks into a separate integration database.
+
+## Connected tools and programmatic access
+
+Field service runs across more than one system. VH3 AI treats third-party tools as **extensions of the same brain**, not another silo.
+
+### Native connections (in the platform)
+
+[Native integrations](/native-integrations) are activated inside VH3 AI: OAuth handled for you, sync managed by the platform, health visible to admins. Typical categories:
+
+| Category | Examples | What flows into the layer |
+|----------|----------|---------------------------|
+| Field management | BigChange (live), others on roadmap | Jobs, engineers, customers, worksheets |
+| Communication | Gmail, Outlook, Slack, Teams, WhatsApp | Threads, alerts, context for briefings |
+| Scheduling | Google Calendar | Per-user availability and planning context |
+| CRM / finance | Pipedrive, Zoho, Xero, Stripe, Salesforce, HubSpot | Commercial context alongside operational history |
+| Storage / docs | Drive, OneDrive, Dropbox, PandaDoc | Documents linked to accounts and work |
+
+**Per-user connections** matter for agents tied to real people: an engineer's inbox and calendar, scoped to what they authorised, can inform briefings without exposing everyone's mail to the organisation.
+
+**Organisation-level connections** matter for shared systems: one Xero or Slack workspace, one CRM, available to automations and reporting across the team.
+
+### Programmatic access (for your agents and apps)
+
+Everything the platform does internally is also available **programmatically**:
+
+- **REST API** for search, jobs feed, sentinels, reports, Connie, cases, teams, and backfill tasks.
+- **MCP server** so Claude Desktop, Cursor, and other MCP clients call the same tools Connie uses, with credentials handled server-side after JWT auth.
+- **n8n node** (community and PRO) for workflow builders who want operations-friendly automation without writing a backend.
+
+When email arrives or a calendar event is created, ingestion and **entity resolution** map people, domains, and addresses back to **contacts** in your model. That is how personal agents and shared automations stay aligned with operational truth instead of floating in disconnected inboxes.
+
+<Tip>
+Design automations so **fast endpoints** (search, autocomplete, sentinels, jobs feed) handle triggers and filters, and reserve Connie or investigate for steps that need narrative. Predictable latency and visible AI cost follow naturally.
+</Tip>
+
+## Operations builders (no-code and low-code)
+
+The citizen-builder pattern is how strong field service teams already work when they are not waiting on IT:
+
+- An operations manager routes a **sentinel digest** to Slack when SLA performance slips.
+- A contracts lead schedules an **account monthly report** to a client distribution list.
+- A service coordinator creates a workflow when **engineer-flagged follow-ups** spike for one customer.
+
+None of that requires a development team. It requires **templates**, **connectors**, and an intelligence layer that returns consistent, scoped data.
+
+**Starting points:**
+
+- [n8n node and templates](/n8n-node)
+- [Agent kits: n8n agents](/agent-kits/n8n-agents)
+- [Claude Projects for ops](/agent-kits/claude-projects)
+
+## Coding agents on a secure substrate
+
+Tools such as **Claude Code** and **Cursor** work best when they are not guessing your domain. They need:
+
+1. A **stable API contract** (OpenAPI, consistent field names).
+2. **Guardrails** (which endpoint for which question, what never to expose to end users).
+3. A **tenant boundary** (`company_id`, `api_key`, no cross-customer leakage).
+
+VH3 AI ships **Agent Starter Kits** for that: AGENTS.md, Cursor rules, MCP setup, and n8n prompts that encode field service routing (discovery vs synthesis vs sentinels).
+
+<Card title="Agent Starter Kits" icon="robot" href="/agent-kits/overview">
+  Drop-in configuration so coding agents use VH3 endpoints correctly from day one.
+</Card>
+
+### What coding agents should build
+
+| Application | Discovery / data | Synthesis / action |
+|-------------|------------------|-------------------|
+| Dispatch assist panel | `search/outcomes`, autocomplete | Optional Connie summary |
+| Customer 360 internal app | Jobs feed, customer summary by contact | Reports, investigate |
+| Slack ops bot | `sentinels/run` | Connie with citations |
+| Partner portal | Scoped search by `contact_id` | Branded report export |
+
+### Safe patterns
+
+<Warning>
+**Never expose internal identifiers** in end-user interfaces: internal company, job, contact, resource, or linkage keys. Use names, references, and addresses in UI copy. Keep IDs in server-side calls only.
+</Warning>
+
+<Note>
+**Contact-centric scoping.** Build navigation around customers (contacts). Places are addresses under that customer. Engineers are resources. This matches how account managers and dispatchers think.
+</Note>
+
+<Note>
+**Timeouts.** Discovery endpoints are typically sub-second. `investigate`, report generation with narrative, and Connie tool loops need longer HTTP timeouts (often 20 to 25 seconds). Agent kits document recommended values.
+</Note>
+
+### MCP: intelligence without middleware
+
+The MCP server exposes tools such as search, investigate, sentinels, jobs feed, and reports. A coding agent can call operational discovery directly, then generate UI or workflow code around the responses.
+
+See [MCP setup](/agent-kits/mcp-setup).
+
+## Customer knowledge your agents can rely on
+
+Builders should understand the **Customer Summary** knowledge object (see [Operational discovery](/guides/operational-discovery)):
+
+- Seven **modular sections**, each independently searchable and rankable.
+- **Refreshed** on a schedule or when job drift thresholds are met, so agents are not stuck with a one-off PDF.
+- **Injected** into Connie sessions together with recent jobs since generation, so conversations start with current context.
+
+Coding agents can call `POST /search/summary-sections` for thematic queries across accounts, or fetch a full brief per contact before rendering a custom account page.
+
+## From signals to owned work
+
+AI integration fails when insight has nowhere to go. VH3 AI pairs **detection** with **ownership**:
+
+| Concept | Role |
+|---------|------|
+| **Sentinels** | Continuous pattern detection on the graph (no LLM at detection) |
+| **Discovery** | Fast precedent, entity, and knowledge-section lookup |
+| **Connie / investigate** | Cited synthesis and diagnostic narrative |
+| **Cases** | Multi-step operational work (escalation, complaint, follow-up) with status and participants |
+| **Teams** | Scoped groups for who owns which customers or regions |
+
+**Example flow:**
+
+1. Sentinel flags repeat attendance for a contact.
+2. Automation runs `search/outcomes` for similar faults on that account.
+3. Case opened: "Third fire panel callout in six weeks" with jobs linked as items.
+4. Regional team notified; Connie drafts engineer briefing for the next visit.
+
+Cases and teams are intentionally lightweight: enough structure to **close the loop**, not another enterprise ITSM rollout.
+
+- [Cases API](/api-reference/cases)
+- [Teams API](/api-reference/teams)
+
+## Why the substrate makes coding agents viable
+
+Without a prepared layer, every agent session must re-parse messy worksheets, guess which account record is meant, and re-derive relationships that should already exist. That is slow, expensive, and fragile.
+
+VH3 AI front-loads **enrichment**, **multi-entity resolution**, and **graph linking** at ingest. Coding agents then generate thin applications that call well-shaped endpoints. You are not paying an LLM to rediscover your operation on every click.
+
+> Built to be built on. Your people, solving their own problems, on their own terms.
+
+The platform does not replace your field system or your IDE. It is the layer your agents and applications sit on.
+
+## Security and governance (builder-relevant)
+
+Builders should assume:
+
+- **Tenant isolation** on every call (`company_id` + validated `api_key`).
+- **Dedicated infrastructure** per customer (no shared operational data between tenants).
+- **PII handling** aligned with your DPA: do not rebuild sensitive fields into public UIs.
+- **Read-only field integration** by default; write-back only when explicitly agreed.
+
+See [Authentication](/authentication) and your enterprise IT brief for full detail.
+
+## Choose your starting kit
+
+| You are | Start here |
+|---------|------------|
+| Ops lead, no code | [Claude Projects](/agent-kits/claude-projects), [n8n node](/n8n-node) |
+| Technical ops / PM with Cursor | [AGENTS.md](/agent-kits/agents-md) + [Cursor rules](/agent-kits/cursor-rules) |
+| Engineer building a product | [API overview](/api-reference/overview) + [Operational discovery](/guides/operational-discovery) |
+| Agent in Claude Desktop | [MCP setup](/agent-kits/mcp-setup) |
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Intelligence layer" icon="layer-group" href="/intelligence-layer">
+    Architecture narrative for technical buyers.
+  </Card>
+  <Card title="Native integrations" icon="plug" href="/native-integrations">
+    Connect inboxes, calendars, CRM, and storage.
+  </Card>
+  <Card title="Introduction" icon="book" href="/introduction">
+    Platform principles and sovereignty.
+  </Card>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Keys, tenancy, and access.
+  </Card>
+</CardGroup>
