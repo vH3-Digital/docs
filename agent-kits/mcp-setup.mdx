@@ -7,18 +7,55 @@ description: Connect any MCP-compatible AI client — Claude Desktop, Cursor, cu
 
 The VH3 AI MCP server exposes the full intelligence layer as [Model Context Protocol](https://modelcontextprotocol.io) tools. Any MCP-compatible client — Claude Desktop, Cursor, a custom agent, or your own toolchain — can connect directly without building middleware.
 
-Once connected, the client gets the same tools used by the Connie assistant: `investigate`, `aggregate_jobs`, `jobs_feed`, `sentinels_run`, `reports_generate`, `search_outcomes`, and more — with all credentials and routing handled server-side.
+Once connected, the client gets the same tools used by the Connie assistant: `investigate`, `aggregate_jobs`, `jobs_feed`, `run_sentinels`, `reports_generate`, `search_outcomes`, and more — with all credentials and routing handled server-side via JWT authentication.
 
 ## Server details
 
 | Property | Value |
 |---|---|
-| **Server URL** | `https://api.vh3connect.io/api:kP8T1CK7/mcp` |
-| **Transport** | HTTP (Streamable HTTP, MCP spec 2025-03-26) |
-| **Auth** | `company_id` + `api_key` passed as headers (see below) |
-| **Protocol version** | MCP 2025-03-26 |
+| **SSE endpoint** | `https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse` |
+| **Transport** | SSE (Server-Sent Events) via `mcp-remote` proxy |
+| **Auth** | Bearer JWT token in `Authorization` header (obtained from `auth/mcp-token`) |
+| **Protocol version** | MCP 2025-06-18 |
+
+## Get your MCP token
+
+Before connecting any client, you need a long-lived MCP token (valid for 90 days).
+
+<Steps>
+  <Step title="Log in to get a session JWT">
+    Call the login endpoint with your email and password to obtain a standard session token:
+
+    ```bash
+    curl -X POST https://api.vh3connect.io/api:lBQnyyZL/auth/login \
+      -H "Content-Type: application/json" \
+      -d '{"email": "you@company.com", "password": "your-password"}'
+    ```
+
+    Copy the `authToken` from the response.
+  </Step>
+  <Step title="Exchange it for an MCP token">
+    Call the `auth/mcp-token` endpoint using your session token:
+
+    ```bash
+    curl -X POST https://api.vh3connect.io/api:lBQnyyZL/auth/mcp-token \
+      -H "Authorization: Bearer YOUR_SESSION_TOKEN"
+    ```
+
+    The response contains `authToken` (your 90-day MCP token) and `expires_in: 7776000`.
+  </Step>
+  <Step title="Store the token securely">
+    Save the MCP token in an environment variable. Never commit it to source control.
+
+    ```bash
+    export VH3_MCP_TOKEN="eyJhbGci..."
+    ```
+  </Step>
+</Steps>
 
 ## Quick start — Claude Desktop
+
+Claude Desktop connects to the VH3 MCP server via SSE using the `mcp-remote` proxy (installed automatically via `npx`).
 
 <Steps>
   <Step title="Open your Claude Desktop config">
@@ -32,83 +69,115 @@ Once connected, the client gets the same tools used by the Connie assistant: `in
     ```json claude_desktop_config.json
     {
       "mcpServers": {
-        "vh3-ai": {
+        "vh3-ai-v2": {
           "command": "npx",
-          "args": ["-y", "mcp-remote", "https://api.vh3connect.io/api:kP8T1CK7/mcp"],
-          "env": {
-            "VH3_COMPANY_ID": "your-company-id",
-            "VH3_API_KEY": "your-api-key"
-          }
+          "args": [
+            "-y",
+            "mcp-remote",
+            "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse",
+            "--header",
+            "Authorization: Bearer YOUR_MCP_TOKEN"
+          ]
         }
       }
     }
     ```
 
-    Replace `your-company-id` and `your-api-key` with your real credentials. See [Authentication](/authentication) if you don't have them yet.
+    Replace `YOUR_MCP_TOKEN` with the token you obtained in the previous step. See [Get your MCP token](#get-your-mcp-token) above.
   </Step>
   <Step title="Restart Claude Desktop">
-    Quit and reopen Claude Desktop. You should see a hammer icon (🔨) in the chat input — click it to confirm the VH3 tools are listed.
+    Quit and reopen Claude Desktop. You should see a hammer icon in the chat input — click it to confirm all 19 VH3 tools are listed.
   </Step>
   <Step title="Test with a query">
     Try: *"How many jobs did we complete last week, broken down by engineer?"*
 
-    Claude will call `aggregate_jobs` with `metric: job_count`, `groupBy: engineer`, `period: last_week` and return a cited answer.
+    Claude will call `aggregate_jobs` with `metric: count`, `group_by: resource`, `period: last_week` and return a cited answer.
   </Step>
 </Steps>
 
+<Note>
+The `mcp-remote` package handles the SSE transport and Bearer token header injection. It is fetched on first use via `npx -y` — no manual installation needed. Requires Node.js 18+.
+</Note>
+
 ## Quick start — Cursor
 
-Add the server to your Cursor MCP configuration. Go to **Cursor Settings → MCP** and add:
+Add the server to your Cursor MCP configuration. Go to **Cursor Settings > MCP** and add:
 
 ```json Cursor MCP config
 {
-  "vh3-ai": {
-    "url": "https://api.vh3connect.io/api:kP8T1CK7/mcp",
-    "headers": {
-      "x-vh3-company-id": "your-company-id",
-      "x-vh3-api-key": "your-api-key"
-    }
+  "vh3-ai-v2": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "mcp-remote",
+      "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse",
+      "--header",
+      "Authorization: Bearer YOUR_MCP_TOKEN"
+    ]
   }
 }
 ```
 
 <Note>
-For Cursor, prefer using environment variables rather than inline credentials. Set `VH3_COMPANY_ID` and `VH3_API_KEY` in your shell profile, then reference them in the header values with `$VH3_COMPANY_ID` syntax if your Cursor version supports it — or use [Cursor Rules](/agent-kits/cursor-rules) alongside the MCP connection to keep credentials out of config files.
+Prefer using environment variables rather than inline tokens. Set `VH3_MCP_TOKEN` in your shell profile, then reference `Bearer $VH3_MCP_TOKEN` in the args array — or use [Cursor Rules](/agent-kits/cursor-rules) alongside the MCP connection to keep tokens out of config files.
 </Note>
 
 ## Available tools
 
-Once connected, these tools are available in any MCP-compatible client:
+Once connected, these tools are available in any MCP-compatible client. No `company_id` or `api_key` inputs are needed — credentials are resolved automatically from your JWT.
+
+### FSI Intelligence
 
 | Tool | Description | Typical latency |
 |---|---|---|
-| `investigate` | Hybrid diagnostic — root cause analysis, cited evidence, ranked recommendations | 10–17 s |
-| `aggregate_jobs` | Compute metrics over jobs with period shorthand and comparison | < 3 s |
-| `jobs_feed` | Fetch individual job records with filters | < 3 s |
-| `sentinels_run` | Run early-warning sentinels, return only triggered alerts | 3–8 s |
-| `reports_generate` | Generate structured operational reports (start_of_day, close_of_business, etc.) | 10–17 s |
-| `search_outcomes` | Semantic search over outcome text — find similar fault descriptions | < 2 s |
-| `search_persons` | Look up engineers, contacts, or customers by name, email, or phone | < 1 s |
-| `weather_for_job` | Get weather context for a specific job's time and location | < 2 s |
-| `weather_for_site` | Get weather context for a site over a date range | < 2 s |
+| `connie_chat` | Conversational AI assistant trained on your company's data | 5–15 s |
+| `investigate` | Deep evidence-backed investigation using graph + vector search | 10–17 s |
+| `search_outcomes` | Semantic search over job outcome text | < 2 s |
+| `search_autocomplete` | Fast typeahead across jobs, contacts, engineers, sites | < 1 s |
+| `contacts_feed` | Paginated contact list with free-text search | < 3 s |
+| `contact_detail` | Full contact detail with optional Weaviate summary | < 3 s |
+| `weather_for_job` | Weather conditions for a job's location and time | < 2 s |
+| `company_snapshot` | Company profile and FSI platform health | < 2 s |
+| `reports_generate` | Operational reports (start_of_day, close_of_business, etc.) | 10–17 s |
+| `run_sentinels` | Run sentinel alert rules on demand | 3–8 s |
+
+### Jobs
+
+| Tool | Description | Typical latency |
+|---|---|---|
+| `list_jobs` | Paginated job listing with filters (status, type, contact, resource) | < 3 s |
+| `get_job` | Full FSI-enriched job detail with worksheets and graph context | < 3 s |
+| `jobs_feed` | Paginated job feed (alias for list_jobs) | < 3 s |
+| `aggregate_jobs` | KPI metrics with period comparison and group-by dimensions | < 3 s |
+| `get_fsi_job` | FSI-enriched job detail (alias for get_job) | < 3 s |
+
+### Quotes & Invoices
+
+| Tool | Description | Typical latency |
+|---|---|---|
+| `list_quotes` | Paginated quote listing with filters | < 3 s |
+| `get_quote` | Full quote detail with line items | < 2 s |
+| `list_invoices` | Paginated invoice listing with filters | < 3 s |
+| `get_invoice` | Full invoice detail with line items and payment status | < 2 s |
 
 <Warning>
-`investigate` and `reports_generate` have 10–17s expected latency when `includeNarrative: true`. Some MCP clients have aggressive timeouts. If you see tool call failures on these endpoints, check your client's timeout setting and increase it to at least 25 seconds.
+`investigate`, `reports_generate`, and `connie_chat` have 10–17s expected latency. Some MCP clients have aggressive timeouts. If you see tool call failures on these endpoints, check your client's timeout setting and increase it to at least 25 seconds.
 </Warning>
 
 ## Authentication
 
-The MCP server reads credentials from request headers. Two header names are accepted:
+The MCP server uses JWT Bearer token authentication. Tokens are obtained via the `auth/mcp-token` endpoint (see [Get your MCP token](#get-your-mcp-token) above).
 
-| Header | Value |
+| Property | Value |
 |---|---|
-| `x-vh3-company-id` | Your company ID |
-| `x-vh3-api-key` | Your API key |
+| **Header** | `Authorization: Bearer <token>` |
+| **Token lifetime** | 90 days |
+| **Scope** | Automatically resolves your user, company, and API credentials |
 
-Credentials are scoped per-request — each tool call is independently authenticated. There is no session token to manage.
+The JWT encodes your user identity. All tool calls are automatically scoped to your company — no `company_id` or `api_key` parameters are needed. Cross-tenant access is impossible.
 
 <Warning>
-Never commit your `company_id` or `api_key` to source control. Use environment variables and reference them from your MCP client configuration. Most clients support `$ENV_VAR` substitution in config files.
+Never commit your MCP token to source control. Use environment variables and reference them from your MCP client configuration.
 </Warning>
 
 ## Using the MCP server from custom agents
@@ -118,6 +187,7 @@ For agents built with the Anthropic SDK, OpenAI Agents SDK, or similar framework
 <CodeGroup>
 
 ```python Python (Anthropic SDK)
+import os
 import anthropic
 
 client = anthropic.Anthropic()
@@ -125,38 +195,28 @@ client = anthropic.Anthropic()
 response = client.beta.messages.create(
     model="claude-opus-4-5",
     max_tokens=4096,
-    tools=[
-        {
-            "type": "computer_20241022",  # placeholder — use mcp tool type
-        }
-    ],
     mcp_servers=[
         {
             "type": "url",
-            "url": "https://api.vh3connect.io/api:kP8T1CK7/mcp",
-            "name": "vh3-ai",
-            "authorization_token": None,  # auth via headers below
-            "extra_headers": {
-                "x-vh3-company-id": os.environ["VH3_COMPANY_ID"],
-                "x-vh3-api-key": os.environ["VH3_API_KEY"],
-            },
+            "url": "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse",
+            "name": "vh3-ai-v2",
+            "authorization_token": os.environ["VH3_MCP_TOKEN"],
         }
     ],
     messages=[{"role": "user", "content": "What needs attention today?"}],
 )
 ```
 
-```typescript TypeScript (fetch transport)
+```typescript TypeScript (SSE transport)
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 
-const transport = new StreamableHTTPClientTransport(
-  new URL("https://api.vh3connect.io/api:kP8T1CK7/mcp"),
+const transport = new SSEClientTransport(
+  new URL("https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse"),
   {
     requestInit: {
       headers: {
-        "x-vh3-company-id": process.env.VH3_COMPANY_ID!,
-        "x-vh3-api-key": process.env.VH3_API_KEY!,
+        Authorization: `Bearer ${process.env.VH3_MCP_TOKEN!}`,
       },
     },
   }
@@ -166,7 +226,7 @@ const client = new Client({ name: "my-agent", version: "1.0.0" });
 await client.connect(transport);
 
 const tools = await client.listTools();
-console.log(tools); // lists all VH3 tools
+console.log(tools); // lists all 19 VH3 tools
 ```
 
 </CodeGroup>
@@ -179,13 +239,28 @@ When your agent receives a free-form question and needs to decide which tool to 
 |---|---|
 | "why / root cause / what's causing / investigate" | `investigate` |
 | "how many / rate / trend / top / compare / period over period" | `aggregate_jobs` |
-| "show me / list / find / get jobs" | `jobs_feed` |
-| "what needs attention / alerts / sentinels" | `sentinels_run` |
+| "show me / list / find / get jobs" | `list_jobs` or `jobs_feed` |
+| "what needs attention / alerts / sentinels" | `run_sentinels` |
 | "generate report / briefing / debrief / weekly summary" | `reports_generate` |
 | "similar to / fault like / what else looks like" | `search_outcomes` |
+| "find customer / contact / site" | `contacts_feed` or `search_autocomplete` |
+| "quotes / pricing / quotations" | `list_quotes` or `get_quote` |
+| "invoices / billing / payments" | `list_invoices` or `get_invoice` |
 | Ambiguous / unclear | `aggregate_jobs` first, then offer `investigate` |
 
 For a full system prompt you can paste directly into your agent, see the [Claude.ai Projects](/agent-kits/claude-projects) and [n8n Agent Prompts](/agent-kits/n8n-agents) kits — both include routing logic optimised for agent use.
+
+## Migrating from MCP v1
+
+If you are using the previous MCP server (v1) with `company_id` + `api_key` header authentication, you can migrate to v2:
+
+1. **Get an MCP token** using the steps above
+2. **Update your server URL** to `https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse`
+3. **Switch to `mcp-remote` transport** — replace any `url`/`headers` config with the `command`/`args` pattern using `npx -y mcp-remote` (see Claude Desktop or Cursor config above)
+4. **Replace header auth** — remove `x-vh3-company-id` and `x-vh3-api-key` headers; the Bearer token is passed via `--header` in the `mcp-remote` args
+5. **Update tool names** — v2 tools drop the `vh3_` prefix (e.g. `vh3_aggregate_jobs` becomes `aggregate_jobs`)
+
+The v1 server remains operational. You can migrate at your own pace.
 
 ## Pairing with AGENTS.md
 
