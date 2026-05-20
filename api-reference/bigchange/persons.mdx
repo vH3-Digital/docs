@@ -1,0 +1,111 @@
+---
+title: Persons
+description: Site contacts and consent
+---
+
+# Persons
+
+Site contacts and consent. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+
+## Persons
+
+People on accounts.
+
+### `GET` `/persons/person`
+
+Get person.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/persons/person" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "personId=550e8400-e29b-41d4-a716-446655440000"
+```
+
+### `POST` `/persons/create`
+
+Create person.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/persons/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactId": 12345,
+  "firstName": "Jane",
+  "surname": "Smith",
+  "email": "jane@example.com"
+}'
+```
+
+### `POST` `/persons/edit`
+
+Update person.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/persons/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "personId": "550e8400-e29b-41d4-a716-446655440000"
+}'
+```
+
+### `POST` `/persons/list`
+
+List persons.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/persons/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactId": 12345,
+  "pageNumber": 1,
+  "pageSize": 25
+}'
+```
+
+### `POST` `/persons/consent/set`
+
+Set consent.
+
+**Enum values:**
+
+- **status:** `awaiting`, `refused`, `granted`
+- **medium:** `email`, `click`, `telephone`
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/persons/consent/set" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "personId": "550e8400-e29b-41d4-a716-446655440000",
+  "status": "granted",
+  "medium": "email"
+}'
+```
+
+### `POST` `/persons/consent/history`
+
+Consent history.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/persons/consent/history" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "personId": "550e8400-e29b-41d4-a716-446655440000",
+  "pageNumber": 1,
+  "pageSize": 20
+}'
+```

@@ -1,0 +1,165 @@
+---
+title: Weather
+description: Forecast and historical weather for coordinates, jobs, and sites
+---
+
+# Weather
+
+Weather lookups for field service planning and retrospective analysis. Data is sourced from Open-Meteo. Responses include hourly conditions and a summary with `outdoor_work_risk` (`low`, `moderate`, or `high`).
+
+## GET /weather/forecast
+
+Forecast weather for a latitude/longitude.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `latitude` | float | Yes | Latitude (-90 to 90) |
+| `longitude` | float | Yes | Longitude (-180 to 180) |
+| `start_hour` | string | No | Window start (ISO 8601 partial, e.g. `2026-03-06T08:00`) |
+| `end_hour` | string | No | Window end (ISO 8601 partial, e.g. `2026-03-06T18:00`) |
+| `timezone` | string | No | IANA timezone (default `Europe/London`) |
+
+**Response includes:** `mode` (`forecast`), `period_start`, `period_end`, `summary` (avg/min/max temp, precipitation, wind, `dominant_condition`, `outdoor_work_risk`), and `hourly[]` (temperature, humidity, precipitation, rain, weather code/label, wind, cloud cover).
+
+**Enum — `summary.outdoor_work_risk`:** `low`, `moderate`, `high`
+
+**Example:**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/weather/forecast" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "latitude=51.5074" \
+  --data-urlencode "longitude=-0.1278" \
+  --data-urlencode "start_hour=2026-03-06T08:00" \
+  --data-urlencode "end_hour=2026-03-06T18:00"
+```
+
+**Use cases:**
+
+- **Dispatch planning:** Check conditions for a postcode centroid before assigning outdoor work.
+- **Briefing enrichment:** Pair with `POST /briefing/generate` to surface visit-day risk in engineer packs.
+
+---
+
+## GET /weather/historical
+
+Historical weather for a latitude/longitude and date range.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `latitude` | float | Yes | Latitude (-90 to 90) |
+| `longitude` | float | Yes | Longitude (-180 to 180) |
+| `start_date` | string | Yes | Start date (`YYYY-MM-DD`) |
+| `end_date` | string | Yes | End date (`YYYY-MM-DD`) |
+| `timezone` | string | No | IANA timezone (default `Europe/London`) |
+
+**Response:** Same shape as forecast; `mode` is `historical`. Archive data is available from 1940 onwards.
+
+**Example:**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/weather/historical" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "latitude=51.5074" \
+  --data-urlencode "longitude=-0.1278" \
+  --data-urlencode "start_date=2026-02-10" \
+  --data-urlencode "end_date=2026-02-12"
+```
+
+**Use cases:**
+
+- **Delay analysis:** Correlate completed jobs with heavy rain or high wind on the service date.
+- **SLA disputes:** Provide objective weather evidence for missed appointments.
+
+---
+
+## GET /weather/for-job/{job_id}
+
+Weather for a specific job. Coordinates and time window are resolved from the knowledge graph.
+
+**Path parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `job_id` | string | Yes | Job ID or reference |
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+
+**Behaviour:**
+
+- Completed jobs (actual end in the past) → historical weather for the job window.
+- Future or in-progress jobs → forecast for planned/actual start–end.
+- Response includes a `job` object: `job_id`, `reference`, `site_address`, `status`.
+
+**Example:**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/weather/for-job/FAB310221" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+**Use cases:**
+
+- **Connie / agent tools:** Answer “was weather a factor on job X?” without manual coordinate lookup.
+- **Investigation:** Combine with outcome search when diagnosing repeat failures or delays.
+
+**Errors:** `404` if the job or linked site is missing; `422` if the site has no latitude/longitude.
+
+---
+
+## GET /weather/for-site
+
+Weather for a customer or site over a date range. Coordinates are resolved from the graph.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `start_date` | string | Yes | Start date (`YYYY-MM-DD`) |
+| `end_date` | string | Yes | End date (`YYYY-MM-DD`) |
+| `contact_id` | string | No | Customer contact ID (preferred) |
+| `site_key` | string | No | Site key (SHA-256); use when `contact_id` is unknown |
+
+One of `contact_id` or `site_key` is required. When `contact_id` has no coordinates, the API falls back to the most recent linked site with lat/lon.
+
+**Response includes:** Standard weather payload plus `site` (`contact_id`, `site_key`, `site_address`).
+
+**Example:**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/weather/for-site" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "contact_id=12345" \
+  --data-urlencode "start_date=2026-03-10" \
+  --data-urlencode "end_date=2026-03-12"
+```
+
+**Use cases:**
+
+- **Account planning:** Review forecast for a key customer across a multi-day PPM window.
+- **Site risk:** Assess outdoor-work risk at a repeat-failure location before scheduling.
+
+**Notes:**
+
+- `outdoor_work_risk` uses rule-based thresholds (heavy rain, gusts >60 km/h, freezing, snow/ice codes).
+- Forecast horizon is up to 16 days; historical archive from 1940.
+- Weather service errors return `502`.

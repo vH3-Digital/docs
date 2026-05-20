@@ -1,0 +1,72 @@
+---
+title: Vehicles
+description: Fleet vehicles
+---
+
+# Vehicles
+
+Fleet vehicles. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+
+## Vehicles
+
+Fleet.
+
+### `GET` `/vehicles/vehicle_get`
+
+Get vehicle.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/vehicles/vehicle_get" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "vehicleId=50"
+```
+
+### `POST` `/vehicles/create`
+
+Create vehicle.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/vehicles/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "registration": "AB12 CDE"
+}'
+```
+
+### `POST` `/vehicles/update`
+
+Update vehicle.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/vehicles/update" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "vehicleId": 50
+}'
+```
+
+### `POST` `/vehicles/list`
+
+List vehicles.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/vehicles/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```

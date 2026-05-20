@@ -1,0 +1,230 @@
+---
+title: Invoices
+description: BigChange invoices and line items
+---
+
+# Invoices
+
+BigChange invoices and line items. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+## Date filters (list)
+
+`POST /invoices/list` accepts an optional creation-date window. **`createdAtTo` minus `createdAtFrom` must not exceed 12 months`** (BigChange API limit — see [overview](/api-reference/bigchange/overview#date-ranges)).
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `createdAtFrom` | string | No | Invoices created on or after this instant (ISO 8601 UTC) |
+| `createdAtTo` | string | No | Invoices created on or before this instant (ISO 8601 UTC) |
+
+Combine with `id`, `jobId`, `jobGroupId`, `contactId`, or `reference` (comma-separated lists, max 50 IDs each). Use `sortBy: "createdAt"` with `direction` when reporting by period.
+
+
+## Invoices
+
+Billing.
+
+### `GET` `/invoices/invoice`
+
+Get invoice.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/invoices/invoice" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "invoiceId=5001"
+```
+
+### `POST` `/invoices/create`
+
+Create invoice.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactId": 12345,
+  "createdAt": "2026-04-01T00:00:00Z"
+}'
+```
+
+### `POST` `/invoices/edit`
+
+Update invoice.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "invoiceId": 5001
+}'
+```
+
+### `POST` `/invoices/list`
+
+List invoices with optional filters and a creation-date range (max **12 months** between `createdAtFrom` and `createdAtTo`).
+
+**Request body (filters):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `pageNumber` | integer | No | Page index (1-based) |
+| `pageSize` | integer | No | Items per page |
+| `createdAtFrom` | string | No | Created on or after (ISO 8601 UTC) |
+| `createdAtTo` | string | No | Created on or before (ISO 8601 UTC) |
+| `contactId` | string | No | Contact IDs (comma-separated, max 50) |
+| `jobId` | string | No | Job IDs (comma-separated, max 50) |
+| `jobGroupId` | string | No | Job group IDs (comma-separated, max 50) |
+| `id` | string | No | Invoice IDs (comma-separated, max 50) |
+| `reference` | string | No | References (comma-separated, max 50) |
+| `sortBy` | string | No | `createdAt` |
+| `direction` | enum | No | `ascending` or `descending` |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50,
+  "createdAtFrom": "2026-01-01T00:00:00Z",
+  "createdAtTo": "2026-03-31T23:59:59Z",
+  "contactId": "12345",
+  "sortBy": "createdAt",
+  "direction": "descending"
+}'
+```
+
+### `POST` `/invoices/cancel`
+
+Cancel.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/cancel" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "invoiceId": 5001
+}'
+```
+
+### `POST` `/invoices/mark_paid`
+
+Mark paid. Optional `paidAt` (ISO 8601 UTC); defaults to now if omitted. Single timestamp — not a date range.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/mark_paid" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "invoiceId": 5001,
+  "paidAt": "2026-04-15T12:00:00Z"
+}'
+```
+
+### `POST` `/invoices/mark_sent`
+
+Mark sent. Optional `sentAt` (ISO 8601 UTC); defaults to now if omitted.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/mark_sent" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "invoiceId": 5001,
+  "sentAt": "2026-04-10T09:00:00Z"
+}'
+```
+
+### `POST` `/invoices/document/create`
+
+Generate PDF.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/document/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "invoiceId": 5001
+}'
+```
+
+## Invoice line items
+
+Line-level charges.
+
+### `GET` `/invoices/line_item`
+
+Get line.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "invoiceId=5001" \
+  --data-urlencode "lineItemId=1"
+```
+
+### `GET` `/invoices/line_item/edit`
+
+Update line.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item/edit" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "invoiceId=5001" \
+  --data-urlencode "lineItemId=1"
+```
+
+### `POST` `/invoices/line_item/create`
+
+Create line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "invoiceId": 5001,
+  "description": "Labour",
+  "quantity": 2,
+  "unitSellingPrice": 85
+}'
+```
+
+### `POST` `/invoices/line_item/delete`
+
+Delete line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item/delete" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "invoiceId": 5001,
+  "lineItemId": 1
+}'
+```
+
+### `POST` `/invoices/line_item/list`
+
+List lines.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "invoiceId": 5001,
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```

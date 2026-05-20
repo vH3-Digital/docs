@@ -1,34 +1,66 @@
 ---
 title: Authentication
-description: How to authenticate with the VH3 AI API, tenant credentials for server-to-server, and per-user JWT for interactive applications
+description: Two API surfaces — VH3 AI Intelligence (company_id + api_key) and BigChange API (X-API-Key header) — plus per-user JWT for interactive apps
 ---
 
 # Authentication
 
 <Visibility for="agents">
-**API auth (server-to-server):** pass `company_id` and `api_key` on every data API request. POST: JSON body. GET: query parameters. Base host: `https://api.vh3connect.io`. Never hardcode credentials in generated code — use `VH3_COMPANY_ID` and `VH3_API_KEY` environment variables.
+**Two server-to-server APIs, one key:** the same VH3 API key is used for both surfaces; transport differs.
 
-**Interactive apps:** use User Auth JWT only (`Authorization: Bearer`). Never send `api_key` from browser or mobile client code. Tenant is resolved server-side after login.
+1. **VH3 AI Intelligence** (`api:kP8T1CK7`): `company_id` + `api_key` on every request (POST body / GET query).
+2. **BigChange API** (`api:YdihQNr3`): `X-API-Key` header only — no `company_id`; tenant resolved from the key.
 
-**Docs vs live data:** this page describes API authentication. To search *documentation*, use `https://docs.vh3.ai/mcp` or `https://docs.vh3.ai/llms.txt` — not the VH3 product MCP.
+**Interactive apps:** User Auth JWT (`Authorization: Bearer`) on `api:lBQnyyZL` and Bearer-enabled intelligence routes. Never send `api_key` from browser or mobile clients.
+
+**Docs vs live data:** `https://docs.vh3.ai/mcp` or `https://docs.vh3.ai/llms.txt` for documentation search — not the VH3 product MCP.
 </Visibility>
 
-VH3 AI supports two authentication models depending on your use case:
+VH3 Connect exposes **two REST API groups** for server-to-server integration, plus a **User Auth** API for interactive applications. You receive a single API key during onboarding; how you send it depends on which API you call.
 
-1. **API Authentication:** `company_id` + `api_key` on every request, for server-to-server integrations and API calls
-2. **User Authentication:** per-user login returning a JWT, for interactive applications and custom front-ends
+## Two API surfaces
 
-## Base URL
+| API | Base URL | Auth | Tenant scope |
+|-----|----------|------|--------------|
+| [VH3 AI Intelligence](/api-reference/overview) | `https://api.vh3connect.io/api:kP8T1CK7` | `company_id` + `api_key` (body or query) | Explicit `company_id` on every request |
+| [BigChange API](/api-reference/bigchange/overview) | `https://api.vh3connect.io/api:YdihQNr3` | `X-API-Key` header only | Resolved from the API key |
 
+The API key is the same credential for both groups. Intelligence endpoints require your company ID in addition; BigChange proxy endpoints do not.
+
+### VH3 AI Intelligence — quick reference
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query_text": "boiler fault",
+    "limit": 5
+  }'
 ```
-https://api.vh3connect.io
+
+### BigChange API — quick reference
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "pageNumber": 1,
+    "pageSize": 20
+  }'
 ```
+
+### User Auth (interactive apps)
+
+Login with email and password on `api:lBQnyyZL`; use the returned JWT as `Authorization: Bearer`. No API key in client code. See [User Authentication](#user-authentication) below.
 
 ---
 
-## API Authentication
+## VH3 AI Intelligence authentication
 
-All VH3 AI data endpoints require two credentials on every request: your **company ID** and your **API key**.
+All intelligence-layer endpoints require **company ID** and **API key** on every request.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -66,6 +98,29 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
 <Warning>
   Requests missing `company_id` or `api_key` will receive a `400` response with a `Missing param` error.
 </Warning>
+
+---
+
+## BigChange API authentication
+
+BigChange proxy endpoints use the **same API key** as the intelligence layer, passed only in the **`X-API-Key`** HTTP header. Do not send `company_id` on these requests — the gateway resolves your tenant and BigChange session from the key.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/contacts/contact" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "contactId=12345"
+```
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `X-API-Key` | Yes | Your tenant API key |
+| `Content-Type` | Yes (POST) | `application/json` |
+
+<Warning>
+  Missing or invalid `X-API-Key` returns `401 Unauthorised`. Do not put the API key in the JSON body for BigChange endpoints.
+</Warning>
+
+Full endpoint list: [BigChange API reference](/api-reference/bigchange/overview).
 
 ---
 
@@ -340,6 +395,7 @@ All errors follow a consistent format:
 
 <Visibility for="agents">
 - HTTPS only. Rotate API keys via account manager; do not log or echo keys in tool output.
+- Intelligence: `company_id` + `api_key`. BigChange: `X-API-Key` header only (same key value).
 - JWT `exp` is 24h; refresh before expiry. Claims: `id` (user), `company` (tenant UUID).
 - Server-side user management: `api:kP8T1CK7` + `company_id`/`api_key`. Client-side user management: `api:lBQnyyZL` + Bearer only.
 </Visibility>

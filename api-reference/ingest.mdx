@@ -1,0 +1,75 @@
+---
+title: Email Ingest
+description: Extract structured job data from FM portal emails
+---
+
+# Email Ingest
+
+Extract structured job fields from emails sent by known FM portals (Verisae, Bellrock, Access Maintain, Greene King, and tenant-specific overrides). Resolves customers, sites, and job types against the knowledge graph, evaluates confidence, and returns a review or auto-create outcome.
+
+Use this endpoint when the sender domain is already identified as a portal. For unknown senders, use the general triage ingest path or classify first with `POST /triage/classify`.
+
+## POST /ingest/email/portal
+
+Portal ingest — structured extraction from a known FM portal email.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant BigChange API key (verified against `company_id`) |
+| `email_html` | string | Yes | HTML body of the email |
+| `email_text` | string | No | Plain-text fallback when HTML is sparse |
+| `email_subject` | string | No | Subject line |
+| `email_from` | string | No | Sender address (used for portal detection) |
+| `email_date` | string | No | Send time (ISO 8601) |
+| `attachments` | array | No | Each item: `filename`, `content_base64`, `url`, `mime_type` |
+| `preferred_type_ids` | array | No | Job type IDs to boost during classification (+0.05 when plausible) |
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `status` | string | `auto_created`, `pending_review`, or `unprocessable` |
+| `extraction` | object | Parsed work order fields and confidence |
+| `resolution` | object | Matched `customers`, `sites`, `types`, `categories`, `parent_candidates` with scores |
+| `reasoning` | string | Human-readable resolution summary |
+| `job_created` | boolean | Whether a job was written to BigChange |
+| `job_id` | integer | Created job ID when `job_created` is true |
+| `extraction_id` | string | Pending-extraction UUID for review-queue flows |
+| `review_flags` | array | Flags requiring human attention |
+| `job_preview` | object | Dry-run BigChange payload when write-back is not yet live |
+| `case_id` | string | Case management ID when a review case was created |
+| `engineer_hints` | array | Ranked engineer suggestions from contact/type history |
+| `job_options` | array | Selectable job drafts when status is `pending_review` |
+| `recommended_option_id` | string | Suggested option from `job_options` |
+| `surface` | string | Always `portal` for this endpoint |
+
+**Example:**
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/ingest/email/portal" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "email_html": "<html><body><table><tr><td>Work Order</td><td>116222840</td></tr></table></body></html>",
+    "email_subject": "PureGym 449 Newhaven, Work Order 116222840",
+    "email_from": "noreply@verisae.com",
+    "email_date": "2026-04-18T10:00:00Z"
+  }'
+```
+
+**Use cases:**
+
+- **FM portal automation:** Ingest Verisae, Bellrock, or other portal work orders without manual re-keying.
+- **n8n inbound mail:** Trigger after `POST /triage/classify` returns `portal_ingest`, or when the sender domain is pre-filtered upstream.
+- **Review queue:** When `status` is `pending_review`, use `extraction_id` with `POST /ingest/email/confirm` or `POST /ingest/email/reject`.
+- **Quality evaluation:** Inspect `job_preview` and `resolution` scores before enabling auto-create to BigChange.
+
+**Notes:**
+
+- Requires Gemini for extraction; typical latency 3–10s.
+- `api_key` is verified via `apiKeyCheck` before any BigChange-facing step; mismatch returns `403`.
+- Tenant settings (`portal_ingest_enabled`, `disabled_portals`, thresholds) gate behaviour without code changes.

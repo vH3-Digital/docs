@@ -1,0 +1,232 @@
+---
+title: Stock
+description: Inventory, movements, suppliers
+---
+
+# Stock
+
+Inventory, movements, suppliers. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+
+Note: path `/stock/stock/item_get` is correct — the segment `stock` appears twice in the BigChange route, not a documentation typo.
+
+
+## Stock details
+
+Product catalogue.
+
+### `GET` `/stock/stock_details`
+
+Get details.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/stock/stock_details" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "stockDetailsId=10"
+```
+
+### `POST` `/stock/stock_details_create`
+
+Create details.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/stock_details_create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "Thermostat T100"
+}'
+```
+
+### `POST` `/stock/stock_details_update`
+
+Update details.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/stock_details_update" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "stockDetailsId": 10
+}'
+```
+
+### `POST` `/stock/stock_details_list`
+
+List details.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/stock_details_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+## Stock items
+
+Physical stock.
+
+### `GET` `/stock/stock/item_get`
+
+Get item.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/stock/stock/item_get" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "stockItemId=20"
+```
+
+### `POST` `/stock/stock_item_create`
+
+Create item.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/stock_item_create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "stockDetailsId": 10,
+  "quantity": 5
+}'
+```
+
+### `POST` `/stock/stock_item_update`
+
+Update item.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/stock_item_update" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "stockItemId": 20
+}'
+```
+
+### `POST` `/stock/stock_item_list`
+
+List items.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/stock_item_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+## Movements
+
+Stock movements.
+
+### `POST` `/stock/stock_movements_list`
+
+List movements.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/stock_movements_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+## Product categories
+
+Categories.
+
+### `GET` `/stock/product_categories/get`
+
+Get category.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/stock/product_categories/get" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "productCategoryId=3"
+```
+
+### `POST` `/stock/product_categories_list`
+
+List categories.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/product_categories_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+## Suppliers
+
+Stock suppliers.
+
+### `GET` `/stock/stock_supplier_get`
+
+Get supplier.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/stock/stock_supplier_get" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "id=1"
+```
+
+### `POST` `/stock/stock_supplier_create`
+
+Add supplier.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/stock_supplier_create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "stockDetailsId": 10,
+  "contactId": 999
+}'
+```
+
+### `POST` `/stock/stock_supplier_update`
+
+Update supplier.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/stock_supplier_update" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "id": 1
+}'
+```
+
+### `POST` `/stock/stock_supplier_list`
+
+List suppliers.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/stock/stock_supplier_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "stockDetailsId": 10,
+  "pageNumber": 1,
+  "pageSize": 20
+}'
+```

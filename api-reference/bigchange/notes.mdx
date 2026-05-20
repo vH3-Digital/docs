@@ -1,0 +1,129 @@
+---
+title: Notes
+description: Notes and note types
+---
+
+# Notes
+
+Notes and note types. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+
+## Notes
+
+Entity notes.
+
+### `GET` `/notes/note`
+
+Get note.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/notes/note" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "id=7001"
+```
+
+### `POST` `/notes/create`
+
+Create note.
+
+**Enum values:**
+
+- **entityType:** `contact`, `job`, `resource`, `stockItem`, `vehicle`, `salesOpportunity`, `contract`
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/notes/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "entityType": "job",
+  "entityId": 12345,
+  "typeId": 1,
+  "subject": "Follow-up"
+}'
+```
+
+### `POST` `/notes/edit`
+
+Update note.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/notes/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "noteId": 7001,
+  "subject": "Updated"
+}'
+```
+
+### `POST` `/notes/list`
+
+List notes.
+
+**Enum values:**
+
+- **status:** `open`, `completed`, `cancelled`
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/notes/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "entityType": "job",
+  "entityId": 12345,
+  "status": "open",
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+### `POST` `/notes/progress_update`
+
+Update progress.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/notes/progress_update" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "noteId": 7001,
+  "percentage": 50
+}'
+```
+
+## Note types
+
+Note type definitions.
+
+### `GET` `/note_types/note`
+
+Get type.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/note_types/note" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "noteTypeId=1"
+```
+
+### `POST` `/note_types/list`
+
+List types.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/note_types/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```

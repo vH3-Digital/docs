@@ -1,0 +1,74 @@
+---
+title: Reference Data
+description: Department and nominal codes
+---
+
+# Reference Data
+
+Department and nominal codes. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+
+## Department codes
+
+Departments.
+
+### `POST` `/reference_data/department_codes_list`
+
+List codes.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/reference_data/department_codes_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 100
+}'
+```
+
+### `GET` `/reference_data/retrieves_details`
+
+Get code.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/reference_data/retrieves_details" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "departmentCodeId=1"
+```
+
+## Nominal codes
+
+Nominal accounts.
+
+### `POST` `/reference_data/normalt_codes_list`
+
+List codes.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/reference_data/normalt_codes_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 100
+}'
+```
+
+### `GET` `/reference_data/nominal_code_id`
+
+Get code.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/reference_data/nominal_code_id" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "nominalCodeId=1"
+```

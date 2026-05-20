@@ -1,0 +1,411 @@
+---
+title: Jobs
+description: BigChange jobs, constraints, stock, groups, and types
+---
+
+# Jobs
+
+BigChange jobs, constraints, stock, groups, and types. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+## Date filters (list)
+
+`POST /jobs/list` requires **`createdAtFrom` and `createdAtTo`** (job creation time, ISO 8601 UTC). The span between them **must not exceed 12 months**. See [overview](/api-reference/bigchange/overview#date-ranges).
+
+
+## Jobs
+
+Job lifecycle.
+
+### `GET` `/jobs/job`
+
+Get job.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/jobs/job" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "jobId=12345"
+```
+
+### `POST` `/jobs/create`
+
+Create job.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "typeId": 42,
+  "contactId": 12345,
+  "description": "Blocked toilet"
+}'
+```
+
+### `POST` `/jobs/edit`
+
+Update job.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "description": "Updated description"
+}'
+```
+
+### `POST` `/jobs/list`
+
+List jobs. **`createdAtFrom` and `createdAtTo` are required.** Max **12 months** between them.
+
+**Request body (key fields):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `createdAtFrom` | string | **Yes** | Jobs created on or after (ISO 8601 UTC) |
+| `createdAtTo` | string | **Yes** | Jobs created on or before (ISO 8601 UTC) |
+| `pageNumber` | integer | No | Page index |
+| `pageSize` | integer | No | Items per page |
+| `direction` | enum | No | `ascending` or `descending` |
+| `contactId` | string | No | Filter by contact IDs (comma-separated) |
+| `resourceId` | string | No | Filter by engineer IDs |
+| `status` | string | No | Filter by job status |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 20,
+  "createdAtFrom": "2026-01-01T00:00:00Z",
+  "createdAtTo": "2026-03-31T23:59:59Z",
+  "direction": "descending"
+}'
+```
+
+### `POST` `/jobs/cancel`
+
+Cancel job.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/cancel" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "reason": "Customer cancelled"
+}'
+```
+
+### `POST` `/jobs/start`
+
+Start job.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/start" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "comment": "On site"
+}'
+```
+
+### `POST` `/jobs/result`
+
+Set result.
+
+**Enum values:**
+
+- **status:** `completedOk`, `completedWithIssues`
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/result" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "status": "completedOk",
+  "result": "Job complete"
+}'
+```
+
+### `POST` `/jobs/scheduling`
+
+Schedule job.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/scheduling" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "resourceId": 100,
+  "vehicleId": 50,
+  "plannedStartAt": "2026-04-20T09:00:00Z"
+}'
+```
+
+### `POST` `/jobs/status/history`
+
+Status history.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/status/history" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+## Job constraints
+
+Scheduling constraints.
+
+### `POST` `/jobs/constraints/create`
+
+Create constraint.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/constraints/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345
+}'
+```
+
+### `POST` `/jobs/constraints/delete`
+
+Delete constraint.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/constraints/delete" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "constraintId": 1
+}'
+```
+
+### `POST` `/jobs/constraints/list`
+
+List constraints.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/constraints/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "pageNumber": 1,
+  "pageSize": 20
+}'
+```
+
+## Job stock
+
+Parts on jobs.
+
+### `POST` `/jobs/stock/create`
+
+Add stock line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/stock/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "stockDetailsId": 10,
+  "quantityPlanned": 1
+}'
+```
+
+### `POST` `/jobs/stock/delete`
+
+Remove stock line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/stock/delete" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "jobStockId": 5
+}'
+```
+
+### `POST` `/jobs/stock/get`
+
+Get stock line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/stock/get" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "jobStockId": 5
+}'
+```
+
+### `POST` `/jobs/stock/list`
+
+List stock lines.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/stock/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "pageNumber": 1,
+  "pageSize": 20
+}'
+```
+
+## Job groups
+
+Multi-job programmes.
+
+### `POST` `/job_groups/create`
+
+Create group.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "name": "Refurb phase 1"
+}'
+```
+
+### `POST` `/job_groups/edit`
+
+Update group.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobGroupId": 10,
+  "name": "Refurb phase 1"
+}'
+```
+
+### `POST` `/job_groups/job_group`
+
+Get group.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/job_group" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobGroupId": 10
+}'
+```
+
+### `POST` `/job_groups/list`
+
+List groups.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 20
+}'
+```
+
+### `POST` `/job_groups/status_history`
+
+Group status history.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/status_history" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobGroupId": 10,
+  "pageNumber": 1,
+  "pageSize": 20
+}'
+```
+
+### `POST` `/job_groups/job_group_results_as_complete`
+
+Mark complete.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/job_group_results_as_complete" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobGroupId": 10
+}'
+```
+
+### `POST` `/job_groups/job_group_results_as_financially_complete`
+
+Mark financially complete.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/job_group_results_as_financially_complete" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobGroupId": 10
+}'
+```
+
+## Job types
+
+Job type catalogue.
+
+### `POST` `/job_types/job_types`
+
+Get type.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_types/job_types" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobTypeId": 42
+}'
+```
+
+### `POST` `/job_types/list`
+
+List types.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_types/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 100
+}'
+```

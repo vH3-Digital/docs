@@ -1,0 +1,180 @@
+---
+title: Sales Opportunities
+description: Pipeline and line items
+---
+
+# Sales Opportunities
+
+Pipeline and line items. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+## Date filters (list)
+
+`POST /sales_opportunities/list` requires **at least one filter**. Two independent windows are available; each pair is limited to **12 months**:
+
+| Param | Filters on |
+|-------|------------|
+| `createdAtFrom` / `createdAtTo` | Opportunity creation time |
+| `dueDateFrom` / `dueDateTo` | Opportunity due date |
+
+See [overview](/api-reference/bigchange/overview#date-ranges).
+
+
+## Sales opportunities
+
+CRM pipeline.
+
+### `GET` `/sales_opportunities/sales_opportunity`
+
+Get opportunity.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/sales_opportunity" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "id=2001"
+```
+
+### `POST` `/sales_opportunities/list`
+
+List opportunities. **At least one of:** `id`, `status`, `contactId`, `ownerId`, `reference`, `createdAtFrom`/`createdAtTo`, or `dueDateFrom`/`dueDateTo`.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `contactId` | integer | Customer contact |
+| `createdAtFrom` | string | Created on or after (ISO 8601 UTC, max 12-month span with `createdAtTo`) |
+| `createdAtTo` | string | Created on or before |
+| `dueDateFrom` | string | Due on or after (max 12-month span with `dueDateTo`) |
+| `dueDateTo` | string | Due on or before |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactId": 12345,
+  "createdAtFrom": "2026-01-01T00:00:00Z",
+  "createdAtTo": "2026-06-30T23:59:59Z",
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+### `POST` `/sales_opportunities/edit`
+
+Update.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "id": 2001
+}'
+```
+
+### `POST` `/sales_opportunities/probabilities/list`
+
+List probabilities.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/probabilities/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+### `POST` `/sales_opportunities/stages/list`
+
+List stages.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/stages/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+## Line items
+
+Opportunity lines.
+
+### `GET` `/sales_opportunities/line_item`
+
+Get line.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/line_item" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "salesOpportunityId=2001" \
+  --data-urlencode "id=1"
+```
+
+### `POST` `/sales_opportunities/line_item/list`
+
+List lines.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/line_item/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "salesOpportunityId": 2001,
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+### `POST` `/sales_opportunities/line_item/create`
+
+Create line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/line_item/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "salesOpportunityId": 2001
+}'
+```
+
+### `POST` `/sales_opportunities/line_item/edit`
+
+Update line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/line_item/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "salesOpportunityId": 2001,
+  "id": 1
+}'
+```
+
+### `POST` `/sales_opportunities/line_item/delete`
+
+Delete line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/line_item/delete" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "salesOpportunityId": 2001,
+  "id": 1
+}'
+```

@@ -1,0 +1,216 @@
+---
+title: Quotes
+description: BigChange quotes and line items
+---
+
+# Quotes
+
+BigChange quotes and line items. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+## Date filters (list)
+
+`POST /quotes/list` supports the same creation-date window as invoices: `createdAtFrom` and `createdAtTo` (ISO 8601 UTC). **The range must not exceed 12 months.** See [overview](/api-reference/bigchange/overview#date-ranges).
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `createdAtFrom` | string | No | Quotes created on or after this instant |
+| `createdAtTo` | string | No | Quotes created on or before this instant |
+
+Optional filters: `id`, `jobId`, `jobGroupId`, `contactId`, `reference` (comma-separated, max 50 each).
+
+
+## Quotes
+
+Quotations.
+
+### `GET` `/quotes/quote`
+
+Get quote.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/quotes/quote" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "quoteId=3001"
+```
+
+### `POST` `/quotes/create`
+
+Create quote.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/quotes/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactId": 12345
+}'
+```
+
+### `POST` `/quotes/edit`
+
+Update quote.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/quotes/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "quoteId": 3001
+}'
+```
+
+### `POST` `/quotes/list`
+
+List quotes with optional filters and creation-date range (max **12 months** between `createdAtFrom` and `createdAtTo`).
+
+**Request body (filters):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `pageNumber` | integer | No | Page index (1-based) |
+| `pageSize` | integer | No | Items per page |
+| `createdAtFrom` | string | No | Created on or after (ISO 8601 UTC) |
+| `createdAtTo` | string | No | Created on or before (ISO 8601 UTC) |
+| `contactId` | string | No | Contact IDs (comma-separated, max 50) |
+| `jobId` | string | No | Job IDs (comma-separated, max 50) |
+| `jobGroupId` | string | No | Job group IDs (comma-separated, max 50) |
+| `id` | string | No | Quote IDs (comma-separated, max 50) |
+| `reference` | string | No | References (comma-separated, max 50) |
+| `sortBy` | string | No | Typically `createdAt` |
+| `direction` | enum | No | `ascending` or `descending` |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/quotes/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50,
+  "createdAtFrom": "2026-01-01T00:00:00Z",
+  "createdAtTo": "2026-06-30T23:59:59Z",
+  "contactId": "12345",
+  "sortBy": "createdAt",
+  "direction": "descending"
+}'
+```
+
+### `POST` `/quotes/mark_sent`
+
+Mark sent.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/quotes/mark_sent" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "quoteId": 3001
+}'
+```
+
+### `POST` `/quotes/mark_accepted`
+
+Mark accepted.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/quotes/mark_accepted" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "quoteId": 3001
+}'
+```
+
+### `POST` `/quotes/mark_rejected`
+
+Mark rejected.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/quotes/mark_rejected" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "quoteId": 3001
+}'
+```
+
+## Quote line items
+
+Quote lines.
+
+### `GET` `/quotes/line_item`
+
+Get line.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/quotes/line_item" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "quoteId=3001" \
+  --data-urlencode "lineItemId=1"
+```
+
+### `POST` `/quotes/line_item/create`
+
+Create line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/quotes/line_item/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "quoteId": 3001,
+  "description": "Boiler service",
+  "quantity": 1
+}'
+```
+
+### `POST` `/quotes/line_item/edit`
+
+Update line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/quotes/line_item/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "quoteId": 3001,
+  "lineItemId": 1
+}'
+```
+
+### `POST` `/quotes/line_item/delete`
+
+Delete line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/quotes/line_item/delete" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "quoteId": 3001,
+  "lineItemId": 1
+}'
+```
+
+### `POST` `/quotes/line_item/list`
+
+List lines.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/quotes/line_item/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "quoteId": 3001,
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```

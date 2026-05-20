@@ -1,0 +1,102 @@
+---
+title: Resources
+description: Engineers and resource groups
+---
+
+# Resources
+
+Engineers and resource groups. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+
+## Resources
+
+Engineers/technicians.
+
+### `GET` `/resources/resource_get`
+
+Get resource.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/resources/resource_get" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "resourceId=100"
+```
+
+### `POST` `/resources/resource_create`
+
+Create resource.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/resources/resource_create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "name": "Alex Engineer",
+  "groupId": 5
+}'
+```
+
+### `POST` `/resources/update`
+
+Update resource.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/resources/update" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "resourceId": 100,
+  "name": "Alex Engineer"
+}'
+```
+
+### `POST` `/resources/resources_list`
+
+List resources.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/resources/resources_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+## Resource groups
+
+Teams.
+
+### `GET` `/resource_groups/resource_group/get`
+
+Get group.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/resource_groups/resource_group/get" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "resourceGroupId=5"
+```
+
+### `POST` `/resource_groups/list`
+
+List groups.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/resource_groups/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```

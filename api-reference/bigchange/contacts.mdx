@@ -1,0 +1,204 @@
+---
+title: Contacts
+description: BigChange contacts, groups, and site access hours
+---
+
+# Contacts
+
+BigChange contacts, groups, and site access hours. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Date filters (list)
+
+`POST /contacts/list` accepts optional `createdAtFrom` (ISO 8601 UTC). Any creation-date window used with an upper bound must stay within the **12-month** BigChange limit. See [overview](/api-reference/bigchange/overview#date-ranges).
+
+## Contacts
+
+Customer and site records.
+
+### `GET` `/contacts/contact`
+
+Get contact.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/contacts/contact" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "contactId=12345"
+```
+
+### `POST` `/contacts/create`
+
+Create contact.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "name": "Acme",
+  "reference": "ACME-01"
+}'
+```
+
+### `POST` `/contacts/edit`
+
+Update contact.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactId": 12345,
+  "name": "Acme Ltd"
+}'
+```
+
+### `POST` `/contacts/list`
+
+List contacts.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `createdAtFrom` | string | No | Contacts created on or after (ISO 8601 UTC) |
+| `sortBy` | string | No | `createdAt` or `name` |
+| `direction` | enum | No | `ascending` or `descending` |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50,
+  "createdAtFrom": "2025-04-01T00:00:00Z",
+  "sortBy": "name",
+  "direction": "ascending"
+}'
+```
+
+### `POST` `/contacts/on_stop`
+
+Put on stop.
+
+**Enum values:**
+
+- **status:** `contactOnStop`, `creditLimitOnStop`
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/on_stop" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactId": 12345,
+  "status": "contactOnStop",
+  "stopReason": "Credit hold"
+}'
+```
+
+### `POST` `/contacts/unstop`
+
+Remove stop.
+
+**Enum values:**
+
+- **appliesTo:** `contactOnly`, `contactAndChildren`
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/unstop" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactId": 12345,
+  "appliesTo": "contactOnly"
+}'
+```
+
+### `POST` `/contacts/site_access_hours_list`
+
+List access hours.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/site_access_hours_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactId": 12345,
+  "pageNumber": 1,
+  "pageSize": 10
+}'
+```
+
+### `POST` `/contacts/site_access_hours_update`
+
+Update access hours.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/site_access_hours_update" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactId": 12345,
+  "body": [
+    {
+      "dayOfWeek": "monday",
+      "startTime": "08:00",
+      "endTime": "17:00"
+    }
+  ]
+}'
+```
+
+## Contact groups
+
+Organise contacts.
+
+### `GET` `/contact_groups/contact_group`
+
+Get group.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/contact_groups/contact_group" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "contactGroupId=99"
+```
+
+### `POST` `/contact_groups/create`
+
+Create group.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contact_groups/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "name": "Retail"
+}'
+```
+
+### `POST` `/contact_groups/list`
+
+List groups.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contact_groups/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+### `POST` `/contact_groups/update`
+
+Update group.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contact_groups/update" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "contactGroupId": 99,
+  "name": "Retail UK"
+}'
+```

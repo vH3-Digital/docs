@@ -1,0 +1,146 @@
+---
+title: BigChange API Overview
+description: BigChange FMS proxy — jobs, contacts, finance, stock, and worksheets
+---
+
+# BigChange API
+
+Unified read/write proxy to your BigChange field service data. Covers jobs, contacts, invoices, quotes, sales opportunities, purchase orders, resources, vehicles, stock, worksheets, and reference data.
+
+Tenant scope is resolved from your API key. No `company_id` is required on these requests.
+
+## Base URL
+
+```
+https://api.vh3connect.io/api:YdihQNr3
+```
+
+## Authentication
+
+Pass your VH3 API key in the `X-API-Key` header on every request. This is the same key issued for the [VH3 AI Intelligence](/api-reference/overview) layer; only the transport differs.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "pageNumber": 1,
+    "pageSize": 20
+  }'
+```
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `X-API-Key` | Yes | Your tenant API key |
+| `Content-Type` | Yes (POST) | `application/json` |
+
+Missing or invalid keys return `401 Unauthorised`.
+
+See [Authentication](/authentication) for the full two-API comparison.
+
+## Common response codes
+
+| Code | Meaning |
+|------|---------|
+| `200` | Success |
+| `201` | Created |
+| `400` | Bad request — invalid or missing parameters |
+| `401` | Unauthorised — missing or invalid API key |
+| `403` | Forbidden — insufficient permissions |
+| `404` | Not found |
+| `422` | Validation error |
+| `429` | Rate limited |
+| `500` | Internal server error |
+
+## Pagination
+
+List endpoints accept `pageNumber` (1-based) and `pageSize`. Finance list responses also include `pageItemCount` (items in the current page — use to detect the last page).
+
+| Param | Default | Max |
+|-------|---------|-----|
+| `pageSize` | 100 | 1000 |
+
+## Sorting
+
+Most list endpoints accept:
+
+| Param | Values |
+|-------|--------|
+| `sortBy` | Field name (varies by endpoint, e.g. `name`, `createdAt`) |
+| `direction` | `ascending` or `descending` |
+
+## Date ranges
+
+BigChange enforces a **maximum 12-month window** on date-range filters. If `createdAtTo` minus `createdAtFrom` (or equivalent pair) exceeds twelve calendar months, the API returns a validation error.
+
+| Rule | Detail |
+|------|--------|
+| Format | ISO 8601 UTC, e.g. `2026-01-01T00:00:00Z` |
+| Typical pair | `createdAtFrom` + `createdAtTo` — inclusive bounds on record creation time |
+| Max span | **12 months** — always; not configurable per tenant |
+| Sort tie-in | Finance lists (`invoices`, `quotes`) usually sort by `createdAt` when filtering by date |
+
+**Where date ranges apply:**
+
+| Endpoint | Date filter fields | Notes |
+|----------|-------------------|--------|
+| `POST /jobs/list` | `createdAtFrom`, `createdAtTo` | Required for job list queries |
+| `POST /contacts/list` | `createdAtFrom` | Optional lower bound on contact creation |
+| `POST /invoices/list` | `createdAtFrom`, `createdAtTo` | Optional; combine with `contactId`, `jobId`, `reference`, etc. |
+| `POST /quotes/list` | `createdAtFrom`, `createdAtTo` | Optional; same pattern as invoices |
+| `POST /purchase_orders/list` | `createdAtFrom`, `createdAtTo` | At least one non-date filter still required |
+| `POST /sales_opportunities/list` | `createdAtFrom`, `createdAtTo`, `dueDateFrom`, `dueDateTo` | At least one filter required; due-date pair also subject to 12-month max |
+
+Status timestamps on write endpoints (`paidAt`, `sentAt`, `plannedStartAt`, note `dueAt`) are single instants, not ranges — they are not subject to the 12-month window rule.
+
+## Custom fields
+
+Pass custom fields as an array when creating or updating records:
+
+```json
+{
+  "customFields": [
+    { "definitionId": 123, "value": "High priority" },
+    { "definitionId": 456, "value": null }
+  ]
+}
+```
+
+Set `value` to `null` to clear an existing value.
+
+## Common enum values
+
+| Domain | Field | Values |
+|--------|-------|--------|
+| All lists | `direction` | `ascending`, `descending` |
+| Contacts | `status` (on stop) | `contactOnStop`, `creditLimitOnStop` |
+| Contacts | `appliesTo` (stop/unstop) | `contactOnly`, `contactAndChildren` |
+| Jobs | `status` (result) | `completedOk`, `completedWithIssues` |
+| Notes | `status` | `open`, `completed`, `cancelled` |
+| Notes | `entityType` | `contact`, `job`, `resource`, `stockItem`, `vehicle`, `salesOpportunity`, `contract` |
+| Persons | `consent.status` | `awaiting`, `refused`, `granted` |
+| Persons | `consent.medium` | `email`, `click`, `telephone` |
+
+Endpoint-specific enums are listed on each page where they apply.
+
+## Path format
+
+Request URLs are `{baseUrl}{path}` with **one** slash between base and path — e.g. `https://api.vh3connect.io/api:YdihQNr3` + `/jobs/list`. Some BigChange routes include repeated segments by design (e.g. `/stock/stock/item_get`); that is not a double-slash error.
+
+## Endpoint groups
+
+| Group | Description |
+|-------|-------------|
+| [Contacts](/api-reference/bigchange/contacts) | Contacts, groups, site access hours, on-stop |
+| [Jobs](/api-reference/bigchange/jobs) | Jobs, constraints, stock, groups, types |
+| [Invoices](/api-reference/bigchange/invoices) | Invoices and line items |
+| [Quotes](/api-reference/bigchange/quotes) | Quotes and line items |
+| [Sales opportunities](/api-reference/bigchange/sales-opportunities) | Opportunities, stages, probabilities, line items |
+| [Purchase orders](/api-reference/bigchange/purchase-orders) | Purchase orders, series, line items |
+| [Notes](/api-reference/bigchange/notes) | Notes and note types |
+| [Persons](/api-reference/bigchange/persons) | Site contacts and consent |
+| [Resources](/api-reference/bigchange/resources) | Engineers/technicians and resource groups |
+| [Vehicles](/api-reference/bigchange/vehicles) | Fleet vehicles |
+| [Stock](/api-reference/bigchange/stock) | Stock details, items, movements, suppliers, categories |
+| [Worksheets](/api-reference/bigchange/worksheets) | Worksheet definitions, questions, answers |
+| [Reference data](/api-reference/bigchange/reference-data) | Department and nominal codes |

@@ -1,0 +1,100 @@
+---
+title: Email Triage
+description: Classify inbound emails by category, urgency, and routing action
+---
+
+# Email Triage
+
+Classify inbound emails against your tenant taxonomy. Returns category, urgency, sentiment, and a deterministic routing decision. Known FM portal senders can short-circuit to `portal_ingest` without an LLM call.
+
+## POST /triage/classify
+
+Classify a single email.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `body` | string | Yes | Email body (plaintext or stripped HTML) |
+| `subject` | string | No | Email subject line |
+| `sender_address` | string | Yes | Sender email address |
+| `sender_name` | string | No | Sender display name |
+| `timestamp` | string | No | ISO 8601 send time |
+| `attachments` | array | No | Attachment metadata (`filename`, `mime_type`, `size_bytes`) |
+| `is_reply` | boolean | No | Email is a reply (default `false`) |
+| `is_forward` | boolean | No | Email is a forward (default `false`) |
+| `source_ref` | string | No | External message ID for deduplication |
+| `skip_portal_check` | boolean | No | Skip portal sender detection when the caller has already routed portal traffic upstream |
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `classification.category` | string | Taxonomy category code |
+| `classification.category_confidence` | number | Category confidence (0–1) |
+| `classification.urgency` | string | `emergency`, `urgent`, `standard`, or `low` |
+| `classification.sentiment` | string | `frustrated`, `neutral`, or `positive` |
+| `classification.safety_override` | boolean | H&S language forced a safety category |
+| `classification.is_follow_up` | boolean | Repeated chase or escalation |
+| `classification.reasoning` | string | Classification rationale |
+| `decision.action` | string | `route`, `archive`, `priority_alert`, or `portal_ingest` |
+| `decision.destination` | string | Target queue or team |
+| `decision.priority` | boolean | Elevated attention required |
+| `decision.flags` | array | Routing flags (e.g. `cs_attention`, `urgency_bumped`) |
+| `decision.reasoning` | string | Routing rationale |
+| `portal_match` | string | Matched portal ID when sender is a known FM portal; otherwise null |
+| `pre_filter_hit` | boolean | Caught as noise without an LLM call |
+| `processed_at` | string | ISO 8601 processing timestamp |
+
+**Example:**
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/triage/classify" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "subject": "RE: Cabin delivery for site WX-4821",
+    "body": "We need to change the delivery date for the cabin order.",
+    "sender_address": "john@contractor.example.com",
+    "sender_name": "John Smith",
+    "timestamp": "2026-03-05T10:30:00Z",
+    "is_reply": true
+  }'
+```
+
+**Use cases:**
+
+- **Inbox routing:** Branch n8n or helpdesk workflows on `decision.action` and `decision.destination` before human review.
+- **Portal handoff:** When `decision.action` is `portal_ingest`, forward the message to `POST /ingest/email/portal` instead of a generic queue.
+- **Priority escalation:** Filter on `classification.urgency` and `decision.priority` for same-day handling.
+- **Volume analytics:** Aggregate `classification.category` counts to measure inbound mix by type.
+
+**Notes:**
+
+- Pipeline order: portal short-circuit → pre-filter → LLM classification → rule-based routing.
+- Pass `skip_portal_check: true` when upstream logic has already separated portal traffic.
+- Typical latency: instant for portal/pre-filter hits; 2–5s when the LLM runs.
+- Use `GET /triage/categories` to fetch the active taxonomy for UI pickers.
+
+---
+
+## GET /triage/categories
+
+Return the category taxonomy for UI rendering (system default plus tenant overlay).
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | No | Tenant scope; omit for system default taxonomy |
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/triage/categories" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+**Response:** `categories[]` with `value` (category code), `label`, and `description`.

@@ -38,6 +38,65 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes" \
 
 ---
 
+## POST /search/outcomes/enriched
+
+Semantic search over job outcomes with Neo4j graph enrichment. Same request body and filters as `POST /search/outcomes`. Adds `related_works` grouped by job type, engineer, and site for each hit set.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `query_text` | string | Yes | Natural language search query (3–2000 characters) |
+| `limit` | integer | No | Max results (default 10, max 100) |
+| `type_id` | integer | No | Filter by job type |
+| `category_id` | integer | No | Filter by job category |
+| `job_group_id` | integer | No | Filter by job group |
+| `vertical` | string | No | Filter by AI-classified vertical |
+| `sub_vertical` | string | No | Filter by AI-classified sub-vertical |
+| `resource_id` | integer | No | Filter by engineer |
+| `contact_id` | integer | No | Filter by customer contact |
+| `site_key` | string | No | Filter by site |
+| `start_date` | string | No | Lower bound on `actual_start_at` (`YYYY-MM-DD`) |
+| `end_date` | string | No | Upper bound on `actual_start_at` (`YYYY-MM-DD`) |
+| `status` | string | No | Filter by job status |
+| `result` | string | No | Filter by job result |
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `hits` | array | Slim outcome hits (`job_id`, `job_ref`, `score`, `contact_id`, `status`, `summary`, etc.) |
+| `count` | integer | Number of hits |
+| `related_works` | object | `by_type`, `by_engineer`, `by_site` aggregates derived from the hit set |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes/enriched" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query_text": "replaced PCB on Vaillant ecoTEC, F28 fault cleared",
+    "limit": 10,
+    "contact_id": 12345
+  }'
+```
+
+**Use cases:**
+
+- **Fault resolution:** Find similar past fixes and see completion patterns for that job type.
+- **Engineer fit:** Check whether engineers on matched outcomes have history with the customer or fault class.
+- **Site risk:** Surface repeat failures at the site alongside semantically similar outcomes.
+
+**Notes:**
+
+- Slower than `/search/outcomes` due to Neo4j enrichment (~500ms–1s additional).
+- `related_works` keys are derived from returned hits only, not the full matching corpus.
+- Returns `502` if vector search or graph enrichment fails.
+
+---
+
 ## POST /search/intake
 
 Search across raw job intake text, the original fault descriptions as entered by dispatchers or customers.
@@ -104,7 +163,7 @@ grouped by entity type plus a flat `results[]` array for back-compat.
 | `api_key` | string | Yes | Your tenant API key |
 | `q` | string | Yes | Search text, name, postcode, email address, UUID personId, phone, reference, or numeric id |
 | `limit` | integer | No | Max results per group (default 10, max 50) |
-| `types` | string | No | Comma-separated entity filter: `contact,person,engineer,job,job_type,job_category,contact_group,resource_group` |
+| `types` | string | No | Comma-separated filter. Allowed: `contact`, `person`, `engineer`, `job`, `job_type`, `job_category`, `contact_group`, `resource_group` |
 
 **Search capabilities:**
 
@@ -131,6 +190,36 @@ The response groups results under `groups.contacts`, `groups.people`,
 `matchedVia` field indicating why it was returned (`name`, `email`,
 `person_id`, `postcode`, `phonetic`, `reference`, `id`, `site_bridge`, etc.).
 
+**Use cases:**
+
+- **Typeahead UI:** Power customer, site, and job pickers in dispatch or ingest review screens.
+- **Email entity resolution:** Resolve portal payloads to `contact_id` and `site_key` before `POST /ingest/email/portal`.
+- **Connie grounding:** Disambiguate names or postcodes before semantic search or graph queries.
+
+**Notes:**
+
+- Minimum query length is 2 characters. Accepts any entity Id such asd contact, job, job_group_id, reference, resource etc
+- Use `GET /search/autocomplete/diagnose` when all groups return empty (index health).
+
+---
+
+## GET /search/autocomplete/diagnose
+
+Health check for the autocomplete index pipeline (always returns 200; inspect `missing`, `populating`, `advice`).
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/search/autocomplete/diagnose" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
 ---
 
 ## POST /search/summary-sections
@@ -144,7 +233,7 @@ Hybrid search across **Customer Summary** knowledge sections. Each customer can 
 | `company_id` | string | Yes | Your tenant identifier |
 | `api_key` | string | Yes | Your tenant API key |
 | `query_text` | string | Yes | Natural language search query |
-| `section_key` | string | No | Limit search to one section (e.g. `risk_opportunity`, `systems_equipment`) |
+| `section_key` | string | No | Limit to one section. Allowed: `customer_overview`, `job_history_patterns`, `systems_equipment`, `key_analyses`, `operational_performance`, `communication_summary`, `risk_opportunity` |
 | `contact_id` | string | No | Scope to one customer |
 | `limit` | integer | No | Max results (default: 10) |
 

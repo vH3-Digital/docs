@@ -1,0 +1,184 @@
+---
+title: Purchase Orders
+description: POs, series, and lines
+---
+
+# Purchase Orders
+
+POs, series, and lines. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+## Date filters (list)
+
+`POST /purchase_orders/list` requires **at least one filter** (`id`, `jobId`, `jobGroupId`, `contactId`, `reference`, or a date pair). Optional `createdAtFrom` / `createdAtTo` on PO creation time — **max 12 months** between them. See [overview](/api-reference/bigchange/overview#date-ranges).
+
+
+## Purchase orders
+
+Procurement.
+
+### `GET` `/purchase_orders/purchase_order`
+
+Get PO.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/purchase_order" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "id=4001"
+```
+
+### `POST` `/purchase_orders/create`
+
+Create PO.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "supplierId": 999,
+  "contactId": 12345
+}'
+```
+
+### `POST` `/purchase_orders/edit`
+
+Update PO.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "id": 4001
+}'
+```
+
+### `POST` `/purchase_orders/list`
+
+List purchase orders. **At least one filter is required.** Date range optional; max **12 months** on `createdAtFrom` → `createdAtTo`.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `jobId` | integer | One of… | Filter by job |
+| `contactId` | integer | …required | Filter by contact |
+| `id` | integer | filters | Filter by PO id |
+| `reference` | string | | Filter by reference |
+| `createdAtFrom` | string | | Created on or after (ISO 8601 UTC) |
+| `createdAtTo` | string | | Created on or before (ISO 8601 UTC) |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "jobId": 12345,
+  "createdAtFrom": "2026-01-01T00:00:00Z",
+  "createdAtTo": "2026-03-31T23:59:59Z",
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+### `POST` `/purchase_orders/series/list`
+
+List series.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/series/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+### `GET` `/purchase_orders/series`
+
+Get series.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/series" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "id=10"
+```
+
+## Line items
+
+PO lines.
+
+### `GET` `/purchase_orders/line_item`
+
+Get line.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "purchaseOrderId=4001" \
+  --data-urlencode "id=1"
+```
+
+### `POST` `/purchase_orders/line_item/list`
+
+List lines.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "purchaseOrderId": 4001,
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+### `POST` `/purchase_orders/line_item/create`
+
+Create line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/create" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "purchaseOrderId": 4001
+}'
+```
+
+### `POST` `/purchase_orders/line_item/edit`
+
+Update line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/edit" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "purchaseOrderId": 4001,
+  "id": 1
+}'
+```
+
+### `POST` `/purchase_orders/line_item/delete`
+
+Delete line.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/delete" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "purchaseOrderId": 4001,
+  "id": 1
+}'
+```

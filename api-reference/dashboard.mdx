@@ -1,0 +1,63 @@
+---
+title: Dashboard
+description: Cached tenant business-health snapshot for KPI tiles
+---
+
+# Dashboard
+
+Returns a cached, dashboard-ready snapshot of tenant operational health. Five sections — pipeline, performance, workforce, assets, and knowledge — map to `StatsDisplay` UI payloads. No LLM; read-only Neo4j aggregation plus Weaviate object counts.
+
+## GET /dashboard
+
+Tenant pulse snapshot.
+
+**Query parameters:**
+
+| Param | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `refresh` | boolean | No | Bypass cache and force a fresh snapshot (default `false`) |
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `company_id` | string | Tenant identifier |
+| `generated_at` | string | ISO 8601 snapshot time |
+| `cached_until` | string | ISO 8601 cache expiry (5-minute TTL) |
+| `sections.pipeline` | object | Job lifecycle: totals, active, unassigned, in progress, completions, status breakdown |
+| `sections.performance` | object | Last 30 days: completion rate, first-visit-fix rate, avg start/end delta (minutes) |
+| `sections.workforce` | object | Engineer counts, active today, avg jobs per engineer, top engineer |
+| `sections.assets` | object | Customers, sites, vehicles, job types, job categories |
+| `sections.knowledge` | object | Weaviate depth: intake docs, outcome docs, customer summaries, chat sessions |
+
+**Example:**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/dashboard" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key"
+```
+
+Force refresh:
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/dashboard" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "refresh=true"
+```
+
+**Use cases:**
+
+- **Home screen:** Single call to populate KPI tiles on first load.
+- **Mobile summary:** Lightweight operational overview without running separate aggregate calls.
+- **Health monitoring:** Internal or partner views of tenant graph and KB coverage.
+- **Scheduled snapshots:** n8n cron to archive pulse metrics for trend reporting.
+
+**Notes:**
+
+- Cached 5 minutes per tenant; uncached typically 200–800ms, cached under 10ms.
+- Deterministic — same underlying data yields the same metrics.
+- Returns `502` if graph or vector store queries fail.

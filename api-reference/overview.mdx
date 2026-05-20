@@ -1,13 +1,13 @@
 ---
-title: API Reference
-description: Overview of the VH3 AI API surface
+title: VH3 AI Intelligence
+description: Semantic search, graph intelligence, Connie, sentinels, reports, and email triage
 ---
 
-# API Reference
+# VH3 AI Intelligence
 
-The VH3 AI API exposes the full intelligence layer through a RESTful interface. All endpoints require `company_id` and `api_key` on every request.
+The intelligence layer exposes enriched operational data, semantic search, proactive sentinels, reports, Connie, and email triage. Every endpoint requires `company_id` and `api_key`.
 
-The intelligence produced by this API can be consumed directly, or composed into automations via our n8n nodes. **100+ pre-built workflow templates** cover common patterns: daily report distribution, sentinel alert routing, FM portal email triage, job-feed sync to BI, and more.
+For direct BigChange read/write (jobs, contacts, invoices, stock), use the separate [BigChange API](/api-reference/bigchange/overview) — same API key, `X-API-Key` header only.
 
 ## Base URL
 
@@ -17,25 +17,27 @@ https://api.vh3connect.io/api:kP8T1CK7
 
 ## Authentication
 
-Every request includes your two credentials:
-- **`company_id`:** your tenant identifier
-- **`api_key`:** your tenant API key
+Pass `company_id` and `api_key` on every request. POST: JSON body. GET: query parameters.
 
-For `POST` endpoints, these go in the JSON body. For `GET` endpoints, they go as query parameters.
+See [Authentication](/authentication) for the full two-API comparison and User Auth (JWT).
 
 ## Endpoint groups
 
 | Group | Description |
 |-------|-------------|
-| [Search](/api-reference/search) | Semantic and keyword search across job outcomes, intake text, and summaries |
+| [Search](/api-reference/search) | Semantic search, autocomplete, enriched outcomes, customer summary sections |
 | [Jobs](/api-reference/jobs) | Job feed, job details, and aggregation |
 | [Contacts](/api-reference/contacts) | Contact feed and contact detail lookup |
-| [Sentinels](/api-reference/sentinels) | Run and query proactive sentinel monitors, continuous pattern detection |
+| [Dashboard](/api-reference/dashboard) | Cached tenant KPI snapshot (pipeline, performance, workforce, assets, knowledge) |
+| [Sentinels](/api-reference/sentinels) | Run and query proactive sentinel monitors |
 | [Reports](/api-reference/reports) | Generate daily, weekly, and account-level reports |
-| [Briefings](/api-reference/briefings) | Pre-visit engineer briefings with full site context |
-| [Connie](/api-reference/connie) | Conversational AI, ask questions, get cited answers |
-| [Cases](/api-reference/cases) | Case management, create, track, and resolve operational cases |
-| [Teams](/api-reference/teams) | Team management, members, entity linking, access scoping |
+| [Briefings](/api-reference/briefings) | Pre-visit engineer briefings and call scripts |
+| [Weather](/api-reference/weather) | Forecast, historical, and graph-resolved weather |
+| [Email Triage](/api-reference/triage) | Classify inbound emails |
+| [Email Ingest](/api-reference/ingest) | Extract structured data from FM portal emails |
+| [Connie](/api-reference/connie) | Conversational AI with cited answers |
+| [Cases](/api-reference/cases) | Case management |
+| [Teams](/api-reference/teams) | Team management and access scoping |
 
 ## Request format
 
@@ -76,34 +78,12 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
 | `401` | Unauthorised, invalid API key |
 | `404` | Not found, resource does not exist for your tenant |
 | `409` | Conflict, a task is already running for this resource |
-| `422` | Validation error, request understood but semantically invalid |
-| `429` | Rate limited, too many requests |
-| `500` | Server error, contact support |
-
-## Pagination
-
-List endpoints use `limit`/`offset` or `page_size`/`page_number`:
-
-```json
-{
-  "company_id": "your-company-id",
-  "api_key": "your-api-key",
-  "page_size": 20,
-  "page_number": 1
-}
-```
+| `422` | Validation error |
+| `429` | Rate limited |
+| `500` | Server error |
 
 ## Task-based endpoints
 
-Long-running operations (backfill, welcome pack, reports) return a `task_id` immediately. Poll the corresponding status endpoint to track progress:
-
-```json
-{
-  "task_id": "abc-123",
-  "status": "running",
-  "progress": 45,
-  "message": "Processing batch 5 of 11"
-}
-```
+Long-running operations return a `task_id` immediately. Poll the status endpoint until complete.
 
 Possible statuses: `pending`, `running`, `completed`, `failed`, `cancelled`.

@@ -49,25 +49,45 @@
         "tab": "API Reference",
         "groups": [
           {
-            "group": "API Reference",
+            "group": "VH3 AI Intelligence",
+            "expanded": true,
             "pages": [
-              "api-reference/overview"
-            ]
-          },
-          {
-            "group": "Endpoints",
-            "pages": [
+              "api-reference/overview",
               "api-reference/search",
               "api-reference/jobs",
               "api-reference/contacts",
+              "api-reference/dashboard",
               "api-reference/sentinels",
               "api-reference/reports",
               "api-reference/briefings",
+              "api-reference/weather",
+              "api-reference/triage",
+              "api-reference/ingest",
               "api-reference/connie",
               "api-reference/cases",
               "api-reference/teams",
               "api-reference/users",
               "api-reference/user-auth"
+            ]
+          },
+          {
+            "group": "BigChange API",
+            "expanded": false,
+            "pages": [
+              "api-reference/bigchange/overview",
+              "api-reference/bigchange/contacts",
+              "api-reference/bigchange/jobs",
+              "api-reference/bigchange/invoices",
+              "api-reference/bigchange/quotes",
+              "api-reference/bigchange/sales-opportunities",
+              "api-reference/bigchange/purchase-orders",
+              "api-reference/bigchange/notes",
+              "api-reference/bigchange/persons",
+              "api-reference/bigchange/resources",
+              "api-reference/bigchange/vehicles",
+              "api-reference/bigchange/stock",
+              "api-reference/bigchange/worksheets",
+              "api-reference/bigchange/reference-data"
             ]
           }
         ]

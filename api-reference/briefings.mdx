@@ -5,11 +5,13 @@ description: Pre-visit engineer briefings with full operational context
 
 # Briefings
 
-The Briefings endpoint generates a comprehensive pre-visit briefing for an engineer attending a site. It pulls together job history, site context, equipment records, weather forecast, recent communications, and diagnostic precedents into a single package.
+Generate a structured pre-visit briefing and call script for an engineer assigned to a job. Pulls job data from Neo4j, customer summary from Weaviate (or regenerates via Gemini), and produces markdown briefing content plus a natural-language call opener.
+
+Designed for `onTheWay` or `scheduled` job transitions.
 
 ## POST /briefing/generate
 
-Generate a pre-visit briefing for a specific job.
+Generate an engineer briefing for a specific job.
 
 **Request body:**
 
@@ -17,10 +19,24 @@ Generate a pre-visit briefing for a specific job.
 |-------|------|----------|-------------|
 | `company_id` | string | Yes | Your tenant identifier |
 | `api_key` | string | Yes | Your tenant API key |
-| `job_id` | integer | Yes | Job to generate briefing for |
+| `job_id` | integer | Yes | Job to brief |
 | `contact_id` | integer | Yes | Customer contact for the job |
-| `force_regenerate_summary` | boolean | No | Force regeneration even if a cached briefing exists |
-| `job_payload` | object | No | Additional job data to include in the briefing context |
+| `force_regenerate_summary` | boolean | No | Bypass cached Weaviate customer summary and regenerate |
+| `job_payload` | object | No | Raw job fallback when the job is not yet in Neo4j (ignored if the job exists in the graph) |
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `briefing` | string | Structured field service briefing (markdown) |
+| `call_script` | string | Natural-language call opener for voice agents |
+| `customer_summary` | string | Full customer analytical report used as context |
+| `job_data` | object | Job reference, status, type, customer, engineer, planned times, site address |
+| `resource_contact` | object | Engineer `mobile` and `email` from the graph |
+| `parent_contact` | object | Parent customer `contact_id` and `name` when `HAS_PARENT` exists |
+| `engineer_name` | string | Assigned engineer name |
+| `generated_at` | string | ISO 8601 generation timestamp |
+| `usage` | object | Token usage across Gemini calls |
 
 **Example:**
 
@@ -35,12 +51,14 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/briefing/generate" \
   }'
 ```
 
-**Response includes:**
+**Use cases:**
 
-- Site summary and access requirements
-- Previous job history at this site
-- Related fault patterns and diagnostic precedents
-- Equipment profile
-- Weather forecast for the scheduled date
-- Recent communications related to this job
-- Engineer-specific context (past experience at this site)
+- **Pre-visit pack:** Deliver site history, equipment context, and diagnostic precedents before arrival.
+- **Voice briefing:** Feed `call_script` to an outbound call agent; send `briefing` via `POST /briefing/send-email` after the call.
+- **Dispatcher assist:** Regenerate with `force_regenerate_summary: true` when account context has changed since the last visit.
+
+**Notes:**
+
+- Uses Gemini; subject to AI capacity limits (`503` with `Retry-After` when saturated).
+- Returns `404` when the job or contact cannot be resolved.
+- Typical latency 5–15s depending on summary cache hit.

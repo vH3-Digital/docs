@@ -1,0 +1,104 @@
+---
+title: Worksheets
+description: Forms and answers
+---
+
+# Worksheets
+
+Forms and answers. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Shared parameters
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `pageNumber` | integer | Page index (1-based) |
+| `pageSize` | integer | Items per page (default 100, max 1000) |
+| `sortBy` | string | Sort field (endpoint-specific) |
+| `direction` | enum | `ascending` or `descending` |
+
+
+## Worksheets
+
+Digital forms.
+
+### `GET` `/worksheet/worksheet_get`
+
+Get worksheet.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/worksheet/worksheet_get" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "worksheetId=1"
+```
+
+### `POST` `/worksheet/worksheet_list`
+
+List worksheets.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/worksheet/worksheet_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+### `POST` `/worksheet/worksheet_questions_get`
+
+Get questions.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/worksheet/worksheet_questions_get" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "worksheetId": 1,
+  "pageNumber": 1,
+  "pageSize": 100
+}'
+```
+
+### `POST` `/worksheet/worksheet_answers_list`
+
+List answers.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/worksheet/worksheet_answers_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "worksheetId": 1,
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
+
+## Worksheet groups
+
+Form groups.
+
+### `GET` `/worksheet_groups/worksheet_group_get`
+
+Get group.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/worksheet_groups/worksheet_group_get" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "worksheetGroupId=1"
+```
+
+### `POST` `/worksheet_groups/worksheet_group_list`
+
+List groups.
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/worksheet_groups/worksheet_group_list" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "pageNumber": 1,
+  "pageSize": 50
+}'
+```
