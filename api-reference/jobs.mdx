@@ -1,6 +1,6 @@
 ---
 title: Jobs
-description: Job feed and job details
+description: Job feed, account job feed, and job details
 ---
 
 # Jobs
@@ -9,33 +9,117 @@ The Jobs endpoints provide access to your enriched job records, including AI-ext
 
 ## GET /jobs/feed
 
-Returns a paginated feed of enriched jobs for your company, ordered by most recent.
+Returns a paginated feed of enriched jobs for your company. Supports filtering by entity, status, date range, and sort direction. All filters are optional and composable as AND conditions.
 
 **Query parameters:**
 
-| Param | Type | Required | Description |
-|-------|------|----------|-------------|
-| `company_id` | string | Yes | Your tenant identifier |
-| `api_key` | string | Yes | Your tenant API key |
-| `page_size` | integer | No | Results per page |
-| `page_number` | integer | No | Page number |
-| `contact_id` | string | No | Filter by customer contact |
-| `resource_id` | string | No | Filter by engineer/resource |
-| `type_id` | string | No | Filter by job type |
-| `category_id` | string | No | Filter by job category |
-| `status` | string | No | Filter by job status |
-| `result` | string | No | Filter by job result |
-| `compact` | boolean | No | Return compact response (fewer fields) |
+| Param | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `company_id` | string | Yes | — | Your tenant identifier |
+| `api_key` | string | Yes | — | Your tenant API key |
+| `page_size` | integer | No | 20 | Results per page (max 200) |
+| `page_number` | integer | No | 1 | Page number (1-indexed) |
+| `contact_id` | string | No | — | Filter by customer contact ID |
+| `resource_id` | string | No | — | Filter by engineer/resource ID |
+| `type_id` | string | No | — | Filter by job type ID |
+| `category_id` | string | No | — | Filter by job category ID |
+| `status` | string | No | — | Filter by status — single value or comma-separated (e.g. `completedOk,completedWithIssues`) |
+| `result` | string | No | — | Filter by job result |
+| `date_from` | string | No | — | ISO date/datetime — include jobs on or after (inclusive) |
+| `date_to` | string | No | — | ISO date/datetime — exclude jobs on or after (exclusive) |
+| `date_field` | string | No | `createdAt` | Which timestamp `date_from`/`date_to` apply to: `createdAt`, `plannedStartAt`, `plannedEndAt`, `actualStartAt`, `actualEndAt` |
+| `direction` | string | No | `desc` | Sort direction on `createdAt` — `asc` or `desc` |
+| `compact` | boolean | No | false | Strip nulls/empties for LLM consumption |
 
-**Example:**
+**Example — completed jobs from May 2026:**
 
 ```bash
 curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
   --data-urlencode "company_id=your-company-id" \
   --data-urlencode "api_key=your-api-key" \
   --data-urlencode "page_size=20" \
-  --data-urlencode "page_number=1"
+  --data-urlencode "status=completedOk,completedWithIssues" \
+  --data-urlencode "date_from=2026-05-01" \
+  --data-urlencode "date_to=2026-06-01" \
+  --data-urlencode "date_field=actualEndAt"
 ```
+
+---
+
+## GET /jobs/feed/account
+
+Returns a paginated feed of jobs scoped to a **parent account and all its child contacts**. Pass any contact ID — parent or child — and the endpoint resolves the full hierarchy automatically.
+
+<Note>
+This endpoint resolves the `HAS_PARENT` graph relationship. If you pass a child contact ID, the parent is found and all sibling contacts are included. If you pass a parent, all children are included. Standalone contacts return only their own jobs.
+</Note>
+
+**How hierarchy resolution works:**
+
+| You pass | What happens |
+|----------|-------------|
+| A parent contact ID | Returns jobs for the parent + all child contacts |
+| A child contact ID | Finds the parent, returns jobs for parent + all siblings |
+| A standalone contact ID | Returns jobs for that contact only |
+
+**Query parameters:**
+
+| Param | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `company_id` | string | Yes | — | Your tenant identifier |
+| `api_key` | string | Yes | — | Your tenant API key |
+| `contact_id` | string | Yes | — | Any contact ID in the account hierarchy (parent or child) |
+| `page_size` | integer | No | 20 | Results per page (max 200) |
+| `page_number` | integer | No | 1 | Page number (1-indexed) |
+| `resource_id` | string | No | — | Filter by engineer/resource ID |
+| `type_id` | string | No | — | Filter by job type ID |
+| `category_id` | string | No | — | Filter by job category ID |
+| `status` | string | No | — | Filter by status — single value or comma-separated (e.g. `completedOk,completedWithIssues`) |
+| `result` | string | No | — | Filter by job result |
+| `date_from` | string | No | — | ISO date/datetime — include jobs on or after (inclusive) |
+| `date_to` | string | No | — | ISO date/datetime — exclude jobs on or after (exclusive) |
+| `date_field` | string | No | `createdAt` | Which timestamp `date_from`/`date_to` apply to: `createdAt`, `plannedStartAt`, `plannedEndAt`, `actualStartAt`, `actualEndAt` |
+| `direction` | string | No | `desc` | Sort direction on `createdAt` — `asc` or `desc` |
+| `compact` | boolean | No | false | Strip nulls/empties for LLM consumption |
+
+**Response** includes an `account` block with the resolved hierarchy context:
+
+```json
+{
+  "account": {
+    "parentContactId": 1234,
+    "parentName": "Whitbread PLC",
+    "parentReference": "W140",
+    "childCount": 462,
+    "contactIds": [1234, 5678, 5679, "..."],
+    "contactGroup": "Parent - Agreed rates"
+  },
+  "jobs": ["..."],
+  "page": 1,
+  "pageSize": 25,
+  "totalJobs": 312,
+  "totalPages": 13
+}
+```
+
+**Example — all completed jobs for an account in Q1 2026:**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed/account" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "contact_id=5589521" \
+  --data-urlencode "status=completedOk,completedWithIssues" \
+  --data-urlencode "date_from=2026-01-01" \
+  --data-urlencode "date_to=2026-04-01" \
+  --data-urlencode "page_size=50"
+```
+
+**Use cases:**
+
+- **Monthly account reviews** — scope by `date_from`/`date_to` with `date_field=actualEndAt` to see all work delivered to a customer account in a period.
+- **Account + type filtering** — add `type_id` to see only fire alarm or HVAC jobs across the whole account hierarchy.
+- **Account performance** — combine with `status=completedOk,completedWithIssues` to measure first-visit fix rate across all child sites.
 
 ---
 
