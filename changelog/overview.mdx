@@ -1,0 +1,35 @@
+---
+title: Changelog
+description: New features, updates, and fixes shipped in VH3 AI
+mode: center
+---
+
+<Update label="2026-05-22" description="Week of 19 May 2026">
+
+The first public release of VH3 AI is live. The intelligence layer, automation surfaces, and agent kits are all available now.
+
+## New features
+
+**Intelligence Layer API.** A unified API for field service intelligence, covering [semantic search](/api-reference/search), [jobs](/api-reference/jobs), [contacts](/api-reference/contacts), [sites and dashboards](/api-reference/dashboard), [briefings](/api-reference/briefings), [weather](/api-reference/weather), [triage](/api-reference/triage), [cases](/api-reference/cases), [teams](/api-reference/teams), and [users](/api-reference/users). Read the [API overview](/api-reference/overview) to get started.
+
+**Connie, the conversational assistant.** [Connie](/api-reference/connie) answers operational questions in natural language with cited, data-backed responses drawn from the full knowledge graph, semantic index, reports, and sentinels. See the [Connie guide](/guides/connie) for capabilities and session handling.
+
+**Sentinels for proactive monitoring.** [Sentinels](/api-reference/sentinels) continuously watch your data for operational risks and revenue opportunities — engineer performance slip, site deterioration, SLA breach clusters, repeat visits, and more. Configure thresholds per tenant. See the [sentinels guide](/guides/sentinels).
+
+**Reports.** Generate enriched operational [reports](/api-reference/reports) with the full intelligence layer context — including pre-visit briefings and recurring fault investigations. Read the [reports guide](/guides/reports).
+
+**BigChange API proxy.** A unified read/write proxy to BigChange field service data covering [jobs](/api-reference/bigchange/jobs), [contacts](/api-reference/bigchange/contacts), [invoices](/api-reference/bigchange/invoices), [quotes](/api-reference/bigchange/quotes), [sales opportunities](/api-reference/bigchange/sales-opportunities), [purchase orders](/api-reference/bigchange/purchase-orders), [worksheets](/api-reference/bigchange/worksheets), [stock](/api-reference/bigchange/stock), and more. One API key works across the intelligence layer and BigChange. See the [BigChange overview](/api-reference/bigchange/overview).
+
+**n8n community node.** The official [`n8n-nodes-vh3ai`](/n8n-node) node is published on npm and works on self-hosted n8n, n8n Cloud, and VH3-managed instances. One credential covers both BigChange and the intelligence layer, and the node is `usableAsTool` for n8n AI agents.
+
+**Native integrations.** Connect Gmail, Google Drive, Outlook, calendars, Xero, Slack, and more directly inside the platform. Per-user and organisation-level connections are supported with a single auth step — no API keys, no middleware. See [native integrations](/native-integrations).
+
+**Agent Starter Kits.** Drop-in configurations for the most common AI tools: [AGENTS.md](/agent-kits/agents-md), [Cursor rules](/agent-kits/cursor-rules), [MCP setup](/agent-kits/mcp-setup), [Claude Projects](/agent-kits/claude-projects), [Claude Skills](/agent-kits/claude-skills), and [n8n agents](/agent-kits/n8n-agents). Start at the [overview](/agent-kits/overview).
+
+**Ingest API.** A direct [ingest endpoint](/api-reference/ingest) for streaming additional data sources into the intelligence layer.
+
+**User authentication.** A dedicated [user auth API](/api-reference/user-auth) for building applications on top of the intelligence layer.
+
+**AI-friendly documentation.** This site now exposes [`llms.txt`](https://docs.vh3.ai/llms.txt), [`llms-full.txt`](https://docs.vh3.ai/llms-full.txt), per-page Markdown exports (append `.md` to any URL), and a [documentation MCP](https://docs.vh3.ai/mcp) for coding agents.
+
+</Update>
