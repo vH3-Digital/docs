@@ -1,0 +1,218 @@
+---
+title: Working with your operation
+description: How operators brief Connie, run discovery, and rely on a platform that is always on
+---
+
+# Working with your operation
+
+This guide is for the people who actually run the work: operations managers, coordinators, dispatch, account managers, and engineers. It explains what you should expect from VH3 AI after onboarding, how to brief Connie like a senior ops lead, and which habits keep your team sharp on day one and day three hundred.
+
+You do not need to be technical to use this page. If you can brief a junior colleague, you can brief Connie.
+
+<Card title="Already familiar with discovery?" icon="magnifying-glass" href="/guides/operational-discovery">
+  Jump to the search-side companion: precedent search, entity resolution, and customer knowledge sections.
+</Card>
+
+## 1. What you have after onboarding
+
+After your discovery sprint, four things are in place:
+
+- **An intelligence layer on your jobs.** Up to five years of history is enriched, resolved, and connected to the right customer, place, and engineer. New work flows into the same model as it lands.
+- **A platform that runs 24/7.** Sentinels watch your operation continuously. Reports arrive on the schedule you set. Enrichment happens as data lands.
+- **Connie working alongside the team.** Connie reads the same model your dashboards and reports read. She handles ambiguous, conversational questions, follows up across turns, and cites what she found.
+- **Autonomous follow-through.** Sentinels, cases, and teams let work move forward in the background. A pattern is detected, a case is opened against the right team, a draft brief is ready when the coordinator looks at the queue. You do not have to chase the platform; it chases the work.
+
+You steer the day through chat, search, and cases. The platform keeps running between sessions.
+
+## 2. Two speeds: lookup, then judgement
+
+Almost every operational question splits into two parts: find the precedent, then decide. VH3 AI separates those two speeds on purpose.
+
+| Layer | What it does | Typical speed | Uses an LLM? |
+|-------|---------------|---------------|--------------|
+| **Discovery** | Find similar jobs, resolve entities, rank precedents, scope by customer | Sub-second | No |
+| **Synthesis** | Explain, brief, investigate, narrate, recommend next steps | Seconds | Yes (your key, your model) |
+
+Operator rule of thumb: **search finds the precedent; Connie helps you decide.**
+
+- If you know the question is "have we seen this before," use discovery first ([Operational discovery](/guides/operational-discovery)).
+- If you need a brief, a comparison, or a "why," use Connie.
+- If a sentinel surfaced the issue, start from the sentinel digest, then ask Connie to build the brief around it.
+
+## 3. Talking to Connie
+
+Connie is an agent, not a search box. She handles ambiguity well: "what is going on with Pure Gym?" or "any sites worth watching this week?" will get useful answers, because she reads your model, picks the right tools, and cites what she finds.
+
+You do not need a prompt template. Treat her like a capable colleague who knows the operation but has not been in the room for the last conversation. Three habits make the difference between a good answer and a great one. Use them when the question matters.
+
+### Habit 1: Say what is on your mind
+
+A short sentence about the situation usually beats a long, formal brief. Connie infers the rest.
+
+- "We have had three repeat HVAC callouts at Tesco Express this quarter, what is going on?"
+- "Pure Gym QBR is on Friday, walk me through the story."
+- "Engineer briefing for Berwyn House at 9am, anything I should know?"
+
+If you have a hunch, share it. Connie will check or push back.
+
+### Habit 2: Name the audience when output matters
+
+When the answer is going somewhere, mention where.
+
+- "This is for the morning standup, three bullets."
+- "Draft a polite email to the client, no new commitments."
+- "Engineer briefing for the van — short, spoken English."
+
+You do not need to specify structure beyond that. Connie writes for the audience you name.
+
+### Habit 3: Invite pushback
+
+Connie cites her sources. If a number matters, ask her to show it.
+
+- "Disagree if the data says so."
+- "Show me which jobs you used."
+- "Are you sure that is the same site?"
+
+This is how you build trust quickly. After a few exchanges you stop second-guessing routine answers and reserve scrutiny for decisions that need it.
+
+<Note>
+**You do not have to be perfect.** Connie handles vague questions, fixes typos in customer names, and asks for clarification when she needs it. The habits above sharpen the best answers; they are not a precondition for getting a useful one.
+</Note>
+
+## 4. Role playbooks
+
+Use these as starting points. Each row pairs the situation with the right surface and an example brief.
+
+### Call handler
+
+| Situation | Use | Example brief |
+|-----------|-----|---------------|
+| New callout, unfamiliar fault language | Discovery (`/search/outcomes`) | "Combi losing flame after fan runs, looking for similar precedents in last 12 months." |
+| Wrong-sounding customer name | Discovery (`/search/autocomplete`) | "Smyth Alarms" vs "Smith Security": pick the right contact before doing anything else. |
+| Customer asks "what did you do last time" | Connie | "Recap the last two visits we did for Oak House for this caller. Plain English." |
+
+### Coordinator / dispatcher
+
+| Situation | Use | Example brief |
+|-----------|-----|---------------|
+| Choosing who to send | Discovery + Connie | Search for the kit; ask Connie "who has done this kind of work at this site before, and what was the outcome." |
+| Late running day | Sentinels digest | Open the morning sentinel digest. Treat performance slips and SLA risk first. |
+| Escalation from a customer | Cases | Open a case, link the jobs and sentinel triggers, assign to the regional team. |
+
+### Engineer (mobile)
+
+| Situation | Use | Example brief |
+|-----------|-----|---------------|
+| Pre-visit briefing | Connie | "Brief me on my 9am at Berwyn House. Last three visits, any open risks, kit on site." |
+| On-site, unfamiliar kit | Discovery | Search outcomes for the model number or fault description; verify before changing parts. |
+| End of day | Cases | If something is unresolved, add a note to the case so the next visit starts informed. |
+
+### Contracts / account manager
+
+| Situation | Use | Example brief |
+|-----------|-----|---------------|
+| QBR prep | Connie + reports | "Pull the Q1 account monthly for Pure Gym. Then write the three-bullet narrative for the QBR deck. Exclude planned maintenance from repeat-visit numbers." |
+| Quiet account | Sentinels + Connie | Read the dormant-customer sentinel. Then ask Connie for the story behind the gap. |
+| QBR follow-up | Cases | Open a case for each commitment; link the relevant jobs. |
+
+### New joiner (first week)
+
+| Situation | Use | Example brief |
+|-----------|-----|---------------|
+| Learning the account | Discovery summary sections | Search by section: `risk_opportunity` for one account, then `job_history_patterns`. |
+| Learning the language | Connie | "Explain what 'fire alarm panel isolate' means in our operation and which engineers handle it." |
+| Catching up on a week | Reports | Read the weekly report; ask Connie for clarifications, not a re-summary. |
+
+## 5. What the platform does while no one is asking
+
+Most of the work the platform does happens before any human opens a screen. It runs continuously against your data and the result is a model that is ready to answer, not a system that has to think when asked.
+
+### Ingest and normalisation
+
+Every job, contact, worksheet, note, and engineer record flows in from your FMS and connected systems. Fields are normalised to a single operational schema, dates to ISO, statuses to a canonical set, customer and site names to standard forms. Multi-FMS tenants land in one model; the upstream system stops mattering once the record is in.
+
+### Entity resolution
+
+Source data is written by different people on different days. "Tesco PLC", "Tesco Stores", and "Tesco Express Watford" resolve to the same customer. Engineer names with initials, abbreviations, and inconsistent spelling resolve to the same resource. Multi-strategy matching (phonetic, fuzzy, postcode, email, reference) runs at ingest and continuously as new records arrive, so contact, site, engineer, and job records stay linked across systems.
+
+### Enrichment
+
+Each job passes through the enrichment pipeline once. Fault type is extracted and classified. Work performed is structured. Equipment involved is identified. The operational outcome is resolved into a compact, token-efficient record. The expensive interpretive work happens at ingest, not at query time. Every downstream consumer, report, briefing, Connie, automation, custom app, reads the same prepared artefact.
+
+### Graph construction and standardisation
+
+Enriched records are written into the operational graph. Jobs link to engineers, sites, customers, equipment, outcomes, communications, and previous visits. The graph is the single relational substrate; semantic search, aggregations, and synthesis read against it. Customer hierarchies (parent, child, multi-site) are maintained automatically.
+
+### Pre-computation
+
+Several artefacts are computed in advance so reads stay fast:
+
+- **Semantic indexes** over fault descriptions, job notes, and worksheet answers are built at ingest and updated incrementally.
+- **Customer Summary** knowledge objects are generated and stored as seven structured sections per account, refreshed on schedule or when job drift thresholds are met.
+- **Dashboard snapshots** are cached, deterministic KPI roll-ups; landing pages do not invoke an LLM.
+- **Aggregations** (counts, on-time %, completion rates, by engineer, by type, by period) read from the prepared model.
+
+### Continuous analysis
+
+Sentinels run 24/7 against the graph. Repeat visits, SLA drift, dormant accounts, performance slips, equipment failure clusters, engineer-flagged follow-ups, growth signals: each is a structured query with a configurable threshold. Detection is a graph read; there is no LLM cost at the watch layer. Triggers land in the digest, the API, and any automation wired up to them.
+
+### Routing and follow-through
+
+When a sentinel crosses a threshold, the platform can open a **case** against the **team** that owns the affected customer or region. Jobs and triggers are attached as case items; participants are set from the team. A draft brief can be prepared at the same time. By the time a coordinator opens their queue, the work is queued with evidence already attached.
+
+The platform is not waiting for you to ask. Your job, when you do log in, is to steer and verify the work that has already been done.
+
+## 6. Session habits
+
+Small habits keep answers reliable and costs predictable.
+
+- **One session per topic.** A session is a conversation about one thing. When the topic changes (new customer, new question, new day), start a new session. Sessions are managed, recoverable, and searchable, so the previous one is preserved as evidence; you do not need to keep it open.
+- **Pass the same `session_id` while you are in a topic.** Continuity inside a thread is what makes follow-ups like "drill into the third site" work.
+- **Set `contact_id` when you have a customer in scope.** Connie loads the right opening context (customer summary, recent jobs) automatically; you do not have to brief it from scratch.
+- **Name dates explicitly.** "Last quarter" is ambiguous in March. "1 January to 31 March 2026" is not.
+- **Verify job refs.** Connie cites job references and customer names. Click through or open the job in your FMS before quoting a number externally.
+- **For commercial or safety calls,** consult [Agent observability](/guides/agent-observability) for the evidence standards Connie uses. That guide is technical; you do not need it for routine briefings.
+
+## 7. A few things worth knowing
+
+These are not rules. They are the small things that make the platform more useful, faster.
+
+- **Name the customer when you can.** "Tesco Express" gets a sharper answer than "the supermarket account." Connie can resolve ambiguous names, but specificity saves a turn.
+- **Treat the morning sentinel digest like an inbox triage.** It is a short list of what changed since you last looked, prepared continuously by the platform. Read it before you start the day.
+- **Click through citations when a number matters.** Connie cites job references. Verifying once builds the trust you need to act on the next answer without checking.
+- **Keep sessions focused.** Short, topic-scoped sessions answer faster, cost less, and produce a cleaner audit trail than long threads that wander.
+
+## 8. First-week checklist
+
+A short loop that aligns with the discovery sprint and gets the whole team productive.
+
+1. Run one **discovery search** for a fault you remember well. Read the top three precedents.
+2. Open a focused Connie session on a real question you have today. Name the customer and the audience for the answer.
+3. Open one **sentinel digest** in the morning. Pick one finding to action.
+4. Read one **scheduled report** (daily or weekly). Note what it would change about your standup.
+5. If your tier includes them, open a **case** for one follow-through item and assign it to the right team.
+
+See [Pricing](/pricing) for what is included in your tier. The point of the checklist is the loop, not the volume.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Operational discovery" icon="magnifying-glass" href="/guides/operational-discovery">
+    Search, precedents, entity resolution, and customer knowledge sections.
+  </Card>
+  <Card title="Connie" icon="message-bot" href="/guides/connie">
+    Conversational synthesis with citations. JSON, usage, and tool calls.
+  </Card>
+  <Card title="Sentinels" icon="bell" href="/guides/sentinels">
+    Continuous, always-on pattern detection at the data layer.
+  </Card>
+  <Card title="Reports" icon="chart-line" href="/guides/reports">
+    Scheduled operational briefings delivered before the standup.
+  </Card>
+  <Card title="Users and teams" icon="users" href="/guides/users-and-teams">
+    Who gets access, roles, and how teams scope what people see.
+  </Card>
+  <Card title="Agent observability" icon="chart-mixed" href="/guides/agent-observability">
+    Evidence standards for Connie answers when the decision is commercial or safety-critical.
+  </Card>
+</CardGroup>

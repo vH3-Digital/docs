@@ -81,6 +81,24 @@ An **account review** synthesises the relational picture of every job linked to 
 
 None of these workflows work reliably on a single retrieval primitive. They require synthesis.
 
+## The domain model: why the substrate speaks one language
+
+The four primitives only hold together if what they contain is consistent. That requires an opinionated decision most intelligence platforms avoid: a defined model of what field service concepts actually are.
+
+Field service is not generic business data. It is work, performed at a place, for a customer, by an engineer, on equipment, with an outcome. Those concepts have specific meanings, specific relationships, and specific cardinalities. A job is not a row. A customer is not a string. A site is not an address field. They are entities with histories, hierarchies, and connections to each other that have operational consequences.
+
+VH3 AI maps all incoming data to a canonical model of these concepts. Source systems spell names differently, use different field structures, and make different assumptions about what a record means. The model does not inherit those inconsistencies. By the time a job enters the intelligence layer, it is a job: classified, resolved, linked to the right customer, site, and engineer, with its outcome structured and its equipment identified. Not a BigChange record. Not a Simpro export. A job, in the operational sense.
+
+This has three practical consequences:
+
+**Queries are consistent across sources.** An aggregation of engineer performance, a semantic search for a fault type, a sentinel watching for repeat visits: all of these ask the same question regardless of which FMS the underlying data came from. You do not write different queries for different systems.
+
+**Entity resolution works because the model has rules.** Resolution is not guesswork or fuzzy string matching alone. The model defines what a customer is, what makes two customer records the same customer, and what relationships must hold before a link is drawn. Those rules are applied consistently at ingest and maintained as new data arrives.
+
+**Intelligence is portable.** If you connect a second field system, or replace the first, the operational picture does not fork. New data resolves into the same model. Historical records stay linked to the same entities. The intelligence you have built belongs to the model, not to the source system it came from.
+
+The model is not published. Its specific schema, classification taxonomy, and resolution rules represent significant accumulated design work and are part of what the platform provides. What matters for builders is the contract it delivers: consistent, resolved, connected records at every endpoint, regardless of what is upstream.
+
 ## Pre-computation and the cost of retrieval
 
 There is a second reason this architecture matters: cost.

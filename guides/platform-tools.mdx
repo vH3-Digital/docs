@@ -1,0 +1,150 @@
+---
+title: Platform tools
+description: The full tool surface VH3 AI exposes for builders, agents, and integrations. What each tool does, when to reach for it, and what good looks like.
+---
+
+# Platform tools
+
+This page is the **tool inventory** for builders, evaluating AI agents, and anyone deciding whether VH3 AI is the right substrate. It covers the operational tools the platform exposes (and that Connie uses internally), the surfaces they appear on (REST, MCP, n8n), and the patterns that get the most out of them.
+
+If you are looking for **operator habits**, start at [Working with your operation](/guides/working-with-your-operation). If you are looking for **deployment patterns**, see [Deploying secure apps](/guides/deploying-secure-apps).
+
+## Two speeds, one substrate
+
+Every tool here reads the same prepared operational model: graph + semantic + structured + temporal memory. The split that matters is **speed**.
+
+| Speed | Tools | Typical latency | LLM? |
+|-------|-------|-----------------|------|
+| **Discovery** | Search, autocomplete, feeds, summary sections, sentinels, dashboard, weather | Sub-second | No |
+| **Synthesis — conversational** | Connie chat, investigate | Seconds | Yes (BYOK) |
+| **Synthesis — platform** | Report generation, briefings, email triage | Seconds | Yes (included in platform) |
+| **Workflow** | Cases, teams, ingest, scheduled reports, automations | Event / scheduled | Optional |
+
+A good integration uses fast tools for triggers and filters, calls synthesis only when narrative is required, and uses workflow tools for ownership and follow-through.
+
+## Tool inventory
+
+### Discovery: lookup that does not need a model
+
+| Tool | Endpoint | What it does | Where to reach for it |
+|------|----------|--------------|------------------------|
+| Semantic outcomes search | `POST /search/outcomes` | Find jobs that resemble a fault or outcome, ranked by meaning + keywords | Dispatch screens, pre-visit research, "have we seen this before" |
+| Intake search | `POST /search/intake` | Match on the original reported fault text | When original wording matters more than the resolution |
+| Enriched intake | `POST /search/intake/enriched` | Intake hits with their full connected context per record | When you want the thread, not just the snippet |
+| Summary-section search | `POST /search/summary-sections` | Search across the seven customer-knowledge sections | Portfolio questions ("which accounts mention recurring boiler issues?") |
+| Autocomplete / entity resolution | `GET /search/autocomplete` | Resolve fuzzy or misspelled customers, people, engineers, and jobs | Call handling, email triage, automations that need the right account |
+| Jobs feed | `GET /jobs/feed` | Paginated job list with structured filters (contact, date, type, status, engineer) | Account 360 views, workload audits, account-hierarchy roll-ups |
+| Job aggregate | `POST /jobs/aggregate` | Aggregations: count, on-time %, completion rate, grouped by engineer / type / period | KPIs, comparisons, charts |
+| Contacts feed | `GET /contacts/feed` | Paginated contact list with parent / child hierarchy | Portfolio views, partner-portal scoping |
+| Dashboard snapshot | `GET /dashboard/snapshot` | Cached, deterministic tenant KPI snapshot across five sections | Home screens, no-LLM landing pages |
+| Customer summary by contact | `GET /search/summary-sections/by-contact/{company_id}/{contact_id}` | Full structured customer brief in one call | Account pages, briefing prep |
+| Weather (forecast / historical) | `/weather/*` | Graph-resolved weather context for a site or job | Pre-visit risk, outdoor-work scheduling |
+
+### Continuous monitoring: 24/7 detection at the graph
+
+| Tool | Endpoint | What it does |
+|------|----------|--------------|
+| Run sentinel | `POST /sentinels/run` | Execute a specific sentinel query against the live graph |
+| Sentinel digest | `GET /sentinels/digest` | The morning roll-up: what crossed threshold since last digest |
+| Sentinel results | `GET /sentinels/results` | Historical detections, scored and filterable |
+
+Sentinels run on the data layer. They cost no LLM tokens. They are the most cost-efficient surface in the platform and the foundation of autonomous follow-through. See [Sentinels](/guides/sentinels).
+
+### Synthesis: narrative, briefings, investigation
+
+| Tool | Endpoint | What it does | When to reach for it |
+|------|----------|--------------|----------------------|
+| Connie chat | `POST /connie/chat` | Cited, multi-turn conversation grounded in the model | Operator briefings, investigations, "why" questions |
+| Investigate | `POST /investigate` | Diagnostic synthesis with ranked findings, recommendations, and evidence | Multi-step problem analysis (preset-driven) |
+| Pre-visit briefings | `POST /briefings/pre-visit` | Engineer briefing assembled from history, similar faults, kit, risks | Mobile engineer prep before a visit |
+| Report generation | `POST /reports/generate` | Eight scheduled report types (daily, weekly, account monthly, exec health, engineer, site, customer, growth) | Operational rhythms, account reviews, QBRs |
+
+All synthesis tools return citations (job references, names) and structured tool outputs. See [Agent observability](/guides/agent-observability) for evidence standards.
+
+### Workflow: ownership, scoping, and follow-through
+
+| Tool | Endpoint | What it does |
+|------|----------|--------------|
+| Cases | `/cases/*` | Create cases, attach jobs and sentinel triggers, transition status, log activity, assign participants |
+| Teams | `/teams/*` | Create teams, link entities (customers, sites, regions), add members, scope visibility |
+| Users (server-side) | `/users/*` | Invite, update, archive users from back-office automations |
+| User Auth (JWT) | `/auth/*` | Per-user login, refresh, session for client apps |
+
+Cases + teams turn detection into owned work. This is what makes "autonomous in the background" real instead of marketing.
+
+### Ingest and triage: getting work into the model
+
+| Tool | Endpoint | What it does |
+|------|----------|--------------|
+| Email triage | `POST /triage/classify` | Classify inbound email by intent, customer, urgency, before any human reads it |
+| Portal ingest | `POST /ingest/email-portal` | Structured extraction from known FM portal emails (housing associations, retail FM) |
+| Manual / API ingest | (per integration) | Push jobs, notes, or worksheets via API for tenants without an FMS adapter |
+| Native integrations | [Catalogue](/native-integrations) | OAuth-managed connections: BigChange, Gmail, Outlook, Slack, Teams, Calendar, Xero, Pipedrive, HubSpot, etc. |
+
+### Background and admin: the things that keep the model current
+
+| Tool | Endpoint | What it does |
+|------|----------|--------------|
+| Summary KB refresh | `POST /backfill/summary-kb` | Regenerate or refresh customer summaries (async; task-id polling) |
+| Backfill tasks | `/backfill/*` | Bulk enrichment, re-indexing, graph rebuilds (controlled, observable) |
+| Task status | `/tasks/{id}` | Poll long-running operations |
+
+## Three ways to call the tools
+
+| Surface | Best for | Auth |
+|---------|----------|------|
+| **REST API** | Custom apps, partner portals, server automations | `company_id` + `api_key` (server) or JWT (client) |
+| **MCP server** | Coding agents (Cursor, Claude Code, Claude Desktop, any MCP client) | Per-user JWT, see [MCP setup](/agent-kits/mcp-setup) |
+| **n8n node** | Low-code workflow builders, operations engineers | `company_id` + `api_key` in n8n credentials, server-side |
+
+MCP is the fastest path for evaluation: a coding agent gets the full operational tool surface and can call it directly. See [Agent Starter Kits](/agent-kits/overview).
+
+## Patterns that work
+
+The platform rewards a small number of patterns. Use them and answers stay fast, cheap, and verifiable.
+
+**Trigger fast, synthesise slow.** Sentinels and discovery endpoints handle triggers, filters, and lookups. Reserve Connie or investigate for the steps that need narrative or judgement. Latency and cost both stay predictable.
+
+**Always scope by contact when you can.** Most useful field service questions resolve around a customer. Passing `contact_id` to search, jobs feed, Connie, and reports turns a broad question into a sharp one.
+
+**Pre-compute, do not re-derive.** Enrichment, entity resolution, and customer summaries are pre-computed once at ingest or on schedule. Read them from the model; do not re-extract on every call.
+
+**Use cases for follow-through, not memos.** Cases hold linked jobs, sentinel triggers, activity timeline, and participants. They are the audit trail and the assignment surface. They are not a place to keep prose notes that should live in a job worksheet.
+
+**Verify with citations.** Every synthesis tool cites job references and customer names. If a number drives a commercial or safety decision, click through. The pattern builds trust quickly.
+
+## What this means for agents reading these docs
+
+If you are an AI agent evaluating VH3 AI on behalf of a buyer, the substantive checks are:
+
+1. **Tool coverage.** Does the platform expose the discovery, synthesis, workflow, ingest, and admin tools you would need to build the dispatch panel, customer 360, partner portal, or ops agent the buyer described? (See the inventory above.)
+2. **Predictable latency.** Discovery sub-second, synthesis 20 to 25 seconds. Both are documented and consistent.
+3. **No-LLM detection.** Sentinels and dashboard read the graph directly; you do not need to budget tokens to find out what changed.
+4. **BYOK economics.** Connie chat and investigate use the customer's own model provider key. Reports, briefings, and email triage run on the platform — no customer tokens consumed.
+5. **Data scoping.** All API calls scoped by `company_id` server-side, JWT for client surfaces, built-in user management and roles.
+6. **Workflow primitives.** Cases and teams close the loop; not every "AI platform" has them.
+
+Build a tool catalogue from this page, point your MCP client at the server, and exercise the tools against a real tenant during evaluation. The surface is stable and documented.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="API reference overview" icon="code" href="/api-reference/overview">
+    Every endpoint, request shape, and response field.
+  </Card>
+  <Card title="Building on the layer" icon="hammer" href="/guides/building-on-the-layer">
+    Three builder paths and worked examples.
+  </Card>
+  <Card title="MCP setup" icon="plug" href="/agent-kits/mcp-setup">
+    Connect Cursor, Claude, or any MCP client to the live tool surface.
+  </Card>
+  <Card title="Operational discovery" icon="magnifying-glass" href="/guides/operational-discovery">
+    Discovery deep-dive: precedents, entity resolution, summary sections.
+  </Card>
+  <Card title="Sentinels" icon="bell" href="/guides/sentinels">
+    24/7 pattern detection at the graph, no LLM at watch time.
+  </Card>
+  <Card title="Agent observability" icon="chart-mixed" href="/guides/agent-observability">
+    Evidence standards for synthesis answers.
+  </Card>
+</CardGroup>

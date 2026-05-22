@@ -6,10 +6,10 @@ description: The AI infrastructure layer for field service organisations
 # VH3 AI: Field Service Intelligence
 
 <Tip>
-**Building with AI tools?** This site exposes [llms.txt](https://docs.vh3.ai/llms.txt), Markdown exports (`.md` on any URL), and a [documentation MCP](https://docs.vh3.ai/mcp) for searching these docs. For live operational data, use the [Agent Starter Kits](/agent-kits/overview) and [product MCP](/agent-kits/mcp-setup) — not the docs MCP.
+**Building with AI tools?** This site exposes [llms.txt](https://docs.vh3.ai/llms.txt), Markdown exports (`.md` on any URL), and a [documentation MCP](https://docs.vh3.ai/mcp) for searching these docs. For live operational data, use the [Agent Starter Kits](/agent-kits/overview) and [product MCP](/agent-kits/mcp-setup), not the docs MCP.
 </Tip>
 
-VH3 AI is to field service what Cursor is to software development. Not a replacement. A harness.
+VH3 AI for field service aims to be what Cursor is to software development. Not a replacement. A harness.
 
 It is the intelligence layer that sits alongside your field service management system. Not another system to migrate to. Not a chatbot bolted onto an export. A purpose-built infrastructure layer that connects to every system your operation runs on, understands what is happening across the business at all times, and makes that understanding available to your team, your automations, and any application you choose to build on top of it.
 
@@ -26,6 +26,12 @@ VH3 AI is that infrastructure. It is not a reporting tool. It is not an FMS add-
 **Learns continuously.** Data flows in and is enriched as it arrives. Entity resolution handles the messy reality of source data written by different people across different systems on different days. The intelligence compounds with every new record. You do not configure it once and wait. It keeps up with the operation as it runs.
 
 The result is a persistent, reliable, always-current picture of the business, context and understanding that every team, tool, and agent in the organisation can draw from simultaneously.
+
+## Work that moves while you are doing other things
+
+The platform is not a search box that waits for a question. Sentinels watch the operation 24/7 against the graph, with no LLM cost at detection. When a pattern crosses a threshold, the platform can open a **case**, link the relevant jobs and evidence, ask Connie for a draft brief, and route it to the **team** that owns the customer or region. By the time a coordinator next opens their queue, the work is queued with context.
+
+That loop, sentinels, cases, teams, and Connie working together, is how VH3 AI turns continuous intelligence into autonomous follow-through. The operator's job is to steer and verify, not to chase the platform.
 
 ## Why this architecture matters now
 
@@ -65,7 +71,7 @@ The industry has a habit of locking operational data inside long contracts, maki
 
 No long-term contracts after the initial term. No charges for seats that are not being used. No exports gated behind support tickets. If you choose to leave, your enriched operational data comes with you. The intelligence belongs to your organisation. We keep customers because the platform earns it.
 
-Every customer runs on dedicated, isolated infrastructure scoped entirely to their organisation. There are no shared layers where one customer's data touches another's. The intelligence you build is yours: query it via the API, consume it through automations, connect it to your own AI models, or build your own applications directly on top of it.
+Every customer's data is scoped entirely to their organisation. All API calls resolve server-side by `company_id` — no call can cross organisation boundaries. The intelligence you build is yours: query it via the API, consume it through automations, connect it to your own AI models, or build your own applications directly on top of it. Dedicated, isolated infrastructure is available on Enterprise plans.
 
 ## What the API gives you
 
@@ -135,6 +141,9 @@ VH3 AI ingests and normalises data regardless of which FMS sits underneath. The 
 <CardGroup cols={2}>
   <Card title="Quickstart" icon="rocket" href="/quickstart">
     Make your first API call in under 5 minutes.
+  </Card>
+  <Card title="Using VH3 AI" icon="user-tie" href="/guides/working-with-your-operation">
+    How operators brief Connie, run discovery, and rely on a platform that runs 24/7.
   </Card>
   <Card title="Operational discovery" icon="magnifying-glass" href="/guides/operational-discovery">
     Search, precedents, entity resolution, and customer knowledge on the layer.

@@ -96,25 +96,29 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Guides",
+            "group": "Using VH3 AI",
             "pages": [
+              "guides/why-context-matters",
+              "guides/working-with-your-operation",
               "guides/operational-discovery",
-              "guides/building-on-the-layer",
+              "guides/connie",
               "guides/sentinels",
               "guides/reports",
-              "guides/connie",
+              "guides/users-and-teams"
+            ]
+          },
+          {
+            "group": "Extend and build",
+            "pages": [
+              "guides/building-on-the-layer",
+              "guides/platform-tools",
               "guides/agent-observability"
             ]
-          }
-        ]
-      },
-      {
-        "tab": "Changelog",
-        "groups": [
+          },
           {
-            "group": "Changelog",
+            "group": "Enterprise deployment",
             "pages": [
-              "changelog/overview"
+              "guides/deploying-secure-apps"
             ]
           }
         ]

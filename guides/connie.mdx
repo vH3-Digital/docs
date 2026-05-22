@@ -7,6 +7,10 @@ description: VH3 AI's flagship operations agent with long-running context, evide
 
 Connie is VH3 AI's flagship conversational agent: a field service operations specialist wired into your full intelligence layer. She is not a generic chatbot over exports. She reads the same enriched operational model as search, sentinels, reports, and automations, and she is built to run for real work: multi-turn reviews, account prep, diagnostics, and follow-through that depends on what was said five minutes ago.
 
+<Card title="Working with your operation" icon="user-tie" href="/guides/working-with-your-operation">
+  How operators brief Connie: three principles, role playbooks, and session habits. Start here if you have not used Connie before.
+</Card>
+
 <Card title="Operational discovery" icon="magnifying-glass" href="/guides/operational-discovery">
   Fast precedent search and entity resolution (no LLM). Connie calls these when she needs facts; she synthesises when you need narrative.
 </Card>
@@ -14,6 +18,8 @@ Connie is VH3 AI's flagship conversational agent: a field service operations spe
 <Card title="Why observability matters" icon="eye" href="/guides/agent-observability">
   How to verify Connie's answers: tool outputs, citations, usage, and structured evidence.
 </Card>
+
+Connie handles ambiguous questions and short prompts well. For operator habits that get the most out of her on harder asks, see [Working with your operation](/guides/working-with-your-operation).
 
 ## Connie on the harness
 
@@ -28,45 +34,64 @@ Connie lives in the synthesis layer, but she is disciplined about when to spend 
 
 That split is what makes the agent practical at scale: the expensive interpretation runs on **prepared** data (enriched once at ingest), not on re-reading raw field system exports every turn.
 
-## Long-running, continuous context
+## Sessions: focused, managed, and recoverable
 
-Operations conversations are not one-shot Q&A. Connie is designed for sessions that unfold.
+A Connie session is a conversation about one thing. Keep them concise and to the point. When the topic changes, start a new session.
 
-**Session continuity.** Pass a stable `session_id` on every turn. The platform keeps conversation history for that session, scoped to your tenant, so follow-ups like "what about last month?" or "drill into the third site" stay grounded in the same thread.
+This is not just hygiene. Shorter, focused sessions perform better in three measurable ways:
 
-**Durable chat history.** When enabled, sessions can be restored across requests so users are not limited to a single browser tab or device lifetime.
+- **Economics.** Token cost grows with the context you carry into each turn. A 40-turn thread that has wandered across three customers spends tokens re-reading its own history. A focused session does not.
+- **Recall and answer quality.** A focused session keeps the model on the question. Long, drifting threads encourage the model to mix unrelated context into the answer.
+- **Auditability.** Sessions are managed: stored, recoverable, searchable, and citable. A session per topic gives you a clean record of what was asked, what was answered, and what evidence was used.
 
-**Opening context on new sessions.** When you start a session with a customer in scope, the server can inject:
+**Session IDs are issued by the platform.** Do not invent them. Omit `session_id` on the first turn; the response returns a UUID to use on every subsequent turn in that thread. Between topics, drop the ID and let the platform issue a new one.
 
-- **Company operating context** (terminology, rules, and preferences your organisation configured).
-- **Customer Summary** plus **recent completed jobs** since that summary was generated, so turn one is not stale.
+**Between sessions, start fresh.** A new topic, a new account, a new day's standup: omit the ID. Connie loads the right opening context (see below) automatically; you do not carry over yesterday's context or its token cost.
 
-You can still pass a `summary` from your app; the server enriches it when possible and reports how that block was built (see [Agent observability](/guides/agent-observability)).
+### How to start and continue a session
 
-**Contact-scoped by default.** From a customer or job view, Connie defaults queries to that contact unless you ask a company-wide question. That matches how account managers and coordinators actually work.
+First turn — no `session_id`:
 
 ```json
 {
   "company_id": "your-company-id",
   "api_key": "your-api-key",
   "message": "What recurring issues have we seen here in the last 90 days?",
-  "session_id": "account-review-acme-2025-03",
   "contact_id": "12345",
   "user_name": "Sarah"
 }
 ```
 
-Follow-up in the same session:
+The response includes a `session_id` UUID. Pass it on every follow-up:
 
 ```json
 {
   "company_id": "your-company-id",
   "api_key": "your-api-key",
   "message": "Which engineer has the best completion rate on those jobs?",
-  "session_id": "account-review-acme-2025-03",
+  "session_id": "a1b2c3d4-e5f6-...",
   "contact_id": "12345"
 }
 ```
+
+When the topic changes, omit `session_id` again. The platform issues a new one.
+
+### Opening context on new sessions
+
+When you start a session with a customer in scope, the server can inject:
+
+- **Company operating context** (terminology, rules, and preferences your organisation configured).
+- **Customer Summary** plus **recent completed jobs** since that summary was generated, so turn one is not stale.
+
+You can still pass a `summary` from your app; the server enriches it when possible and reports how that block was built (see [Agent observability](/guides/agent-observability)).
+
+### Recovery and search
+
+Sessions are durable. Past sessions can be retrieved, listed, and searched via the [Connie API](/api-reference/connie). You do not need to keep a single long thread alive to preserve evidence; the platform preserves it for you.
+
+### Contact-scoped by default
+
+From a customer or job view, Connie defaults queries to that contact unless you ask a company-wide question. That matches how account managers and coordinators actually work, and it is another reason starting a new session per topic stays cheap: each one starts with the right scope already set.
 
 ## Memory that compounds, not amnesia
 
@@ -74,16 +99,17 @@ Connie benefits from the same **operational memory** as the rest of the platform
 
 - Jobs are **enriched once** (fault patterns, outcomes, links to customer, site, engineer, equipment).
 - **Customer Summary** knowledge is stored in modular sections and refreshed on schedule or when job drift thresholds are met.
-- **Tool outputs** from substantive calls in a session can be retained and recalled so she does not repeat expensive lookups when you revisit the same thread.
+- **Tool outputs** from substantive calls in a session can be retained and recalled within that session so she does not repeat expensive lookups on follow-up turns.
+- **Background compaction** runs on longer sessions: the platform periodically summarises earlier turns into a compact form so recall stays sharp without carrying the full raw history forward on every message.
 
-This is not "the model learning weights overnight." It is **your organisation's intelligence layer getting richer** and Connie reading that layer on every turn, including what happened earlier in the session.
+This is not "the model retraining itself in the background." It is **your organisation's intelligence layer getting richer continuously** and Connie reading that layer on every turn, including what happened earlier in the session.
 
 ## Efficient token use
 
 Connie is built for production economics (especially with [BYOK](/pricing)):
 
 - **Intent routing** classifies messages so lightweight turns do not always invoke the full agent and tool suite.
-- **Prompt caching** keeps stable instructions cacheable across tenants while per-request context stays separate.
+- **Tenant-level prompt caching.** Stable instruction blocks (system prompts, tool schemas, company operating context) are cached across all users in your organisation. Every person on the team benefits from cache hits that earlier sessions already warmed. `cacheReadTokens` in the usage response shows how much of each turn was served from cache rather than re-computed.
 - **Truncated tool payloads** return compact, LLM-ready shapes from feeds, search, and aggregates so context windows are not filled with empty fields and nested noise. Semantic search hits include `contactName`, `jobRef`, and visit dates so answers can name sites and cite references without extra lookups.
 - **Discovery-first tools** (`search_outcomes`, `jobs_aggregate`, `job_feed`, autocomplete, customer summary sections) handle lookups without running narrative investigation unless the question requires it.
 
@@ -132,11 +158,25 @@ Connie can answer any question the underlying data supports. Examples by shape o
 
 Depending on your tenant and integrations, Connie can also drive **email drafts**, **notifications**, **briefings**, **account reports**, **presentations**, and lookups into connected systems (CRM, mail) through the same tool harness. See the [Connie API](/api-reference/connie) for endpoints and fields.
 
+## Working on your behalf (without a prompt)
+
+Most of Connie's value lands without anyone typing. Connie reads the same signals the platform watches continuously, so she can pick up work the operator has not asked about yet.
+
+- **Sentinels** detect patterns 24/7 (no LLM cost at detection): repeat visits, SLA drift, dormant customers, performance slips. See [Sentinels](/guides/sentinels).
+- **Cases** turn signals into owned work with status, participants, and linked jobs. Connie can open a case for a sentinel trigger, attach the relevant evidence, and draft the brief the assignee will read.
+- **Teams** route cases to the right people: regional, portfolio, or functional groups own customers and sites so nothing sits in a generic queue.
+
+A typical autonomous loop:
+
+1. Sentinel flags repeat HVAC callouts at an account.
+2. Automation opens a case, runs discovery for similar precedents, and asks Connie for a draft brief.
+3. The regional team finds the case ready, with citations, when they next look at the queue.
+
+The operator's job is to steer and verify, not to push the platform into motion.
+
 ## Specialist capabilities
 
-Connie orchestrates **specialist delegates** for focused work (for example structured email generation, voice-oriented responses, and deeper analytical passes). You interact with one assistant; the platform routes complex sub-tasks without you managing multiple bots.
-
-Voice is first-class: use [`POST /connie/chat/voice`](/api-reference/connie) or real-time voice integrations where deployed. Responses are tuned for spoken delivery while using the same operational tools underneath.
+Connie orchestrates **specialist delegates** for focused work (for example structured email generation and deeper analytical passes). You interact with one assistant; the platform routes complex sub-tasks without you managing multiple agents.
 
 ## Tips for effective questions
 
@@ -147,8 +187,8 @@ Voice is first-class: use [`POST /connie/chat/voice`](/api-reference/connie) or 
   <Card title="Name entities directly" icon="user">
     Use engineer names, site addresses, or customer names when you know them. Autocomplete resolves fuzzy input; exact names are faster.
   </Card>
-  <Card title="Ask follow-ups" icon="messages">
-    Keep the same `session_id`. After a list, ask "Tell me more about the third one" or "What caused that?"
+  <Card title="Ask follow-ups in the same session" icon="messages">
+    Same `session_id` for the same topic. "Tell me more about the third one" or "What caused that?" When the topic changes, start a new session.
   </Card>
   <Card title="Request format" icon="table">
     Ask for tables, comparisons, or bullet recommendations. "Compare Mike and Sarah this quarter" works well.

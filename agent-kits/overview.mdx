@@ -9,9 +9,13 @@ VH3 AI exposes the full intelligence layer, graph, semantic index, aggregation, 
 
 Each kit is self-contained. Pick the one that matches how your team works.
 
+<Note>
+**Operators:** these kits are for builders connecting AI tools to the platform. If you run the operation day to day (coordinator, dispatcher, account manager, engineer, owner), start at [Working with your operation](/guides/working-with-your-operation) instead.
+</Note>
+
 ## For AI agents (documentation)
 
-This site is optimised for LLMs and coding agents. Use these endpoints to learn the VH3 API — they search **documentation only**, not your live field service data.
+This site is optimised for LLMs and coding agents. Use these endpoints to learn the VH3 API. They search **documentation only**, not your live field service data.
 
 | Resource | URL |
 |---|---|
@@ -21,7 +25,7 @@ This site is optimised for LLMs and coding agents. Use these endpoints to learn 
 | Documentation MCP | [docs.vh3.ai/mcp](https://docs.vh3.ai/mcp) |
 
 <Note>
-**Two different MCP servers.** The URL above is Mintlify's **documentation** MCP (search and read these docs). To query live jobs, sentinels, and reports, use the [VH3 product MCP](/agent-kits/mcp-setup) with your tenant JWT — not the docs MCP.
+**Two different MCP servers.** The URL above is Mintlify's **documentation** MCP (search and read these docs). To query live jobs, sentinels, and reports, use the [VH3 product MCP](/agent-kits/mcp-setup) with your tenant JWT, not the docs MCP.
 </Note>
 
 <Prompt description="Install the VH3 documentation skill for Claude Code, Cursor, or other agents." actions={["copy", "cursor"]}>
@@ -44,7 +48,7 @@ On any page, open the **contextual menu** (top of page) to copy the page as Mark
     Project instructions for Claude.ai, for operations managers who want to query VH3 in plain English without writing code.
   </Card>
   <Card title="Claude Skills" icon="sparkles" href="/agent-kits/claude-skills">
-    Anthropic SKILL.md template for Claude Code and MCP clients — tool routing, valid parameters, and ops response format.
+    Anthropic SKILL.md template for Claude Code and MCP clients: tool routing, valid parameters, and ops response format.
   </Card>
   <Card title="n8n Agent Prompts" icon="webhook" href="/agent-kits/n8n-agents">
     System prompts for n8n AI Agent workflows using the VH3 AI community node and 1,000+ app connectors.

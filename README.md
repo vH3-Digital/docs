@@ -24,6 +24,28 @@ npx mint dev
 
 Opens the docs at `http://localhost:3000` with hot reload.
 
+## Editorial rules (apply to every customer-facing page)
+
+These rules are non-negotiable. Re-read before editing or adding MDX.
+
+| Rule | Requirement |
+|------|-------------|
+| Locale | UK English (`organisation`, `licence`, `centre`, `-ise` verbs) |
+| Punctuation | No em dashes (`—`). Use commas, full stops, colons, or parentheses |
+| Tone | Plain, direct, earned claims. Written for people who run vans and contracts, not for a model card |
+| Banned phrasing | Avoid: "leverage", "delve", "game-changer", "revolutionise", "unlock", "in today's landscape", "it's not X it's Y" stacked contrasts, "powerful AI", "simply ask" |
+| Emojis | None in docs |
+| Always-on language | The platform **runs 24/7**, is **always-on**, or **continuous**. Do not say "overnight" or "while you sleep" |
+| Technology naming | Customer copy uses **intelligence layer**; name **n8n** where relevant; do not surface Neo4j, Weaviate, or model providers in operator pages |
+| IDs in UI | Never instruct operators to use internal IDs in chat or screens; job refs and names only |
+
+Quick checks before commit (run from repo root):
+
+```bash
+grep -rn "—" docs-site/         # em dashes
+grep -rni "overnight\|while you sleep\|leverage\|delve" docs-site/
+```
+
 ## Adding a page
 
 1. Create the `.mdx` file in the appropriate subfolder (`api-reference/`,
