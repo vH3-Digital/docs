@@ -15,23 +15,23 @@ Returns a paginated feed of enriched jobs for your company. Supports filtering b
 
 | Param | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
-| `company_id` | string | Yes | — | Your tenant identifier |
-| `api_key` | string | Yes | — | Your tenant API key |
+| `company_id` | string | Yes | - | Your tenant identifier |
+| `api_key` | string | Yes | - | Your tenant API key |
 | `page_size` | integer | No | 20 | Results per page (max 200) |
 | `page_number` | integer | No | 1 | Page number (1-indexed) |
-| `contact_id` | string | No | — | Filter by customer contact ID |
-| `resource_id` | string | No | — | Filter by engineer/resource ID |
-| `type_id` | string | No | — | Filter by job type ID |
-| `category_id` | string | No | — | Filter by job category ID |
-| `status` | string | No | — | Filter by status — single value or comma-separated (e.g. `completedOk,completedWithIssues`) |
-| `result` | string | No | — | Filter by job result |
-| `date_from` | string | No | — | ISO date/datetime — include jobs on or after (inclusive) |
-| `date_to` | string | No | — | ISO date/datetime — exclude jobs on or after (exclusive) |
+| `contact_id` | string | No | - | Filter by customer contact ID |
+| `resource_id` | string | No | - | Filter by engineer/resource ID |
+| `type_id` | string | No | - | Filter by job type ID |
+| `category_id` | string | No | - | Filter by job category ID |
+| `status` | string | No | - | Filter by status, single value or comma-separated (e.g. `completedOk,completedWithIssues`) |
+| `result` | string | No | - | Filter by job result |
+| `date_from` | string | No | - | ISO date/datetime, include jobs on or after (inclusive) |
+| `date_to` | string | No | - | ISO date/datetime, exclude jobs on or after (exclusive) |
 | `date_field` | string | No | `createdAt` | Which timestamp `date_from`/`date_to` apply to: `createdAt`, `plannedStartAt`, `plannedEndAt`, `actualStartAt`, `actualEndAt` |
-| `direction` | string | No | `desc` | Sort direction on `createdAt` — `asc` or `desc` |
-| `compact` | boolean | No | false | Strip nulls/empties for LLM consumption |
+| `direction` | string | No | `desc` | Sort direction on `createdAt`, `asc` or `desc` |
+| `compact` | boolean | No | false | Strip nulls/empties to return a compact payload for AI agents |
 
-**Example — completed jobs from May 2026:**
+**Example: completed jobs from May 2026**
 
 ```bash
 curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
@@ -48,10 +48,10 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
 
 ## GET /jobs/feed/account
 
-Returns a paginated feed of jobs scoped to a **parent account and all its child contacts**. Pass any contact ID — parent or child — and the endpoint resolves the full hierarchy automatically.
+Returns a paginated feed of jobs scoped to a **parent account and all its child contacts**. Pass any contact ID, parent or child, and the endpoint resolves the full hierarchy automatically.
 
 <Note>
-This endpoint resolves the `HAS_PARENT` graph relationship. If you pass a child contact ID, the parent is found and all sibling contacts are included. If you pass a parent, all children are included. Standalone contacts return only their own jobs.
+This endpoint resolves the parent/child account hierarchy. If you pass a child contact ID, the parent is found and all sibling contacts are included. If you pass a parent, all children are included. Standalone contacts return only their own jobs.
 </Note>
 
 **How hierarchy resolution works:**
@@ -66,21 +66,21 @@ This endpoint resolves the `HAS_PARENT` graph relationship. If you pass a child 
 
 | Param | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
-| `company_id` | string | Yes | — | Your tenant identifier |
-| `api_key` | string | Yes | — | Your tenant API key |
-| `contact_id` | string | Yes | — | Any contact ID in the account hierarchy (parent or child) |
+| `company_id` | string | Yes | - | Your tenant identifier |
+| `api_key` | string | Yes | - | Your tenant API key |
+| `contact_id` | string | Yes | - | Any contact ID in the account hierarchy (parent or child) |
 | `page_size` | integer | No | 20 | Results per page (max 200) |
 | `page_number` | integer | No | 1 | Page number (1-indexed) |
-| `resource_id` | string | No | — | Filter by engineer/resource ID |
-| `type_id` | string | No | — | Filter by job type ID |
-| `category_id` | string | No | — | Filter by job category ID |
-| `status` | string | No | — | Filter by status — single value or comma-separated (e.g. `completedOk,completedWithIssues`) |
-| `result` | string | No | — | Filter by job result |
-| `date_from` | string | No | — | ISO date/datetime — include jobs on or after (inclusive) |
-| `date_to` | string | No | — | ISO date/datetime — exclude jobs on or after (exclusive) |
+| `resource_id` | string | No | - | Filter by engineer/resource ID |
+| `type_id` | string | No | - | Filter by job type ID |
+| `category_id` | string | No | - | Filter by job category ID |
+| `status` | string | No | - | Filter by status, single value or comma-separated (e.g. `completedOk,completedWithIssues`) |
+| `result` | string | No | - | Filter by job result |
+| `date_from` | string | No | - | ISO date/datetime, include jobs on or after (inclusive) |
+| `date_to` | string | No | - | ISO date/datetime, exclude jobs on or after (exclusive) |
 | `date_field` | string | No | `createdAt` | Which timestamp `date_from`/`date_to` apply to: `createdAt`, `plannedStartAt`, `plannedEndAt`, `actualStartAt`, `actualEndAt` |
-| `direction` | string | No | `desc` | Sort direction on `createdAt` — `asc` or `desc` |
-| `compact` | boolean | No | false | Strip nulls/empties for LLM consumption |
+| `direction` | string | No | `desc` | Sort direction on `createdAt`, `asc` or `desc` |
+| `compact` | boolean | No | false | Strip nulls/empties to return a compact payload for AI agents |
 
 **Response** includes an `account` block with the resolved hierarchy context:
 
@@ -102,7 +102,7 @@ This endpoint resolves the `HAS_PARENT` graph relationship. If you pass a child 
 }
 ```
 
-**Example — all completed jobs for an account in Q1 2026:**
+**Example: all completed jobs for an account in Q1 2026**
 
 ```bash
 curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed/account" \
@@ -117,15 +117,15 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed/account" \
 
 **Use cases:**
 
-- **Monthly account reviews** — scope by `date_from`/`date_to` with `date_field=actualEndAt` to see all work delivered to a customer account in a period.
-- **Account + type filtering** — add `type_id` to see only fire alarm or HVAC jobs across the whole account hierarchy.
-- **Account performance** — combine with `status=completedOk,completedWithIssues` to measure first-visit fix rate across all child sites.
+- **Monthly account reviews**, scope by `date_from`/`date_to` with `date_field=actualEndAt` to see all work delivered to a customer account in a period.
+- **Account + type filtering**, add `type_id` to see only fire alarm or HVAC jobs across the whole account hierarchy.
+- **Account performance**, combine with `status=completedOk,completedWithIssues` to measure first-visit fix rate across all child sites.
 
 ---
 
 ## GET /jobs/{job_id}
 
-Returns the full enriched record for a specific job, including AI-extracted fields, graph relationships, and timing data.
+Returns the full enriched record for a specific job, including AI-extracted fields, linked relationships from the intelligence layer, and timing data.
 
 **Path parameters:**
 

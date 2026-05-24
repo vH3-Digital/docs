@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "FSI",
-    "description": "\n### Overview\n\n**Version:** 1.0.0  \n**Specification:** OpenAPI 3.0  \n**Base URL:** `https://api.vh3connect.io/api:kP8T1CK7`  \n\nThe FSI (Field Service Intelligence) API provides AI-powered analytics, automation, and data management for field service operations. It transforms raw job, engineer, customer, and site data into actionable intelligence through semantic search, knowledge graphs, automated briefings, and operational monitoring.\n\n---\n\n#### Authentication\n\nAll endpoints require an API key passed in the `X-API-Key` header:\n\n```\nX-API-Key: your-api-key-here\n```\n\nRequests without a valid API key will receive a `401 Unauthorised` response.\n\n---\n\n#### Common Response Codes\n\n| Code | Meaning |\n|---|---|\n| **200** | Success |\n| **201** | Created (resource successfully created) |\n| **400** | Bad Request - invalid or missing parameters |\n| **401** | Unauthorised - missing or invalid API key |\n| **404** | Not Found - the requested resource does not exist |\n| **409** | Conflict - a task is already running for this resource |\n| **422** | Validation Error - request understood but semantically invalid |\n| **429** | Rate Limited - too many requests |\n| **500** | Internal Server Error |\n\n---\n\n#### Endpoint Categories\n\n##### AI & Search\n- **POST /agent/ask** - Natural-language Q&A powered by Weaviate\n- **POST /agent/search** - Natural-language search returning structured job objects\n- **POST /investigate** - Multi-step hybrid investigation across vector and graph data\n- **GET /search/autocomplete** - Fuzzy autocomplete across customers, engineers, jobs, and sites\n- **POST /search/intake** - Semantic search over job intake descriptions\n- **POST /search/intake/enriched** - Semantic search with Neo4j graph enrichment\n- **POST /search/outcomes** - Semantic search over job outcome summaries\n\n##### Connie AI Assistant\n- **POST /connie/chat** - Chat with the Connie AI assistant\n- **POST /connie/chat/voice** - Voice chat with Connie\n- **POST /connie/generate-summary** - Generate an AI summary for a contact\n- **POST /connie/history/search** - Search conversation history\n- **GET /connie/sessions** - List chat sessions\n- **GET /connie/sessions/{session_id}/messages** - Get messages for a session\n\n##### Jobs & Aggregation\n- **GET /jobs/feed** - Paginated job feed with multi-filter support\n- **GET /jobs/{job_id}** - Get a single job with full details\n- **POST /aggregate/jobs** - Job metrics with groupBy dimensions and period comparison\n\n##### Data Ingestion\n- **POST /ingest/job** - Ingest a single job\n- **POST /ingest/jobs** - Bulk job ingestion\n- **POST /ingest/job/intake** - Intake a new job from an external system\n- **POST /ingest/job/completed** - Mark a job as completed\n- **PATCH /ingest/job/status** - Update job status\n- **POST /ingest/csv** - Ingest data from a CSV file\n- **POST /ingest/contacts** - Ingest contacts for a company\n- **POST /ingest/driving** - Ingest driving data\n- **POST /ingest/email** - Ingest an email for job extraction\n\n##### Email Triage\n- **POST /triage/classify** - Classify an incoming email\n- **GET /triage/categories** - List available triage categories\n- **GET /ingest/email/pending** - List pending email extractions\n- **POST /ingest/email/confirm** - Confirm a pending extraction\n- **POST /ingest/email/reject** - Reject a pending extraction\n\n##### Backfill & Welcome Pack\n- **POST /backfill/collect** - Start a historical data backfill\n- **GET /backfill/collect/tasks** - List backfill tasks\n- **GET /backfill/collect/{task_id}** - Get backfill task status\n- **POST /welcome-pack/generate** - Generate a welcome pack analysis\n- **GET /welcome-pack/{company_id}/latest** - Get latest welcome pack\n\n##### Knowledge Graph\n- **POST /graph/query** - Query the knowledge graph with presets and filters\n- **GET /graph/presets** - List available graph query presets\n\n##### Briefings & Reports\n- **POST /briefing/generate** - Generate an engineer pre-visit briefing\n- **POST /reports/generate** - Generate a report\n- **GET /reports/sections** - List available report sections\n\n##### Sentinels (Monitoring)\n- **POST /sentinels/run** - Run sentinel checks\n- **POST /sentinels/run/{sentinel_id}** - Run a specific sentinel\n- **GET /sentinels/registry** - List all sentinel definitions\n- **GET /sentinels/results** - Get latest sentinel results\n\n##### Poller (Data Sync)\n- **POST /poller/start** - Start polling for a company\n- **POST /poller/stop** - Stop polling\n- **POST /poller/poll** - Trigger an immediate poll\n- **GET /poller/status** - Get all poller statuses\n- **GET /poller/status/{company_id}** - Get poller status for a company\n\n##### Cases (Issue Tracking)\n- **POST /cases/create** - Create a new case\n- **GET /cases/list** - List cases with filtering\n- **GET /cases/search** - Full-text search across cases\n- **GET /cases/{case_id}** - Get case details\n- **PATCH /cases/{case_id}** - Update a case\n- **POST /cases/{case_id}/transition** - Transition case status\n- **POST /cases/{case_id}/comments** - Add a comment\n- **GET /cases/{case_id}/activity** - Get case activity timeline\n- **POST /cases/{case_id}/participants** - Add a participant\n- **POST /cases/{case_id}/items** - Link an item to a case\n\n##### Intelligence Profiles\n- **POST /intelligence/generate-profiles** - Generate intelligence profiles\n- **GET /intelligence/profiles/{company_id}** - List profiles for a company\n- **GET /intelligence/profiles/{company_id}/types/{type_id}** - Get a specific profile\n\n##### Weather\n- **GET /weather/forecast** - Get weather forecast\n- **GET /weather/historical** - Get historical weather data\n- **GET /weather/for-job/{job_id}** - Weather for a specific job\n- **GET /weather/for-site** - Weather for a specific site\n\n##### Media & Utilities\n- **POST /media/transcribe** - Transcribe media content\n- **GET /health** - Health check\n\n---\n\n#### Pagination\n\nList endpoints return paginated results. Use the `page` and `per_page` (or `limit`) query parameters to navigate through pages. Response metadata includes `total`, `page`, and `pages` where applicable.\n\n---\n\n#### Task-Based Endpoints\n\nLong-running operations (backfill, welcome pack, ingestion) return a `task_id` immediately. Poll the corresponding status endpoint to track progress:\n\n```json\n{\n  \"task_id\": \"abc-123\",\n  \"status\": \"running\",\n  \"progress\": 45,\n  \"message\": \"Processing batch 5 of 11\"\n}\n```\n\nPossible statuses: `pending`, `running`, `completed`, `failed`, `cancelled`.\n",
+    "description": "\n### Overview\n\n**Version:** 1.0.0  \n**Specification:** OpenAPI 3.0  \n**Base URL:** `https://api.vh3connect.io/api:kP8T1CK7`  \n\nThe FSI (Field Service Intelligence) API provides AI-powered analytics, automation, and data management for field service operations. It transforms raw job, engineer, customer, and site data into actionable intelligence through semantic search, knowledge graphs, automated briefings, and operational monitoring.\n\n---\n\n#### Authentication\n\nAll endpoints require an API key passed in the `X-API-Key` header:\n\n```\nX-API-Key: your-api-key-here\n```\n\nRequests without a valid API key will receive a `401 Unauthorised` response.\n\n---\n\n#### Common Response Codes\n\n| Code | Meaning |\n|---|---|\n| **200** | Success |\n| **201** | Created (resource successfully created) |\n| **400** | Bad Request - invalid or missing parameters |\n| **401** | Unauthorised - missing or invalid API key |\n| **404** | Not Found - the requested resource does not exist |\n| **409** | Conflict - a task is already running for this resource |\n| **422** | Validation Error - request understood but semantically invalid |\n| **429** | Rate Limited - too many requests |\n| **500** | Internal Server Error |\n\n---\n\n#### Endpoint Categories\n\n##### AI & Search\n- **POST /investigate** - Multi-step hybrid investigation across semantic and graph data\n- **GET /search/autocomplete** - Fuzzy autocomplete across customers, engineers, jobs, and sites\n- **POST /search/intake** - Semantic search over job intake descriptions\n- **POST /search/intake/enriched** - Semantic search with relationship enrichment\n- **POST /search/outcomes** - Semantic search over job outcome summaries\n\n##### Connie AI Assistant\n- **POST /connie/chat** - Chat with the Connie AI assistant\n- **POST /connie/chat/voice** - Voice chat with Connie\n- **POST /connie/generate-summary** - Generate an AI summary for a contact\n- **POST /connie/history/search** - Search conversation history\n- **GET /connie/sessions** - List chat sessions\n- **GET /connie/sessions/{session_id}/messages** - Get messages for a session\n\n##### Jobs & Aggregation\n- **GET /jobs/feed** - Paginated job feed with multi-filter support\n- **GET /jobs/{job_id}** - Get a single job with full details\n- **POST /aggregate/jobs** - Job metrics with groupBy dimensions and period comparison\n\n##### Data Ingestion\n- **POST /ingest/job** - Ingest a single job\n- **POST /ingest/jobs** - Bulk job ingestion\n- **POST /ingest/job/intake** - Intake a new job from an external system\n- **POST /ingest/job/completed** - Mark a job as completed\n- **PATCH /ingest/job/status** - Update job status\n- **POST /ingest/csv** - Ingest data from a CSV file\n- **POST /ingest/contacts** - Ingest contacts for a company\n- **POST /ingest/driving** - Ingest driving data\n- **POST /ingest/email** - Ingest an email for job extraction\n\n##### Email Triage\n- **POST /triage/classify** - Classify an incoming email\n- **GET /triage/categories** - List available triage categories\n- **GET /ingest/email/pending** - List pending email extractions\n- **POST /ingest/email/confirm** - Confirm a pending extraction\n- **POST /ingest/email/reject** - Reject a pending extraction\n\n##### Backfill & Welcome Pack\n- **POST /backfill/collect** - Start a historical data backfill\n- **GET /backfill/collect/tasks** - List backfill tasks\n- **GET /backfill/collect/{task_id}** - Get backfill task status\n- **POST /welcome-pack/generate** - Generate a welcome pack analysis\n- **GET /welcome-pack/{company_id}/latest** - Get latest welcome pack\n\n##### Knowledge Graph\n- **POST /graph/query** - Query the knowledge graph with presets and filters\n- **GET /graph/presets** - List available graph query presets\n\n##### Briefings & Reports\n- **POST /briefing/generate** - Generate an engineer pre-visit briefing\n- **POST /reports/generate** - Generate a report\n- **GET /reports/sections** - List available report sections\n\n##### Sentinels (Monitoring)\n- **POST /sentinels/run** - Run sentinel checks\n- **POST /sentinels/run/{sentinel_id}** - Run a specific sentinel\n- **GET /sentinels/registry** - List all sentinel definitions\n- **GET /sentinels/results** - Get latest sentinel results\n\n##### Poller (Data Sync)\n- **POST /poller/start** - Start polling for a company\n- **POST /poller/stop** - Stop polling\n- **POST /poller/poll** - Trigger an immediate poll\n- **GET /poller/status** - Get all poller statuses\n- **GET /poller/status/{company_id}** - Get poller status for a company\n\n##### Cases (Issue Tracking)\n- **POST /cases/create** - Create a new case\n- **GET /cases/list** - List cases with filtering\n- **GET /cases/search** - Full-text search across cases\n- **GET /cases/{case_id}** - Get case details\n- **PATCH /cases/{case_id}** - Update a case\n- **POST /cases/{case_id}/transition** - Transition case status\n- **POST /cases/{case_id}/comments** - Add a comment\n- **GET /cases/{case_id}/activity** - Get case activity timeline\n- **POST /cases/{case_id}/participants** - Add a participant\n- **POST /cases/{case_id}/items** - Link an item to a case\n\n##### Intelligence Profiles\n- **POST /intelligence/generate-profiles** - Generate intelligence profiles\n- **GET /intelligence/profiles/{company_id}** - List profiles for a company\n- **GET /intelligence/profiles/{company_id}/types/{type_id}** - Get a specific profile\n\n##### Weather\n- **GET /weather/forecast** - Get weather forecast\n- **GET /weather/historical** - Get historical weather data\n- **GET /weather/for-job/{job_id}** - Weather for a specific job\n- **GET /weather/for-site** - Weather for a specific site\n\n##### Media & Utilities\n- **POST /media/transcribe** - Transcribe media content\n- **GET /health** - Health check\n\n---\n\n#### Pagination\n\nList endpoints return paginated results. Use the `page` and `per_page` (or `limit`) query parameters to navigate through pages. Response metadata includes `total`, `page`, and `pages` where applicable.\n\n---\n\n#### Task-Based Endpoints\n\nLong-running operations (backfill, welcome pack, ingestion) return a `task_id` immediately. Poll the corresponding status endpoint to track progress:\n\n```json\n{\n  \"task_id\": \"abc-123\",\n  \"status\": \"running\",\n  \"progress\": 45,\n  \"message\": \"Processing batch 5 of 11\"\n}\n```\n\nPossible statuses: `pending`, `running`, `completed`, `failed`, `cancelled`.\n",
     "version": "0.0.1"
   },
   "servers": [
@@ -22,208 +22,6 @@
     "schemas": {}
   },
   "paths": {
-    "/agent/ask": {
-      "post": {
-        "operationId": "FSI/agent/ask|POST",
-        "summary": "Natural-language Q&A via Weaviate Query Agent",
-        "description": "Natural-language Q&A via Weaviate Query Agent\n<br /><br />\n<b>Authentication:</b> not required",
-        "tags": [
-          "agent"
-        ],
-        "security": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Success!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "description": ""
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Input Error. Check the request payload for issues."
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Access denied. Additional privileges are needed access the requested resource."
-          },
-          "404": {
-            "description": "Not Found. The requested resource does not exist."
-          },
-          "429": {
-            "description": "Rate Limited. Too many requests."
-          },
-          "500": {
-            "description": "Unexpected error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "company_id": {
-                    "type": "string",
-                    "description": ""
-                  },
-                  "api_key": {
-                    "type": "string",
-                    "description": ""
-                  },
-                  "question": {
-                    "type": "string",
-                    "description": ""
-                  }
-                },
-                "required": [
-                  "company_id",
-                  "api_key",
-                  "question"
-                ]
-              }
-            },
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "company_id": {
-                    "type": "string",
-                    "description": ""
-                  },
-                  "api_key": {
-                    "type": "string",
-                    "description": ""
-                  },
-                  "question": {
-                    "type": "string",
-                    "description": ""
-                  }
-                },
-                "required": [
-                  "company_id",
-                  "api_key",
-                  "question"
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
-    "/agent/search": {
-      "post": {
-        "operationId": "FSI/agent/search|POST",
-        "summary": "Natural-language search returning job objects",
-        "description": "Natural-language search returning job objects\n<br /><br />\n<b>Authentication:</b> not required",
-        "tags": [
-          "agent"
-        ],
-        "security": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Success!",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "description": ""
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Input Error. Check the request payload for issues."
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Access denied. Additional privileges are needed access the requested resource."
-          },
-          "404": {
-            "description": "Not Found. The requested resource does not exist."
-          },
-          "429": {
-            "description": "Rate Limited. Too many requests."
-          },
-          "500": {
-            "description": "Unexpected error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "company_id": {
-                    "type": "string",
-                    "description": ""
-                  },
-                  "api_key": {
-                    "type": "string",
-                    "description": ""
-                  },
-                  "question": {
-                    "type": "string",
-                    "description": ""
-                  },
-                  "limit": {
-                    "type": "integer",
-                    "format": "int64",
-                    "description": "",
-                    "default": "10"
-                  }
-                },
-                "required": [
-                  "company_id",
-                  "api_key",
-                  "question"
-                ]
-              }
-            },
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "company_id": {
-                    "type": "string",
-                    "description": ""
-                  },
-                  "api_key": {
-                    "type": "string",
-                    "description": ""
-                  },
-                  "question": {
-                    "type": "string",
-                    "description": ""
-                  },
-                  "limit": {
-                    "type": "integer",
-                    "format": "int64",
-                    "description": "",
-                    "default": "10"
-                  }
-                },
-                "required": [
-                  "company_id",
-                  "api_key",
-                  "question"
-                ]
-              }
-            }
-          }
-        }
-      }
-    },
     "/aggregate/jobs": {
       "post": {
         "operationId": "FSI/aggregate/jobs|POST",
@@ -9040,8 +8838,8 @@
     "/search/intake/enriched": {
       "post": {
         "operationId": "FSI/search/intake/enriched|POST",
-        "summary": "Semantic search over intake descriptions with Neo4j graph enrichment",
-        "description": "Semantic search over intake descriptions with Neo4j graph enrichment\n<br /><br />\n<b>Authentication:</b> not required",
+        "summary": "Semantic search over intake descriptions with relationship enrichment",
+        "description": "Semantic search over intake descriptions with relationship enrichment\n<br /><br />\n<b>Authentication:</b> not required",
         "tags": [
           "search"
         ],

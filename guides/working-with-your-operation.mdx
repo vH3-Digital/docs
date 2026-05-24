@@ -28,8 +28,8 @@ You steer the day through chat, search, and cases. The platform keeps running be
 
 Almost every operational question splits into two parts: find the precedent, then decide. VH3 AI separates those two speeds on purpose.
 
-| Layer | What it does | Typical speed | Uses an LLM? |
-|-------|---------------|---------------|--------------|
+| Layer | What it does | Typical speed | Uses conversational AI? |
+|-------|---------------|---------------|-------------------------|
 | **Discovery** | Find similar jobs, resolve entities, rank precedents, scope by customer | Sub-second | No |
 | **Synthesis** | Explain, brief, investigate, narrate, recommend next steps | Seconds | Yes (your key, your model) |
 
@@ -61,7 +61,7 @@ When the answer is going somewhere, mention where.
 
 - "This is for the morning standup, three bullets."
 - "Draft a polite email to the client, no new commitments."
-- "Engineer briefing for the van — short, spoken English."
+- "Engineer briefing for the van, short, spoken English."
 
 You do not need to specify structure beyond that. Connie writes for the audience you name.
 
@@ -137,7 +137,7 @@ Source data is written by different people on different days. "Tesco PLC", "Tesc
 
 ### Enrichment
 
-Each job passes through the enrichment pipeline once. Fault type is extracted and classified. Work performed is structured. Equipment involved is identified. The operational outcome is resolved into a compact, token-efficient record. The expensive interpretive work happens at ingest, not at query time. Every downstream consumer, report, briefing, Connie, automation, custom app, reads the same prepared artefact.
+Each job passes through the enrichment pipeline once. Fault type is extracted and classified. Work performed is structured. Equipment involved is identified. The operational outcome is resolved into a compact, reusable job record. The expensive interpretive work happens at ingest, not at query time. Every downstream consumer, report, briefing, Connie, automation, custom app, reads the same prepared artefact.
 
 ### Graph construction and standardisation
 
@@ -149,12 +149,12 @@ Several artefacts are computed in advance so reads stay fast:
 
 - **Semantic indexes** over fault descriptions, job notes, and worksheet answers are built at ingest and updated incrementally.
 - **Customer Summary** knowledge objects are generated and stored as seven structured sections per account, refreshed on schedule or when job drift thresholds are met.
-- **Dashboard snapshots** are cached, deterministic KPI roll-ups; landing pages do not invoke an LLM.
+- **Dashboard snapshots** are cached, deterministic KPI roll-ups; landing pages run with near-zero AI cost.
 - **Aggregations** (counts, on-time %, completion rates, by engineer, by type, by period) read from the prepared model.
 
 ### Continuous analysis
 
-Sentinels run 24/7 against the graph. Repeat visits, SLA drift, dormant accounts, performance slips, equipment failure clusters, engineer-flagged follow-ups, growth signals: each is a structured query with a configurable threshold. Detection is a graph read; there is no LLM cost at the watch layer. Triggers land in the digest, the API, and any automation wired up to them.
+Sentinels run 24/7 against the graph. Repeat visits, SLA drift, dormant accounts, performance slips, equipment failure clusters, engineer-flagged follow-ups, growth signals: each is a structured query with a configurable threshold. Detection is a graph read with near-zero AI cost at the watch layer. Triggers land in the digest, the API, and any automation wired up to them.
 
 ### Routing and follow-through
 

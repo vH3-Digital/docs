@@ -36,7 +36,7 @@ The platform ships with the controls below. Your job is to use them correctly.
 
 ### Data scoping and user management
 
-- All API calls are scoped by `company_id`. Tenant resolution happens server-side — no API call can cross organisation boundaries.
+- All API calls are scoped by `company_id`. Tenant resolution happens server-side, no API call can cross organisation boundaries.
 - The platform ships with built-in user management: invite users, assign roles, organise teams, and issue JWTs without building any of that yourself. See [Users and teams](/guides/users-and-teams).
 - Dedicated, isolated infrastructure is available on Enterprise plans.
 
@@ -85,7 +85,7 @@ Governance on this platform is not a separate product. It is the user, team, and
 
 The end-to-end loop:
 
-1. A **sentinel** detects a pattern continuously (no LLM cost at detection).
+1. A **sentinel** detects a pattern continuously (near-zero AI cost at detection).
 2. A **case** is opened against the team that owns the affected customer or region.
 3. The team uses **discovery** for precedents and **Connie** for a brief.
 4. Decisions, replies, and follow-ups are logged against the case.

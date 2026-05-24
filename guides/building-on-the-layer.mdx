@@ -65,8 +65,8 @@ The substrate is only half the story. The other half is the tool surface that si
 |-------|-------|--------------|
 | **Discovery** (no LLM) | `/search/outcomes`, `/search/intake`, `/search/autocomplete`, `/search/summary-sections`, `/jobs/feed`, `/jobs/aggregate`, `/contacts/feed`, `/dashboard/snapshot`, `/weather/*` | Sub-second lookups: precedents, entity resolution, account hierarchies, KPIs |
 | **Monitoring** (no LLM at detection) | `/sentinels/run`, `/sentinels/digest`, `/sentinels/results` | 24/7 pattern detection on the graph |
-| **Synthesis — conversational** (BYOK) | `/connie/chat`, `/investigate` | Cited narrative, multi-step diagnosis |
-| **Synthesis — platform** (included) | `/briefings/*`, `/reports/generate` | Pre-visit briefings, scheduled report generation |
+| **Synthesis, conversational** (BYOK) | `/connie/chat`, `/investigate` | Cited narrative, multi-step diagnosis |
+| **Synthesis, platform** (included) | `/briefings/*`, `/reports/generate` | Pre-visit briefings, scheduled report generation |
 | **Workflow** | `/cases/*`, `/teams/*`, `/users/*`, `/auth/*` | Cases, teams, users, JWT sessions for ownership and access |
 | **Ingest** | `/triage/classify`, `/ingest/email-portal`, native integrations | Inbound triage and structured extraction |
 
@@ -207,7 +207,7 @@ Cases and teams are intentionally lightweight: enough structure to **close the l
 
 Without a prepared layer, every agent session must re-parse messy worksheets, guess which account record is meant, and re-derive relationships that should already exist. That is slow, expensive, and fragile.
 
-VH3 AI front-loads **enrichment**, **multi-entity resolution**, and **graph linking** at ingest. Coding agents then generate thin applications that call well-shaped endpoints. You are not paying an LLM to rediscover your operation on every click.
+VH3 AI front-loads **enrichment**, **multi-entity resolution**, and linking of jobs, customers, sites, and history at ingest. Coding agents then generate thin applications that call well-shaped endpoints. You are not paying an LLM to rediscover your operation on every click.
 
 > Built to be built on. Your people, solving their own problems, on their own terms.
 
@@ -218,7 +218,7 @@ The platform does not replace your field system or your IDE. It is the layer you
 Builders should assume:
 
 - **Data scoping** on every call (`company_id` + validated `api_key`). No API call can cross organisation boundaries.
-- **Built-in user management and auth** — invite users, assign roles, issue JWTs. No need to build the auth layer yourself.
+- **Built-in user management and auth**, invite users, assign roles, issue JWTs. No need to build the auth layer yourself.
 - **PII handling** aligned with your DPA: do not rebuild sensitive fields into public UIs.
 - **Read-only field integration** by default; write-back only when explicitly agreed.
 

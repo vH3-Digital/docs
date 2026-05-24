@@ -5,7 +5,7 @@ description: Simple, consumption-based pricing that grows with your operation. N
 
 # Pricing
 
-VH3 AI is priced on the volume of visits enriched, not on the number of seats. Every tier includes unlimited users. Start with API access and the full automation platform for free, or add the intelligence layer, Connie, AI agents, semantic search, and the operational knowledge graph from Core upward.
+VH3 AI is priced on the volume of visits enriched, not on the number of seats. Every tier includes unlimited users. Start with API access and the full automation platform for free, or add the intelligence layer, Connie, AI agents, semantic search, and the operational graph from Core upward.
 
 <Info>
 **For business owners.** Pricing scales with the work the operation does (visits enriched), not with how many people you hire. The whole team is on the platform without per-seat maths. AI consumption is transparent ([BYOK on your provider account](/guides/connie)) and there is no long lock-in beyond the tier minimum term. For governance and IT deployment, see [Deploying secure apps](/guides/deploying-secure-apps). For who in the business gets access, see [Users and teams](/guides/users-and-teams).
@@ -19,7 +19,7 @@ VH3 AI is priced on the volume of visits enriched, not on the number of seats. E
     You pay for the jobs enriched, not the users consuming the intelligence. The per-visit overage rate steps down as you scale, from £0.15 on Core to £0.10 on Connect and above.
   </Card>
   <Card title="Bring your own AI key" icon="key">
-    Conversational AI costs go directly to your Anthropic at your contracted rate. No margin in the layer between you and the model. You can build agents with any provider and stack via the API or n8n.
+    Conversational AI costs go directly to your AI provider account (BYOK) at your contracted rate. No margin in the layer between you and the model. You can build agents with any provider and stack via the API or n8n.
   </Card>
 </CardGroup>
 
@@ -43,7 +43,7 @@ VH3 AI is priced on the volume of visits enriched, not on the number of seats. E
 | Intelligence layer (Connie, AI agents, graph) | Not included | ✓ | ✓ | ✓ | ✓ |
 | Role-specific AI agents (BYOK) | Not included | ✓ | ✓ | ✓ | ✓ |
 | Voice briefings + outbound calls | Not included | ✓ | ✓ | ✓ | ✓ |
-| Semantic search + knowledge graph | Not included | ✓ | ✓ | ✓ | ✓ |
+| Semantic search + intelligence layer | Not included | ✓ | ✓ | ✓ | ✓ |
 | Operational reporting + dashboards | Not included | ✓ | ✓ | ✓ | ✓ |
 | Managed onboarding | Not included | ✓ | ✓ | ✓ | ✓ |
 | Native integration layer | Not included | Not included | ✓ | ✓ | ✓ |
@@ -59,18 +59,8 @@ VH3 AI is priced on the volume of visits enriched, not on the number of seats. E
 
 ---
 
-{/*
-Embedded Stripe pricing table is temporarily hidden. The on-page comparison
-table above is the current source of truth. To re-enable, uncomment the line
-below and the `customScripts` entry for /stripe-pricing.js in docs.json.
-
-<div dangerouslySetInnerHTML={{ __html: '<stripe-pricing-table pricing-table-id="prctbl_1TQWrNBeQ6iC8ljBsovQRw8p" publishable-key="pk_live_SMCldpm0g51Je00I1LgW7ld2"></stripe-pricing-table>' }} />
-*/}
-
----
-
 <Info>
-  Visits are counted when a job is **enriched**, when the AI pipeline processes the record and writes it to the knowledge graph. Re-enrichment of an existing job after a status update does not count as a new visit. Voice and visit overage are billed independently.
+  Visits are counted when a job is **enriched**, when the AI pipeline processes the record and writes it to the intelligence layer. Re-enrichment of an existing job after a status update does not count as a new visit. Voice and visit overage are billed independently.
 </Info>
 
 ## How billing works
@@ -79,15 +69,15 @@ below and the `customScripts` entry for /stripe-pricing.js in docs.json.
 
 **Voice.** Voice minutes cover Connie voice sessions, engineer briefing calls, and outbound calls (CSAT, appointment rescheduling, confirmations). Minutes above your plan's inclusion are billed at your tier's per-minute overage rate.
 
-**Conversational AI.** Connie's responses run against your own API key, costs go directly to your Anthropic account at your contracted rate. No margin is added by VH3. You can build agents with any model provider via the API or n8n.
+**Conversational AI.** Connie's responses run against your own API key, costs go directly to your AI provider account (BYOK) at your contracted rate. No margin is added by VH3. You can build agents with any model provider via the API or n8n.
 
-**Infrastructure.** Hybrid Semantic, knowledge graphs, enrichment compute, sentinels, and reports are all bundled. There are no separate infrastructure line items.
+**Infrastructure.** Semantic search, operational graph, enrichment compute, sentinels, and reports are all bundled. There are no separate infrastructure line items.
 
 ## Cancellation and data portability
 
 Rolling monthly contracts on Core, month-to-month. initial terms apply to Core+ and Connect. Cancel any time after the minimum term.
 
-On cancellation, your enriched operational data, the knowledge graph, AI-generated summaries, entity-resolved records, is transferred to databases you control. You retain the intelligence your operation has built. Only access to the VH3 tooling and inference layer ends.
+On cancellation, your enriched operational data, the operational graph, AI-generated summaries, and entity-resolved records are transferred to databases you control. You retain the intelligence your operation has built. Only access to the VH3 tooling and inference layer ends.
 
 VH3 Enterprise operates on a separate contract with a structured 90-day deployment programme. Contact us to discuss fit and commercials.
 

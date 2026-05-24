@@ -42,7 +42,7 @@ Connections are activated with a single authentication step inside the platform.
 
 | Integration | What it enables |
 |-------------|-----------------|
-| **Gmail** | Per-user authentication. Email threads linked to jobs, sites, and customers. Inbound mail parsed and matched against the knowledge graph. |
+| **Gmail** | Per-user authentication. Email threads linked to jobs, sites, and customers. Inbound mail parsed and matched against the intelligence layer. |
 | **Outlook** | Same for Microsoft-based operations. |
 | **Microsoft Teams** | Sentinel alerts, briefings, and reports delivered to channels. |
 | **Slack** | Operational intelligence routed to the right channels and people automatically. |
@@ -69,6 +69,7 @@ Connections are activated with a single authentication step inside the platform.
 | **Jira** | Issue creation and tracking linked to operational cases. |
 | **Monday.com** | Work items connected to intelligence layer outputs. |
 
+
 ## Permissions and authentication management
 
 Every integration in VH3 AI handles its own authentication lifecycle automatically. OAuth tokens are issued, stored encrypted, and refreshed silently in the background. Users never see an expired connection. Credentials are never exposed to the application layer.
@@ -85,9 +86,9 @@ This means you can roll out integrations to a team of any size without managing 
 
 Connecting an integration is the start, not the end. VH3 AI maintains continuous, managed sync for every connected source so the intelligence layer stays current without manual intervention.
 
-**Backfill on connect.** When a new integration is connected, the platform immediately begins ingesting historical data, email history, document archives, CRM records, scoped to the period relevant to the intelligence layer. You do not start from a blank slate. The context that already exists in those tools is pulled in and linked to the operational graph.
+**Historical sync on connect.** When a new integration is connected, the platform immediately begins ingesting historical data, email history, document archives, CRM records, scoped to the period relevant to the intelligence layer. You do not start from a blank slate. The context that already exists in those tools is pulled in and linked to operational records.
 
-**Ongoing sync.** After the initial backfill, changes in connected tools flow in continuously. A new invoice in Xero appears in financial reporting. A new document in Google Drive gets indexed and linked to the relevant site. A new Pipedrive deal gets connected to the associated customer in the knowledge graph. The sync frequency is managed by the platform, no polling configuration required.
+**Ongoing sync.** After the initial historical sync, changes in connected tools flow in continuously. A new invoice in Xero appears in financial reporting. A new document in Google Drive gets indexed and linked to the relevant site. A new Pipedrive deal gets connected to the associated customer in the intelligence layer. The sync frequency is managed by the platform, no polling configuration required.
 
 **Bidirectional where it matters.** Some connections write back as well as read. Sentinel findings can create tasks in Asana or Jira. Case updates can push activity to a Pipedrive deal. Report outputs can be filed to a designated Google Drive folder. The intelligence layer does not just consume from connected tools, it can act through them.
 

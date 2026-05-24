@@ -1,6 +1,6 @@
 ---
 title: BigChange API Overview
-description: BigChange FMS proxy — jobs, contacts, finance, stock, and worksheets
+description: BigChange API Integration, jobs, contacts, finance, stock, and worksheets
 ---
 
 # BigChange API
@@ -8,6 +8,8 @@ description: BigChange FMS proxy — jobs, contacts, finance, stock, and workshe
 Unified read/write proxy to your BigChange field service data. Covers jobs, contacts, invoices, quotes, sales opportunities, purchase orders, resources, vehicles, stock, worksheets, and reference data.
 
 Tenant scope is resolved from your API key. No `company_id` is required on these requests.
+
+We've added some usefuil features such as pre handled authentication, compactions and data output optimisation.
 
 ## Base URL
 
@@ -44,9 +46,9 @@ See [Authentication](/authentication) for the full two-API comparison.
 |------|---------|
 | `200` | Success |
 | `201` | Created |
-| `400` | Bad request — invalid or missing parameters |
-| `401` | Unauthorised — missing or invalid API key |
-| `403` | Forbidden — insufficient permissions |
+| `400` | Bad request, invalid or missing parameters |
+| `401` | Unauthorised, missing or invalid API key |
+| `403` | Forbidden, insufficient permissions |
 | `404` | Not found |
 | `422` | Validation error |
 | `429` | Rate limited |
@@ -54,7 +56,7 @@ See [Authentication](/authentication) for the full two-API comparison.
 
 ## Pagination
 
-List endpoints accept `pageNumber` (1-based) and `pageSize`. Finance list responses also include `pageItemCount` (items in the current page — use to detect the last page).
+List endpoints accept `pageNumber` (1-based) and `pageSize`. Finance list responses also include `pageItemCount` (items in the current page, use to detect the last page).
 
 | Param | Default | Max |
 |-------|---------|-----|
@@ -76,8 +78,8 @@ BigChange enforces a **maximum 12-month window** on date-range filters. If `crea
 | Rule | Detail |
 |------|--------|
 | Format | ISO 8601 UTC, e.g. `2026-01-01T00:00:00Z` |
-| Typical pair | `createdAtFrom` + `createdAtTo` — inclusive bounds on record creation time |
-| Max span | **12 months** — always; not configurable per tenant |
+| Typical pair | `createdAtFrom` + `createdAtTo`, inclusive bounds on record creation time |
+| Max span | **12 months**, always; not configurable per tenant |
 | Sort tie-in | Finance lists (`invoices`, `quotes`) usually sort by `createdAt` when filtering by date |
 
 **Where date ranges apply:**
@@ -91,7 +93,7 @@ BigChange enforces a **maximum 12-month window** on date-range filters. If `crea
 | `POST /purchase_orders/list` | `createdAtFrom`, `createdAtTo` | At least one non-date filter still required |
 | `POST /sales_opportunities/list` | `createdAtFrom`, `createdAtTo`, `dueDateFrom`, `dueDateTo` | At least one filter required; due-date pair also subject to 12-month max |
 
-Status timestamps on write endpoints (`paidAt`, `sentAt`, `plannedStartAt`, note `dueAt`) are single instants, not ranges — they are not subject to the 12-month window rule.
+Status timestamps on write endpoints (`paidAt`, `sentAt`, `plannedStartAt`, note `dueAt`) are single instants, not ranges, they are not subject to the 12-month window rule.
 
 ## Custom fields
 
@@ -125,7 +127,7 @@ Endpoint-specific enums are listed on each page where they apply.
 
 ## Path format
 
-Request URLs are `{baseUrl}{path}` with **one** slash between base and path — e.g. `https://api.vh3connect.io/api:YdihQNr3` + `/jobs/list`. Some BigChange routes include repeated segments by design (e.g. `/stock/stock/item_get`); that is not a double-slash error.
+Request URLs are `{baseUrl}{path}` with **one** slash between base and path, e.g. `https://api.vh3connect.io/api:YdihQNr3` + `/jobs/list`. Some BigChange routes include repeated segments by design (e.g. `/stock/stock/item_get`); that is not a double-slash error.
 
 ## Endpoint groups
 

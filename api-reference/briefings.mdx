@@ -5,7 +5,7 @@ description: Pre-visit engineer briefings with full operational context
 
 # Briefings
 
-Generate a structured pre-visit briefing and call script for an engineer assigned to a job. Pulls job data from Neo4j, customer summary from Weaviate (or regenerates via Gemini), and produces markdown briefing content plus a natural-language call opener.
+Generate a structured pre-visit briefing and call script for an engineer assigned to a job. Pulls job and customer context from the intelligence layer (regenerates the account summary when requested) and produces markdown briefing content plus a natural-language call opener.
 
 Designed for `onTheWay` or `scheduled` job transitions.
 
@@ -21,8 +21,8 @@ Generate an engineer briefing for a specific job.
 | `api_key` | string | Yes | Your tenant API key |
 | `job_id` | integer | Yes | Job to brief |
 | `contact_id` | integer | Yes | Customer contact for the job |
-| `force_regenerate_summary` | boolean | No | Bypass cached Weaviate customer summary and regenerate |
-| `job_payload` | object | No | Raw job fallback when the job is not yet in Neo4j (ignored if the job exists in the graph) |
+| `force_regenerate_summary` | boolean | No | Bypass the cached customer summary and regenerate |
+| `job_payload` | object | No | Raw job fallback when the job is not yet in the intelligence layer (ignored if the job already exists in the graph) |
 
 **Response fields:**
 
@@ -36,7 +36,7 @@ Generate an engineer briefing for a specific job.
 | `parent_contact` | object | Parent customer `contact_id` and `name` when `HAS_PARENT` exists |
 | `engineer_name` | string | Assigned engineer name |
 | `generated_at` | string | ISO 8601 generation timestamp |
-| `usage` | object | Token usage across Gemini calls |
+| `usage` | object | Token usage for AI generation |
 
 **Example:**
 
@@ -59,6 +59,6 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/briefing/generate" \
 
 **Notes:**
 
-- Uses Gemini; subject to AI capacity limits (`503` with `Retry-After` when saturated).
+- Uses platform AI; subject to capacity limits (`503` with `Retry-After` when saturated).
 - Returns `404` when the job or contact cannot be resolved.
 - Typical latency 5–15s depending on summary cache hit.

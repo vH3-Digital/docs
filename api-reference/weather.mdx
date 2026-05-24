@@ -5,7 +5,7 @@ description: Forecast and historical weather for coordinates, jobs, and sites
 
 # Weather
 
-Weather lookups for field service planning and retrospective analysis. Data is sourced from Open-Meteo. Responses include hourly conditions and a summary with `outdoor_work_risk` (`low`, `moderate`, or `high`).
+Weather lookups for field service planning and retrospective analysis. Backed by a third-party weather provider. Responses include hourly conditions and a summary with `outdoor_work_risk` (`low`, `moderate`, or `high`).
 
 ## GET /weather/forecast
 
@@ -25,7 +25,7 @@ Forecast weather for a latitude/longitude.
 
 **Response includes:** `mode` (`forecast`), `period_start`, `period_end`, `summary` (avg/min/max temp, precipitation, wind, `dominant_condition`, `outdoor_work_risk`), and `hourly[]` (temperature, humidity, precipitation, rain, weather code/label, wind, cloud cover).
 
-**Enum — `summary.outdoor_work_risk`:** `low`, `moderate`, `high`
+**Enum, `summary.outdoor_work_risk`:** `low`, `moderate`, `high`
 
 **Example:**
 
@@ -85,7 +85,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/weather/historical" \
 
 ## GET /weather/for-job/{job_id}
 
-Weather for a specific job. Coordinates and time window are resolved from the knowledge graph.
+Weather for a specific job. Coordinates and time window are resolved from the intelligence layer.
 
 **Path parameters:**
 

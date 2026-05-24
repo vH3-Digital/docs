@@ -1,6 +1,6 @@
 ---
 title: Authentication
-description: Two API surfaces — VH3 AI Intelligence (company_id + api_key) and BigChange API (X-API-Key header) — plus per-user JWT for interactive apps
+description: Two API surfaces, VH3 AI Intelligence (company_id + api_key) and BigChange API (X-API-Key header), plus per-user JWT for interactive apps
 ---
 
 # Authentication
@@ -9,11 +9,11 @@ description: Two API surfaces — VH3 AI Intelligence (company_id + api_key) and
 **Two server-to-server APIs, one key:** the same VH3 API key is used for both surfaces; transport differs.
 
 1. **VH3 AI Intelligence** (`api:kP8T1CK7`): `company_id` + `api_key` on every request (POST body / GET query).
-2. **BigChange API** (`api:YdihQNr3`): `X-API-Key` header only — no `company_id`; tenant resolved from the key.
+2. **BigChange API** (`api:YdihQNr3`): `X-API-Key` header only, no `company_id`; tenant resolved from the key.
 
 **Interactive apps:** User Auth JWT (`Authorization: Bearer`) on `api:lBQnyyZL` and Bearer-enabled intelligence routes. Never send `api_key` from browser or mobile clients.
 
-**Docs vs live data:** `https://docs.vh3.ai/mcp` or `https://docs.vh3.ai/llms.txt` for documentation search — not the VH3 product MCP.
+**Docs vs live data:** `https://docs.vh3.ai/mcp` or `https://docs.vh3.ai/llms.txt` for documentation search, not the VH3 product MCP.
 </Visibility>
 
 VH3 Connect exposes **two REST API groups** for server-to-server integration, plus a **User Auth** API for interactive applications. You receive a single API key during onboarding; how you send it depends on which API you call.
@@ -27,7 +27,7 @@ VH3 Connect exposes **two REST API groups** for server-to-server integration, pl
 
 The API key is the same credential for both groups. Intelligence endpoints require your company ID in addition; BigChange proxy endpoints do not.
 
-### VH3 AI Intelligence — quick reference
+### VH3 AI Intelligence, quick reference
 
 ```bash
 curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes" \
@@ -40,7 +40,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes" \
   }'
 ```
 
-### BigChange API — quick reference
+### BigChange API, quick reference
 
 ```bash
 curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/list" \
@@ -103,7 +103,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
 
 ## BigChange API authentication
 
-BigChange proxy endpoints use the **same API key** as the intelligence layer, passed only in the **`X-API-Key`** HTTP header. Do not send `company_id` on these requests — the gateway resolves your tenant and BigChange session from the key.
+BigChange proxy endpoints use the **same API key** as the intelligence layer, passed only in the **`X-API-Key`** HTTP header. Do not send `company_id` on these requests, the gateway resolves your tenant and BigChange session from the key.
 
 ```bash
 curl -G "https://api.vh3connect.io/api:YdihQNr3/contacts/contact" \

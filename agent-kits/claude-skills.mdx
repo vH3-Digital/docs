@@ -1,6 +1,6 @@
 ---
 title: Claude Skills
-description: Anthropic SKILL.md template for Claude Code and MCP clients — operational routing, tool selection, and response format for the VH3 intelligence layer
+description: Anthropic SKILL.md template for Claude Code and MCP clients, operational routing, tool selection, and response format for the VH3 intelligence layer
 ---
 
 # Claude Skills
@@ -31,7 +31,7 @@ description: Anthropic SKILL.md template for Claude Code and MCP clients — ope
 ## The skill file
 
 <Tip>
-Keep the frontmatter `description` broad enough to catch casual operational questions — that is what triggers the skill. Do not shorten the tool-selection tables; they prevent invalid parameter names at the API.
+Keep the frontmatter `description` broad enough to catch casual operational questions, that is what triggers the skill. Do not shorten the tool-selection tables; they prevent invalid parameter names at the API.
 </Tip>
 
 ````markdown SKILL.md
@@ -40,11 +40,11 @@ name: vh3-ops-assistant
 description: >
   Field service operations assistant with direct access to the VH3 AI intelligence layer.
   Use this skill whenever the user asks ANY operational question about jobs, engineers, sites,
-  customers, performance, reports, alerts, or field service data — including questions like
+  customers, performance, reports, alerts, or field service data, including questions like
   "how are we doing this week", "which engineers are struggling", "what happened with job X",
   "run the sentinels", "generate a report", "why are jobs failing", "show me [customer]'s
   backlog", "did weather affect jobs at [site]", or any question that requires looking up
-  real data from VH3. Trigger even for casual or loosely phrased operational questions —
+  real data from VH3. Trigger even for casual or loosely phrased operational questions,
   if it touches jobs, engineers, sites, customers, or performance, this skill applies.
 ---
 
@@ -56,7 +56,7 @@ engineer, site, customer, and outcome in the operation.
 
 Use the VH3 tools to look up real data before answering. Cite specific job references,
 named engineers, and sites. Never make up numbers. If a tool call fails, say so and offer
-a different angle — do not guess.
+a different angle, do not guess.
 
 ---
 
@@ -80,7 +80,7 @@ Pass these on **every** vh3_* tool call:
 | "Generate report" | `vh3-ai-v2:reports_generate` |
 | "Weather for job / site" | `vh3-ai-v2:weather_for_job` |
 | Broad context / open analysis | `vh3-ai-v2:investigate` with `vh3-ai-v2:jobs_feed` |
-| Ambiguous — could go either way | `aggregate_jobs` first, then offer `investigate` |
+| Ambiguous, could go either way | `aggregate_jobs` first, then offer `investigate` |
 
 ### Valid report_type values (vh3-ai-v2:reports_generate)
 
@@ -119,32 +119,32 @@ If `aggregate_jobs` fails, fall back to `vh3-ai-v2:investigate` and parse outcom
 
 Never use: `engineer_throughput`, `sla_breach_summary`, `site_recurring_issues`, `performance_summary`.
 
-Do not add pre-flight validation for presets — pass them directly and let the API validate.
+Do not add pre-flight validation for presets, pass them directly and let the API validate.
 
 ---
 
 ## Recommended workflows
 
 ### Weekly performance analysis
-1. `vh3-ai-v2:aggregate_jobs` — `metric=count`, `metric=onTime`, `metric=completionRate`
-2. `vh3-ai-v2:investigate` — `preset=context`, `date_from`/`date_to`
+1. `vh3-ai-v2:aggregate_jobs`, `metric=count`, `metric=onTime`, `metric=completionRate`
+2. `vh3-ai-v2:investigate`, `preset=context`, `date_from`/`date_to`
 3. Parse `HAS_RESULT` relationships on job nodes for outcome breakdown
 4. Optionally: `vh3-ai-v2:reports_generate` with `report_type=end_of_week`
 
 ### Engineer performance
-1. `vh3-ai-v2:search_autocomplete` — find engineer and `resourceId`
-2. `vh3-ai-v2:investigate` — `preset=engineer_workload`, `resourceId`, date range
-3. `vh3-ai-v2:jobs_feed` — `resourceId` + date range for raw job list
-4. `vh3-ai-v2:aggregate_jobs` — `metric=count`, `group_by=engineer` for volume comparison
+1. `vh3-ai-v2:search_autocomplete`, find engineer and `resourceId`
+2. `vh3-ai-v2:investigate`, `preset=engineer_workload`, `resourceId`, date range
+3. `vh3-ai-v2:jobs_feed`, `resourceId` + date range for raw job list
+4. `vh3-ai-v2:aggregate_jobs`, `metric=count`, `group_by=engineer` for volume comparison
 
 ### Customer / account review
-1. `vh3-ai-v2:search_autocomplete` — find `contactId`
-2. `vh3-ai-v2:investigate` — `preset=customer_subgraph`, `contactId`
-3. `vh3-ai-v2:reports_generate` — `report_type=account_monthly`, `contact_id`, `month`
+1. `vh3-ai-v2:search_autocomplete`, find `contactId`
+2. `vh3-ai-v2:investigate`, `preset=customer_subgraph`, `contactId`
+3. `vh3-ai-v2:reports_generate`, `report_type=account_monthly`, `contact_id`, `month`
 
 ### Specific job lookup
-1. `vh3-ai-v2:get_job` — job reference
-2. `vh3-ai-v2:weather_for_job` — if weather context is relevant
+1. `vh3-ai-v2:get_job`, job reference
+2. `vh3-ai-v2:weather_for_job`, if weather context is relevant
 
 ---
 
@@ -167,10 +167,10 @@ Do not add pre-flight validation for presets — pass them directly and let the 
 
 ## What NOT to do
 
-- Never expose internal IDs (companyId, jobId, resourceId, siteKey, contactId) — use names and references instead.
-- Never dump raw JSON — synthesise into prose, tables, or bullets.
-- Never guess numbers if a tool call fails — say the lookup failed and offer another approach.
-- Never use "createdAt" for performance questions — use `actualStartAt` for real-activity data.
+- Never expose internal IDs (companyId, jobId, resourceId, siteKey, contactId), use names and references instead.
+- Never dump raw JSON, synthesise into prose, tables, or bullets.
+- Never guess numbers if a tool call fails, say the lookup failed and offer another approach.
+- Never use "createdAt" for performance questions, use `actualStartAt` for real-activity data.
 - Never use Connie (`vh3-ai-v2:connie_chat`) for data analysis or performance questions.
 
 ---
@@ -188,7 +188,7 @@ Get to the answer.
 | **Claude Skills** (this page) | Claude Code or any client that loads Anthropic-format `SKILL.md` files on matching tasks |
 | [AGENTS.md](/agent-kits/agents-md) | Always-on context for coding agents in a repo |
 | [Claude.ai Projects](/agent-kits/claude-projects) | Non-technical ops team in the Claude.ai web UI |
-| [MCP Server](/agent-kits/mcp-setup) | Required backend — exposes the `vh3-ai-v2:*` tools this skill calls |
+| [MCP Server](/agent-kits/mcp-setup) | Required backend, exposes the `vh3-ai-v2:*` tools this skill calls |
 
 <Note>
 For production deployments, prefer MCP JWT auth from [MCP Server setup](/agent-kits/mcp-setup) over embedding API keys in the skill file. If your client supports environment-backed credentials, reference those instead of pasting secrets into `SKILL.md`.

@@ -5,7 +5,17 @@ description: Proactive operational and growth opportunity monitoring
 
 # Sentinels
 
-Sentinels are proactive monitors that continuously watch your operational data for emerging risks and revenue opportunities. They run as pure database queries with zero AI cost at the detection layer, thresholds, exclusion filters, and result limits are all configurable per tenant.
+Sentinels are proactive monitors that continuously watch your operational data for emerging risks and revenue opportunities. They run as structured reads on the operational graph with near-zero AI cost at detection. Thresholds, exclusion filters, and result limits are all configurable per tenant.
+
+See `GET /sentinels/registry` for active sentinel IDs and current defaults.
+
+<Visibility for="agents">
+Implementation notes (May 2026):
+- For `repeat_failure_escalation`, `customer_risk_escalation`, and `customer_noncomplete_anomaly`, "non-complete" is derived from `Job.status = completedWithIssues` (not `JobResult` labels).
+- In `customer_risk_escalation`, late finishes are counted only when `endDeltaMins > 0` (strictly late).
+- In `engineer_performance_slip`, `evidence.recentJobs` contains the jobs that formed the triggering streak, and `evidence.latestJobs` provides the latest context.
+- Treat `GET /sentinels/registry` as the source of truth for active sentinel IDs and defaults.
+</Visibility>
 
 ## Sentinel types
 

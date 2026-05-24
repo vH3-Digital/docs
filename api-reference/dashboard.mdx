@@ -5,7 +5,7 @@ description: Cached tenant business-health snapshot for KPI tiles
 
 # Dashboard
 
-Returns a cached, dashboard-ready snapshot of tenant operational health. Five sections — pipeline, performance, workforce, assets, and knowledge — map to `StatsDisplay` UI payloads. No LLM; read-only Neo4j aggregation plus Weaviate object counts.
+Returns a cached, dashboard-ready snapshot of tenant operational health. Five sections (pipeline, performance, workforce, assets, and knowledge) map to dashboard KPI payloads. Near-zero AI cost at read time; aggregated from the intelligence layer.
 
 ## GET /dashboard
 
@@ -30,7 +30,7 @@ Tenant pulse snapshot.
 | `sections.performance` | object | Last 30 days: completion rate, first-visit-fix rate, avg start/end delta (minutes) |
 | `sections.workforce` | object | Engineer counts, active today, avg jobs per engineer, top engineer |
 | `sections.assets` | object | Customers, sites, vehicles, job types, job categories |
-| `sections.knowledge` | object | Weaviate depth: intake docs, outcome docs, customer summaries, chat sessions |
+| `sections.knowledge` | object | Knowledge depth: intake records, outcomes, customer summaries, chat sessions |
 
 **Example:**
 
@@ -53,11 +53,11 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/dashboard" \
 
 - **Home screen:** Single call to populate KPI tiles on first load.
 - **Mobile summary:** Lightweight operational overview without running separate aggregate calls.
-- **Health monitoring:** Internal or partner views of tenant graph and KB coverage.
+- **Health monitoring:** Internal or partner views of data coverage and knowledge-base completeness.
 - **Scheduled snapshots:** n8n cron to archive pulse metrics for trend reporting.
 
 **Notes:**
 
 - Cached 5 minutes per tenant; uncached typically 200–800ms, cached under 10ms.
-- Deterministic — same underlying data yields the same metrics.
-- Returns `502` if graph or vector store queries fail.
+- Deterministic: the same underlying data yields the same metrics.
+- Returns `502` if search or graph queries fail.

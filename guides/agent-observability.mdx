@@ -96,7 +96,10 @@ Different tools expose different levels of provenance:
 
 Search tools return **hits linked to operational records**, not disconnected chunks. Your UI can show reference, customer, site, and outcome snippets from `output` while Connie summarises in prose.
 
-On the **Connie agent path only**, `search_outcomes` and `search_intake` hits are truncated to a compact allowlist (REST `POST /search/outcomes` still returns the full Weaviate payload). Typical fields per hit:
+On the **Connie agent path only**, `search_outcomes` and `search_intake` hits are returned as a shortened result set optimised for chat. The REST `POST /search/outcomes` endpoint still returns the full search API response with all indexed fields for your own UI or downstream tools.
+
+<Visibility for="agents">
+Compact field set on the Connie path:
 
 | Field | Role |
 |-------|------|
@@ -109,7 +112,8 @@ On the **Connie agent path only**, `search_outcomes` and `search_intake` hits ar
 | `subVertical`, `status`, `result`, `score` | Classification and relevance |
 | `jobId`, `typeId`, `categoryId`, `resourceId` | IDs for follow-up tools |
 
-Verbose blobs (`text`, `companyId`) and opaque keys (`siteKey`) are omitted on the agent path to save context tokens.
+Verbose blobs (`text`, `companyId`) and opaque keys (`siteKey`) are omitted on the agent path to keep chat turns compact.
+</Visibility>
 
 ### Investigation
 
@@ -138,11 +142,11 @@ That pattern matters because:
 - **Drill-down** uses the same `output` the agent saw.
 - **Accessibility and export** (PDF, email) can reuse structured data.
 
-You do not need to expose internal schema names in customer docs; you do need to know that **structured outputs are first-class**, not an afterthought.
+Your app can render structured outputs without exposing internal field names to end users. The important thing is that **structured outputs are first-class**, not an afterthought.
 
 ## Routing and cost transparency
 
-When semantic routing is enabled, `route` describes how the message was classified before the full agent ran. Simple acknowledgements may skip the tool loop entirely; analytical questions use the full harness. That is observability for **cost and behaviour**, not only for correctness.
+When message classification is enabled, `route` describes how the message was classified before the full agent ran. Simple acknowledgements may skip the tool loop entirely; analytical questions use the full set of connected capabilities. That is observability for **cost and behaviour**, not only for correctness.
 
 Combine `route` with `usage` to answer: "Was this an expensive turn? Did we need tools at all?"
 

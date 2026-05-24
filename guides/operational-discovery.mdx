@@ -86,7 +86,7 @@ Resolve **customers, people, engineers, and jobs** when names are misspelled, ab
 
 **Primary endpoint:** `GET /search/autocomplete`
 
-This path uses **multi-strategy entity resolution**: phonetic and fuzzy text matching, postcode normalisation, email and reference lookups, and cross-checks against the operational graph. Strategies combine heuristically; you receive a ranked candidate list.
+This path uses **multi-strategy entity resolution**: multiple matching strategies (spelling, sound-alike, postcode, references, partial emails) plus cross-checks against the operational graph. Strategies combine into a single ranked candidate list.
 
 Inbound email and portal traffic uses the same resolution philosophy: extracted names and addresses are matched back to **contacts** in your model so new work lands on the right account.
 
@@ -106,7 +106,7 @@ That question is relational and structured. Aggregations and Connie handle the t
 
 Not every insight should wait for a search.
 
-**Sentinels** evaluate patterns on the graph continuously: performance slips, repeat visits, dormant accounts, overdue rhythms, engineer-flagged follow-ups. Detection is a **structured read** at the data layer (no LLM cost at detection time).
+**Sentinels** evaluate patterns on the graph continuously: performance slips, repeat visits, dormant accounts, overdue rhythms, engineer-flagged follow-ups. Detection is a **structured read** at the data layer with near-zero AI cost at detection.
 
 **Agents pick up from there.** Connie, automations, or case workflows consume sentinel output, run discovery for precedents, and open **cases** for human follow-through. Search finds what happened before; sentinels flag what is changing now.
 
@@ -127,7 +127,7 @@ The summary is split into **seven independent sections**, each indexed for disco
 | `risk_opportunity` | Risks, opportunities, quick wins vs strategic actions |
 
 <Note>
-Each section has its own searchable index. You can query **one dimension** (for example equipment profiles only) or search across all sections. Results are ranked and scored like job precedent search, without invoking an LLM.
+Each section has its own searchable index. You can query **one dimension** (for example equipment profiles only) or search across all sections. Results are ranked and scored like job precedent search, with near-zero AI cost at retrieval.
 </Note>
 
 **Keeping summaries current**
@@ -150,10 +150,10 @@ Use section-scoped search for portfolio questions: "Which accounts mention recur
 
 ## Ranking and similarity (without exposing the engine)
 
-Job similarity and result ordering use **hybrid ranking**: signals from meaning-based matching and exact-term matching are fused into one ordered list. You do not maintain synonym lists or search dictionaries. Narrative text is indexed once at ingest and ranked against the same representation at query time.
+Job similarity and result ordering use **combined meaning and keyword ranking**: signals from meaning-based matching and exact-term matching are fused into one ordered list. You do not maintain synonym lists or search dictionaries. Narrative text is indexed once at ingest and ranked against the same representation at query time.
 
 <Note>
-We do not publish internal fusion weights, index schemas, or enrichment prompts. Reliability comes from the operational model (resolved entities, structured outcomes, graph links), not from a one-off embedding trick.
+We do not publish internal ranking or generation settings. Reliability comes from resolved entities, structured outcomes, and linked records, not from a single search shortcut.
 </Note>
 
 What you can rely on in product terms:

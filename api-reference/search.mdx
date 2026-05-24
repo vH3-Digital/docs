@@ -40,7 +40,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes" \
 
 ## POST /search/outcomes/enriched
 
-Semantic search over job outcomes with Neo4j graph enrichment. Same request body and filters as `POST /search/outcomes`. Adds `related_works` grouped by job type, engineer, and site for each hit set.
+Semantic search over job outcomes with relationship enrichment from the intelligence layer. Same request body and filters as `POST /search/outcomes`. Adds `related_works` grouped by job type, engineer, and site for each hit set.
 
 **Request body:**
 
@@ -91,9 +91,9 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes/enriched" \
 
 **Notes:**
 
-- Slower than `/search/outcomes` due to Neo4j enrichment (~500ms–1s additional).
+- Slower than `/search/outcomes` due to relationship enrichment (~500ms–1s additional).
 - `related_works` keys are derived from returned hits only, not the full matching corpus.
-- Returns `502` if vector search or graph enrichment fails.
+- Returns `502` if semantic search or enrichment fails.
 
 ---
 
@@ -125,7 +125,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/intake" \
 
 ## POST /search/intake/enriched
 
-Semantic search over job intake text with knowledge graph enrichment, returns richer context by joining graph relationships to each result.
+Semantic search over job intake text with relationship enrichment, returns richer context by joining linked records to each result.
 
 **Request body:**
 
@@ -198,7 +198,7 @@ The response groups results under `groups.contacts`, `groups.people`,
 
 **Notes:**
 
-- Minimum query length is 2 characters. Accepts any entity Id such asd contact, job, job_group_id, reference, resource etc
+- Minimum query length is 2 characters. Accepts any entity Id such as contact, job, job_group_id, reference, resource etc
 - Use `GET /search/autocomplete/diagnose` when all groups return empty (index health).
 
 ---
@@ -260,4 +260,8 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/search/summary-sections/by-conta
   --data-urlencode "api_key=your-api-key"
 ```
 
-Summaries are generated from the operational graph and refreshed incrementally via `POST /backfill/summary-kb`. See [Operational discovery](/guides/operational-discovery) for how summaries stay current in Connie sessions.
+Summaries are generated from the operational graph and refreshed incrementally by the account summary pipeline. See [Operational discovery](/guides/operational-discovery) for how summaries stay current in Connie sessions.
+
+<Visibility for="agents">
+Incremental refresh endpoint: `POST /backfill/summary-kb` (tenant-authenticated; same `company_id` + `api_key` envelope).
+</Visibility>

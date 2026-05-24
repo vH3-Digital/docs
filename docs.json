@@ -96,6 +96,12 @@
         "tab": "Guides",
         "groups": [
           {
+            "group": "Strategy",
+            "pages": [
+              "guides/2027-blueprint"
+            ]
+          },
+          {
             "group": "Using VH3 AI",
             "pages": [
               "guides/why-context-matters",
@@ -112,7 +118,14 @@
             "pages": [
               "guides/building-on-the-layer",
               "guides/platform-tools",
-              "guides/agent-observability"
+              "guides/agent-observability",
+              "guides/generative-ui"
+            ]
+          },
+          {
+            "group": "For BigChange users",
+            "pages": [
+              "guides/bigchange"
             ]
           },
           {

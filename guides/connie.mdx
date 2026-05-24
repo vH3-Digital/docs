@@ -25,8 +25,8 @@ Connie handles ambiguous questions and short prompts well. For operator habits t
 
 VH3 AI separates **discovery** from **synthesis**:
 
-| Layer | Role | Typical speed | LLM? |
-|-------|------|---------------|------|
+| Layer | Role | Typical speed | Uses conversational AI? |
+|-------|------|---------------|-------------------------|
 | **Discovery** | Search, autocomplete, feeds, customer knowledge sections | Sub-second | No |
 | **Synthesis** | Explain, compare, investigate, brief, recommend | Seconds | Yes (your key) |
 
@@ -50,7 +50,7 @@ This is not just hygiene. Shorter, focused sessions perform better in three meas
 
 ### How to start and continue a session
 
-First turn — no `session_id`:
+First turn, no `session_id`:
 
 ```json
 {
@@ -109,8 +109,8 @@ This is not "the model retraining itself in the background." It is **your organi
 Connie is built for production economics (especially with [BYOK](/pricing)):
 
 - **Intent routing** classifies messages so lightweight turns do not always invoke the full agent and tool suite.
-- **Tenant-level prompt caching.** Stable instruction blocks (system prompts, tool schemas, company operating context) are cached across all users in your organisation. Every person on the team benefits from cache hits that earlier sessions already warmed. `cacheReadTokens` in the usage response shows how much of each turn was served from cache rather than re-computed.
-- **Truncated tool payloads** return compact, LLM-ready shapes from feeds, search, and aggregates so context windows are not filled with empty fields and nested noise. Semantic search hits include `contactName`, `jobRef`, and visit dates so answers can name sites and cite references without extra lookups.
+- **Company-level prompt caching.** Shared company context (instruction blocks, tool definitions, organisation operating context) is cached across all users in your organisation. Every person on the team benefits from cache hits that earlier sessions already warmed. `cacheReadTokens` in the usage response shows how much of each turn was served from cache rather than re-computed.
+- **Compact tool results for efficient chat.** Feeds, search, and aggregates return trimmed shapes so the model is not fed empty fields and nested noise. Semantic search hits include `contactName`, `jobRef`, and visit dates so answers can name sites and cite references without extra lookups.
 - **Discovery-first tools** (`search_outcomes`, `jobs_aggregate`, `job_feed`, autocomplete, customer summary sections) handle lookups without running narrative investigation unless the question requires it.
 
 Every chat response includes **usage** (`inputTokens`, `outputTokens`, `cacheReadTokens`, `cacheCreationTokens`) so you can see what a turn cost on your provider account.
@@ -156,13 +156,13 @@ Connie can answer any question the underlying data supports. Examples by shape o
 
 ### Operational actions (where enabled)
 
-Depending on your tenant and integrations, Connie can also drive **email drafts**, **notifications**, **briefings**, **account reports**, **presentations**, and lookups into connected systems (CRM, mail) through the same tool harness. See the [Connie API](/api-reference/connie) for endpoints and fields.
+Depending on your set up and integrations, Connie can also drive **email drafts**, **notifications**, **briefings**, **account reports**, **presentations**, and lookups into connected systems (CRM, mail) through the same connected platform capabilities. See the [Connie API](/api-reference/connie) for endpoints and fields.
 
 ## Working on your behalf (without a prompt)
 
 Most of Connie's value lands without anyone typing. Connie reads the same signals the platform watches continuously, so she can pick up work the operator has not asked about yet.
 
-- **Sentinels** detect patterns 24/7 (no LLM cost at detection): repeat visits, SLA drift, dormant customers, performance slips. See [Sentinels](/guides/sentinels).
+- **Sentinels** detect patterns 24/7 with near-zero AI cost at detection: repeat visits, SLA drift, dormant customers, performance slips. See [Sentinels](/guides/sentinels).
 - **Cases** turn signals into owned work with status, participants, and linked jobs. Connie can open a case for a sentinel trigger, attach the relevant evidence, and draft the brief the assignee will read.
 - **Teams** route cases to the right people: regional, portfolio, or functional groups own customers and sites so nothing sits in a generic queue.
 
@@ -176,7 +176,7 @@ The operator's job is to steer and verify, not to push the platform into motion.
 
 ## Specialist capabilities
 
-Connie orchestrates **specialist delegates** for focused work (for example structured email generation and deeper analytical passes). You interact with one assistant; the platform routes complex sub-tasks without you managing multiple agents.
+Connie orchestrates **focused sub-tasks handled automatically** for specialist work (for example structured email generation and deeper analytical passes). You interact with one assistant; the platform routes complex sub-tasks without you managing multiple agents.
 
 ## Tips for effective questions
 

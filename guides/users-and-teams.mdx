@@ -5,7 +5,7 @@ description: How access works, what roles do, and how teams scope work across yo
 
 # Users and teams
 
-VH3 AI is priced on job volume, not seats. Every paid tier from Core upward gives your whole team access — operations, dispatch, engineers, account managers, finance, and owners. You do not need to negotiate seat licences when onboarding a new coordinator or an apprentice engineer. The marginal user is free; the marginal job is the line item.
+VH3 AI is priced on job volume, not seats. Every paid tier from Core upward gives your whole team access, operations, dispatch, engineers, account managers, finance, and owners. You do not need to negotiate seat licences when onboarding a new coordinator or an apprentice engineer. The marginal user is free; the marginal job is the line item.
 
 See [Pricing](/pricing) for visit inclusions and overage rates by tier.
 
@@ -23,7 +23,7 @@ VH3 AI ships with five roles designed for typical field service responsibilities
 
 Roles are passed to the Users API as plain strings (`admin`, `manager`, `standard`, `engineer`, `developer`). See [Users](/api-reference/users) for invite, role-change, and archive endpoints.
 
-For configurable role mapping beyond the defaults — for example, restricting access to finance fields per team — see [Core+ permissions](#core-permissions-and-beyond) below.
+For configurable role mapping beyond the defaults, for example, restricting access to finance fields per team, see [Core+ permissions](#core-permissions-and-beyond) below.
 
 ## Inviting and managing users
 
@@ -47,13 +47,13 @@ The API key must never appear in client-side code. JWTs are the only credential 
 
 Teams group users so the right people see the right work. A team can represent a region, a customer portfolio, or a function:
 
-- **Region** — North Region, Scotland, Midlands
-- **Portfolio** — Retail accounts, Housing associations, Single-site cafés
-- **Function** — Compliance, Major incidents, Out-of-hours
+- **Region**, North Region, Scotland, Midlands
+- **Portfolio**, Retail accounts, Housing associations, Single-site cafés
+- **Function**, Compliance, Major incidents, Out-of-hours
 
 Teams are linked to entities (customers, sites, jobs, cases). Filtered views, case ownership, and assignments use that linkage so a coordinator in the North Region sees their work, not the whole country.
 
-**Regional ownership.** A team owns the accounts in their patch — they get case ownership and a filtered view of jobs and sentinels for that portfolio.
+**Regional ownership.** A team owns the accounts in their patch, they get case ownership and a filtered view of jobs and sentinels for that portfolio.
 
 **Escalations.** When a sentinel surfaces a problem on an account, the case is opened against the team that owns it. People outside that team do not see it in their queue.
 
@@ -74,15 +74,15 @@ See [Teams](/api-reference/teams) for the full surface, and the case ownership p
 
 ## How agents and humans work together
 
-Users and teams are not just a permissions model — they are the structure agents operate within. Connie, sentinels, and any automations you build on the layer are always acting on behalf of, or in context of, a user and a team.
+Users and teams are not just a permissions model, they are the structure agents operate within. Connie, sentinels, and any automations you build on the layer are always acting on behalf of, or in context of, a user and a team.
 
-**Connie runs in a user session.** Every Connie conversation is scoped to the authenticated user. Her answers draw from the same intelligence layer as that user's dashboards and filtered views — she sees what they see, not the whole estate. This means a coordinator in the North Region gets a Connie that is contextually aware of their accounts, not a generic one over all data.
+**Connie runs in a user session.** Every Connie conversation is scoped to the authenticated user. Her answers draw from the same intelligence layer as that user's dashboards and filtered views, she sees what they see, not the whole estate. This means a coordinator in the North Region gets a Connie that is contextually aware of their accounts, not a generic one over all data.
 
-**Sentinels open cases against the owning team.** When a sentinel detects a problem, the case lands with the team linked to that account or site. The right people are notified; everyone else's queue stays clean. There is no manual triage step to route the alert — team ownership does it automatically.
+**Sentinels open cases against the owning team.** When a sentinel detects a problem, the case lands with the team linked to that account or site. The right people are notified; everyone else's queue stays clean. There is no manual triage step to route the alert, team ownership does it automatically.
 
 **Agents inherit user context.** Coding agents and MCP clients authenticate as a named user with a JWT. That user's role and team memberships determine what the agent can see and do. An agent working on behalf of a `standard` user cannot perform actions outside that role, regardless of how it was invoked. This makes agentic workflows auditable and bounded by the same access rules as your human operators.
 
-**Automations act at the organisation level.** Server-side n8n workflows and back-office scripts authenticate with `company_id` + `api_key` rather than a user JWT. They are not scoped to a team and have broader read access. Use them for cross-team operations, bulk enrichment, and scheduled tasks — not for surfaces a human interacts with directly.
+**Automations act at the organisation level.** Server-side n8n workflows and back-office scripts authenticate with `company_id` + `api_key` rather than a user JWT. They are not scoped to a team and have broader read access. Use them for cross-team operations, bulk enrichment, and scheduled tasks, not for surfaces a human interacts with directly.
 
 The practical result is that agents augment the people and teams you have already structured, rather than operating as a parallel system outside your access model.
 
@@ -115,12 +115,12 @@ flowchart LR
 ```
 
 - **People sign in** via VH3 Connect or your custom app, using a JWT.
-- **Automations run server-side.** n8n workflows and back-office scripts use `company_id` + `api_key` — never in a browser.
+- **Automations run server-side.** n8n workflows and back-office scripts use `company_id` + `api_key`, never in a browser.
 - **Coding agents and MCP clients** use a JWT scoped to a user. See [MCP setup](/agent-kits/mcp-setup).
 
 ## Core+ permissions and beyond
 
-The default role set covers most operations. When you need finer-grained access control — for example, preventing a team from seeing finance fields, or restricting who can regenerate customer summaries — that is available on **Core+**.
+The default role set covers most operations. When you need finer-grained access control, for example, preventing a team from seeing finance fields, or restricting who can regenerate customer summaries, that is available on **Core+**.
 
 Core+ unlocks two things:
 
@@ -132,7 +132,7 @@ See the Core+ row in [Pricing](/pricing) for what is included.
 ## Governance considerations
 
 - Role-based access matters because VH3 AI is always on. The people who see Connie answers and sentinel digests should be the people authorised to act on them.
-- Cases provide a full audit trail — status, participants, and linked jobs — and are the system of record for follow-through across teams on Connect tier and above.
+- Cases provide a full audit trail, status, participants, and linked jobs, and are the system of record for follow-through across teams on Connect tier and above.
 - Connie and agent conversations run on your own model provider key (BYOK), keeping that spend visible and on your account. Reports, briefings, and platform synthesis are included in the platform price. See [Pricing](/pricing) and [Connie](/guides/connie).
 
 ## Related

@@ -11,7 +11,7 @@ The agents work. They give answers. They pass the demo. Then usage grows and som
 
 This is not a model quality problem. It is an architecture problem. And it is one we ran into ourselves.
 
-By late 2024, VH3 AI had production AI agents running against real field service operations, V1 chatbot-style interfaces processing hundreds of thousands of jobs across multiple large clients. What we learned over that period, and particularly in the months that followed, was that the classic retrieval approach, semantic search over job records, answer from the closest chunks, was not enough for the kind of operational work field service agents actually need to do.
+By late 2024, VH3 AI had production AI agents running against real field service operations, early conversational interfaces processing hundreds of thousands of jobs across multiple large clients. What we learned over that period, and particularly in the months that followed, was that the classic retrieval approach, semantic search over job records, answer from the closest chunks, was not enough for the kind of operational work field service agents actually need to do.
 
 A chatbot that answers "how many jobs did we complete last week?" is a different machine from an agent that prepares a site briefing, investigates a recurring fault pattern, monitors for emerging SLA risk, and synthesises five years of operational history into a coherent picture. The first can run on retrieval. The second needs something else.
 
@@ -19,7 +19,7 @@ That something else is what the intelligence layer is.
 
 ## The retrieval problem
 
-The AI infrastructure market is converging on this same diagnosis. Semantic search vendors are shipping knowledge layers and new query contracts. Enterprise software companies are writing billion-euro cheques for graph and tabular data infrastructure. The shared recognition is that agents built on chatbot-era memory systems hit a ceiling, they spend most of their compute budget re-assembling context they should already have.
+The AI infrastructure market is converging on this same diagnosis. Semantic search vendors are shipping knowledge layers and new query contracts. Enterprise vendors are investing heavily in structured operational data. The shared recognition is that agents built on search-only memory systems hit a ceiling: they spend most of their compute budget re-assembling context they should already have.
 
 The root cause is straightforward. Classic retrieval, embed a query, find the closest chunks, pass them to a model, was designed for question-answering. One question, one lookup, one answer. Agents run tasks. They cross-reference entities, check history, evaluate patterns, and produce recommendations. That workflow needs a different kind of memory.
 
@@ -33,7 +33,7 @@ VH3 AI is built around that contract. Four complementary memory primitives, comb
 
 Some of the most important questions in field service are structurally relational. Which engineer has worked at this site before? Which sites share a parent customer? Which jobs cluster around the same asset? Which fault patterns connect across engineers who have never worked together?
 
-These are graph questions. The answer does not live in any single document, it lives in the connections between entities. Vector similarity cannot find them. Keyword search cannot find them. They require a data structure that understands relationships natively.
+These are relationship questions. The answer does not live in any single document, it lives in the connections between entities. Similarity search alone cannot find them. Keyword search cannot find them. They require a data structure that understands relationships natively.
 
 The VH3 AI knowledge graph links every job to its engineer, site, customer, outcome, equipment, and history, traversable in any direction, from any starting point. Entity resolution handles the messy reality of source data written by different people across different systems: "Tesco PLC", "Tesco Stores", and "Tesco Express Watford" resolve to the same customer. The same fault described differently across twenty engineers resolves to the same underlying pattern.
 
@@ -43,7 +43,7 @@ The graph is not a reporting layer. It is the foundation everything else is buil
 
 Not every question is relational. Some questions are about similarity, faults that look like other faults, job outcomes that resemble precedents in the history, descriptions that match without sharing a single keyword.
 
-The VH3 AI semantic index stores every fault description, job note, worksheet answer, and engineer observation as a vector embedding. "Boiler intermittent fault" finds jobs recorded as "heating system cutting out sporadically" or "intermittent heating loss." Precedent discovery across language that was never standardised, at any scale, with no keyword configuration required.
+The VH3 AI semantic index stores every fault description, job note, worksheet answer, and engineer observation by meaning. "Boiler intermittent fault" finds jobs recorded as "heating system cutting out sporadically" or "intermittent heating loss." Precedent discovery across language that was never standardised, at any scale, with no keyword configuration required.
 
 Critically, this runs on top of the knowledge graph, not as a separate retrieval layer. A semantic search does not return raw chunks from a document store. It returns graph-linked records: jobs with their engineers, their sites, their outcomes, their history, all already resolved and connected.
 

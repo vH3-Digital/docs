@@ -5,7 +5,7 @@ description: Classify inbound emails by category, urgency, and routing action
 
 # Email Triage
 
-Classify inbound emails against your tenant taxonomy. Returns category, urgency, sentiment, and a deterministic routing decision. Known FM portal senders can short-circuit to `portal_ingest` without an LLM call.
+Classify inbound emails against your tenant taxonomy. Returns category, urgency, sentiment, and a deterministic routing decision. Known FM portal senders can short-circuit to `portal_ingest` without AI classification.
 
 ## POST /triage/classify
 
@@ -45,7 +45,7 @@ Classify a single email.
 | `decision.flags` | array | Routing flags (e.g. `cs_attention`, `urgency_bumped`) |
 | `decision.reasoning` | string | Routing rationale |
 | `portal_match` | string | Matched portal ID when sender is a known FM portal; otherwise null |
-| `pre_filter_hit` | boolean | Caught as noise without an LLM call |
+| `pre_filter_hit` | boolean | Caught as noise without AI classification |
 | `processed_at` | string | ISO 8601 processing timestamp |
 
 **Example:**
@@ -74,9 +74,9 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/triage/classify" \
 
 **Notes:**
 
-- Pipeline order: portal short-circuit → pre-filter → LLM classification → rule-based routing.
+- Pipeline order: portal short-circuit → pre-filter → AI classification → rule-based routing.
 - Pass `skip_portal_check: true` when upstream logic has already separated portal traffic.
-- Typical latency: instant for portal/pre-filter hits; 2–5s when the LLM runs.
+- Typical latency: instant for portal/pre-filter hits; 2–5s when AI classification runs.
 - Use `GET /triage/categories` to fetch the active taxonomy for UI pickers.
 
 ---

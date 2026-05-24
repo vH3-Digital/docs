@@ -1,0 +1,175 @@
+---
+title: Generative UI
+description: A drop-in React component library that renders VH3 AI tool outputs as polished operational interfaces, without any host configuration
+---
+
+# Generative UI
+
+The VH3 AI platform returns structured tool outputs alongside every Connie answer, every report, every investigation, and every customer summary. That structure is the foundation for what we call generative UI: a single contract between the intelligence layer and the surfaces your team works from, so the same operational answer renders consistently in a dashboard, an internal tool, a custom application, or an AI-coded prototype.
+
+The `@vh3/field-service-ui` package is the reference implementation of that contract. It is a self-contained React component library, designed to drop into any React application without configuration, that takes a VH3 AI tool response and renders the appropriate operational interface automatically.
+
+<Note>
+**Preview.** The `@vh3/field-service-ui` package is in preview. The components, theming system, and contracts shown below are the targeted release surface. Get in touch if you would like to use it before the public release.
+</Note>
+
+## Why this exists
+
+Most AI products either return prose or return raw JSON and leave the rendering problem to the consumer. Both are a problem in field service operations.
+
+Prose alone is hard to act on. A coordinator reading a paragraph about an account's SLA performance cannot drill into the underlying jobs, cannot trust the numbers without verification, and cannot quickly compare the picture to other accounts. Raw JSON is unusable to anyone who is not building the rendering layer themselves, and produces inconsistent interfaces across every team that tries.
+
+The generative UI package solves both. The intelligence layer returns a structured payload. The component library knows how to render that payload. The result is a polished operational interface that looks the same in every application built on the layer, with no custom UI development required.
+
+## The contract
+
+The pattern is simple: one tool invocation produces one structured payload, which maps to one renderer.
+
+```tsx
+import { ToolRenderer } from "@vh3/field-service-ui";
+
+<ToolRenderer toolName="investigate" response={apiJson} />;
+```
+
+The renderer dispatches automatically based on the tool name. An investigation response renders as an evidence-cited investigation card. A customer summary response renders as a sectioned customer brief. A report generation response renders as a full dashboard layout. The same JSON your agents already receive becomes a complete interface.
+
+## What is in the package
+
+The library includes a set of dedicated components for the most common operational outputs:
+
+| Tool name | Component rendered |
+|-----------|-------------------|
+| `jobs_aggregate` | Stats, chart, or comparison card, chosen automatically |
+| `job_lookup`, `job_feed` | Data table |
+| `job_detail` | Job detail card |
+| `weather_check`, `weather_for_job`, `weather_for_site` | Weather widget |
+| `autocomplete` | Option list |
+| `investigate` | Investigation card with evidence list |
+| `generate_report` | Dashboard layout or composite report |
+| `generate_summary` | Customer summary with seven sections |
+| `contact_snapshot` | Composite contact report |
+| `search_outcomes`, `search_intake` | Data table |
+| `case_report` | Case report card |
+
+Each component is also exported individually if you want to render a specific layout without going through the dispatcher.
+
+## Live components
+
+Browse the full component catalogue:
+
+<Card title="VH3 AI generative UI components" icon="palette" href="https://6a122bc4b7956e9f833571a1-tcdwajlgex.chromatic.com/">
+  Live, interactive component gallery covering every component, story variant, and rendered tool output the library produces.
+</Card>
+
+A selection of representative components below.
+
+### Dashboard layout
+
+The `DashboardLayout` component composes a full operational report from a `generate_report` response. Morning briefings, midday updates, weekly reviews, and account monthlies all render through this single layout.
+
+<iframe src="https://6a122bc4b7956e9f833571a1-tcdwajlgex.chromatic.com/iframe.html?id=vh3-dashboardlayout--morning-briefing&viewMode=story&shortcuts=false&singleStory=true" width="100%" height="720" frameBorder="0" loading="lazy"></iframe>
+
+### Investigation card
+
+The `InvestigationCard` renders an `investigate` response as a headline, confidence score, recommendations, and a cited evidence list. The same component handles high, medium, and low confidence outputs.
+
+<iframe src="https://6a122bc4b7956e9f833571a1-tcdwajlgex.chromatic.com/iframe.html?id=vh3-investigationcard--high-confidence&viewMode=story&shortcuts=false&singleStory=true" width="100%" height="640" frameBorder="0" loading="lazy"></iframe>
+
+### Customer summary
+
+The `CustomerSummary` component renders the seven-section customer knowledge base in a single navigable interface, suitable for account reviews and pre-call briefings.
+
+<iframe src="https://6a122bc4b7956e9f833571a1-tcdwajlgex.chromatic.com/iframe.html?id=vh3-customersummary--full-report&viewMode=story&shortcuts=false&singleStory=true" width="100%" height="720" frameBorder="0" loading="lazy"></iframe>
+
+### Job detail card
+
+The `JobDetailCard` renders a single job lookup as a complete operational record: status, timing, engineer, site, and outcomes.
+
+<iframe src="https://6a122bc4b7956e9f833571a1-tcdwajlgex.chromatic.com/iframe.html?id=vh3-jobdetailcard--completed-ok&viewMode=story&shortcuts=false&singleStory=true" width="100%" height="560" frameBorder="0" loading="lazy"></iframe>
+
+### SLA gauges
+
+Compact, glanceable visualisations for SLA performance, suitable for embedding in dashboards or briefing emails.
+
+<iframe src="https://6a122bc4b7956e9f833571a1-tcdwajlgex.chromatic.com/iframe.html?id=vh3-slagauge--all-three-side-by-side&viewMode=story&shortcuts=false&singleStory=true" width="100%" height="240" frameBorder="0" loading="lazy"></iframe>
+
+## Drop into any React application
+
+The package ships with zero host configuration. All styles, fonts, and runtime dependencies are bundled inside the library. The only peer dependency is React.
+
+```bash
+npm install @vh3/field-service-ui
+```
+
+```tsx
+import "@vh3/field-service-ui/style.css";
+import { ToolRenderer } from "@vh3/field-service-ui";
+
+function OperationsView({ apiJson }) {
+  return (
+    <div className="vh3-ui">
+      <ToolRenderer toolName="generate_report" response={apiJson} />
+    </div>
+  );
+}
+```
+
+It works identically in Next.js, Vite, Create React App, Remix, Bolt, Base44, or any AI coding assistant scaffolding. There is no extra styling setup to copy, no font loading to configure, and no theme provider to wrap.
+
+## Custom theming
+
+The package ships with the VH3 dark theme by default, but the visual identity is fully customisable through CSS variables.
+
+**Option A: edit a copied config file.**
+
+```bash
+cp node_modules/@vh3/field-service-ui/dist/theme/vh3-ui.config.css ./styles/vh3-theme.css
+```
+
+Adjust the `--vh3-*` variables, then import after the main stylesheet:
+
+```tsx
+import "@vh3/field-service-ui/style.css";
+import "./styles/vh3-theme.css";
+```
+
+**Option B: generate a theme at runtime.** This path is designed for rapid customisation and dynamic theming.
+
+```tsx
+import { createTheme, injectTheme } from "@vh3/field-service-ui";
+
+const css = createTheme({
+  background: "#0D1117",
+  accent: "#FF6B00",
+  fontSans: "'JetBrains Mono', monospace",
+});
+
+injectTheme(css);
+```
+
+The same components carry your visual identity without any source modification.
+
+## Why this matters for builders
+
+A coordinator's dashboard, a partner portal, an internal account review tool, and an AI-coded prototype can all render the same operational answer in the same way. That consistency is what makes the intelligence layer practical to build on at scale.
+
+The platform returns the answer once. The component library renders it everywhere. Your team focuses on the operational workflow around it, not on rebuilding the rendering layer for every surface.
+
+This is the visual contract for VH3 AI. As the platform evolves, the package evolves with it. New tool types ship with new renderers. New layouts ship with new components. Every consumer of the intelligence layer gets the upgrade automatically.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Live component catalogue" icon="palette" href="https://6a122bc4b7956e9f833571a1-tcdwajlgex.chromatic.com/">
+    Full live preview of every component and variant.
+  </Card>
+  <Card title="Agent observability" icon="eye" href="/guides/agent-observability">
+    The structured tool outputs this library renders.
+  </Card>
+  <Card title="Building on the layer" icon="hammer" href="/guides/building-on-the-layer">
+    Where the package sits in the broader builder story.
+  </Card>
+  <Card title="Connie API" icon="message-bot" href="/api-reference/connie">
+    Response shape returned by the Connie tool surface.
+  </Card>
+</CardGroup>

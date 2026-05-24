@@ -18,7 +18,7 @@ BigChange invoices and line items. Auth: `X-API-Key` header. Base: `https://api.
 
 ## Date filters (list)
 
-`POST /invoices/list` accepts an optional creation-date window. **`createdAtTo` minus `createdAtFrom` must not exceed 12 months`** (BigChange API limit — see [overview](/api-reference/bigchange/overview#date-ranges)).
+`POST /invoices/list` accepts an optional creation-date window. **`createdAtTo` minus `createdAtFrom` must not exceed 12 months`** (BigChange API limit, see [overview](/api-reference/bigchange/overview#date-ranges)).
 
 | Param | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -119,7 +119,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/cancel" \
 
 ### `POST` `/invoices/mark_paid`
 
-Mark paid. Optional `paidAt` (ISO 8601 UTC); defaults to now if omitted. Single timestamp — not a date range.
+Mark paid. Optional `paidAt` (ISO 8601 UTC); defaults to now if omitted. Single timestamp, not a date range.
 
 ```bash
 curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/mark_paid" \

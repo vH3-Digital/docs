@@ -11,7 +11,7 @@ Use this endpoint when the sender domain is already identified as a portal. For 
 
 ## POST /ingest/email/portal
 
-Portal ingest — structured extraction from a known FM portal email.
+Portal ingest, structured extraction from a known FM portal email.
 
 **Request body:**
 
@@ -70,6 +70,6 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/ingest/email/portal" \
 
 **Notes:**
 
-- Requires Gemini for extraction; typical latency 3–10s.
-- `api_key` is verified via `apiKeyCheck` before any BigChange-facing step; mismatch returns `403`.
+- Uses platform AI for extraction; typical latency 3–10s.
+- `api_key` is verified against your tenant credentials before any BigChange-facing step; mismatch returns `403`.
 - Tenant settings (`portal_ingest_enabled`, `disabled_portals`, thresholds) gate behaviour without code changes.
