@@ -1,0 +1,35 @@
+---
+title: Email triage and FM portals
+description: Email pipelines, portal routing, triage categories, and safety overrides.
+---
+
+## Email triage and FM portals
+
+<AccordionGroup>
+  <Accordion title="What email capabilities does VH3 AI offer?">
+    Four related but distinct pipelines:
+
+    | Pipeline | Creates jobs? | Purpose |
+    |----------|--------------|---------|
+    | Portal ingest | Yes (or queued for review) | Structured FM portal emails — Verisae, Bellrock, Greene King, and others |
+    | General triage | Yes (via pipeline) | Non-portal email extraction and routing |
+    | Classification only | No | Route and classify without job creation |
+    | Batch classification | No | Up to 50 emails per batch |
+  </Accordion>
+
+  <Accordion title="What happens when an email is from a known FM portal?">
+    Portal emails are short-circuited at the routing layer: the sender is matched against the portal catalogue and the email goes directly to portal ingest without spending any AI tokens on classification. The extraction process uses a combination of well-placed AI and deterministic code patterns to resolve entities, normalise fields, and handle the structural variety across different portals.
+  </Accordion>
+
+  <Accordion title="What are the default triage categories?">
+    Ten categories including Technical Support and Maintenance, Health Safety and Compliance, Finance and Billing, Delivery and Logistics, and others. Tenants can apply custom taxonomies, for example industry-specific category sets.
+  </Accordion>
+
+  <Accordion title="Can tenants disable safety overrides?">
+    System-level safety overrides apply across all tenants for certain classifications, such as health and safety signals. These cannot be disabled per tenant.
+  </Accordion>
+
+  <Accordion title="Does triage use the same AI as Connie?">
+    No. Portal and triage extraction uses structured extraction pipelines that combine pattern matching with well-placed AI, optimised for high-volume, schema-driven output across varied email formats. Connie uses a conversational AI layer optimised for reasoning, multi-turn dialogue, and cited answers. They are separate systems built for different jobs.
+  </Accordion>
+</AccordionGroup>

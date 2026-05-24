@@ -1,0 +1,34 @@
+---
+title: Sentinels
+description: How sentinels work, severity levels, and false positive handling.
+---
+
+## Sentinels
+
+<AccordionGroup>
+  <Accordion title="What are sentinels?">
+    24/7 automated monitors on engineer performance, customer risk, SLA clusters, and commercial signals. They run immediately against your full job history from day one — no warm-up period, no waiting for data to accumulate. They alert when thresholds are breached, not on every minor fluctuation, keeping the noise low and the signal meaningful.
+  </Accordion>
+
+  <Accordion title="Will sentinels replace my ops manager?">
+    No. They prioritise attention: a daily or weekly list of what merits human review instead of manually scanning hundreds of jobs. The ops manager's job moves from finding the problems to acting on them.
+  </Accordion>
+
+  <Accordion title="How are false positives handled?">
+    Thresholds are calibrated during onboarding to minimise noise. You can tune sensitivity per sentinel and apply exclusions for training roles, contractors, or entities that are not relevant to a particular signal.
+  </Accordion>
+
+  <Accordion title="What severity levels exist?">
+    | Level | Meaning | Suggested action |
+    |-------|---------|-----------------|
+    | Critical | Significant risk | Same-day review |
+    | Warning | Negative trend | Within 48 hours |
+    | Info | Heads-up or opportunity | Weekly digest |
+
+    Severity levels are fully configurable per sentinel. The consistency of levels is what enables deterministic, programmatic actions downstream: automations route Critical alerts to Slack immediately, open a case, or notify an account manager, all based on severity alone. Sentinels also monitor their own threshold performance and suggest adjustments when a setting is generating too much noise or missing signals.
+  </Accordion>
+
+  <Accordion title="Do alerts include reference IDs so I can act in BigChange?">
+    Yes. Customer-oriented alerts include the customer name and reference so you can look up the account in BigChange immediately.
+  </Accordion>
+</AccordionGroup>

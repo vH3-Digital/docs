@@ -21,7 +21,8 @@
               "intelligence-layer",
               "quickstart",
               "authentication",
-              "pricing"
+              "pricing",
+              "changelog"
             ]
           },
           {
@@ -88,6 +89,30 @@
               "api-reference/bigchange/stock",
               "api-reference/bigchange/worksheets",
               "api-reference/bigchange/reference-data"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "FAQ",
+        "groups": [
+          {
+            "group": "FAQ",
+            "pages": [
+              "faq",
+              "faq/what-is-vh3-ai",
+              "faq/getting-started",
+              "faq/architecture-and-apis",
+              "faq/security-and-api-keys",
+              "faq/data-graph-and-search",
+              "faq/connie-and-ai-agents",
+              "faq/sentinels",
+              "faq/email-triage",
+              "faq/case-management-and-teams",
+              "faq/pricing",
+              "faq/vh3-connect",
+              "faq/reports-and-notifications",
+              "faq/troubleshooting"
             ]
           }
         ]

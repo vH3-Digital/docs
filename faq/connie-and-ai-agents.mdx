@@ -1,0 +1,38 @@
+---
+title: Connie and AI agents
+description: Who Connie is, what BYOK means, models, tools, and MCP.
+---
+
+## Connie and AI agents
+
+<AccordionGroup>
+  <Accordion title="Who is Connie?">
+    Connie is VH3 AI's field service operations agent in VH3 Connect. She reads your full intelligence layer: knowledge graph, semantic search, reports, weather, and enriched operational records. She runs on Anthropic's model family, with intelligent routing across multiple models and prompt caching built in so the right model handles each type of work efficiently.
+
+    She is not a chatbot over exports. She handles multi-turn operational reviews, account prep, diagnostics, and follow-through that depends on context from earlier in the session.
+  </Accordion>
+
+  <Accordion title='What does "bring your own key" (BYOK) mean?'>
+    VH3 AI runs on an open AI harness. For conversational AI, you connect your own Anthropic account key. Every token Connie spends goes directly to your Anthropic account at your contracted rate. VH3 adds no margin. You see exactly what each session cost on your AI provider dashboard.
+
+    This is different from most AI products, where the vendor buys tokens, marks them up, and bundles the cost somewhere invisible. With BYOK, there is no layer between you and the model. You can switch models, adjust usage, and see the full economics. If you build your own agents or automations via the API or n8n, you can use any model, harness, or framework you choose.
+  </Accordion>
+
+  <Accordion title="What models does VH3 AI use?">
+    Connie uses Anthropic's model family, routed across multiple models depending on the task, with prompt caching for efficiency. Company-level context is cached across all users in your organisation, so every session benefits from prior cache warming. Enrichment and extraction pipelines use best-in-class structured output models selected by VH3. Embeddings are generated server-side by the platform.
+
+    Customers developing on the API or via n8n can use any model and framework they choose.
+  </Accordion>
+
+  <Accordion title="Does Connie create or change jobs in BigChange?">
+    By default, Connie answers and investigates. Job creation from email goes through the portal ingest pipeline with review queues where configured. Write-back behaviour is integration-specific. Confirm with your CSM for your tenant's setup.
+  </Accordion>
+
+  <Accordion title='What are "tools" in agent terms?'>
+    Structured API operations — search, aggregate, investigate, job lookup, reports, briefings, and more — that the AI invokes with validated parameters rather than freeform text. The tool surface is an ever-growing set that gives Connie and your custom agents precise, reliable access to the intelligence layer.
+  </Accordion>
+
+  <Accordion title="Is there an MCP server?">
+    Yes. VH3 AI exposes a read-only MCP surface for approved agent clients such as Claude Desktop, Cursor, and coding agents. See [MCP setup](/agent-kits/mcp-setup) for configuration, authentication, and available operations.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,36 @@
+---
+title: Architecture and APIs
+description: API surfaces, authentication, and where your data lives.
+---
+
+## Architecture and APIs
+
+<AccordionGroup>
+  <Accordion title="What are the main API surfaces?">
+    You receive a single VH3 API key during onboarding. It is used across both server-to-server surfaces:
+
+    | API | Base URL | Auth |
+    |-----|----------|------|
+    | VH3 AI Intelligence | `https://api.vh3connect.io/api:kP8T1CK7` | `company_id` + `api_key` in the request body |
+    | BigChange API | `https://api.vh3connect.io/api:YdihQNr3` | `X-API-Key` header only |
+
+    Intelligence endpoints require your company ID on every request. BigChange proxy endpoints resolve your tenant from the API key alone.
+
+    For interactive applications and custom portals, users authenticate with email and password. The returned JWT is used for all subsequent calls. No API key is ever involved in client-side code.
+
+    See [Authentication](/authentication) for the complete surface map and code examples.
+  </Accordion>
+
+  <Accordion title="Why do the public docs not match an endpoint I see in VH3 Connect?">
+    The public API reference documents the customer-facing subset. Additional endpoints exist for platform engineering, pollers, and operational tooling, and are not part of the integration contract. For integrators: use the endpoints documented here, or the OpenAPI export your CSM provides.
+  </Accordion>
+
+  <Accordion title="Where does my data live?">
+    | Layer | What is stored |
+    |-------|----------------|
+    | Knowledge graph | Jobs, engineers, customers, outcomes, relationships, and SLA analytics, traversable in any direction |
+    | Semantic search index | Intake descriptions and diagnostic outcomes, indexed by meaning for fault discovery |
+    | Platform data | Cases, teams, notifications, usage, and configuration |
+    | Your FMS | Your operational system of record. VH3 AI reads from it and does not replace it |
+  </Accordion>
+</AccordionGroup>
