@@ -21,8 +21,7 @@
               "intelligence-layer",
               "quickstart",
               "authentication",
-              "pricing",
-              "changelog"
+              "pricing"
             ]
           },
           {
@@ -123,7 +122,8 @@
           {
             "group": "Strategy",
             "pages": [
-              "guides/2027-blueprint"
+              "guides/2027-blueprint",
+              "guides/intelligence-in-the-agent-era"
             ]
           },
           {
@@ -221,6 +221,10 @@
     {
       "source": "/guides/semantic-search",
       "destination": "/guides/operational-discovery"
+    },
+    {
+      "source": "/changelog",
+      "destination": "/introduction"
     }
   ]
 }

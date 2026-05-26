@@ -1,0 +1,168 @@
+---
+title: Intelligence in the agent era
+description: Why field service operations need a harness on the stack they already run
+---
+
+# Intelligence in the agent era
+
+Something important is settling in the market, and field service leaders are feeling it before the vocabulary catches up.
+
+AI is changing **where work happens**, **how much output gets produced**, and **what "good" looks like** when anyone can draft an analysis, a workflow, or an internal tool in an afternoon. The field service management systems and the people who run them are still central. What shifts is the intelligence layer on top.
+
+The organisations pulling ahead chose a **foundation**: persistent operational intelligence that humans and agents can trust together, sitting on top of the field service and business tools they already pay for.
+
+That foundation is what VH3 AI is built to be.
+
+## The paradox worth understanding
+
+There is a pattern showing up in every AI-forward operation, including our own customers and partners:
+
+**More automation creates more human work.**
+
+The work that actually matters:
+
+- Reviewing and approving what agents propose before it affects a customer or a compliance record.
+- Gardening the automations and thresholds so alerts stay trustworthy.
+- Building the systems that let non-specialists ask safe questions without flooding specialists with noise.
+- Turning detected patterns into **owned follow-through** (cases, teams, briefings) rather than another unread dashboard.
+
+VH3 AI is designed for that reality. Sentinels surface signals. Cases and teams assign ownership. Connie synthesises with citations. Your people steer and verify. The platform does not pretend the loop closes itself.
+
+If you are evaluating AI for field service, treat any vendor that promises "set and forget" as a warning sign.
+
+## The SaaS stack you run is an asset
+
+Field service runs on systems of record: your FMS, your finance tools, your CRM, your inboxes, your comms channels. Those investments stay in place. Agents increase the load on them rather than remove them.
+
+The real work is making your **existing stack agent-ready and human-ready at the same time**:
+
+- The FMS remains where jobs are dispatched and completed.
+- The intelligence layer holds the **enriched, linked, always-current picture** of what those jobs mean across history, people, sites, and outcomes.
+- Automations route insight to Slack, Teams, email, or custom apps you control.
+- Conversational AI runs on **your** model provider account ([BYOK](/guides/connie)), with no hidden token markup.
+
+VH3 AI connects alongside BigChange (and every other platform on our integration roadmap). Connect once. Let the intelligence compound on your side of the contract.
+
+<Info>
+**Data sovereignty.** Your enriched operational intelligence is scoped to your organisation and portable. The platform fee covers the layer; agent token spend stays visible on your provider account. See [Pricing](/pricing) and [Introduction](/introduction).
+</Info>
+
+## Two ways your team will work (and one foundation underneath)
+
+Operational AI is settling into two durable patterns. Most organisations will use **both** within twelve months.
+
+### 1. The shared operational agent
+
+One maintained agent (or a small, governed set) that many people use for async questions, digests, triage outcomes, and operational lookups.
+
+Typically this lives where work already coordinates: **Slack**, **Teams**, or **VH3 Connect**. It needs an owner: someone inside your business (or ours during onboarding) who maintains thresholds, routing rules, and exclusions so the agent stays accurate as the operation changes.
+
+VH3 AI supplies the brain for that agent: Connie, sentinel digests, email triage, deterministic search and aggregates, and n8n templates that wire channel mentions to cited, evidence-backed answers.
+
+### 2. The personal work harness
+
+Individuals doing knowledge work in **coding agents**, **Claude Projects**, or similar environments: drafting briefings, exploring accounts, building light internal tools, preparing leadership reviews.
+
+The winning move is pointing that harness at **prepared operational context** so the model draws from your actual operational record, rather than reconstructing it from raw exports every session.
+
+That is exactly what [Agent Starter Kits](/agent-kits/overview), the [MCP server](/agent-kits/mcp-setup), and the [REST API](/api-reference/overview) are for: your tools stay current; your operation stays authoritative on VH3 AI.
+
+<Note>
+**One foundation, many surfaces.** Connect, Connie, n8n, MCP, and custom apps all read the same intelligence layer. Nothing forks into a separate integration database.
+</Note>
+
+## Prepared context beats prompt engineering
+
+The gap between AI that impresses in a demo and AI that holds up in dispatch, account management, or compliance is almost always **what the system knew before it acted**.
+
+Classic retrieval works for simple lookups: search raw records at question time, hand fragments to a model. It struggles when a question crosses history, people, patterns, and accounts at once. It is expensive to repeat, and it goes stale fast.
+
+VH3 AI is built around **assembly before inference**:
+
+| Memory | What it holds |
+|--------|----------------|
+| **Relational** | Jobs, engineers, sites, customers, outcomes, linked and traversable |
+| **Semantic** | Faults and notes by meaning, not keyword luck |
+| **Structured** | Enriched records, compact and ready for any consumer |
+| **Temporal** | Sentinels watching continuously, surfacing signals before someone searches |
+
+Together they form a **synthesis layer**: operating context for briefings, investigations, and agents, delivered as a prepared picture rather than a pile of search hits.
+
+[Read how the intelligence layer works →](/intelligence-layer)  
+[Why context is everything →](/guides/why-context-matters)
+
+## Software for humans and agents together
+
+Operational software that works for both humans and agents runs on a single truth:
+
+- Humans see names, references, citations, and approval surfaces.
+- Agents call fast, deterministic endpoints for lookups, and synthesis endpoints where narrative and judgment are needed.
+- Side effects (cases opened, digests sent, triage decisions) are visible and auditable.
+
+VH3 AI ships typed [generative UI components](/guides/generative-ui) for that reason: structured JSON from Connie and other tools maps to investigation cards, SLA gauges, and report sections your team can **read, challenge, and act on**.
+
+[Agent observability →](/guides/agent-observability)
+
+## How roles shift
+
+AI drives down the cost of **generic** output: boilerplate summaries, template analyses, undifferentiated dashboards. What stays genuinely hard:
+
+- Knowing which customer account is about to churn before the complaint arrives.
+- Understanding how your engineers describe faults in the field.
+- Deciding which triage rules protect life-safety work.
+- Judging whether a sentinel threshold has become too noisy to trust.
+
+| Role | What gets easier | What becomes more valuable |
+|------|------------------|----------------------------|
+| **Operations leaders** | Digests, triage, precedent lookup | Owning thresholds, cases, and service quality |
+| **Account / contract managers** | Customer knowledge, scheduled reports | Judgment on risk, escalation, and narrative |
+| **Dispatch and coordinators** | Briefings, search, Connie Q&A | Exception handling and SLA trade-offs |
+| **Transformation / PM** | Shipping workflows and light apps with kits | Choosing what to build and verifying fit |
+| **Design / CX** | Generative UI from structured intelligence | Distinctive experiences that stand apart |
+
+The [2027 blueprint](/guides/2027-blueprint) describes the single person who compounds this inside your organisation: the **Field Intelligence Engineer**, close to the operation, fluent in n8n and agent kits, responsible for the shared agent and the automations that embed intelligence into how you run.
+
+What you need is **one bridge** and a foundation that does not require you to build a data model from scratch.
+
+## Ride the models
+
+Model capabilities will keep shifting. Prices will move. New harnesses will appear. The organisations that stay ahead keep their prepared operational record current and ride each new model generation against it:
+
+1. Connect the FMS and let enrichment compound.  
+2. Run a [discovery sprint](/quickstart) on real history.  
+3. Stand up sentinels and one shared agent pattern.  
+4. Drop [Agent Starter Kits](/agent-kits/overview) into the tools your team already uses.  
+5. Open [cases and teams](/guides/users-and-teams) so insight becomes owned work.
+
+VH3 AI is committed to being the **harness**, not a destination. Better models arrive and your graph, rules, and automations stay. Field systems change and the layer reconnects. Custom software gets built on a domain model that already speaks field service.
+
+[Building on the layer →](/guides/building-on-the-layer)
+
+## What to do next
+
+<CardGroup cols={2}>
+  <Card title="Discovery sprint" icon="rocket" href="/quickstart">
+    Connect your operation and see what the intelligence layer produces on your own data, before a long commitment.
+  </Card>
+  <Card title="The 2027 blueprint" icon="map" href="/guides/2027-blueprint">
+    How to organise for capability: VH3 AI, n8n, coding agents, and the Field Intelligence Engineer.
+  </Card>
+  <Card title="Working with your operation" icon="user-tie" href="/guides/working-with-your-operation">
+    How operators use Connie, discovery, and sentinels day to day.
+  </Card>
+  <Card title="BigChange users" icon="plug" href="/guides/bigchange">
+    If your operation runs on BigChange, start here.
+  </Card>
+  <Card title="Agent starter kits" icon="robot" href="/agent-kits/overview">
+    MCP, Cursor, Claude Code, and Claude Projects, fluent on VH3 from day one.
+  </Card>
+  <Card title="Pricing" icon="tag" href="/pricing">
+    Visits enriched, unlimited users, BYOK for conversational AI.
+  </Card>
+</CardGroup>
+
+---
+
+Starting with the right foundation costs less than most expect. Another year on exports, inbox triage, and tribal knowledge costs more than most admit.
+
+**Field service needs intelligence that compounds: on the stack you already run, for the humans and agents who run it.**
