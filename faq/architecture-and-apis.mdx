@@ -22,7 +22,7 @@ description: API surfaces, authentication, and where your data lives.
   </Accordion>
 
   <Accordion title="Why do the public docs not match an endpoint I see in VH3 Connect?">
-    The public API reference documents the customer-facing subset. Additional endpoints exist for platform engineering, pollers, and operational tooling, and are not part of the integration contract. For integrators: use the endpoints documented here, or the OpenAPI export your CSM provides.
+    The public API reference documents the customer-facing subset. Additional endpoints exist for platform engineering, pollers, and operational tooling. Those internal endpoints are outside the integration contract. For integrations, use the endpoints documented here or the OpenAPI export your CSM provides.
   </Accordion>
 
   <Accordion title="Where does my data live?">
@@ -31,6 +31,6 @@ description: API surfaces, authentication, and where your data lives.
     | Knowledge graph | Jobs, engineers, customers, outcomes, relationships, and SLA analytics, traversable in any direction |
     | Semantic search index | Intake descriptions and diagnostic outcomes, indexed by meaning for fault discovery |
     | Platform data | Cases, teams, notifications, usage, and configuration |
-    | Your FMS | Your operational system of record. VH3 AI reads from it and does not replace it |
+    | Your FMS | Your operational system of record for dispatch, scheduling, worksheets, and job execution |
   </Accordion>
 </AccordionGroup>

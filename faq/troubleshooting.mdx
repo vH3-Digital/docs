@@ -8,7 +8,7 @@ description: Common issues with API keys, sentinels, and email routing, plus who
 <AccordionGroup>
   <Accordion title="My API connection is failing — what should I check?">
     1. Your company ID matches the VH3 tenant issued at onboarding
-    2. The API key is your VH3 API key (not a BigChange API key)
+    2. The API key is your VH3 API key, issued during onboarding
     3. You are calling `https://api.vh3connect.io`
     4. The key has not been rotated without updating your integration
 
@@ -16,11 +16,11 @@ description: Common issues with API keys, sentinels, and email routing, plus who
   </Accordion>
 
   <Accordion title="I see no sentinel alerts yet">
-    Confirm that jobs have finished syncing. Sentinels start immediately once data is in place, so if your sync is complete and nothing is triggering, check that exclusion filters are not removing too much of your data. Your CSM can inspect the sentinel configuration for your tenant.
+    Confirm that jobs have finished syncing. Sentinels start once data is in place. If your sync is complete and nothing is triggering, check whether exclusion filters or thresholds are removing too much of the signal. Your CSM can inspect the sentinel configuration for your tenant.
   </Accordion>
 
   <Accordion title="I am routing emails but no jobs are appearing in BigChange">
-    Classification alone does not create jobs. The classified email must be forwarded to the portal ingest endpoint. If you are using n8n, check that the automation is configured to call the ingest step after classification. Contact your CSM to verify the pipeline for your tenant.
+    Classification alone routes and labels the email. Job creation requires the configured portal ingest or triage pipeline. If you are using n8n, check that the automation calls the ingest step after classification. Contact your CSM to verify the pipeline for your tenant.
   </Accordion>
 
   <Accordion title="Who do I contact?">

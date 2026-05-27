@@ -7,18 +7,22 @@ description: Cases, teams, and how they enable continuous follow-through.
 
 <AccordionGroup>
   <Accordion title="What is case management?">
-    Structured incidents, investigations, project reviews, audits, and compliance cases built into the VH3 AI platform. Cases have participants, linked operational records (jobs, customers, and engineers referenced by ID), and a full activity timeline. Operational records stay in the intelligence layer; cases reference them rather than duplicating data.
+    Case management is the place where agent signals become owned work. A case can represent an escalation, investigation, project review, audit, complaint, or follow-up item. It holds participants, linked operational records, comments, status changes, and a full activity timeline.
+
+    Operational records stay in the intelligence layer. Cases reference jobs, customers, sites, engineers, and other evidence so the team can review and act without copying data into a separate system.
   </Accordion>
 
   <Accordion title="Does case management call BigChange?">
-    No. Case management is self-contained within the VH3 AI platform. No BigChange API key is required for case operations.
+    Case management runs inside VH3 AI. It tracks ownership, evidence, and follow-through around operational work. Any BigChange write-back or job creation flow is handled by the configured ingest or integration pipeline for your tenant.
   </Accordion>
 
   <Accordion title="What are teams?">
-    Teams are groups of users with defined goals, responsibilities, and linked operational entities that enable routine escalation, continuous background work, and agent-driven follow-through. A team can represent a region, a customer portfolio, or a function. Sentinels and automations route work to the team that owns the relevant customer or geography, so nothing sits in a generic queue.
+    Teams are dynamic groups for shared ownership. A team can represent a region, customer portfolio, service line, escalation room, onboarding sprint, or temporary working group.
+
+    Teams can link to customers, sites, jobs, job types, or other entities. Sentinels, reports, Connie, and automations can then route work to the group that owns the relevant account, site, or problem.
   </Accordion>
 
-  <Accordion title="Who can be a team lead?">
-    Any team member can be promoted to team lead or manager by an organisation admin. Team leads can perform sensitive team actions such as accepting escalations and managing membership. Roles are enforced at the API layer.
+  <Accordion title="Are teams predefined?">
+    Teams are created around the work. Some are permanent, such as a regional operating patch or customer portfolio. Others are temporary, such as a major incident room or a discovery sprint review group. Use `purpose`, `description`, and `metadata` to describe the group in the language your operation uses.
   </Accordion>
 </AccordionGroup>
