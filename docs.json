@@ -93,6 +93,17 @@
         ]
       },
       {
+        "tab": "Partners",
+        "groups": [
+          {
+            "group": "Partner Program",
+            "pages": [
+              "partners/technology-partners"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "FAQ",
         "groups": [
           {
