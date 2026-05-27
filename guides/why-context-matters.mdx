@@ -13,37 +13,37 @@ VH3 AI is built around a different principle. The intelligence is assembled befo
 
 ## Prepared, not improvised
 
-Every job that flows into VH3 AI goes through an enrichment pipeline once. Fault type, work performed, equipment involved, outcome, relationships to the engineer, site, customer, and prior history, all structured, resolved, and indexed before anyone opens a conversation or runs an automation.
+Every job that flows into VH3 AI goes through an enrichment pipeline once. Fault type, work performed, equipment involved, outcome, relationships to the engineer, site, customer, and prior history are structured, resolved, and indexed before anyone opens a conversation or runs an automation.
 
-By the time Connie answers a question, she is not searching through raw job notes. She is drawing from a prepared operational picture: an engineer's full site history, a customer's fault patterns across two years, a region's SLA performance this quarter. The work of assembling that context has already been done. The answer draws from it.
+By the time Connie answers a question, she is drawing from a prepared operational picture: an engineer's full site history, a customer's fault patterns across two years, a region's SLA performance this quarter. The work of assembling that context has already been done.
 
-This distinction, assembly before inference, not assembly during inference, is what makes the difference between AI that helps and AI that hallucinates.
+This is assembly before inference: the expensive context-building work happens at ingest and refresh time, so each answer starts from a known operational picture.
 
 ## Why most AI tools struggle with real operational questions
 
-A question like "which engineers are consistently late on HVAC jobs at multi-site retail accounts?" is not a lookup. It requires crossing job data, engineer records, customer categories, SLA timing, and historical patterns simultaneously. A tool that pulls snippets of raw data and hands them to a model will either miss half the picture, confuse relationships, or cost a significant amount just to get to a mediocre answer.
+A question like "which engineers are consistently late on HVAC jobs at multi-site retail accounts?" needs job data, engineer records, customer categories, SLA timing, and historical patterns at the same time. A tool that pulls snippets of raw data and hands them to a model will either miss half the picture, confuse relationships, or cost a significant amount just to get to a mediocre answer.
 
 The answer to that question also goes stale fast. A tool that assembles context on every query has to redo that work constantly, expensively, against data that may have changed since the last time someone asked.
 
-VH3 AI processes and structures that data once. Every subsequent question, from a coordinator, a report, a sentinel, or an agent, reads from the same prepared foundation. Nothing is rebuilt on demand. The intelligence compounds with every new job rather than being reconstructed from scratch every time.
+VH3 AI processes and structures that data once. Every subsequent question, from a coordinator, a report, a sentinel, or an agent, reads from the same prepared foundation. The intelligence compounds with every new job.
 
 ## What this means for your team and your agents
 
-**For operators**, it means Connie's answers are grounded in the actual operational record, with traceable evidence, not plausible-sounding summaries of whatever records came up nearest in a search.
+**For operators**, Connie's answers are grounded in the actual operational record, with traceable evidence.
 
-**For automations**, it means your workflows draw from current, enriched data. A briefing sent to an engineer before a visit contains real fault history, real equipment context, and real precedents from similar jobs, not a generic summary.
+**For automations**, workflows draw from current, enriched data. A briefing sent to an engineer before a visit contains real fault history, real equipment context, and real precedents from similar jobs.
 
-**For agents built on the layer**, it means they start with operating context, not a blank slate. An agent working on a case can reason across the full history of a site, an account, or a pattern without spending time and AI cost reconstructing that picture from raw source data on every call.
+**For agents built on the layer**, each session starts with operating context. An agent working on a case can reason across the full history of a site, an account, or a pattern without spending time and AI cost reconstructing that picture from raw source data on every call.
 
-**For decision-makers**, it means AI consumption stays proportional and predictable. Caching and pre-computation mean the expensive work happens once at ingest, not once per question. A hundred queries from the same foundation cost less than ten queries from a system that rebuilds its understanding on every call.
+**For decision-makers**, AI consumption stays proportional and predictable. Caching and pre-computation mean the expensive work happens once at ingest and refresh time, then many users and tools read from the same foundation.
 
 ## The intelligence layer is the preparation
 
-This is why VH3 AI is described as an intelligence layer rather than an AI tool. The layer's job is to hold the prepared, connected, always-current picture of your operation, the operational context that every agent, every report, every automation, and every team member draws from.
+VH3 AI is described as an intelligence layer because its job is to hold the prepared, connected, always-current picture of your operation: the operational context that every agent, report, automation, and team member draws from.
 
-The layer does not answer questions. It makes answering questions reliable.
+The layer makes answers reliable by giving every surface the same prepared context.
 
-That is the foundation everything else sits on.
+That is the foundation everything else sits on. For practical operator habits, see [Working with your operation](/guides/working-with-your-operation).
 
 <CardGroup cols={2}>
   <Card title="How the intelligence layer works" icon="database" href="/intelligence-layer">

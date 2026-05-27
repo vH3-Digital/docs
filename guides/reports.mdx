@@ -3,35 +3,60 @@ title: Reports
 description: Automated operational reporting
 ---
 
-# Reports Guide
+# Reports
 
-VH3 AI generates structured operational reports automatically, no manual data pulling, no spreadsheet assembly, no waiting for someone to "run the numbers." Reports run on the schedule you set against an always-on intelligence layer, so the morning brief lands before the standup. Reports read directly from the intelligence layer and deliver intelligence in the format your team needs.
+VH3 AI generates structured operational reports from the intelligence layer so the right briefing lands before the team needs it: daily operations before standup, weekly summaries before planning, account reports before QBRs, and executive health checks before leadership review.
+
+Reports read from the same prepared model as discovery, sentinels, and Connie. That means the numbers, cited jobs, customer summaries, and risk signals stay aligned across chat, dashboards, scheduled emails, and custom apps.
 
 ## Report types
 
 ### Daily operations
+
 A snapshot of yesterday's work, jobs completed, SLA performance, notable events, and any sentinel triggers. Designed to land in an ops manager's inbox before the morning standup.
 
 ### Weekly summary
+
 Trends, rankings, and operational highlights across the week. Identifies patterns that aren't visible in a single day's data.
 
 ### Account monthly
+
 Per-customer performance report covering job volumes, SLA metrics, response times, and any flagged risks. Suitable for sharing directly with FM clients.
 
 ### Executive health check
+
 A five-dimension health assessment spanning up to three years of operational history. Scored across quality, efficiency, coverage, risk, and growth.
 
 ### Engineer performance
+
 Individual breakdown, completion rates, SLA punctuality, first-time-fix rates, customer feedback, and workload distribution.
 
 ### Site health
+
 Site-level trends, fault frequency, repeat visit rates, equipment failure patterns, and maintenance trajectory.
 
 ### Customer intelligence
+
 Relationship summary, job history, risk signals, communication patterns, commercial activity, and recommended actions.
 
 ### Sentinel digest
+
 Aggregated summary of all sentinel triggers for a given period, useful as a standalone report or as a section within a broader briefing.
+
+## Report type values
+
+Use the report type that matches the operating rhythm you are automating.
+
+| Friendly name | API value | Typical audience |
+|---------------|-----------|------------------|
+| Daily operations | `daily_operations` | Ops manager, dispatch lead |
+| Weekly summary | `weekly_summary` | Operations leadership |
+| Account monthly | `account_monthly` | Account manager, client review |
+| Executive health check | `executive_health_check` | Owner, MD, senior leadership |
+| Engineer performance | `engineer_performance` | Service manager, regional manager |
+| Site health | `site_health` | Contract manager, technical lead |
+| Customer intelligence | `customer_intelligence` | Account manager |
+| Sentinel digest | `sentinel_digest` | Ops channel, regional team |
 
 ## Generating reports
 
@@ -51,13 +76,48 @@ Reports are generated asynchronously. The response includes a task ID you can po
 
 ## Delivery options
 
-Reports can be consumed via:
+Reports can be consumed through the channel that matches the work:
 
-- **API polling:** retrieve the generated report content via the API
-- **Email delivery:** configure automated delivery to specified recipients
-- **Slack/Teams:** route to channels via n8n automation
-- **VH3 Connect:** view rendered reports in the application dashboard
+- **API polling:** retrieve the generated report content for custom apps or portals.
+- **Email delivery:** send scheduled reports to named recipients.
+- **Slack/Teams:** route digests and exceptions to channels via automation.
+- **VH3 Connect:** view rendered reports in the application dashboard.
 
 ## Scheduling
 
-Report generation can be triggered on demand via the API, or scheduled via automation (n8n cron triggers) for hands-free delivery at the cadence your operation needs.
+Report generation can be triggered on demand via the API or scheduled via automation. Common patterns:
+
+- Daily operations report at 06:30 before the morning standup.
+- Weekly summary on Monday morning for operational planning.
+- Account monthly report before client review meetings.
+- Sentinel digest every morning for the regional channel.
+
+n8n cron triggers are the usual low-code path for scheduling and routing. Custom apps can trigger the same endpoint from a server-side scheduler.
+
+## How operators use reports
+
+Reports work best when they become part of a regular operating loop:
+
+- Read the **daily operations** report before standup, then ask Connie to explain one exception.
+- Use the **weekly summary** to decide which sentinel findings need cases.
+- Use **account monthly** for QBR prep, then verify the cited jobs before sharing externally.
+- Use **engineer performance** and **site health** reports to spot coaching or maintenance actions.
+
+For wider operator habits, see [Working with your operation](/guides/working-with-your-operation).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Working with your operation" icon="user-tie" href="/guides/working-with-your-operation">
+    How reports fit into standups, account reviews, and case follow-through.
+  </Card>
+  <Card title="Sentinels" icon="bell" href="/guides/sentinels">
+    Continuous signals that can feed scheduled reports and digests.
+  </Card>
+  <Card title="Connie" icon="message-bot" href="/guides/connie">
+    Ask follow-up questions against report findings with citations.
+  </Card>
+  <Card title="Agent observability" icon="chart-mixed" href="/guides/agent-observability">
+    Evidence standards for numbers and cited job references.
+  </Card>
+</CardGroup>

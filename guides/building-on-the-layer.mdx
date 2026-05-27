@@ -5,9 +5,9 @@ description: Citizen builders, coding agents, and integrations on a secure opera
 
 # Building on the layer
 
-For years, people said every business is a technology business. Now every business is a software business. The shift in field service is not "add a chatbot to the FMS." It is **own an operational model** that every team, agent, and application can trust, then extend it with workflows and software your organisation controls.
+An operations manager routes a sentinel digest to Slack. A coordinator builds a workflow for engineer follow-ups. A developer opens Cursor and asks it to build an account review panel against the VH3 AI API. Each builder is working on the same prepared operational model.
 
-VH3 AI is designed as **substrate**:
+VH3 AI is designed as a secure operational substrate:
 
 - Jobs and relationships are enriched once and stored in infrastructure scoped to your organisation.
 - Fast discovery (search, similarity, entity resolution, customer knowledge sections) reads that model without an LLM.
@@ -53,9 +53,9 @@ VH3 AI targets levels 3 and 4. Level 2 is where cost and trust break down: every
   </Card>
 </CardGroup>
 
-All three paths call the **same APIs** and read the **same operational model**. Nothing forks into a separate integration database.
+All three paths call the **same APIs** and read the **same operational model**. Each builder works from the same resolved customers, jobs, sites, and engineers.
 
-One reason that holds: VH3 AI maintains a canonical domain model for field service. Every record that enters the platform, regardless of source system, is resolved into that model before it touches the graph. A job is a job. A customer is a customer. The model's schema is not exposed, but the contract it delivers is: consistent, resolved, connected entities at every endpoint. When you build an app or an automation on this layer, you inherit that consistency. You do not configure it, and you do not maintain it. See [The domain model](/intelligence-layer#the-domain-model-why-the-substrate-speaks-one-language) in the intelligence layer guide.
+One reason that holds: VH3 AI maintains a canonical domain model for field service. Every record that enters the platform, regardless of source system, is resolved into that model before it touches the graph. A job is a job. A customer is a customer. The model's schema is not exposed, but the contract it delivers is: consistent, resolved, connected entities at every endpoint. When you build an app or an automation on this layer, you inherit that consistency. See [The domain model](/intelligence-layer#the-domain-model-why-the-substrate-speaks-one-language) in the intelligence layer guide.
 
 ## The tool surface (at a glance)
 
@@ -78,7 +78,7 @@ This is the surface a coding agent or n8n workflow calls. Sentinels are how the 
 
 ## Connected tools and programmatic access
 
-Field service runs across more than one system. VH3 AI treats third-party tools as **extensions of the same brain**, not another silo.
+Field service runs across more than one system. VH3 AI brings third-party tools into the same operational model so mail, calendar, CRM, storage, and field systems add useful context to the graph.
 
 ### Native connections (in the platform)
 
@@ -104,7 +104,7 @@ Everything the platform does internally is also available **programmatically**:
 - **MCP server** so Claude Desktop, Cursor, and other MCP clients call the same tools Connie uses, with credentials handled server-side after JWT auth.
 - **n8n node** (community and PRO) for workflow builders who want operations-friendly automation without writing a backend.
 
-When email arrives or a calendar event is created, ingestion and **entity resolution** map people, domains, and addresses back to **contacts** in your model. That is how personal agents and shared automations stay aligned with operational truth instead of floating in disconnected inboxes.
+When email arrives or a calendar event is created, ingestion and **entity resolution** map people, domains, and addresses back to **contacts** in your model. That is how personal agents and shared automations stay aligned with operational truth across inboxes and calendars.
 
 <Tip>
 Design automations so **fast endpoints** (search, autocomplete, sentinels, jobs feed) handle triggers and filters, and reserve Connie or investigate for steps that need narrative. Predictable latency and visible AI cost follow naturally.
@@ -198,20 +198,20 @@ AI integration fails when insight has nowhere to go. VH3 AI pairs **detection** 
 3. Case opened: "Third fire panel callout in six weeks" with jobs linked as items.
 4. Regional team notified; Connie drafts engineer briefing for the next visit.
 
-Cases and teams are intentionally lightweight: enough structure to **close the loop**, not another enterprise ITSM rollout.
+Cases and teams are intentionally lightweight: enough structure to **close the loop** with status, participants, linked jobs, and ownership.
 
 - [Cases API](/api-reference/cases)
 - [Teams API](/api-reference/teams)
 
 ## Why the substrate makes coding agents viable
 
-Without a prepared layer, every agent session must re-parse messy worksheets, guess which account record is meant, and re-derive relationships that should already exist. That is slow, expensive, and fragile.
+Prepared context is what makes coding agents useful in field service. Each session can start from enriched jobs, resolved accounts, and linked history.
 
 VH3 AI front-loads **enrichment**, **multi-entity resolution**, and linking of jobs, customers, sites, and history at ingest. Coding agents then generate thin applications that call well-shaped endpoints. You are not paying an LLM to rediscover your operation on every click.
 
 > Built to be built on. Your people, solving their own problems, on their own terms.
 
-The platform does not replace your field system or your IDE. It is the layer your agents and applications sit on.
+The platform is the layer your agents and applications sit on while your field system and IDE continue doing their jobs.
 
 ## Security and governance (builder-relevant)
 

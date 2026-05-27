@@ -10,14 +10,14 @@ The VH3 AI platform returns structured tool outputs alongside every Connie answe
 The `@vh3/field-service-ui` package is the reference implementation of that contract. It is a self-contained React component library, designed to drop into any React application without configuration, that takes a VH3 AI tool response and renders the appropriate operational interface automatically.
 
 <Note>
-**Preview.** The `@vh3/field-service-ui` package is in preview. The components, theming system, and contracts shown below are the targeted release surface. Get in touch if you would like to use it before the public release.
+**Preview.** The `@vh3/field-service-ui` package is in preview. The components, theming system, and contracts shown below are the targeted release surface. Get in touch with VH3 AI if you would like to use it before the public release.
 </Note>
 
 ## Why this exists
 
-Most AI products either return prose or return raw JSON and leave the rendering problem to the consumer. Both are a problem in field service operations.
+Most AI products either return prose or return raw JSON and leave the rendering problem to the consumer. Both create friction in field service operations.
 
-Prose alone is hard to act on. A coordinator reading a paragraph about an account's SLA performance cannot drill into the underlying jobs, cannot trust the numbers without verification, and cannot quickly compare the picture to other accounts. Raw JSON is unusable to anyone who is not building the rendering layer themselves, and produces inconsistent interfaces across every team that tries.
+Structured UI lets a coordinator drill into underlying jobs, verify numbers, and compare the picture across accounts without reading raw JSON or parsing a paragraph by hand.
 
 The generative UI package solves both. The intelligence layer returns a structured payload. The component library knows how to render that payload. The result is a polished operational interface that looks the same in every application built on the layer, with no custom UI development required.
 
@@ -115,6 +115,10 @@ function OperationsView({ apiJson }) {
 ```
 
 It works identically in Next.js, Vite, Create React App, Remix, Bolt, Base44, or any AI coding assistant scaffolding. There is no extra styling setup to copy, no font loading to configure, and no theme provider to wrap.
+
+<Warning>
+Use the package inside authenticated apps that enforce the same scoping rules as the API. Do not expose raw tool payloads or internal IDs in public portals without applying your access, PII, and tenant-isolation policy. See [Deploying secure apps](/guides/deploying-secure-apps).
+</Warning>
 
 ## Custom theming
 

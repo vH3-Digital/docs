@@ -5,7 +5,7 @@ description: VH3 AI's flagship operations agent with long-running context, evide
 
 # Connie
 
-Connie is VH3 AI's flagship conversational agent: a field service operations specialist wired into your full intelligence layer. She is not a generic chatbot over exports. She reads the same enriched operational model as search, sentinels, reports, and automations, and she is built to run for real work: multi-turn reviews, account prep, diagnostics, and follow-through that depends on what was said five minutes ago.
+Connie is VH3 AI's flagship conversational agent: a field service operations specialist wired into your full intelligence layer. She reads the same enriched operational model as search, sentinels, reports, and automations, and she is built for real work: multi-turn reviews, account prep, diagnostics, and follow-through that depends on what was said five minutes ago.
 
 <Card title="Working with your operation" icon="user-tie" href="/guides/working-with-your-operation">
   How operators brief Connie: three principles, role playbooks, and session habits. Start here if you have not used Connie before.
@@ -23,14 +23,9 @@ Connie handles ambiguous questions and short prompts well. For operator habits t
 
 ## Connie on the harness
 
-VH3 AI separates **discovery** from **synthesis**:
+VH3 AI separates **discovery** from **synthesis**. Discovery handles fast lookup: search, autocomplete, feeds, and customer knowledge sections. Connie handles synthesis: explaining, comparing, investigating, briefing, and recommending with citations.
 
-| Layer | Role | Typical speed | Uses conversational AI? |
-|-------|------|---------------|-------------------------|
-| **Discovery** | Search, autocomplete, feeds, customer knowledge sections | Sub-second | No |
-| **Synthesis** | Explain, compare, investigate, brief, recommend | Seconds | Yes (your key) |
-
-Connie lives in the synthesis layer, but she is disciplined about when to spend tokens. Simple greetings and meta questions can be answered without a full tool loop. Analytical questions trigger the right operational tools. Heavy diagnostic work routes to investigation flows that return structured evidence, not guesswork.
+Connie is disciplined about when to spend tokens. Simple greetings and meta questions can be answered without a full tool loop. Analytical questions trigger the right operational tools. Heavy diagnostic work routes to investigation flows that return structured evidence, not guesswork.
 
 That split is what makes the agent practical at scale: the expensive interpretation runs on **prepared** data (enriched once at ingest), not on re-reading raw field system exports every turn.
 
@@ -38,7 +33,7 @@ That split is what makes the agent practical at scale: the expensive interpretat
 
 A Connie session is a conversation about one thing. Keep them concise and to the point. When the topic changes, start a new session.
 
-This is not just hygiene. Shorter, focused sessions perform better in three measurable ways:
+Shorter, focused sessions perform better in three measurable ways:
 
 - **Economics.** Token cost grows with the context you carry into each turn. A 40-turn thread that has wandered across three customers spends tokens re-reading its own history. A focused session does not.
 - **Recall and answer quality.** A focused session keeps the model on the question. Long, drifting threads encourage the model to mix unrelated context into the answer.
@@ -87,13 +82,13 @@ You can still pass a `summary` from your app; the server enriches it when possib
 
 ### Recovery and search
 
-Sessions are durable. Past sessions can be retrieved, listed, and searched via the [Connie API](/api-reference/connie). You do not need to keep a single long thread alive to preserve evidence; the platform preserves it for you.
+Sessions are durable. Past sessions can be retrieved, listed, and searched via the [Connie API](/api-reference/connie). Start new threads freely; the platform preserves previous sessions as evidence.
 
 ### Contact-scoped by default
 
 From a customer or job view, Connie defaults queries to that contact unless you ask a company-wide question. That matches how account managers and coordinators actually work, and it is another reason starting a new session per topic stays cheap: each one starts with the right scope already set.
 
-## Memory that compounds, not amnesia
+## Memory that compounds
 
 Connie benefits from the same **operational memory** as the rest of the platform:
 
@@ -102,14 +97,14 @@ Connie benefits from the same **operational memory** as the rest of the platform
 - **Tool outputs** from substantive calls in a session can be retained and recalled within that session so she does not repeat expensive lookups on follow-up turns.
 - **Background compaction** runs on longer sessions: the platform periodically summarises earlier turns into a compact form so recall stays sharp without carrying the full raw history forward on every message.
 
-This is not "the model retraining itself in the background." It is **your organisation's intelligence layer getting richer continuously** and Connie reading that layer on every turn, including what happened earlier in the session.
+This is **your organisation's intelligence layer getting richer continuously** and Connie reading that layer on every turn, including what happened earlier in the session.
 
 ## Efficient token use
 
 Connie is built for production economics (especially with [BYOK](/pricing)):
 
-- **Intent routing** classifies messages so lightweight turns do not always invoke the full agent and tool suite.
-- **Company-level prompt caching.** Shared company context (instruction blocks, tool definitions, organisation operating context) is cached across all users in your organisation. Every person on the team benefits from cache hits that earlier sessions already warmed. `cacheReadTokens` in the usage response shows how much of each turn was served from cache rather than re-computed.
+- **Intent routing** classifies messages so lightweight turns can skip the full agent and tool suite.
+- **Company-level prompt caching.** Shared company context (instruction blocks, tool definitions, organisation operating context) is cached across all users in your organisation. Every person on the team benefits from cache hits that earlier sessions already warmed. `cacheReadTokens` in the usage response shows how much of each turn was served from cache.
 - **Compact tool results for efficient chat.** Feeds, search, and aggregates return trimmed shapes so the model is not fed empty fields and nested noise. Semantic search hits include `contactName`, `jobRef`, and visit dates so answers can name sites and cite references without extra lookups.
 - **Discovery-first tools** (`search_outcomes`, `jobs_aggregate`, `job_feed`, autocomplete, customer summary sections) handle lookups without running narrative investigation unless the question requires it.
 
@@ -121,12 +116,12 @@ Connie is instructed to **cite job references and names**, never internal databa
 
 - **Investigation** returns headline findings, ranked recommendations, confidence, and **evidence** tied to real job references.
 - **Search and feed tools** return graph-linked records, not orphaned text snippets.
-- **`toolCallOutputs`** on the API response exposes the structured JSON from each tool invocation in that turn, so your UI can render tables, charts, and drill-downs instead of trusting prose alone.
+- **`toolCallOutputs`** on the API response exposes the structured JSON from each tool invocation in that turn, so your UI can render tables, charts, and drill-downs from evidence.
 
 If a tool fails, she is instructed to say so and offer another angle, not invent numbers.
 
 <Warning>
-Treat the assistant message as the summary, not the source of truth. Use `toolCallOutputs`, job references in the text, and your own drill-down into discovery endpoints to verify anything that affects commercial or safety decisions.
+Treat the assistant message as the summary. Use `toolCallOutputs`, job references in the text, and your own drill-down into discovery endpoints as the source of truth for anything that affects commercial or safety decisions.
 </Warning>
 
 ## What Connie can do
@@ -156,11 +151,11 @@ Connie can answer any question the underlying data supports. Examples by shape o
 
 ### Operational actions (where enabled)
 
-Depending on your set up and integrations, Connie can also drive **email drafts**, **notifications**, **briefings**, **account reports**, **presentations**, and lookups into connected systems (CRM, mail) through the same connected platform capabilities. See the [Connie API](/api-reference/connie) for endpoints and fields.
+Depending on your setup and integrations, Connie can also drive **email drafts**, **notifications**, **briefings**, **account reports**, **presentations**, and lookups into connected systems (CRM, mail) through the same connected platform capabilities. See the [Connie API](/api-reference/connie) for endpoints and fields.
 
 ## Working on your behalf (without a prompt)
 
-Most of Connie's value lands without anyone typing. Connie reads the same signals the platform watches continuously, so she can pick up work the operator has not asked about yet.
+Most of Connie's value lands without anyone typing. Connie reads the same signals the platform watches continuously, so she can pick up work before the operator asks.
 
 - **Sentinels** detect patterns 24/7 with near-zero AI cost at detection: repeat visits, SLA drift, dormant customers, performance slips. See [Sentinels](/guides/sentinels).
 - **Cases** turn signals into owned work with status, participants, and linked jobs. Connie can open a case for a sentinel trigger, attach the relevant evidence, and draft the brief the assignee will read.
@@ -173,6 +168,8 @@ A typical autonomous loop:
 3. The regional team finds the case ready, with citations, when they next look at the queue.
 
 The operator's job is to steer and verify, not to push the platform into motion.
+
+Autonomous loops depend on your tier, enabled integrations, and configured case/team rules. During onboarding, decide which sentinel findings should create cases automatically and which should stay as digest items for human review.
 
 ## Specialist capabilities
 

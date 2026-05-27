@@ -1,162 +1,195 @@
 ---
-title: Users and teams
-description: How access works, what roles do, and how teams scope work across your operation
+title: Teams and cases
+description: How dynamic teams and cases turn agent signals into owned operational work
 ---
 
-# Users and teams
+# Teams and cases
 
-VH3 AI is priced on job volume, not seats. Every paid tier from Core upward gives your whole team access, operations, dispatch, engineers, account managers, finance, and owners. You do not need to negotiate seat licences when onboarding a new coordinator or an apprentice engineer. The marginal user is free; the marginal job is the line item.
+VH3 AI does more than answer questions. It gives agent output somewhere to land.
 
-See [Pricing](/pricing) for visit inclusions and overage rates by tier.
+Sentinels detect patterns. Connie explains what is happening. Reports summarise the operating picture. **Teams and cases** are where those signals meet the people responsible for acting on them.
 
-## Roles
+This is the gap the platform closes: the space between "the AI found something" and "the work is owned, reviewed, updated, and finished."
 
-VH3 AI ships with five roles designed for typical field service responsibilities.
+<Card title="Cases API" icon="folder-open" href="/api-reference/cases">
+  Create cases, add participants, link jobs and customers, transition status, and read activity.
+</Card>
 
-| Role | Who it is for | Can invite users | Notes |
-|------|--------------|-----------------|-------|
-| `admin` | Owners, IT leads | Yes | Full access. Manages roles and integrations. |
-| `manager` | Operations leads, account managers | Yes (limited) | Day-to-day team management; assigns cases. |
-| `standard` | Coordinators, dispatch, account managers | No | Uses discovery, Connie, sentinels, reports, and cases. |
-| `engineer` | Field engineers | No | Mobile surfaces; pre-visit briefings; on-site capture. |
-| `developer` | Technical staff building on the layer | No | Programmatic access for in-house apps and integrations. |
+<Card title="Teams API" icon="people-group" href="/api-reference/teams">
+  Create dynamic groups, add members, and link customers, sites, job types, or other entities.
+</Card>
 
-Roles are passed to the Users API as plain strings (`admin`, `manager`, `standard`, `engineer`, `developer`). See [Users](/api-reference/users) for invite, role-change, and archive endpoints.
+## The operating model
 
-For configurable role mapping beyond the defaults, for example, restricting access to finance fields per team, see [Core+ permissions](#core-permissions-and-beyond) below.
+Field service work rarely fits a static org chart. A customer issue might need an account manager, a service coordinator, a senior engineer, and a regional lead for two weeks. A data quality clean-up might involve operations, finance, and a platform admin for one day. A major incident might need a temporary room around one customer, one site, and five linked jobs.
 
-## Inviting and managing users
+VH3 AI treats teams as **dynamic operating groups**:
 
-### From VH3 Connect or your custom app
+- A team can represent a region, a customer portfolio, a service line, an escalation room, a discovery sprint cohort, or a temporary working group.
+- A team can be created by a human or an automation.
+- A team can link to customers, sites, jobs, job types, or other entities.
+- A team can exist for a permanent operating patch or for a short-lived piece of work.
 
-Send an invite from VH3 Connect (or your custom front-end). The user receives an invitation email, sets a password, and lands on dashboards filtered by their role. Engineers see briefings and on-site capture surfaces appropriate to their role. When someone leaves, archive them: their cases stay attached for audit, their access ends immediately.
+Cases are the **work containers**:
 
-### Via the API
+- They hold the problem, priority, status, due date, tags, and metadata.
+- They link the operational evidence: jobs, contacts, sites, sentinel triggers, or extracted email data.
+- They carry participants, comments, status transitions, and activity history.
+- They can include agent-generated insight panels and human updates in the same record.
 
-| Action | Endpoint | Notes |
-|--------|----------|-------|
-| Invite a user | `POST /users/invite` (server-side, `company_id` + `api_key`) | Triggers an invitation email. Role is set at invite. |
-| User logs in | `POST /auth/login` (client-side, JWT) | Returns a 24-hour JWT. Subsequent calls use `Authorization: Bearer <token>`. |
-| Refresh session | `POST /auth/refresh` | Issues a new 24-hour JWT. Plan your refresh policy for your app. |
-| Update a user | `POST /users/update` (server-side) | Change role or profile. |
-| Remove a user | `POST /users/archive` (server-side) | Access ends immediately. History is preserved. |
+The model is deliberately flexible. You define the grouping that matches the work in front of you.
 
-The API key must never appear in client-side code. JWTs are the only credential a browser or mobile app should hold. See [Authentication](/authentication) for the full surface map.
+## Where agents meet humans
 
-## Teams
+Agents are good at watching, searching, summarising, and drafting. Humans remain responsible for judgement, approval, customer communication, and operational trade-offs.
 
-Teams group users so the right people see the right work. A team can represent a region, a customer portfolio, or a function:
+Teams and cases create the handoff point:
 
-- **Region**, North Region, Scotland, Midlands
-- **Portfolio**, Retail accounts, Housing associations, Single-site cafés
-- **Function**, Compliance, Major incidents, Out-of-hours
+| Agent signal | Case captures | Human work |
+|--------------|---------------|------------|
+| Sentinel flags repeat attendance | Linked jobs, customer, severity, trigger details | Decide whether to escalate, schedule a senior engineer, or brief the account manager |
+| Connie investigates SLA drift | Findings, cited evidence, recommended next steps | Review the evidence, agree an action, update the case |
+| Email triage creates a pending job case | Extracted entities, confidence, review flags, source message | Approve, correct, or reject before operational follow-through |
+| Report highlights account risk | Report section, related customer, supporting jobs | Assign ownership and track commitments from the account review |
 
-Teams are linked to entities (customers, sites, jobs, cases). Filtered views, case ownership, and assignments use that linkage so a coordinator in the North Region sees their work, not the whole country.
+The agent can prepare the work. The case makes it reviewable. The team gives it somewhere to go.
 
-**Regional ownership.** A team owns the accounts in their patch, they get case ownership and a filtered view of jobs and sentinels for that portfolio.
+## A typical flow
 
-**Escalations.** When a sentinel surfaces a problem on an account, the case is opened against the team that owns it. People outside that team do not see it in their queue.
+1. A sentinel detects repeat visits at a customer site.
+2. Automation creates a case with `actor_type: "automation"` or `actor_type: "system"`.
+3. The case links the customer, the relevant jobs, and the sentinel result.
+4. The right team is attached because it owns that customer, region, service line, or temporary workstream.
+5. Connie drafts a short briefing with cited job references.
+6. A coordinator reviews the evidence, adds a comment, and assigns the next action.
+7. The case moves through status transitions until the work is resolved.
 
-**Cross-functional cases.** Complex incidents can include participants from more than one team without re-assigning the case.
+At each step, the work is visible: who acted, what changed, which evidence was used, and what remains open.
 
-### Managing teams via the API
+## Teams are dynamic by design
+
+Teams are not limited to predefined departments. Use them whenever a group needs shared ownership or scoped visibility.
+
+| Team shape | Example | Why create it |
+|------------|---------|---------------|
+| Operating patch | North Region, London reactive, Scotland planned maintenance | Route recurring work to the people closest to it |
+| Customer portfolio | Retail accounts, housing associations, key accounts | Keep account risk, reports, and cases together |
+| Temporary case room | Major incident: Berwyn House, fire-panel review sprint | Gather the people and evidence for one piece of work |
+| Service focus | HVAC response, lifts compliance, access control | Group specialist signals and follow-through |
+| Internal programme | Data quality clean-up, onboarding sprint, discovery review | Coordinate platform work across operations and admin |
+
+The Teams API supports this flexibility through `purpose`, `description`, and `metadata`. These fields are there so your implementation can describe the grouping in the language your operation uses.
+
+### Team API surface
 
 | Action | Endpoint |
 |--------|----------|
-| Create a team | `POST /teams/create` (name, optional `description`, `purpose`, `metadata`) |
-| Add members | `POST /teams/add-user` |
-| Link entities | Team-to-entity linkage in the Teams API (customer, site, case, job) |
-| Audit / search | `GET /teams/list` with `purpose` and `search` filters |
+| List or search teams | `GET /teams/list`, `GET /teams/search` |
+| Create or update a team | `POST /teams/create`, `PATCH /teams/{team_id}` |
+| Add or remove members | `POST /teams/{team_id}/members`, `DELETE /teams/{team_id}/members/{membership_id}` |
+| Link entities | `POST /teams/{team_id}/entities` |
+| Find ownership from an entity | `GET /entities/{entity_type}/{entity_id}/teams` |
+| Find a user's teams | `GET /users/{user_id}/teams` |
 
-Use `purpose` to differentiate team categories (`region`, `portfolio`, `function`) so admin tooling can filter cleanly.
+Use entity links for routing. A customer can belong to a portfolio team. A site can belong to a regional team. A job type can belong to a specialist team. When a signal appears, the platform can find the group that should see it.
 
-See [Teams](/api-reference/teams) for the full surface, and the case ownership pattern in [Building on the layer](/guides/building-on-the-layer).
+## Cases are where the work is done
 
-## How agents and humans work together
+Cases are lightweight on purpose. They wrap work that spans more than one job, person, system, or decision while your field management system continues to run dispatch and job records.
 
-Users and teams are not just a permissions model, they are the structure agents operate within. Connie, sentinels, and any automations you build on the layer are always acting on behalf of, or in context of, a user and a team.
+Use cases for:
 
-**Connie runs in a user session.** Every Connie conversation is scoped to the authenticated user. Her answers draw from the same intelligence layer as that user's dashboards and filtered views, she sees what they see, not the whole estate. This means a coordinator in the North Region gets a Connie that is contextually aware of their accounts, not a generic one over all data.
+- Escalations that need ownership.
+- Complaints or customer-risk reviews.
+- Repeat-visit investigations.
+- Email triage outcomes that need approval.
+- Data quality issues that need correction.
+- Account review commitments that need follow-through.
 
-**Sentinels open cases against the owning team.** When a sentinel detects a problem, the case lands with the team linked to that account or site. The right people are notified; everyone else's queue stays clean. There is no manual triage step to route the alert, team ownership does it automatically.
+### Case API surface
 
-**Agents inherit user context.** Coding agents and MCP clients authenticate as a named user with a JWT. That user's role and team memberships determine what the agent can see and do. An agent working on behalf of a `standard` user cannot perform actions outside that role, regardless of how it was invoked. This makes agentic workflows auditable and bounded by the same access rules as your human operators.
+| Action | Endpoint |
+|--------|----------|
+| Create or list cases | `POST /cases/create`, `GET /cases/list` |
+| Search or retrieve a case | `GET /cases/search`, `GET /cases/{case_id}` |
+| Update or transition status | `PATCH /cases/{case_id}`, `POST /cases/{case_id}/transition` |
+| Add comments | `POST /cases/{case_id}/comments` |
+| Read activity | `GET /cases/{case_id}/activity` |
+| Add participants | `POST /cases/{case_id}/participants` |
+| Link evidence items | `POST /cases/{case_id}/items` |
 
-**Automations act at the organisation level.** Server-side n8n workflows and back-office scripts authenticate with `company_id` + `api_key` rather than a user JWT. They are not scoped to a team and have broader read access. Use them for cross-team operations, bulk enrichment, and scheduled tasks, not for surfaces a human interacts with directly.
+The important fields are practical: `title`, `type`, `priority`, `status`, `tags`, `metadata`, `due_date`, participants, linked items, and the activity timeline.
 
-The practical result is that agents augment the people and teams you have already structured, rather than operating as a parallel system outside your access model.
+## Access and identity
 
-## Per-user integrations
+Users still matter. This page focuses on the identity patterns that support teams, cases, and agent handoffs:
 
-Some integrations are organisation-wide (your FMS, accounting). Others are per-user (an engineer's calendar, an account manager's mailbox). Per-user integrations stay scoped to the user who authorised them.
+- **People sign in** through VH3 Connect or your custom app and receive a JWT.
+- **Coding agents and MCP clients** authenticate as a named user with a JWT.
+- **Server-side automations** use `company_id` + `api_key` and can set `actor_type` such as `system` or `automation`.
 
-| Integration class | Scope | Where it appears |
-|-------------------|-------|-----------------|
-| FMS, accounting | Organisation | Set up once at onboarding. |
-| Engineer calendar, personal inbox | Per user | OAuth happens in the user's session; tokens are bound to that user. |
-| Shared inboxes | Team | Configured at the team level so multiple users can read the same thread. |
-
-An engineer's pre-visit briefing can read their calendar and mail without exposing those items to the rest of the team. See [Native integrations](/native-integrations) for the full catalogue.
-
-## Who signs in where
+That identity is recorded on cases and activities so the timeline shows whether a human, agent, or automation created the work.
 
 ```mermaid
 flowchart LR
-  user[Operator / engineer / owner]
-  connect[VH3 Connect UI<br/>managed, login + JWT]
-  custom[Custom app<br/>your UI + JWT]
-  n8n[n8n / back office script<br/>server-side only]
-  api[VH3 AI API]
-  user --> connect
-  user --> custom
-  connect --> api
-  custom --> api
-  n8n --> api
+  signal[Sentinel / Connie / email triage / report]
+  case[Case<br/>status + evidence + activity]
+  team[Dynamic team<br/>members + linked entities]
+  human[Human owner<br/>review + decision + action]
+  agent[Agent<br/>brief + investigate + draft]
+
+  signal --> case
+  case --> team
+  team --> human
+  case --> agent
+  agent --> case
+  human --> case
 ```
 
-- **People sign in** via VH3 Connect or your custom app, using a JWT.
-- **Automations run server-side.** n8n workflows and back-office scripts use `company_id` + `api_key`, never in a browser.
-- **Coding agents and MCP clients** use a JWT scoped to a user. See [MCP setup](/agent-kits/mcp-setup).
+## Per-user and shared context
 
-## Core+ permissions and beyond
+Some integrations are organisation-wide, such as your FMS or accounting system. Others are per-user or team-scoped, such as an engineer's calendar, an account manager's mailbox, or a shared inbox.
 
-The default role set covers most operations. When you need finer-grained access control, for example, preventing a team from seeing finance fields, or restricting who can regenerate customer summaries, that is available on **Core+**.
+That distinction matters when agents work around humans:
 
-Core+ unlocks two things:
+- A personal briefing can use the user's authorised calendar or mail context.
+- A shared case can include team-visible evidence and comments.
+- A server automation can create the case and attach extracted metadata.
+- The human owner can approve, correct, or close the loop.
 
-- **Configurable role mapping and user-based permissions** beyond the default API key model.
-- **Native integration layer** for per-user OAuth across mail, calendar, storage, and CRM.
+See [Native integrations](/native-integrations) for the integration catalogue.
 
-See the Core+ row in [Pricing](/pricing) for what is included.
+## Design principles
 
-## Governance considerations
+- **Group around the work.** Create teams for the real operating shape: customer, site, region, service line, incident, or programme.
+- **Keep evidence attached.** Link jobs, contacts, sites, reports, and extracted email data to the case.
+- **Record the handoff.** Use comments, participants, status transitions, and activity so the work is auditable.
+- **Let agents prepare, humans decide.** Connie and automations can draft, investigate, and route. People approve the action and own the outcome.
+- **Keep groups dynamic.** Close or deactivate temporary teams when the work is done.
 
-- Role-based access matters because VH3 AI is always on. The people who see Connie answers and sentinel digests should be the people authorised to act on them.
-- Cases provide a full audit trail, status, participants, and linked jobs, and are the system of record for follow-through across teams on Connect tier and above.
-- Connie and agent conversations run on your own model provider key (BYOK), keeping that spend visible and on your account. Reports, briefings, and platform synthesis are included in the platform price. See [Pricing](/pricing) and [Connie](/guides/connie).
+## Where to go next
+
+If you are implementing this in a custom app, start with the team/entity links and the case lifecycle. If you are operating the platform day to day, start by deciding which sentinel findings should become cases and which teams should own them.
 
 ## Related
 
 <CardGroup cols={2}>
-  <Card title="Authentication" icon="key" href="/authentication">
-    The full surface map: VH3 AI Intelligence, BigChange, and JWT.
-  </Card>
-  <Card title="User Authentication (JWT)" icon="lock" href="/api-reference/user-auth">
-    Per-user login, refresh, and session management.
-  </Card>
-  <Card title="Users API" icon="users" href="/api-reference/users">
-    Invite, update, and archive users from the back office.
-  </Card>
   <Card title="Teams API" icon="people-group" href="/api-reference/teams">
-    Create teams, add members, link entities.
+    Create dynamic groups, add members, and link operational entities.
   </Card>
-  <Card title="MCP setup" icon="robot" href="/agent-kits/mcp-setup">
-    Authenticating coding agents and MCP clients as named users.
+  <Card title="Cases API" icon="folder-open" href="/api-reference/cases">
+    Track status, participants, linked items, activity, and comments.
+  </Card>
+  <Card title="Sentinels" icon="bell" href="/guides/sentinels">
+    Continuous signals that can create or update cases.
+  </Card>
+  <Card title="Connie" icon="message-bot" href="/guides/connie">
+    How Connie investigates, briefs, and cites evidence.
+  </Card>
+  <Card title="Agent observability" icon="chart-mixed" href="/guides/agent-observability">
+    Evidence standards for human review of agent output.
   </Card>
   <Card title="Deploying secure apps" icon="shield" href="/guides/deploying-secure-apps">
-    Governance and deployment patterns for internal apps on the layer.
-  </Card>
-  <Card title="Pricing" icon="receipt" href="/pricing">
-    Visit-based pricing, unlimited users, Core+ permissions.
+    Auth, JWT, API-key, and governance patterns for custom apps.
   </Card>
 </CardGroup>

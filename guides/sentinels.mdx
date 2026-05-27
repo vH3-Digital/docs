@@ -3,15 +3,15 @@ title: Sentinels
 description: Understanding and configuring proactive monitoring
 ---
 
-# Sentinels Guide
+# Sentinels
 
-Sentinels are VH3 AI's proactive monitoring layer. They run **24/7** against your operational data to detect emerging risks and growth opportunities before they become entrenched problems or missed revenue. Detection is a structured graph read, with near-zero AI cost at the watch layer.
+Sentinels are VH3 AI's proactive monitoring layer. They run **24/7** against your operational data to detect emerging risks and growth opportunities while there is still time to act. Detection is a structured graph read, with near-zero AI cost at the watch layer.
 
-You discover SLA pain at month-end. The pattern was visible in week two. Sentinels close that gap.
+For operators, a sentinel is the morning signal that something changed: repeat visits on one account, SLA slips in a region, a dormant customer worth calling, or an engineer-flagged follow-up that needs a quote.
 
 ## How sentinels work
 
-Every sentinel is a **structured read on the operational model:** a query against the intelligence layer that evaluates a specific operational signal against configurable thresholds. Near-zero AI cost at detection; conversational AI is only invoked if you choose to generate a narrative explanation of what was detected.
+Every sentinel is a **structured read on the operational model:** a query against the intelligence layer that evaluates a specific operational signal against configurable thresholds. Conversational AI is only invoked if you choose to generate a narrative explanation or briefing from the result.
 
 <Steps>
   <Step title="Detection">
@@ -41,41 +41,64 @@ Every sentinel supports these configuration parameters:
 Thirteen operational sentinels monitor for emerging risks across engineers, sites, customers, and SLAs:
 
 ### Engineer performance slip
+
 Detects engineers whose SLA punctuality or completion quality has degraded compared to their historical baseline. Catches problems early, before a pattern becomes a client complaint.
 
 ### Site deterioration
-Identifies sites where fault frequency or repeat visits are trending upward. Surfaces sites that may need a planned maintenance visit rather than continued reactive attendance.
+
+Identifies sites where fault frequency or repeat visits are trending upward. Surfaces sites that may need a planned maintenance visit to reduce continued reactive attendance.
 
 ### SLA breach cluster
+
 Finds concentrated SLA breaches, by geography, engineer, customer, or time period. Distinguishes between isolated misses and systemic problems.
 
 ### Scheduling drift
-Flags jobs where planned vs. actual timings are diverging, catch planning assumptions that no longer match reality.
+
+Flags jobs where planned vs. actual timings are diverging. Useful when planning assumptions have drifted from reality.
 
 ### Data quality issues
-Surfaces anomalies in job records that may indicate extraction or ingestion problems, keep your intelligence layer clean.
+
+Surfaces anomalies in job records that may indicate extraction or ingestion problems, helping keep the intelligence layer clean.
 
 ## Growth opportunity sentinels
 
 Six growth sentinels surface revenue opportunities hiding in your operational history:
 
 ### Dormant customer
-Identifies customers with no recent job activity who previously had regular engagement, potential re-engagement or churn risk before they formally leave.
+
+Identifies customers with no recent job activity who previously had regular engagement. Useful for re-engagement and churn-risk review.
 
 ### Overdue service interval
-Flags equipment or sites that have passed their recommended service interval, maintenance contract upsell opportunities.
+
+Flags equipment or sites that have passed their recommended service interval, creating maintenance-contract review opportunities.
 
 ### Single-service cross-sell
-Finds customers using only one service line when your business offers multiple, cross-sell candidates with evidence of engagement.
+
+Finds customers using only one service line when your business offers multiple, with evidence for cross-sell conversations.
 
 ### Engineer-flagged follow-up
-Surfaces jobs where engineers noted "follow up," "recommend," or "return visit", quotes that should have happened but might have been missed.
+
+Surfaces jobs where engineers noted "follow up," "recommend," or "return visit", so missed quote or revisit opportunities can be reviewed.
 
 ### Seasonal buying patterns
-Identifies customers whose service rhythms suggest upcoming seasonal needs, proactive outreach before they call someone else.
+
+Identifies customers whose service rhythms suggest upcoming seasonal needs, supporting proactive outreach.
 
 ### Geographic upsell clusters
-Finds neighbourhoods where one scheduled visit would make multiple nearby follow-ups economical, route density opportunities.
+
+Finds neighbourhoods where one scheduled visit would make multiple nearby follow-ups economical.
+
+## API access
+
+Sentinel results can be run on demand, read as a digest, or reviewed historically.
+
+| Action | Endpoint | Typical use |
+|--------|----------|-------------|
+| Run a sentinel | `POST /sentinels/run` | Test a specific pattern or trigger an automation |
+| Read the digest | `GET /sentinels/digest` | Morning ops review or channel summary |
+| Review results | `GET /sentinels/results` | Filter historical detections by type, severity, or period |
+
+Use the digest for daily operating rhythm. Use results when a manager wants to inspect trends or build a report section.
 
 ## Automation
 
@@ -89,8 +112,30 @@ Sentinel results are most powerful when routed automatically. Common patterns:
 
 All of these are achievable via the VH3 AI n8n nodes (100+ pre-built templates) or direct API integration.
 
-## From reactive to continuous
+## From signal to ownership
 
-Traditional reporting: someone spends Monday morning building a spreadsheet that's already out of date by Tuesday.
+A useful sentinel result should have somewhere to go. High-severity triggers can open a **case**, attach the relevant jobs or customer records, and assign ownership to the team responsible for that account, region, or function.
 
-Sentinel-powered operations: patterns surface in their second week, not their second month. The intelligence writes itself.
+Example flow:
+
+1. Repeat attendance sentinel flags a customer with three fire-panel callouts in six weeks.
+2. The digest routes the result to the regional operations channel.
+3. An automation opens a case, attaches the jobs, and assigns the regional team.
+4. Connie drafts a short briefing with the cited job references for the coordinator.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Working with your operation" icon="user-tie" href="/guides/working-with-your-operation">
+    How operators use sentinels in the daily rhythm.
+  </Card>
+  <Card title="Reports" icon="chart-line" href="/guides/reports">
+    Include sentinel digests in scheduled operational reporting.
+  </Card>
+  <Card title="Operational discovery" icon="magnifying-glass" href="/guides/operational-discovery">
+    Run precedent searches after a sentinel flags a pattern.
+  </Card>
+  <Card title="Users and teams" icon="users" href="/guides/users-and-teams">
+    How teams own the work that sentinels surface.
+  </Card>
+</CardGroup>

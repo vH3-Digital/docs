@@ -37,6 +37,8 @@ Operational decisions have consequences: dispatch changes, client calls, SLA cre
 
 The same applies to **investigations** and **customer summaries**: the value is not only the headline ("roofing jobs are stalling at quote stage") but the **jobs cited**, the **confidence** stated, and the ability to open those records in your own UI.
 
+Example: before an account manager tells a client that SLA completion fell last month, they should be able to see the aggregation window, excluded job types, and the job references behind the percentage.
+
 ## What the API returns
 
 On [`POST /connie/chat`](/api-reference/connie), a typical successful turn includes:
@@ -117,7 +119,7 @@ Verbose blobs (`text`, `companyId`) and opaque keys (`siteKey`) are omitted on t
 
 ### Investigation
 
-Investigation-style tools return a **headline**, **confidence**, **recommendations**, and an **evidence** list with job references. That is the pattern for "why" questions: synthesis with explicit citations, not a single opaque paragraph.
+Investigation-style tools return a **headline**, **confidence**, **recommendations**, and an **evidence** list with job references. That is the pattern for "why" questions: synthesis with explicit citations and reviewable evidence.
 
 ### Customer knowledge
 
@@ -125,7 +127,7 @@ Customer Summary tools return **sectioned knowledge** (overview, patterns, risk,
 
 ## Tool recall across a session
 
-Substantive tool results in a session can be **persisted and recalled** so later turns do not always repeat the same expensive calls. From an observability perspective, that means:
+Substantive tool results in a session can be **persisted and recalled** so later turns can reuse earlier evidence. From an observability perspective, that means:
 
 - Turn 1: investigation on a customer issue → evidence stored.
 - Turn 3: "show me that table again" → recall or re-fetch with continuity.
@@ -142,7 +144,9 @@ That pattern matters because:
 - **Drill-down** uses the same `output` the agent saw.
 - **Accessibility and export** (PDF, email) can reuse structured data.
 
-Your app can render structured outputs without exposing internal field names to end users. The important thing is that **structured outputs are first-class**, not an afterthought.
+Your app can render structured outputs without exposing internal field names to end users. **Structured outputs are first-class** in the API contract.
+
+See [Generative UI](/guides/generative-ui) for the reference React component library that renders these payloads into investigation cards, gauges, reports, and job detail views.
 
 ## Routing and cost transparency
 

@@ -77,7 +77,7 @@ Each pattern reuses the same substrate. The differences are UX and the role mapp
 
 ## 5. Users, teams, and cases as governance
 
-Governance on this platform is not a separate product. It is the user, team, and case model used correctly.
+Governance on this platform comes from using the user, team, and case model correctly.
 
 - **Users and roles** ([Users](/api-reference/users), [User Auth](/api-reference/user-auth)) decide who can sign in and what they can do.
 - **Teams** ([Teams](/api-reference/teams)) decide what each user sees and owns.
@@ -102,7 +102,7 @@ See [Building on the layer](/guides/building-on-the-layer) for the sentinel-to-c
 | **VH3 Connect** | Managed UI, multi-agent governance, cases | All Core+ + Connect UI | VH3 Connect platform UI, case management, audit trails, multi-agent governance |
 | **VH3 Enterprise** | Dedicated 90-day programme, custom commercials | All Connect + bespoke | Programme manager, custom controls |
 
-These are **access points for different readiness**, not a ladder. A team that already has a strong front-end may start on Core and build its own UI. A team that wants to skip UI work uses Connect. The substrate is the same.
+Choose the access point that matches your UI, permission, and governance needs. A team that already has a strong front-end may start on Core and build its own UI. A team that wants to skip UI work uses Connect. The substrate is the same.
 
 See [Pricing](/pricing) for the full feature matrix.
 
@@ -118,6 +118,7 @@ Before launching an internal app on the layer:
 - [ ] Role mapping is configured for the surfaces the app exposes (Core+ if you need bespoke roles).
 - [ ] Teams are created and linked to the customers, sites, or regions they own.
 - [ ] Connie answers in commercial or safety contexts route through [Agent observability](/guides/agent-observability) for evidence standards.
+- [ ] Generative UI components render structured tool outputs from scoped, authenticated API responses only.
 - [ ] PII and internal ID policy enforced in the app layer; UI shows names and job refs only.
 - [ ] BYOK key set per environment; cost dashboards monitored on your provider account.
 - [ ] Case ownership defined for each sentinel that the app surfaces.
