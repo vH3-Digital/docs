@@ -1,0 +1,208 @@
+---
+title: AI Act and engineer data
+description: How VH3 AI handles engineer-level performance data, what your obligations are as the deployer, and a notice template you can adapt
+---
+
+# AI Act and engineer data
+
+This guide is for **operations leaders, DPOs, and works-council representatives** at field-service businesses using VH3 AI in the EU or UK. It explains how the platform handles data about your engineers, what we have built in to keep that handling defensible, and the parts that remain your responsibility under the EU AI Act and GDPR.
+
+<Card title="Skip to the template" icon="file-lines" href="#sample-engineer-notice-template">
+  Drop-in Markdown you can adapt and publish on your intranet.
+</Card>
+
+## 1. How responsibility splits
+
+VH3 AI Ltd builds and supplies the platform. Your organisation operates it inside your service business and decides which users see what. Under the AI Act, that split has a name:
+
+| Role | Who | What that means in practice |
+|---|---|---|
+| **Provider** of the foundation AI models | Anthropic, Google | Train and supply the underlying language models. Conformity obligations sit with them. |
+| **Provider** of the operational platform | VH3 AI Ltd | We build the tools, system prompts, evaluation, and guardrails around those models for field service. |
+| **Deployer** | Your organisation | You decide who can ask what, in what context, and how outputs feed into decisions. The transparency and human-oversight duties for your workforce sit with you. |
+
+We design for the deployer obligations on your side — but we do not perform them on your behalf. The notice and oversight steps in section 4 are yours to operate.
+
+## 2. Why engineer-level data is treated differently
+
+Most of what VH3 AI processes is operational data about jobs, sites, customers, and equipment. A subset is about named field engineers: who attended a job, when it started and finished, what the outcome was. The AI Act treats AI systems that **monitor and evaluate the performance of workers** as high-risk (Annex III, Category 4).
+
+That classification triggers obligations whether you call the system "monitoring" or not. Practical signals that matter:
+
+- Reports that name individual engineers alongside completion rate, on-time percentage, or job volume.
+- Sentinels that flag a specific engineer for review.
+- Connie answers that compare named engineers or summarise a single engineer's recent work.
+
+All three exist in the platform because they are useful for service-quality management. They also need to be handled with care.
+
+## 3. What VH3 AI does at the platform level
+
+These are the design choices we have made so that the high-risk surfaces stay defensible. None of them remove your deployer obligations, but they reduce the operational and legal risk of using the features.
+
+<CardGroup cols={2}>
+  <Card title="Operational metrics, not HR scores" icon="chart-simple">
+    Engineer dashboards and report sections present individual metrics (completion rate, on-time percentage, job count) separately. The platform does not synthesise a single "engineer quality" number.
+  </Card>
+  <Card title="HR-decision refusal in the assistant" icon="hand">
+    Connie is instructed to answer operational questions about engineers and to decline questions framed as HR decision support — for example, "who should I put on a performance improvement plan?" or "rank these engineers for promotion."
+  </Card>
+  <Card title="No emotion or attitude inference" icon="shield">
+    The assistant is instructed not to infer emotional state, motivation, attitude, or mental health from job notes or operational data. Sentiment classification on inbound email is suppressed for internal employee-to-employee communications.
+  </Card>
+  <Card title="Disclaimers carried through the stack" icon="circle-info">
+    Engineer-category sentinel triggers and the engineer performance tool responses both carry an operational-metrics disclaimer. Connie surfaces this caveat when she presents the data.
+  </Card>
+  <Card title="Per-tenant exclusion controls" icon="filter">
+    You can exclude individuals (resident engineers, subcontractors, anyone you choose) from engineer sentinels. See [Sentinels](/guides/sentinels) for the exclusion model.
+  </Card>
+  <Card title="Human-in-loop by design" icon="users">
+    Sentinel triggers create [cases](/guides/users-and-teams) for review. They do not write back to HR systems or trigger employment actions automatically.
+  </Card>
+</CardGroup>
+
+## 4. What sits with you as the deployer
+
+Four things stay your responsibility, regardless of what we build at the platform level.
+
+<Steps>
+  <Step title="Inform your engineers">
+    Under GDPR Articles 13 and 14, your engineers should be told that their operational performance data is processed by an AI system and what it is used for. The template in section 5 gives you a starting point.
+  </Step>
+  <Step title="Keep human oversight in your process">
+    AI outputs should not be the sole basis for any employment decision. Pair them with direct observation and conversation. Note this in your performance-review process.
+  </Step>
+  <Step title="Manage exclusions and access">
+    Decide which engineers fall inside the scope of monitoring, and which (typically resident engineers and subcontractors) do not. Use the exclusion controls to reflect that decision. Decide which roles in your organisation can ask engineer-specific questions.
+  </Step>
+  <Step title="Set retention to match your HR policy">
+    Connie session history and operational data retention should align with your wider employment-data retention policy. Speak to your CSM if you need help configuring this.
+  </Step>
+</Steps>
+
+## 5. Sample engineer notice template
+
+A Markdown notice you can adapt and publish to your intranet or staff handbook. Replace each `{{PLACEHOLDER}}` with your own value, review with your DPO, then issue before AI-derived performance data is used in a review or coaching conversation.
+
+```markdown
+# How we use AI to support service-quality management
+
+**Issued by:** {{COMPANY_NAME}}
+**Date:** {{DATE}}
+**Last reviewed by:** {{DPO_OR_HR_CONTACT}}
+
+## What this is
+
+{{COMPANY_NAME}} uses an AI-powered operational intelligence platform
+(VH3 AI) to help us understand and improve how our field service
+operation runs. This notice explains, in plain terms, what data about
+you flows through the platform and how we use it.
+
+## What data about you is processed
+
+The platform reads operational data that already exists in our job
+management system:
+
+- Your name and engineer ID.
+- The jobs you have been assigned and have completed.
+- For each job: customer, site, planned and actual times, outcome
+  status, and free-text notes added to the job record.
+- Aggregations derived from the above (your completion rate, on-time
+  rate, job volume over a given period).
+
+The platform does **not** access your personal email, calendar, or any
+communications outside the job system. It does not process biometric or
+wellbeing data. It does not infer your emotional state or motivation
+from job notes. It does not produce a single "engineer quality" score.
+
+## Why we process this data
+
+We rely on our legitimate interest in monitoring and improving the
+service we provide to our customers, and in supporting our engineers
+with timely coaching when patterns suggest it (GDPR Article 6(1)(f)).
+
+{{ADJUST IF YOU RELY ON A DIFFERENT BASIS OR HAVE A WORKS-COUNCIL
+AGREEMENT COVERING THIS PROCESSING.}}
+
+## How the AI is used
+
+- **Operational dashboards and reports.** Managers and coordinators
+  can see team-level and engineer-level metrics over time.
+- **Sentinels.** Background checks flag patterns such as a run of jobs
+  completed with issues. A manager reviews any flag before raising it
+  with you.
+- **Assistant (Connie).** Managers and coordinators can ask the
+  platform questions about the operation. It is instructed to present
+  operational metrics only and to decline questions framed as
+  employment recommendations.
+
+## Decisions about your employment
+
+AI-generated outputs are not the sole basis for any employment
+decision. Decisions about your performance, role, training, or any
+disciplinary matter remain decisions made by your manager (and, where
+appropriate, HR) on the basis of a full picture, including direct
+observation and your right to provide context.
+
+You have the right not to be subject to a decision based solely on
+automated processing (GDPR Article 22). We do not make such decisions
+about you using this platform.
+
+## Your rights
+
+You have the right to:
+
+- Access the operational data we hold about you (Article 15).
+- Have inaccurate data corrected (Article 16).
+- Object to processing based on legitimate interests (Article 21).
+- Lodge a complaint with {{COUNTRY_DPA_NAME}}.
+
+To exercise any of these rights, please contact {{DPO_OR_HR_CONTACT}}.
+
+## Retention
+
+We retain operational job data for {{RETENTION_PERIOD}}. AI assistant
+conversation history is retained for {{ASSISTANT_RETENTION_PERIOD}}.
+
+## Third parties
+
+The platform is operated by VH3 AI Ltd as our processor under a data
+processing agreement. It uses foundation AI models from
+{{LIST_PROVIDERS_IN_USE}} to generate analytical responses. No data is
+sold to third parties or used to train foundation models.
+
+## Updates
+
+If we materially change how we use the platform, we will issue an
+updated version of this notice. You can find the current version at
+{{INTERNAL_LINK}}.
+
+{{SIGNATORY_NAME}}
+{{SIGNATORY_ROLE}}
+```
+
+## 6. Checklist before you issue the notice
+
+- [ ] DPO or legal counsel review complete.
+- [ ] All placeholders replaced.
+- [ ] Lawful basis appropriate for your jurisdiction and any applicable collective agreement.
+- [ ] Retention periods aligned with your wider data retention policy.
+- [ ] Internal page set up where engineers can re-read the notice at any time.
+- [ ] Process in place to handle Article 15, 16, and 21 requests.
+- [ ] Works-council or employee-representative consultation completed where required.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Sentinels" icon="bell" href="/guides/sentinels">
+    The monitoring layer and the exclusion controls.
+  </Card>
+  <Card title="Users and teams" icon="users" href="/guides/users-and-teams">
+    Access, roles, and how cases route to the right people.
+  </Card>
+  <Card title="Connie" icon="message-bot" href="/guides/connie">
+    The assistant and the compliance boundaries built into it.
+  </Card>
+  <Card title="Deploying secure internal apps" icon="shield" href="/guides/deploying-secure-apps">
+    Wider governance and IT-checklist view.
+  </Card>
+</CardGroup>

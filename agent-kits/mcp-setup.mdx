@@ -18,6 +18,35 @@ Once connected, the client gets the same tools used by the Connie assistant: `in
 | **Auth** | Bearer JWT token in `Authorization` header (obtained from `auth/mcp-token`) |
 | **Protocol version** | MCP 2025-06-18 |
 
+## Prerequisites
+
+Claude Desktop and Cursor connect to remote MCP servers via a lightweight proxy called [`mcp-remote`](https://www.npmjs.com/package/mcp-remote). It runs automatically through `npx`, which ships with Node.js.
+
+<Steps>
+  <Step title="Install Node.js (if not already installed)">
+    Download the **LTS** installer for your platform from [nodejs.org](https://nodejs.org/en/download):
+
+    - **macOS:** Download the `.pkg` installer, or use Homebrew: `brew install node`
+    - **Windows:** Download the `.msi` installer. Make sure **"Add to PATH"** is checked during installation (this is the default).
+
+    After installing, verify by opening a terminal (macOS: Terminal.app, Windows: Command Prompt) and running:
+
+    ```bash
+    node --version
+    npx --version
+    ```
+
+    Both should return a version number (e.g. `v22.x.x`). If `npx` is not recognised, Node.js is either not installed or not in your system PATH — see [Troubleshooting](#troubleshooting) below.
+  </Step>
+  <Step title="Confirm your IT policy allows outbound HTTPS">
+    The MCP proxy makes outbound HTTPS connections to `api.vh3connect.io` and `registry.npmjs.org` (to fetch `mcp-remote` on first use). If your organisation uses a firewall or proxy, ask your IT team to allowlist these domains.
+  </Step>
+</Steps>
+
+<Info>
+**Why Node.js?** Claude Desktop only supports local process (stdio) MCP servers in its config file. It cannot connect to remote HTTP/SSE endpoints directly. The `mcp-remote` proxy bridges the gap — Claude Desktop launches it as a local process, and it handles the network connection to VH3. This is [the standard pattern](https://modelcontextprotocol.io/quickstart/user) recommended by the MCP specification.
+</Info>
+
 ## Get your MCP token
 
 Before connecting any client, you need a long-lived MCP token (valid for 90 days).
@@ -55,71 +84,142 @@ Before connecting any client, you need a long-lived MCP token (valid for 90 days
 
 ## Quick start: Claude Desktop
 
-Claude Desktop connects to the VH3 MCP server via SSE using the `mcp-remote` proxy (installed automatically via `npx`).
+Claude Desktop connects to the VH3 MCP server via SSE using the [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) proxy. Requires [Node.js 18+](#prerequisites).
 
 <Steps>
-  <Step title="Open your Claude Desktop config">
-    On macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+  <Step title="Open your Claude Desktop config file">
+    The config file location depends on your platform:
 
-    On Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+    | Platform | Path |
+    |---|---|
+    | **macOS** | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+    | **Windows** | `%APPDATA%\Claude\claude_desktop_config.json` |
+
+    You can also open it from Claude Desktop: **Settings → Developer → Edit Config**.
 
     Create the file if it does not exist.
   </Step>
   <Step title="Add the VH3 server">
+    **macOS:**
+
     ```json claude_desktop_config.json
     {
       "mcpServers": {
-        "vh3-ai-v2": {
+        "vh3-ai": {
           "command": "npx",
           "args": [
             "-y",
             "mcp-remote",
             "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse",
             "--header",
-            "Authorization: Bearer YOUR_MCP_TOKEN"
-          ]
+            "Authorization:${VH3_MCP_TOKEN}"
+          ],
+          "env": {
+            "VH3_MCP_TOKEN": "Bearer YOUR_MCP_TOKEN"
+          }
         }
       }
     }
     ```
 
-    Replace `YOUR_MCP_TOKEN` with the token you obtained in the previous step. See [Get your MCP token](#get-your-mcp-token) above.
+    **Windows:**
+
+    ```json claude_desktop_config.json
+    {
+      "mcpServers": {
+        "vh3-ai": {
+          "command": "cmd",
+          "args": [
+            "/c",
+            "npx",
+            "-y",
+            "mcp-remote",
+            "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse",
+            "--header",
+            "Authorization:${VH3_MCP_TOKEN}"
+          ],
+          "env": {
+            "VH3_MCP_TOKEN": "Bearer YOUR_MCP_TOKEN"
+          }
+        }
+      }
+    }
+    ```
+
+    Replace `YOUR_MCP_TOKEN` with the token from [Get your MCP token](#get-your-mcp-token).
   </Step>
   <Step title="Restart Claude Desktop">
-    Quit and reopen Claude Desktop. You should see a hammer icon in the chat input, click it to confirm all 19 VH3 tools are listed.
+    Quit fully (**Cmd+Q** on macOS, **File → Quit** on Windows — closing the window is not enough) and reopen. You should see a hammer icon in the chat input. Click it to confirm the VH3 tools are listed.
   </Step>
   <Step title="Test with a query">
     Try: *"How many jobs did we complete last week, broken down by engineer?"*
 
-    Claude will call `aggregate_jobs` with `metric: count`, `group_by: resource`, `period: last_week` and return a cited answer.
+    Claude will call `aggregate_jobs` and return a cited answer.
   </Step>
 </Steps>
 
+<Warning>
+**Windows users:** You must use `"command": "cmd"` with `"/c"` as the first arg. Claude Desktop spawns the command directly without a shell, so `npx` alone will fail with `spawn npx ENOENT`. Wrapping it in `cmd /c` ensures Windows resolves `npx` via the system PATH.
+</Warning>
+
 <Note>
-The `mcp-remote` package handles the SSE transport and Bearer token header injection. It is fetched on first use via `npx -y`, no manual installation needed. Requires Node.js 18+.
+The auth token is placed in the `env` block rather than inline in `args`. This is the [recommended pattern](https://www.npmjs.com/package/mcp-remote) — `mcp-remote` can misparse header values containing spaces when they appear directly in the args array on Windows.
 </Note>
 
 ## Quick start: Cursor
 
-Add the server to your Cursor MCP configuration. Go to **Cursor Settings > MCP** and add:
+Go to **Cursor Settings → MCP** and add a new server, or edit `.cursor/mcp.json` in your project root. Requires [Node.js 18+](#prerequisites).
 
-```json Cursor MCP config
+**macOS:**
+
+```json .cursor/mcp.json
 {
-  "vh3-ai-v2": {
-    "command": "npx",
-    "args": [
-      "-y",
-      "mcp-remote",
-      "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse",
-      "--header",
-      "Authorization: Bearer YOUR_MCP_TOKEN"
-    ]
+  "mcpServers": {
+    "vh3-ai": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse",
+        "--header",
+        "Authorization:${VH3_MCP_TOKEN}"
+      ],
+      "env": {
+        "VH3_MCP_TOKEN": "Bearer YOUR_MCP_TOKEN"
+      }
+    }
   }
 }
 ```
 
+**Windows:**
+
+```json .cursor/mcp.json
+{
+  "mcpServers": {
+    "vh3-ai": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "mcp-remote",
+        "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/sse",
+        "--header",
+        "Authorization:${VH3_MCP_TOKEN}"
+      ],
+      "env": {
+        "VH3_MCP_TOKEN": "Bearer YOUR_MCP_TOKEN"
+      }
+    }
+  }
+}
+```
+
+Replace `YOUR_MCP_TOKEN` with your token. See [Get your MCP token](#get-your-mcp-token).
+
 <Note>
-Prefer using environment variables rather than inline tokens. Set `VH3_MCP_TOKEN` in your shell profile, then reference `Bearer $VH3_MCP_TOKEN` in the args array, or use [Cursor Rules](/agent-kits/cursor-rules) alongside the MCP connection to keep tokens out of config files.
+Prefer environment variables over inline tokens. Set `VH3_MCP_TOKEN` in your shell profile and reference it from the config, or use [Cursor Rules](/agent-kits/cursor-rules) alongside the MCP connection to keep tokens out of config files.
 </Note>
 
 ## Available tools
@@ -179,6 +279,47 @@ The JWT encodes your user identity. All tool calls are automatically scoped to y
 <Warning>
 Never commit your MCP token to source control. Use environment variables and reference them from your MCP client configuration.
 </Warning>
+
+## Troubleshooting
+
+### `spawn npx ENOENT` (Windows)
+
+Claude Desktop cannot find `npx`. Two possible causes:
+
+1. **Node.js is not installed.** Install it from [nodejs.org](https://nodejs.org/en/download) and restart Claude Desktop.
+2. **Node.js is installed but not in Claude Desktop's PATH.** Use `"command": "cmd"` with `"/c"` as the first arg (see [Windows config above](#quick-start-claude-desktop)). Alternatively, use the full path to npx: `"command": "C:\\Program Files\\nodejs\\npx.cmd"`.
+
+### `npx is not recognized` (Windows)
+
+Same root cause as above — Node.js is not on the system PATH. Install Node.js using the `.msi` installer (not the zip), which adds it to PATH automatically. After installing, **restart Claude Desktop** (or reboot) so it picks up the new PATH.
+
+### "Not valid MCP server configuration"
+
+The config JSON is malformed. Common causes:
+
+- **Trailing comma** after the last entry in an object or array.
+- **Two separate JSON objects** instead of one (e.g. `mcpServers` and `preferences` in separate `{}` blocks — they must be siblings in a single root object).
+- **Using `"url"` or `"headers"` keys** — Claude Desktop does not support these. Use the `command` + `mcp-remote` pattern shown above.
+
+Paste your config into [jsonlint.com](https://jsonlint.com) to validate the JSON syntax.
+
+### Tools don't appear after restart
+
+- Verify you fully quit Claude Desktop (**Cmd+Q** / **File → Quit**), not just closed the window.
+- Check logs: **Settings → Developer → Open Logs Folder** and look for `mcp-remote` stderr output.
+- Verify your token hasn't expired (90-day lifetime). Re-run the [token exchange](#get-your-mcp-token) if needed.
+- Confirm outbound HTTPS to `api.vh3connect.io` and `registry.npmjs.org` is not blocked by a firewall.
+
+### Tool calls timeout
+
+`investigate`, `reports_generate`, and `connie_chat` can take 10–17 seconds. Some clients have aggressive timeouts. Increase your client's tool call timeout to at least 25 seconds.
+
+### Further reading
+
+- [MCP Specification](https://modelcontextprotocol.io) — the protocol standard
+- [MCP Debugging Guide](https://modelcontextprotocol.io/docs/tools/debugging) — official troubleshooting
+- [`mcp-remote` on npm](https://www.npmjs.com/package/mcp-remote) — the SSE proxy package
+- [Claude Desktop MCP Quickstart](https://modelcontextprotocol.io/quickstart/user) — Anthropic's setup guide
 
 ## Using the MCP server from custom agents
 

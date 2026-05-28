@@ -168,7 +168,8 @@
           {
             "group": "Enterprise deployment",
             "pages": [
-              "guides/deploying-secure-apps"
+              "guides/deploying-secure-apps",
+              "guides/ai-act-and-engineer-data"
             ]
           }
         ]
