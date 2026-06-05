@@ -104,6 +104,18 @@
         ]
       },
       {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog/overview",
+              "changelog/2026-06-05"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "FAQ",
         "groups": [
           {
@@ -237,7 +249,7 @@
     },
     {
       "source": "/changelog",
-      "destination": "/introduction"
+      "destination": "/changelog/overview"
     }
   ]
 }
