@@ -5,7 +5,7 @@ description: Why complex operational work requires purpose-built vertical intell
 
 # Why field service needs its own intelligence layer
 
-There is a pattern repeating across the AI software market right now. Generic AI tools — large models paired with standard connectors to common business systems — work well for simple, horizontal tasks: drafting an email, summarising a document, searching a knowledge base. They struggle when the work is complex, multi-step, and deeply tied to how a specific industry actually operates.
+There is a pattern repeating across the AI software market right now. Generic AI tools, pairing large models with standard connectors to common business systems, work well for simple, horizontal tasks: drafting an email, summarising a document, searching a knowledge base. They struggle when the work is complex, multi-step, and deeply tied to how a specific industry actually operates.
 
 Field service is one of the clearest examples of why.
 
@@ -13,7 +13,7 @@ Field service is one of the clearest examples of why.
 
 Not every AI application is the same. Some problems improve directly with model capability: the better the model, the better the output. These are well-served by general-purpose AI tools, and there are many excellent ones.
 
-Other problems require something different. The value comes not from raw model capability alone, but from the scaffolding around it — the domain knowledge, the operational context, the multi-step workflow logic, the governance structures, and the trust that output is reliable enough to act on. Better models help, but they don't substitute for the layer underneath.
+Other problems require something different. The value comes not from raw model capability alone, but from the scaffolding around it: domain knowledge, operational context, multi-step workflow logic, governance structures, and the trust that output is reliable enough to act on. Better models help, but they don't substitute for the layer underneath.
 
 Field service is firmly in the second category.
 
@@ -23,7 +23,7 @@ A dispatcher preparing for a difficult site visit needs to know: who has attende
 
 None of those primitives work in isolation. The operational question crosses all four, and the answer is only trustworthy if they are consistent with each other.
 
-This is before you get to the underlying data reality: fault descriptions written by fifty different engineers with no standard vocabulary, customer names appearing in three different formats across two systems, site records that should be linked but aren't. Entity resolution — mapping inconsistent source data onto a consistent operational model — is not a preprocessing step you can skip. It is the work.
+This is before you get to the underlying data reality: fault descriptions written by fifty different engineers with no standard vocabulary, customer names appearing in three different formats across two systems, site records that should be linked but aren't. Entity resolution, mapping inconsistent source data onto a consistent operational model, is not a preprocessing step you can skip. It is the work.
 
 The same complexity appears across every operational surface. An account review that catches a customer at churn risk before the complaint arrives. A sentinel that flags a pattern of repeat visits on a class of equipment before a service failure becomes a liability. A triage decision on an inbound email that determines whether it opens a case, routes to a team, or is resolved automatically. These are not one-step tasks with forgiving outcomes. They are multi-step workflows where ambiguity is operationally costly.
 
@@ -31,7 +31,7 @@ The same complexity appears across every operational surface. An account review 
 
 The operational knowledge that makes field service AI trustworthy does not come from a general training set. It comes from running inside the workflows where that knowledge actually lives.
 
-Every job that flows through the intelligence layer is enriched once and never re-processed. Fault type is extracted and classified. Equipment is identified. The operational outcome is structured. Entity resolution maps the record to the right customer, site, and engineer, even when the source data is inconsistent. That enriched record is then read by every downstream agent, report, automation, and API consumer — without anyone repeating the expensive interpretive work.
+Every job that flows through the intelligence layer is enriched once and never re-processed. Fault type is extracted and classified. Equipment is identified. The operational outcome is structured. Entity resolution maps the record to the right customer, site, and engineer, even when the source data is inconsistent. That enriched record is then read by every downstream agent, report, automation, and API consumer, without repeating the expensive interpretive work.
 
 Over time, the layer accumulates something that cannot be replicated by spinning up a fresh agent against the same source system: the operational memory of how this specific organisation works. Which customers take longer than average. Which fault classes cluster around which equipment. How this operation describes faults in practice, versus how a general model would expect them to be described. Which engineers are reliable on which job types.
 
@@ -39,7 +39,7 @@ This compounds. A system that has processed five years of operational history, r
 
 ## Multi-step workflows need a layer underneath the model
 
-The standard pattern for AI tooling is: plug a model into a set of connectors, expose a chat interface or simple automation surface, and deliver. That works for horizontal work — search, summarisation, single-step retrieval.
+The standard pattern for AI tooling is: plug a model into a set of connectors, expose a chat interface or simple automation surface, and deliver. That works for horizontal work: search, summarisation, single-step retrieval.
 
 Operational field service work involves workflows where the model call is one step, not the whole answer. A sentinel that detects a pattern runs at near-zero AI cost against a knowledge graph. A discovery query that finds similar fault precedents runs deterministically against a semantic index. A pre-visit briefing draws from structured records assembled before the question is asked. A Connie answer is cited against actual job data, not generated from training memory.
 
@@ -47,9 +47,9 @@ The intelligence layer separates those steps clearly:
 
 | Layer | What it does | LLM involved? |
 |---|---|---|
-| **Discovery** | Precedent search, entity resolution, aggregates, autocomplete | No — deterministic, sub-second |
-| **Monitoring** | Sentinel pattern detection on the knowledge graph | Near-zero — no LLM at detection |
-| **Synthesis** | Cited narrative, investigation, conversational answers | Yes — your own model key, visible cost |
+| **Discovery** | Precedent search, entity resolution, aggregates, autocomplete | No (deterministic, sub-second) |
+| **Monitoring** | Sentinel pattern detection on the knowledge graph | Near-zero (no LLM at detection) |
+| **Synthesis** | Cited narrative, investigation, conversational answers | Yes (your own model key, visible cost) |
 
 Routing work to the right layer by task type produces predictable latency, visible costs, and trustworthy outputs. Sending everything through a single model call is expensive for the wrong tasks and unreliable because there is no prepared context to work from.
 
@@ -73,7 +73,7 @@ The practical result is that usage scaling does not produce proportional cost sc
 
 The distinction between AI applications that last and those that do not comes down to one question: does the customer depend on your system as the layer their operational work flows through, or could they replace you the moment a generic tool adds a field service connector?
 
-For VH3 AI, the answer is the former. The enriched operational record — classified jobs, resolved entities, linked relationships, accumulated history — lives in the platform. Every job, outcome, and relationship that flows through the intelligence layer compounds into a picture of the operation that belongs to the customer's organisation. Cases, teams, briefings, and sentinel rules are built on top of that picture. The operational knowledge does not leave when an engineer retires or an account manager moves on.
+For VH3 AI, the answer is the former. The enriched operational record, comprising classified jobs, resolved entities, linked relationships, and accumulated history, lives in the platform. Every job, outcome, and relationship that flows through the intelligence layer compounds into a picture of the operation that belongs to the customer's organisation. Cases, teams, briefings, and sentinel rules are built on top of that picture. The operational knowledge does not leave when an engineer retires or an account manager moves on.
 
 That is what it means for an intelligence layer to own the system of work, not just sit on top of it.
 

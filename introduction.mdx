@@ -9,27 +9,25 @@ description: The AI infrastructure layer for field service organisations
 **Building with AI tools?** This site exposes [llms.txt](https://docs.vh3.ai/llms.txt), Markdown exports (`.md` on any URL), and a [documentation MCP](https://docs.vh3.ai/mcp) for searching these docs. For live operational data, use the [Agent Starter Kits](/agent-kits/overview) and [product MCP](/agent-kits/mcp-setup), not the docs MCP.
 </Tip>
 
-VH3 AI for field service aims to be what Cursor is to software development. Not a replacement. A harness.
-
-It is the intelligence layer that sits alongside your field service management system. Not another system to migrate to. Not a chatbot bolted onto an export. A purpose-built infrastructure layer that connects to every system your operation runs on, understands what is happening across the business at all times, and makes that understanding available to your team, your automations, and any application you choose to build on top of it.
+VH3 AI is the intelligence layer that sits alongside your field service management system. It connects the systems your operation already runs on, keeps the operational picture current as jobs, relationships, and accounts change, and makes that intelligence available to your team, automations, agents, and any application you build on top.
 
 ## A new kind of infrastructure
 
 Field service businesses have been generating rich operational data for years. Jobs, engineers, sites, customers, communications, worksheets, compliance records. The problem has never been a lack of data. It has been a lack of infrastructure that connects it, understands it in context, and keeps it reliable for everyone who needs to use it.
 
-VH3 AI is that infrastructure. It is not a reporting tool. It is not an FMS add-on. It is not a generic AI wrapper. It is a dedicated intelligence layer built specifically for field service, designed around three principles:
+VH3 AI is that infrastructure: a dedicated intelligence layer built specifically for field service, designed around three principles.
 
 **Understands the domain.** Every record is mapped into a structured model of what actually happens in a field service operation: the jobs, the people, the sites, the outcomes, the relationships between them. The model does not change between integrations. Whether you run one FMS or several, the intelligence layer speaks one language and maintains one consistent picture of the business.
 
-**Connects structure and meaning.** Four complementary memory primitives work together underneath. Relational memory links every job to its engineer, site, customer, outcome, and history, traversable in any direction. Semantic memory indexes fault descriptions, job notes, and worksheet answers by meaning rather than keywords. Structured memory holds the enriched, classified record produced once at ingest and read by every downstream agent and report. Temporal memory watches continuously for emerging patterns and surfaces signals before anyone has to search for them. Any question that requires crossing more than one of these, and most real operational questions do, draws from all four. We built all four.
+**Connects structure, meaning, and change.** VH3 AI maintains a connected operating picture of the business using four capabilities working together. Relationship mapping links every job to its engineer, site, customer, outcome, and history, traversable in any direction. Meaning-based search indexes fault descriptions, job notes, and worksheet answers so similar history is findable even when engineers described the same fault differently. Structured job enrichment holds the classified record produced once at ingest and read by every downstream agent, report, and automation. Continuous monitoring watches the same layer for repeat visits, SLA drift, dormant customers, stale relationships, and emerging risk. Any question that crosses more than one of these, and most real operational questions do, draws from all four.
 
-**Learns continuously.** Data flows in and is enriched as it arrives. Entity resolution handles the messy reality of source data written by different people across different systems on different days. The intelligence compounds with every new record. You do not configure it once and wait. It keeps up with the operation as it runs.
+**Keeps the picture current.** Data flows in continuously. New jobs are enriched as they arrive. Entity resolution handles inconsistent names, changing site relationships, renamed job types, stale contacts, and source data written by different people at different times. When a customer hierarchy changes, a site relationship is corrected, or a job type is renamed, the intelligence layer updates the shared operating picture rather than forking another stale view. The intelligence compounds with every new record and stays current as the operation changes.
 
 The result is a persistent, reliable, always-current picture of the business, context and understanding that every team, tool, and agent in the organisation can draw from simultaneously.
 
 ## Work that moves while you are doing other things
 
-The platform is not a search box that waits for a question. Sentinels watch the operation 24/7 against the graph, with near-zero AI cost at detection. When a pattern crosses a threshold, the platform can open a **case**, link the relevant jobs and evidence, ask Connie for a draft brief, and route it to the **team** that owns the customer or region. By the time a coordinator next opens their queue, the work is queued with context.
+The platform runs continuously, watching for patterns without waiting to be asked. Sentinels watch the operation 24/7 against the graph, with near-zero AI cost at detection. When a pattern crosses a threshold, the platform can open a **case**, link the relevant jobs and evidence, ask Connie for a draft brief, and route it to the **team** that owns the customer or region. By the time a coordinator next opens their queue, the work is queued with context.
 
 That loop, sentinels, cases, teams, and Connie working together, is how VH3 AI turns continuous intelligence into autonomous follow-through. The operator's job is to steer and verify, not to chase the platform.
 
@@ -37,17 +35,15 @@ That loop, sentinels, cases, teams, and Connie working together, is how VH3 AI t
 
 The AI infrastructure market is running into a problem that anyone who has deployed agents at real scale will recognise. Agents built on classic retrieval, semantic search over raw records, answer from the closest chunks, work in a demo. They struggle when they need to do real operational work: cross-referencing history, synthesising patterns across hundreds of thousands of jobs, producing reliable answers under conditions the chatbot era was never designed for.
 
-We know this because we lived it. VH3 AI had production AI agents running against real operations by late 2024. Processing hundreds of thousands of jobs across multiple large clients made the limits of that approach visible in ways that a pilot never would. Over that period and into early 2025, it became clear that what field service agents actually need is not better retrieval, it is a different kind of memory altogether.
+We know this because we lived it. VH3 AI had production AI agents running against real operations by late 2024. Processing hundreds of thousands of jobs across multiple large clients made the limits of that approach visible in ways that a pilot never would. Over that period and into early 2025, it became clear that what field service agents actually need is a maintained operating context: assembled, resolved, current, and scoped to the work at hand.
 
-Not search results. Operating context. Assembled, resolved, current, and scoped to the work at hand.
-
-That is what the intelligence layer provides. Four complementary memory primitives, relational, semantic, structured, and temporal, combined into a synthesis layer that agents read rather than query their way through. The market is moving beyond search-only agent memory: VH3 AI was built for production field service scale, not demos.
+That is what the intelligence layer provides. Four connected capabilities, relationship mapping, meaning-based search, structured records, and continuous monitoring, combined into a synthesis layer that agents read directly. VH3 AI was built for production field service scale, not demos.
 
 [Read how the intelligence layer works →](/intelligence-layer)
 
 ## One foundation. Every consumer.
 
-In the AI world, the line between application and consumer is collapsing. A team might run a shared dashboard today, a custom internal tool next quarter, a lightweight agent-powered interface the quarter after that. Businesses are building more of their own software, spinning up purpose-built surfaces for specific teams, and increasingly treating applications as disposable rather than permanent.
+The line between application and consumer is collapsing. A team might run a shared dashboard today, a custom internal tool next quarter, a lightweight agent-powered interface the quarter after that. Businesses are building more of their own software, spinning up purpose-built surfaces for specific teams, and treating the intelligence layer as the shared foundation underneath all of it.
 
 VH3 AI is designed for that world. Whatever your team builds on top of it, they are all drawing from the same foundation. The same enriched, connected, reliable data. Every report, briefing, automation, custom app, and AI agent sees the same operational picture. Nothing diverges. Nothing goes stale.
 
@@ -67,11 +63,11 @@ The platform also gets more efficient as it scales. Advanced caching and pre-com
 
 ## Freedom, not obligations
 
-The industry has a habit of locking operational data inside long contracts, making it difficult to export, and building switching costs into the product rather than building value. That is not a business model we want to run.
+The industry has a habit of locking operational data inside long contracts, making it difficult to export, and building switching costs into the product. VH3 AI takes a different position.
 
 No long-term contracts after the initial term. No charges for seats that are not being used. No exports gated behind support tickets. If you choose to leave, your enriched operational data comes with you. The intelligence belongs to your organisation. We keep customers because the platform earns it.
 
-Every customer's data is scoped entirely to their organisation. All API calls resolve server-side by `company_id`, no call can cross organisation boundaries. The intelligence you build is yours: query it via the API, consume it through automations, connect it to your own AI models, or build your own applications directly on top of it. Dedicated, isolated infrastructure is available on Enterprise plans.
+The intelligence you build is yours: query it via the API, consume it through automations, connect it to your own AI models, or build your own applications directly on top of it. Dedicated, isolated infrastructure is available on Enterprise plans.
 
 ## What the API gives you
 
@@ -79,13 +75,13 @@ The VH3 AI API is the single point of access to everything the intelligence laye
 
 <CardGroup cols={2}>
   <Card title="Hybrid Intelligence" icon="magnifying-glass">
-    Four memory primitives working together: graph traversal for relational questions, semantic search for meaning-based fault discovery, enriched structured records for every downstream consumer, and continuous temporal monitoring for emerging patterns. Operating context delivered to agents, not search results to query through.
+    Four connected capabilities working together: relationship traversal for relational questions, meaning-based search for fault discovery, enriched structured records for every downstream consumer, and continuous monitoring for emerging patterns. Agents receive prepared operating context built from connected, current data.
   </Card>
   <Card title="Sentinels" icon="bell">
     Continuous monitoring for emerging risks and revenue opportunities. Performance slips, site deterioration, SLA patterns, dormant customers, growth signals. Pattern detection at the data layer with near-zero AI cost.
   </Card>
   <Card title="Reports and Briefings" icon="chart-line">
-    Eight automated report types covering daily, weekly, and account-level intelligence. Pre-visit engineer briefings with full site history, similar fault precedents, and equipment context.
+    Eight configurable report formats covering daily, weekly, and account-level intelligence. Pre-visit engineer briefings with full site history, similar fault precedents, and equipment context.
   </Card>
   <Card title="Connie" icon="message-bot">
     Conversational AI grounded in your full operational record. Ask in plain English. Get cited, data-backed answers. "Which engineers are consistently late on HVAC jobs?"
@@ -108,7 +104,7 @@ The VH3 AI API is the single point of access to everything the intelligence laye
     Every job passes through the AI enrichment pipeline once. Fault type, work performed, equipment involved, operational outcome, all extracted and structured. Relationships are resolved and linked to the right customer, site, and history, even when source data is inconsistent.
   </Step>
   <Step title="Connect and index">
-    Enriched records flow into all four memory primitives simultaneously. The intelligence layer links every entity relationally. The semantic index makes meaning-based fault discovery possible across millions of job notes. Structured records are compacted and ready for any downstream consumer. Temporal sentinels begin watching from the first record. Every query, relational, semantic, structured, or pattern-based, works against the same underlying data.
+    Enriched records flow into the connected intelligence substrate. Relationships are linked and traversable. Meaning-based search is updated so similar faults are findable across every job note. Structured records are compacted and ready for any downstream consumer. Sentinels begin watching for change from the first record. Every query, relational, semantic, structured, or pattern-based, works against the same underlying data.
   </Step>
   <Step title="Monitor">
     Sentinels run continuously, the platform's always-on tap on the shoulder. They watch for performance slips, site deterioration, SLA patterns, dormant customers, overdue service intervals, and growth opportunities. When something needs attention, they surface it. No one has to think to look.
@@ -118,11 +114,11 @@ The VH3 AI API is the single point of access to everything the intelligence laye
   </Step>
 </Steps>
 
-## The knowledge that never leaves
+## The operating knowledge that stays with the business
 
-Field service businesses lose institutional knowledge constantly. An engineer retires and takes thirty years of fault patterns with them. A contracts manager leaves and the context behind every difficult client relationship goes with them. A new joiner spends their first six months drinking from a fire hose, trying to piece together how the operation works from conversations, inboxes, and tribal memory.
+Field service businesses lose institutional knowledge constantly. An engineer retires and takes thirty years of fault patterns with them. A contracts manager leaves and the context behind every difficult client relationship goes with them. A new joiner spends their first six months trying to piece together how the operation works from conversations, inboxes, and tacit knowledge.
 
-VH3 AI changes that equation. Because everything the business does flows into the intelligence layer, every job, every outcome, every pattern, every relationship, the knowledge does not live in anyone's head. It lives in the platform. It compounds over time. And it is available to everyone who needs it, at the moment they need it.
+VH3 AI changes that equation. Because everything the business does flows into the intelligence layer, every job, every outcome, every pattern, every relationship, that knowledge becomes part of the maintained operational picture. It compounds over time and is available to everyone who needs it, at the moment they need it.
 
 A new engineer gets a pre-visit briefing that includes every fault ever seen at that site, what fixed it, and who attended. A new ops manager can ask natural language questions about how the operation has run over the past three years and get cited, data-backed answers. Someone onboarding into an account management role can pull a full history of every customer relationship, communication pattern, and outstanding risk in minutes rather than months.
 
