@@ -1,6 +1,6 @@
 ---
 title: The Intelligence Layer
-description: Four memory primitives, one operational picture, why VH3 AI is a synthesis layer, not a retrieval tool
+description: Four memory primitives, one operational picture, and how VH3 AI prepares operational context agents and automations can trust
 ---
 
 # The Intelligence Layer
@@ -9,7 +9,7 @@ There is a problem every team building AI agents at scale eventually runs into, 
 
 The agents work. They give answers. They pass the demo. Then usage grows and something starts to feel wrong, costs climbing faster than value, answers that should be fast taking too long, context re-assembled from scratch on every run as though the system has no memory of what happened before.
 
-This is not a model quality problem. It is an architecture problem. And it is one we ran into ourselves.
+The problem is architectural. And it is one we ran into ourselves.
 
 By late 2024, VH3 AI had production AI agents running against real field service operations, early conversational interfaces processing hundreds of thousands of jobs across multiple large clients. What we learned over that period, and particularly in the months that followed, was that the classic retrieval approach, semantic search over job records, answer from the closest chunks, was not enough for the kind of operational work field service agents actually need to do.
 
@@ -87,7 +87,7 @@ The four primitives only hold together if what they contain is consistent. That 
 
 Field service is not generic business data. It is work, performed at a place, for a customer, by an engineer, on equipment, with an outcome. Those concepts have specific meanings, specific relationships, and specific cardinalities. A job is not a row. A customer is not a string. A site is not an address field. They are entities with histories, hierarchies, and connections to each other that have operational consequences.
 
-VH3 AI maps all incoming data to a canonical model of these concepts. Source systems spell names differently, use different field structures, and make different assumptions about what a record means. The model does not inherit those inconsistencies. By the time a job enters the intelligence layer, it is a job: classified, resolved, linked to the right customer, site, and engineer, with its outcome structured and its equipment identified. Not a BigChange record. Not a Simpro export. A job, in the operational sense.
+VH3 AI maps all incoming data to a canonical model of these concepts. Source systems spell names differently, use different field structures, and make different assumptions about what a record means. The model does not inherit those inconsistencies. By the time a job enters the intelligence layer, it is classified, resolved, and linked to the right customer, site, and engineer — with its outcome structured and its equipment identified.
 
 This has three practical consequences:
 
@@ -115,7 +115,7 @@ The intelligence layer is most valuable when it is mature, when it has enough hi
 
 Up to five years of operational history, every job, every outcome, every engineer record, every site and customer relationship, is ingested, enriched, and connected into the graph before go-live. Every entity is resolved. Every relationship is mapped. Every historical conflict in the source data is reconciled.
 
-Your agents do not start from a standing start. They start from a substrate that already understands your operation with years of depth.
+Your agents work from that foundation on day one. The understanding is already there.
 
 From that point, every new job flows through the same enrichment pipeline and joins the graph. The understanding compounds. But it never had to warm up.
 
@@ -144,6 +144,6 @@ The intelligence layer is exposed through a full API and an MCP surface. Every p
   </Card>
 </CardGroup>
 
-When you build on the intelligence layer, you are starting from a prepared, resolved, always-current understanding of the operation, not from a search index you have to query your way through. Your agents read. They do not scavenge.
+When you build on the intelligence layer, you are starting from a prepared, resolved, always-current understanding of the operation. Your agents read. They do not scavenge.
 
 That is the difference between access and understanding.

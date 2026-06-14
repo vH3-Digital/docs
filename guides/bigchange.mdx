@@ -1,13 +1,13 @@
 ---
 title: VH3 AI for BigChange users
-description: What the intelligence layer means if you have been running your operation on BigChange
+description: How VH3 AI reads your BigChange history, connects your operation, and puts answers in front of your team
 ---
 
 # VH3 AI for BigChange users
 
 If your operation runs on BigChange, VH3 AI starts with the data your team already depends on: completed jobs, engineer visits, worksheets, customer records, job types, notes, and the shorthand your coordinators use every day.
 
-BigChange remains the system of record for dispatch, scheduling, job tracking, and worksheet capture. VH3 AI sits alongside it and builds the intelligence layer above the raw records: patterns across thousands of jobs, risks building inside customer accounts, repeat faults by site, and the questions your operations director would otherwise compile from exports or limited native ai features.
+BigChange remains the system of record for dispatch, scheduling, job tracking, and worksheet capture. VH3 AI sits alongside it: reads your job history, connects every record to the right customer, site, and engineer, watches for patterns across thousands of jobs, and puts answers in front of your team before they go looking.
 
 Connect BigChange once and your operational history starts feeding search, sentinels, reports, Connie, and the workflows your team uses to follow through.
 
@@ -15,33 +15,31 @@ Connect BigChange once and your operational history starts feeding search, senti
 
 We built VH3 AI on BigChange data from live field service operations before the product had a name. That matters because real operational data carries years of local decisions.
 
-Over years of operation, the shape of your data changes. Custom fields configured at go-live have drifted in meaning. Worksheet structures have been updated and historical answers stop mapping cleanly to how the operation runs today. Contact hierarchies have evolved. Job types have been renamed or consolidated. Fault descriptions for the same underlying problem have been recorded differently by different engineers at different points in time.
+Over years of operation, the shape of your data changes. Custom fields configured at go-live drift in meaning. Worksheet structures get updated and historical answers stop mapping cleanly to how the operation runs today. Contact hierarchies evolve. Job types get renamed or consolidated. The same underlying fault gets described differently by different engineers at different points in time.
 
-That is how field service operations actually run. A useful intelligence layer has to understand the drift, resolve the entities, and keep historical records useful without changing the source system.
+That is how field service operations actually run. VH3 AI has to understand the drift, resolve the entities, and keep historical records useful without changing the source system.
 
-We have processed hundreds of thousands of BigChange jobs across live customer operations. The enrichment pipeline was built around operational reality: messy notes, renamed job types, changing worksheet structures, and long-running customer histories. When your jobs land in the intelligence layer, VH3 AI extracts the fault type, structures the work performed, identifies equipment context, and links engineers, sites, customers, and history into one operational model.
+We have processed hundreds of thousands of BigChange jobs across live customer operations. The enrichment pipeline was built around operational reality: messy notes, renamed job types, changing worksheet structures, and long-running customer histories. When your jobs land, VH3 AI extracts the fault type, structures the work performed, identifies equipment context, and links engineers, sites, customers, and history into one connected picture.
 
 ## Operational data quality over time
 
 Long-term intelligence needs a place to hold corrections, mappings, and operational interpretation above the raw API records.
 
-Operational data changes shape over time. Over two or three years, job types get renamed or consolidated. Custom fields take on new meanings as the operation evolves. Worksheet structures are updated and historical answers stop mapping cleanly to current categories. Timing data is particularly unreliable: jobs that stayed open because of admin backlogs, completion timestamps that reflect paperwork processing time, SLA calculations distorted by open records that were never formally closed.
+Timing data is particularly unreliable in mature operations: jobs that stayed open because of admin backlogs, completion timestamps that reflect paperwork processing time, SLA calculations distorted by open records that were never formally closed. A job type called "Reactive Maintenance" in 2021 and "Emergency Callout" in 2023 may be the same work. An open job from eighteen months ago may have been completed but never updated.
 
-BigChange correctly preserves what was recorded at the time. That is what a system of record should do. The historical entries are immutable, and that immutability is valuable.
+BigChange correctly preserves what was recorded at the time. That immutability is valuable — and accurate long-term intelligence needs more on top of it.
 
-Accurate long-term intelligence needs more than immutable records. A job type called "Reactive Maintenance" in 2021 and "Emergency Callout" in 2023 may be the same work. An open job from eighteen months ago may have been completed but never updated. A timing correction that everyone on the team knows about may be missing from the source data.
+VH3 AI holds those corrections above the source system: resolved entity mappings, corrected timing data, unified job categories across historical periods, and open-job handling that reflects operational reality over administrative backlog.
 
-The intelligence layer holds those corrections above the source system: resolved entity mappings, corrected timing data, unified job categories across historical periods, and open-job handling that reflects operational reality over administrative backlog.
+When those corrections live in a prepared operation, search, reports, sentinels, and Connie all read from the same reconciled picture — and the intelligence improves as your history grows.
 
-When those corrections live in a prepared layer, the intelligence improves as the operation grows. Search, reports, sentinels, and Connie all read from the same reconciled picture.
+## What building on BigChange data involves
 
-## How far ahead this gets you
+Dispatch, scheduling, job tracking, and worksheet capture are one engineering problem. Turning that data into useful intelligence — patterns spotted, precedents findable, risks flagged, briefs ready — is another.
 
-Intelligence use cases are structurally different from operational use cases. BigChange is built for the latter. It handles dispatch, scheduling, job tracking, and worksheet capture reliably and at scale. Building intelligence on top of that, in a way that is actually useful, is a different engineering problem entirely.
+Any team that has attempted it directly knows the work involved. Data needs to be fetched, shaped, and normalised before it can be used analytically. Jobs need to be linked to engineers, sites, customers, and history. Similar faults need to be findable even when they were described differently. Patterns need to be watched continuously and routed to the people who own them. All of it has to stay coherent as the data grows and evolves.
 
-Any team that has attempted it directly knows the journey. The data needs to be fetched, shaped, and normalised before it can be used analytically. Jobs need to be linked to engineers, sites, customers, and history. Similar faults need to be findable even when they were described differently. Patterns need to be watched continuously and routed to the people who own them. All of it has to remain coherent as the data grows and evolves.
-
-VH3 AI packages that foundation so your team can start with a prepared intelligence layer.
+VH3 AI packages that foundation so your team starts with a prepared operation, ready to search, watch, and brief from day one.
 
 ## The right first step into AI for your operation
 
@@ -49,7 +47,7 @@ Most organisations thinking about AI for field service are looking for a practic
 
 The practical starting point is your own BigChange history. You connect your BigChange account. We process your history, build customer and job profiles, and connect the dots across jobs, engineers, sites, customers, and outcomes. Within hours, you have a working operational picture: job patterns structured, customer knowledge generated, sentinels monitoring your operation, reports running on schedule, and Connie ready to answer questions in plain English against your actual data.
 
-The detection layer has near-zero AI usage cost. Sentinels watch continuously at the data layer, so your team sees what changed without paying for a model call on every check.
+Sentinels watch continuously with near-zero AI cost at detection, so your team sees what changed without paying for a model call on every check.
 
 Connie's answers come with citations. The source of every number is traceable. Trust builds from evidence: job references, customer names, structured outputs, and reports your team can check.
 
@@ -65,9 +63,9 @@ The value shows up in ordinary operating rhythms:
 - Engineers arrive on site with a briefing that includes relevant history and similar faults.
 - Account managers walk into reviews with a report built from the operational record.
 
-The same intelligence is available through the API for teams that want custom dashboards, automations, or partner-facing surfaces. New reports and workflows build on the prepared layer.
+The same intelligence is available through the API for teams that want custom dashboards, automations, or partner-facing surfaces. New reports and workflows build on the prepared operation.
 
-If your stack changes later, the intelligence layer gives you a stable place to connect the next source system. If BigChange adds new useful fields, they can be ingested. If an acquisition brings another field system, the layer can connect that history into the same model.
+If your stack changes later, your enriched history gives you a stable place to connect the next source system. If BigChange adds new useful fields, they can be ingested. If an acquisition brings another field system, VH3 AI can connect that history into the same picture.
 
 ## First week with your BigChange data
 
@@ -87,19 +85,19 @@ Onboarding starts with a discovery sprint. We take a sample of your recent BigCh
 
 The discovery sprint uses your data and produces an operational profile your team can inspect before a longer commitment.
 
-From there, full historical ingestion brings in your complete job history, typically two to three years. Live polling keeps the intelligence layer current as new jobs complete in BigChange. The enrichment compounds over time. The patterns that were invisible in raw exports become visible in the graph.
+From there, full historical ingestion brings in your complete job history, typically two to three years. Live polling keeps your operation current as new jobs complete in BigChange. Enrichment compounds over time. The patterns that were invisible in raw exports become visible in the connected picture.
 
 Automation templates give your team useful workflows from day one: daily briefings, sentinel digest emails, Slack or Teams notifications when something crosses a threshold, report distribution, and more. They are running workflows that you extend when you are ready.
 
 ## What we support you with
 
-Our team understands BigChange operations from the inside. We know how to map your job types, your worksheet structures, your customer hierarchies, and your custom field configuration to the intelligence layer in a way that produces useful output, not just ingested records. That initial configuration work is part of what you get.
+Our team understands BigChange operations from the inside. We know how to map your job types, your worksheet structures, your customer hierarchies, and your custom field configuration so the output is useful from day one — mapped, enriched, and ready to query. That initial configuration work is part of what you get.
 
-For automation and integrations, the pre-built n8n workflow templates give most operations a working foundation on day one. If your operation needs something different, we build it. We connect to the tools your team already uses: accounting, CRM, communication, scheduling. Those connections deepen the intelligence over time by bringing more operational context into the same model.
+For automation and integrations, the pre-built n8n workflow templates give most operations a working foundation on day one. If your operation needs something different, we build it. We connect to the tools your team already uses: accounting, CRM, communication, scheduling. Those connections deepen the intelligence over time by bringing more operational context into the same picture.
 
-For teams that want to go further, the platform is fully open through the API. Your developers can query the operational graph, call Connie programmatically, trigger reports, build custom dashboards, and connect the intelligence to any surface your team works from. The starter kits for coding agents, Cursor, and Claude give your technical staff a running start.
+For teams that want to go further, the platform is fully open through the API. Your developers can query the prepared operation, call Connie programmatically, trigger reports, build custom dashboards, and connect the intelligence to any surface your team works from. The starter kits for coding agents, Cursor, and Claude give your technical staff a running start.
 
-We work closely with the operations we onboard so the intelligence layer becomes part of how the business runs and your team can own it day to day.
+We work closely with the operations we onboard so the platform becomes part of how the business runs — and your team can own it day to day.
 
 ## Related
 
@@ -108,13 +106,13 @@ We work closely with the operations we onboard so the intelligence layer becomes
     The full BigChange data surface available through VH3 AI: jobs, contacts, finance, worksheets, and more.
   </Card>
   <Card title="Why context is everything" icon="brain" href="/guides/why-context-matters">
-    How the intelligence layer prepares your operational data before any question is asked.
+    How VH3 prepares your operational data before any question is asked.
   </Card>
   <Card title="Sentinels" icon="bell" href="/guides/sentinels">
-    Continuous pattern detection across your BigChange operation, with near-zero AI cost at watch time.
+    Watches your BigChange operation around the clock and surfaces patterns before they escalate.
   </Card>
   <Card title="Working with your operation" icon="user-tie" href="/guides/working-with-your-operation">
-    How to get the most from Connie and the intelligence layer day to day.
+    How to get the most from Connie, discovery, and sentinels day to day.
   </Card>
   <Card title="n8n automation templates" icon="bolt" href="/n8n-node">
     The free n8n node and pre-built workflow templates for BigChange operations.

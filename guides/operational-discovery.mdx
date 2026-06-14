@@ -5,24 +5,22 @@ description: Search, precedent ranking, entity resolution, and customer intellig
 
 # Operational discovery
 
-A call handler hears "boiler keeps cutting out after the fan runs." An engineer remembers something similar from last winter. An account manager wants to know whether the same customer has seen the pattern before. Operational discovery is how VH3 AI turns that kind of field-service memory into a fast, reusable lookup.
+A call handler hears "boiler keeps cutting out after the fan runs." An engineer remembers something similar from last winter. An account manager wants to know whether the same customer has seen the pattern before.
 
-The gap is rarely missing data. It is missing **infrastructure** that connects records, resolves them to the right customer, and makes precedents retrievable in the moment someone needs them.
-
-VH3 AI provides that infrastructure: a dedicated operational model scoped to your organisation. Discovery runs on that prepared model and typical requests complete in under a second. Interpretation and narrative sit in agents such as Connie, reports, and investigations, which read the same substrate when someone needs a composed answer.
+VH3 AI connects every job to the right customer, site, engineer, and outcome — and keeps those links searchable. When someone asks "have we seen this before," the answer comes back in under a second. When someone needs a brief, comparison, or narrative, Connie, reports, and investigations read the same prepared operation to build it.
 
 <Card title="Before you search" icon="layer-group" href="/intelligence-layer">
   How relational, semantic, structured, and temporal memory combine into one operational picture.
 </Card>
 
-## Why discovery is different from chat on exports
+## What discovery gives you
 
 Most teams have tried one of these:
 
 - Keyword search in the field management system (exact words, ten ways to describe the same fault, no match).
-- A generic AI chat over exported spreadsheets (similar text, no thread, no customer context, no durable model).
+- A generic AI chat over exported spreadsheets (similar text, no customer context, no links between jobs).
 
-Neither gives you operational memory: precedents linked to the customer, the place, the engineer, and the outcome, available to every tool and automation.
+Neither connects a job to its customer, its place, its engineer, and its outcome — and keeps that whole picture searchable.
 
 VH3 AI separates lookup from judgement. Discovery finds similar jobs, resolves entities, ranks precedents, and scopes by customer. Connie, reports, and investigations turn that evidence into a narrative when someone needs a brief, comparison, or recommendation.
 
@@ -34,9 +32,9 @@ New to the platform? [Working with your operation](/guides/working-with-your-ope
 Your enriched operational model belongs to your organisation. It is isolated per tenant, exportable, and intended to outlive any single field system or UI. Discovery and agents both read from that model.
 </Note>
 
-## The contact-centred operational model
+## The contact-centred model
 
-Everything in the intelligence layer resolves around the **customer (contact)**. A retail chain, a housing block, and a single-site café are contacts in your model. **Places** are addresses and locations linked to that contact: where work happened, described in language your teams already use.
+Every record in your operation resolves around the **customer (contact)**. A retail chain, a housing block, and a single-site café are contacts in your model. **Places** are addresses and locations linked to that contact: where work happened, described in language your teams already use.
 
 Records stay connected so jobs, outcomes, engineers, and places align even when source systems spell names differently. In documentation and customer-facing apps, prefer:
 
@@ -50,9 +48,9 @@ Do not expose internal linkage identifiers in end-user interfaces.
 When scoping search, start from the customer wherever possible. "Everything we have done for this account" maps cleanly to `contact_id` filters on discovery endpoints.
 </Tip>
 
-## Four discovery capabilities (one substrate)
+## Four discovery capabilities
 
-Discovery covers four complementary capabilities on the same enriched data.
+Discovery covers four complementary capabilities, all running on the same enriched data.
 
 ### 1. Precedent discovery (meaning plus keywords)
 
@@ -87,7 +85,7 @@ Inbound email and portal traffic uses the same resolution philosophy: extracted 
 
 A useful precedent is a **job** tied to a **customer**, a **place**, an **engineer**, and an **outcome**.
 
-Enriched search responses attach that context so briefings, cases, and Connie do not rebuild relationships on every request. That is why discovery on VH3 AI is closer to operational memory than to document retrieval.
+Enriched search responses attach that context so briefings, cases, and Connie do not rebuild relationships on every request. A search result on VH3 AI carries the account history, not just the matching snippet.
 
 **Field service example (connected intelligence):**
 
@@ -105,7 +103,7 @@ Some insights should surface before anyone searches.
 
 ## Customer knowledge base (modular, searchable, kept current)
 
-Each customer can have a **Customer Summary**: a structured knowledge object stored in the intelligence layer, not only in a PDF or a one-off chat.
+Each customer can have a **Customer Summary**: a structured knowledge object stored in your operation — searchable and updated as jobs land, not locked in a one-off PDF or chat thread.
 
 The summary is split into **seven independent sections**, each indexed for discovery on its own:
 
@@ -227,7 +225,7 @@ Start with discovery when you need a ranked list, a resolved customer, or a quic
 
 ## How agents use discovery
 
-Connie and automation agents orchestrate the layer:
+Connie and automation agents work through the same enriched operation:
 
 1. **Sentinels** surface a pattern (for example repeat visits on an account).
 2. **Discovery** retrieves precedents, similar outcomes, or relevant summary sections.
@@ -241,10 +239,10 @@ Teams and case management add **ownership and workflow**: assign a case to a reg
 VH3 AI builds **your** operational model alongside your field systems:
 
 - Enrichment and entity resolution run when data lands, not on every search.
-- Rankings and graph reads use that prepared layer.
+- Rankings and graph reads use that prepared picture.
 - LLM spend is reserved for interpretation and narrative.
 
-If you change field systems later, the model and history remain yours to connect to the new source. Discovery, sentinels, and agents keep reading the same substrate.
+If you change field systems later, the model and history remain yours to connect to the new source. Discovery, sentinels, and agents keep reading the same prepared operation.
 
 ## Related
 
@@ -262,7 +260,7 @@ If you change field systems later, the model and history remain yours to connect
     Conversational synthesis with citations.
   </Card>
   <Card title="Sentinels" icon="bell" href="/guides/sentinels">
-    Continuous pattern detection at the data layer.
+    Watches your operation around the clock and surfaces patterns before they escalate.
   </Card>
   <Card title="Native integrations" icon="plug" href="/native-integrations">
     Connect inboxes, calendars, CRM, and storage into the same model.

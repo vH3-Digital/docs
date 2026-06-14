@@ -5,19 +5,19 @@ description: Automate field service intelligence with the official VH3 AI n8n no
 
 # n8n Community Node
 
-The VH3 AI n8n community node ([`n8n-nodes-vh3ai`](https://github.com/VH3DIGITAL/n8n-nodes-vh3ai)) is the primary automation surface for the platform. It is published on npm, free to install, and works on self-hosted n8n, n8n Cloud, or a VH3-managed instance.
+The VH3 AI n8n node is [verified on n8n](https://link.vh3.ai/n8n) — built and maintained by VH3 AI, with the full action list and install steps on n8n's integration page. The package ([`n8n-nodes-vh3ai`](https://github.com/VH3DIGITAL/n8n-nodes-vh3ai)) is also published on npm, free to install, and works on self-hosted n8n, n8n Cloud, or a VH3-managed instance.
 
 The node provides a single unified credential type that covers both the BigChange API and the VH3 AI intelligence layer. Every operation is clearly labelled in the dropdown so builders can mix direct FMS operations with intelligence layer calls in the same workflow. The node is marked `usableAsTool: true`, which means n8n AI agents can call it directly without any additional configuration.
 
 ## Installation
 
-**Self-hosted n8n:** go to Settings → Community Nodes, click Install, and enter:
+**Recommended:** install from the [verified VH3 AI node on n8n](https://link.vh3.ai/n8n). Open the integration page, follow n8n's verified-node setup, then search for **VH3 AI** in the node panel.
+
+**Self-hosted n8n (community nodes):** go to Settings → Community Nodes, click Install, and enter:
 
 ```
 n8n-nodes-vh3ai
 ```
-
-**n8n Cloud:** search for **VH3 AI** in the community nodes section.
 
 **Manual / development:**
 
@@ -111,6 +111,9 @@ If you prefer to run your own instance, self-hosted or n8n Cloud, install the co
 ## Source and package
 
 <CardGroup cols={2}>
+  <Card title="Verified on n8n" icon="check" href="https://link.vh3.ai/n8n">
+    Official integration page: install steps, full action list, and n8n's verified-node overview.
+  </Card>
   <Card title="GitHub" icon="github" href="https://github.com/VH3DIGITAL/n8n-nodes-vh3ai">
     Source code, changelog, and contribution guide.
   </Card>

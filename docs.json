@@ -42,12 +42,6 @@
               "agent-kits/claude-skills",
               "agent-kits/n8n-agents"
             ]
-          },
-          {
-            "group": "Changelog",
-            "pages": [
-              "changelog"
-            ]
           }
         ]
       },
