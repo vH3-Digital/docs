@@ -134,8 +134,11 @@
             "group": "Strategy",
             "pages": [
               "guides/2027-blueprint",
+              "guides/compounding-operational-capability",
               "guides/intelligence-in-the-agent-era",
-              "guides/why-vertical-intelligence-wins"
+              "guides/why-vertical-intelligence-wins",
+              "guides/ai-you-can-check",
+              "guides/keeping-the-graph-current"
             ]
           },
           {

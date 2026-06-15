@@ -1,0 +1,103 @@
+---
+title: AI you can check
+description: Why traceability matters more than confidence in field service operations, and how VH3 AI builds evidence into every answer
+---
+
+# AI you can check
+
+There is a version of AI in field service that sounds very useful.
+
+Ask it how an account is performing. It produces a confident paragraph: volume is up, first-time fix is strong, no SLA concerns flagged.
+
+The paragraph is well written. It sounds authoritative. Nobody in the room knows where the numbers came from.
+
+That is the version to be cautious about.
+
+## The gap between the number and the truth
+
+Field service operations generate a lot of apparent certainty.
+
+The FMS says first-time fix is 77%. That number is real. It is also incomplete.
+
+Jobs marked `completedOk` include visits where the engineer resolved the presenting symptom but not the underlying fault. Within 30 days, the same site books again, for the same asset, with the same complaint. That visit appears in the records as a new job — not as evidence that the first visit did not actually fix anything.
+
+Adjust for same-fault return visits within 30 days and the first-time fix rate at the same operation might be closer to 68%. Both numbers are "correct" by the definition used to calculate them. Only one is operationally useful.
+
+The same pattern appears across most operational metrics.
+
+A "Pricing Required" status looks like progress. It might be a quote black hole — work scoped, priced never submitted, or submitted and ignored, with no chase mechanism.
+
+An overdue compliance job does not appear on any invoice. It does not show up on any dashboard unless someone specifically builds a query for it.
+
+A completed job is not always a resolved fault. An engineer who clears a symptom, closes the job, and moves to the next call is doing their best with the time available — but the operational record will not separate "resolved" from "cleared for now."
+
+None of this is a technology problem. It is a characteristic of operational data. Every field service business that runs a serious account review eventually learns to cross-reference, question the source, and build confidence through triangulation, not through a single number.
+
+## Why AI does not automatically solve this
+
+AI handles operational data the same way that data actually is: incomplete, inconsistently recorded, and optimised by the people who produced it for the immediate task at hand, not for downstream analysis.
+
+A model that is given the raw job record will produce an answer consistent with that record. If the record says `completedOk`, the model has no reason to look for the follow-on visit two weeks later. If the engineer wrote "issue resolved, system operational," the model will reflect that.
+
+The problem is not model intelligence. It is what was in the source data, and whether the system was designed to cross-reference it.
+
+A clean paragraph of analysis, produced from an incomplete input, is a confident wrong answer.
+
+The right question to ask of any AI working inside your operation is not "does this sound plausible?"
+
+It is: "what records did this come from, and can I check them?"
+
+## What checkable AI looks like in practice
+
+Checkable AI does not mean slow AI. It means AI that carries its evidence.
+
+**Citations in answers.** When Connie answers "which engineers had the most repeat visits last month?", the answer includes the job references behind the aggregation. The operations manager can open those jobs and verify the count, check the dates, and confirm the scope. The answer is not just a number. It is a number with a paper trail.
+
+**Defined scope.** A report that says "first-time fix rate was 76% last month" should state the aggregation window, the job types included, and whether cancelled or aborted jobs were counted. Without that, the same metric will produce different numbers from different tools, and the operations team spends review meetings arguing about which number is right rather than what to do about it.
+
+**Deterministic signals.** Sentinels in VH3 AI run as database checks, not model inference. When a sentinel flags that a customer has had three repeat visits in 60 days, that is a query result, not a model judgement. It can be reproduced. It can be audited. If the threshold is wrong, it can be adjusted. The signal has a definition behind it.
+
+**Human review inside the workflow.** Investigations carry the jobs, evidence, and basis in the output — not just the conclusion. A case opened by a sentinel includes the linked job records, the timeline, and the flagging criterion. The account manager who owns the case can look at the evidence and decide whether it is worth acting on. The AI has done the work of surfacing and assembling; the human makes the call.
+
+**Visible model usage.** With BYOK, the token spend on Connie and agent sessions is visible on the customer's own model provider account. The model used, the input and output token counts, and the cost are auditable, not bundled into a subscription line item. That gives you transparency about what the model was asked to do, as well as cost control.
+
+## The operational case for traceability
+
+An account manager who walks into a customer review with a report produced by an AI system has two choices.
+
+They can present the headline numbers and hope the customer does not ask how they were calculated.
+
+Or they can walk in with the report, the underlying job references, the evidence behind each finding, and the ability to answer "show me the jobs that drove that number" in real time.
+
+The second version builds a different kind of relationship.
+
+The same applies internally. An operations director who receives a sentinel alert about engineer performance has to decide whether to act on it. If the alert is a paragraph of analysis with no traceable source, acting on it affects a person based on something unverifiable. If the alert includes the jobs, the dates, the pattern definition, and the threshold, it is a basis for a conversation — not a verdict.
+
+Operational AI that carries its evidence makes better conversations possible. It does not replace human judgment. It gives that judgment something solid to work from.
+
+## How VH3 AI is built for this
+
+The design principle throughout VH3 AI is that the interpretation is what the AI produces, and the evidence is what the AI carries.
+
+Connie's answers include `toolsUsed` and `toolCallOutputs` — the structured results from every tool call in that turn, alongside the natural language response. The assistant text is the synthesis. The tool outputs are the record.
+
+Investigation cards expose the jobs, sites, and engineers connected to each finding. SLA gauges show the aggregation window and the criteria. Report sections link to the operational records behind each metric.
+
+Sentinels are defined and adjustable. The threshold, the scope, and the frequency are set by the operations team, and the firing criteria are visible to any team member who wants to understand why something was surfaced.
+
+VH3 AI is built as operational software where every surface carries its evidence. Connie, investigations, sentinels, and reports all link back to job references, tool outputs, or defined criteria — because field service work has consequences. Dispatch decisions, compliance sign-off, engineer performance conversations, customer escalations, and SLA credits affect real people and real relationships. The AI that supports those decisions should make it easier to get them right, with evidence your team can verify before they act.
+
+<CardGroup cols={2}>
+  <Card title="Agent observability" icon="eye" href="/guides/agent-observability">
+    Tool calls, data sources, cost, and handoffs — what the API returns with every Connie turn.
+  </Card>
+  <Card title="Why context matters" icon="database" href="/guides/why-context-matters">
+    How VH3 AI prepares operational context before any question is asked.
+  </Card>
+  <Card title="Sentinels" icon="bell" href="/guides/sentinels">
+    How deterministic monitoring works and how to set thresholds your team trusts.
+  </Card>
+  <Card title="Cases and teams" icon="users" href="/guides/users-and-teams">
+    How evidence becomes owned work with a defined next step.
+  </Card>
+</CardGroup>
