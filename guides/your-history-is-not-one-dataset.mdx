@@ -1,0 +1,87 @@
+---
+title: Your history is not one dataset
+description: Why raw job history misleads operational AI — and how VH3 AI normalises five years of operational change into a coherent picture your team can trust
+---
+
+# Your history is not one dataset
+
+Your FMS vendor shipped an AI assistant. It can search your full job history. Ask it how first-time fix has trended over the last three years.
+
+It produces a chart. The line has movement. It looks like a real answer.
+
+Here is what the chart does not know.
+
+In 2022 you classified reactive gas jobs one way. In 2023 you restructured job types — same work, new IDs. Any analysis crossing that boundary compares two different taxonomies and calls it a trend.
+
+In late 2024 your worksheet layout changed. The outcome field that read "completedOk" was redesigned. Yesterday's "Complete" and "Job Complete" and "Completed with issues" do not map cleanly onto today's canonical statuses. A naive aggregation treats them as if they do.
+
+In early 2024, most of your engineers started using mobile worksheet notes. Pre-2024 history is structurally thinner — not because the work was different, but because the adoption was not there. A rate calculated across that adoption shift picks up a behavioural change, not an operational trend.
+
+A chatbot over raw records answers confidently across all of it. It has no mechanism to detect that the operation changed underneath the data.
+
+## What five years of job history actually contains
+
+Job history is not one dataset. It is a sequence of eras, each shaped by how the business was configured, named, and run at the time.
+
+The most common sources of drift:
+
+**Job types and taxonomy.** Job types are renamed, split, or restructured as the business evolves. A reactive category that was one type in 2021 might now be three. Pattern analysis across that rename produces a phantom shift — work that looks like it disappeared or appeared, when it simply changed label.
+
+**Outcome and status fields.** Worksheet redesigns, FMS upgrades, and process changes all leave inconsistency in how completion is recorded. An engineer closing a job today uses different fields from one who closed the same category of work two years ago.
+
+**Adoption shifts.** Digital adoption is not uniform across time. Notes written before mobile adoption are shorter and less structured. Comparing note-based signals across an adoption cliff misstates what the data shows.
+
+**Utilisation changes.** PPM volume jumps when a new contract starts. Reactive load drops when a contract ends. An analysis that does not distinguish genuine operational change from portfolio change misreads both.
+
+**Internal and admin job types mixed with operational work.** Fleet checks, training jobs, toolbox talks — all booked through the FMS, all visible to a naive query. Repeat-fault analysis that includes these is not operational intelligence. It is noise.
+
+**Customer entities across acquisitions and naming variants.** A customer acquired mid-period may appear under three names across the source system, the portal, and the FMS. Without explicit resolution, their history fragments into unconnected records.
+
+## Why raw access falls short
+
+The category problem is structural, not accidental.
+
+Raw job data is recorded to support the people doing the work at the time — dispatchers, engineers, coordinators — not for downstream AI analysis. Every configuration change, renamed field, and process redesign leaves a mark in the record. Those marks accumulate over years.
+
+An AI system that reads raw records from a standing start has no way to know any of this happened. It sees the records as they are, treats them as comparable, and produces answers accordingly. A confident paragraph of analysis built on incomparable inputs is a confident wrong answer — which is worse than no answer, because it is harder to spot.
+
+Handling this requires explicit engineering work before any question is asked: reprocessing history, normalising outcomes, resolving entities, and marking the noise that should not feed operational pattern analysis. That work is unglamorous and does not fit neatly into a demo. It is also the reason trustworthy answers are possible at all.
+
+## How VH3 AI normalises historical data
+
+VH3 AI treats historical normalisation as the prerequisite, not an afterthought.
+
+**Onboarding reprocesses history end to end.** Up to five years of job records are loaded and run through the enrichment pipeline — analysed for fault meaning, outcome context, and operational significance, not stored as-is. Historical job types are classified by what the work actually was, not by the type ID assigned at the time.
+
+**Outcome normalisation maps status fields to a canonical model.** A job closed as "Completed with issues" in 2022 and a job closed as "completedOk" with a same-fault return visit in 2025 are both understood in context before they are compared or aggregated.
+
+**Entity resolution connects records across naming inconsistencies.** Customers, sites, and engineers are resolved across naming variants, acquisition history, and portal-versus-FMS discrepancies. The customer who appears as three entries in the source system becomes one entity with their full history attached.
+
+**Exclusion management keeps operational noise out of pattern analysis.** Your team can mark job types, customers, and engineers that should not feed sentinel scope or reporting — fleet checks, training records, internal admin jobs, and anything else that would produce false signals. That scope can be updated as the operation changes.
+
+**Ambiguous matches surface for human review.** When entity resolution is uncertain — a new site that could belong to one of two customers, an engineer reference matching multiple records — the system flags the ambiguity rather than committing a guess silently. Every confirmed or corrected resolution improves the logic for similar cases going forward.
+
+**Enrichment continues as the operation changes.** New job types, new contracts, new engineers — all flow through the same pipeline, so the picture stays current rather than drifting behind operational reality.
+
+## What to look for when evaluating operational AI
+
+If you are evaluating AI for field service, one question separates the prepared from the unprepared: how do you handle historical normalisation?
+
+Specifically: how do you deal with job type renames, outcome field changes across FMS upgrades, adoption shifts in engineer note quality, and customer entities duplicated across acquisitions?
+
+An operation that has run a serious FMS for more than three years will have all of these. The answer reveals whether the system was built to work with real operational history or with a clean recent export.
+
+<CardGroup cols={2}>
+  <Card title="AI you can check" icon="eye" href="/guides/ai-you-can-check">
+    Why traceability matters more than confidence — and how VH3 AI carries evidence with every answer.
+  </Card>
+  <Card title="Keeping the graph current" icon="arrows-rotate" href="/guides/keeping-the-graph-current">
+    Continuous ingestion, entity resolution, and the engineering of staying accurate over time.
+  </Card>
+  <Card title="Compounding operational capability" icon="chart-line" href="/guides/compounding-operational-capability">
+    How the learning loop between human judgment and operational intelligence builds durable advantage.
+  </Card>
+  <Card title="Why context matters" icon="database" href="/guides/why-context-matters">
+    How VH3 AI prepares operational context before any question is asked.
+  </Card>
+</CardGroup>
