@@ -1,0 +1,95 @@
+---
+title: Your FMS records what happened
+description: Why field service operations run on decisions that never make it into the system — and how VH3 AI builds the operational memory that captures them
+---
+
+# Your FMS records what happened
+
+The job is created. The engineer is assigned. The fault is resolved. The invoice is raised. The record is closed.
+
+That is what field service management software was built to track. It is very good at it.
+
+What it does not capture is everything that shaped those events. Why that engineer and not the one who was geographically closer. Why the ops manager approved a free callout on a fixed-price contract. Why the account manager decided this customer warranted a same-day response even though the SLA allows 48 hours. Why the third visit to that fault got a replacement rather than another repair.
+
+Those decisions run your operation. They are not in your FMS.
+
+## Where your operational reasoning actually lives
+
+Field service organisations run on accumulated judgment that mostly lives outside their systems.
+
+The experienced coordinator who knows that a particular housing association handles every complaint through one facilities manager, and if you go around her the relationship fractures. The service director who remembers that a large retail site had an issue in the plant room in 2021 — not because the FMS says so, but because she briefed the engineer herself. The ops manager who knows a specific engineer should not return to a site after a complaint that is technically resolved but not forgotten.
+
+None of that is in the job record. When that coordinator leaves, that knowledge leaves with them. When the service director is on holiday, the briefing does not happen. When the team doubles in headcount, the shared context thins and the inconsistencies start showing up in complaints, escalations, and accounts that quietly drift toward risk.
+
+This is not a data quality problem. The records are accurate. The issue is that the reasoning connecting records to decisions was never treated as data in the first place.
+
+## The decisions that don't survive
+
+Every field service operation has versions of the following.
+
+**Exception approvals that live in WhatsApp.** A customer disputes a call-out charge. The commercial director agrees to waive it on a call. The FMS shows the credit note. It does not show who approved it, why, or whether this customer has a pattern that others should know about before the next renewal conversation.
+
+**Precedent that repeats as tribal knowledge.** A recurring fault at a high-value site gets treated differently from the same fault elsewhere — more senior engineer, quicker escalation, formal sign-off before invoice. That policy exists. Nobody wrote it down. New team members learn it by asking someone who has been there long enough.
+
+**Cross-system reasoning that lives in someone's head.** The support lead who checks the job record, scrolls through the customer email thread, thinks back to the contract renewal conversation, and decides to escalate. Not because any single rule triggered. Because the synthesis of several signals, held together by someone who knows the account, said this needs a call. The FMS shows "escalated." It does not show why.
+
+**Site and equipment history that nobody connects forward.** The fact that a particular boiler has generated six visits across three years, that two of those were the same reported fault, and that the last attending engineer noted something that was never followed up — that pattern exists in the data. It is not assembled anywhere before the next job lands.
+
+## What a context graph does for field service
+
+VH3 AI builds the layer that captures what your FMS records and what it cannot: the connections, patterns, and reasoning that give each job its operational meaning.
+
+**Every job is understood, not just stored.** Engineer notes, customer emails, outcomes, and fault descriptions are read and analysed as they arrive. The vocabulary your engineers use — "noisy pump," "same issue as last time," "customer mentioned previous complaint" — is understood in context, not just indexed.
+
+**Records are connected across systems.** The job links to the site, the site to the equipment history, the equipment to prior fault patterns, the patterns to the engineers who attended, the engineers to their recent work signals. When a new job lands at that site, VH3 already knows what matters.
+
+**Patterns are watched before they become problems.** Sentinels run continuously against the connected picture — watching for recurring faults, for customers who have gone quiet after a complaint, for SLA trends heading the wrong way, for engineers with patterns that warrant a review. When a sentinel fires, VH3 creates a case: the evidence, the linked jobs, the signal. The reasoning is in the record, not in someone's memory.
+
+**Decisions are captured with their context.** When an investigation closes, what was decided and why becomes part of the operational record. That precedent is searchable. The next time a similar situation arises, the context is available — not in a Slack thread, not in someone's head, but in the same graph that holds every other operational fact.
+
+**Reports narrate what happened and why it matters.** Not raw data. Analysis written in plain English: why this customer's risk signal changed, what the recurring fault pattern at a site indicates, which accounts need attention before the next review cycle. The reasoning is written down, not merely implied.
+
+## Why analytics platforms cannot close this gap
+
+The trajectory for established field service platforms is clear: better reporting, deeper dashboards, AI that summarises your job data. Modern analytics infrastructure. Copilots that can answer questions about current job state.
+
+That is a genuine improvement. It is not the same thing.
+
+An analytics platform sees your data after decisions are made. By the time job records land in a reporting layer, the decision context is already stripped out. You can learn what happened. You cannot learn why it was allowed to happen, or what should inform the next time something similar arrives.
+
+A chatbot over current job records knows the state of jobs today. It does not know the precedent your operations team built up over five years, the exceptions your account managers consider standard practice, or the site knowledge that shapes how every engineer on the team approaches a particular customer.
+
+Those things are not in the records. They are in the decisions — and decisions have to be captured at the moment they are made, not reconstructed from the record they left behind.
+
+## What compounds in your account
+
+The context graph that VH3 builds in your account grows more useful the longer you run it — not because the software changes, but because your operation's reasoning accumulates.
+
+After six months: sentinel patterns are calibrated to your business. Cases carry precedent. Reports have a narrative rhythm your team expects and acts on.
+
+After two years: the operational memory encodes how exceptions were handled, which customers were prioritised and why, how site-level knowledge shaped decisions, which patterns led to which outcomes. A new operations manager inherits the institutional knowledge that used to walk out the door.
+
+After five years: your organisation has something most field service companies have never had — a queryable, auditable record of how decisions were made. Not just what happened. Why it happened, who decided, and what should inform the next similar case.
+
+That is the compounding asset. Portable, inspectable, and increasingly useful to every AI tool your team reaches for next — because it explains not just the jobs, but the operation that runs them.
+
+<CardGroup cols={2}>
+  <Card title="Compounding operational capability" icon="chart-line" href="/guides/compounding-operational-capability">
+    How the learning loop between human judgment and operational intelligence builds durable advantage.
+  </Card>
+  <Card title="AI you can check" icon="eye" href="/guides/ai-you-can-check">
+    Why traceability matters more than confidence in operational decisions.
+  </Card>
+  <Card title="Your history is not one dataset" icon="database" href="/guides/your-history-is-not-one-dataset">
+    Why raw job history misleads operational AI — and how VH3 normalises five years of change into a coherent picture.
+  </Card>
+  <Card title="Keeping the graph current" icon="arrows-rotate" href="/guides/keeping-the-graph-current">
+    Continuous ingestion, entity resolution, and the engineering of staying accurate over time.
+  </Card>
+  <Card title="Intelligence in the agent era" icon="robot" href="/guides/intelligence-in-the-agent-era">
+    How humans and agents work together on the same operational record.
+  </Card>
+  <Card title="Why context matters" icon="sparkles" href="/guides/why-context-matters">
+    How operational context is prepared before any question is asked.
+  </Card>
+</CardGroup>
