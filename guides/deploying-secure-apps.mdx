@@ -64,7 +64,100 @@ The platform ships with the controls below. Your job is to use them correctly.
 - **Connie and `/investigate`** are multi-step. Plan for **20 to 25 seconds**, longer on cold caches.
 - Apps should surface a loading state for synthesis; do not pretend it is instant.
 
-## 4. Typical internal apps
+## 4. Building a custom app: the right architecture
+
+If you are building a dashboard, a partner portal, or any browser-based application on top of VH3 AI, the architecture below is the minimum required before connecting to real customer data. Coding agents will produce working code without this separation — but that code will be insecure.
+
+### The required split
+
+Your app needs two distinct parts:
+
+- **Frontend** (what runs in the browser): handles display, navigation, and user interaction. Contains no credentials. Makes API calls only to your own backend.
+- **Backend** (a server you control): holds credentials, validates identity, and makes all calls to the VH3 API. The browser never calls VH3 directly.
+
+```
+Browser
+  │  calls your backend only (no VH3 credentials)
+  ▼
+Your backend server
+  │  validates JWT → calls GET /auth/me → gets company_id
+  │  makes VH3 API call with api_key from environment variable
+  ▼
+VH3 API  (api.vh3connect.io)
+```
+
+<Warning>
+  A proxy that simply forwards the `api_key` from an environment variable to the browser in a response header, or that passes it through as part of a client-visible request, is not a backend. The credential must stay on the server at all times and must never appear in any response the browser can read.
+</Warning>
+
+### Authentication flow for a custom app
+
+1. User visits your app and is redirected to your login page.
+2. Your login page posts `email` and `password` to **your backend** (not directly to VH3).
+3. Your backend calls `POST https://api.vh3connect.io/api:lBQnyyZL/auth/login` and receives the `authToken`.
+4. Your backend sets the `authToken` as an `httpOnly` secure cookie on the response. The browser stores it automatically and sends it on every subsequent request. The token itself is never accessible to JavaScript.
+5. On every protected request from the browser, your backend reads the cookie, calls `GET https://api.vh3connect.io/api:lBQnyyZL/auth/me` with the token to validate it and retrieve the user's `company_id`.
+6. Your backend uses the verified `company_id` and the `api_key` from its environment variables to call the VH3 API. It returns only the data the frontend needs.
+
+<Note>
+  The `company_id` that scopes your VH3 API calls must always come from the `GET /auth/me` response on the server. Never accept it from the browser — a user could send any value in a request body or query parameter.
+</Note>
+
+### What this looks like in practice (Node.js / Express)
+
+```javascript
+// Backend route — runs on your server, never in the browser
+app.get('/api/jobs', async (req, res) => {
+  const token = req.cookies.vh3_token;
+  if (!token) return res.status(401).json({ error: 'Not authenticated' });
+
+  // Validate the token and get the user's company
+  const meResponse = await fetch('https://api.vh3connect.io/api:lBQnyyZL/auth/me', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!meResponse.ok) return res.status(401).json({ error: 'Session expired' });
+
+  const { company_id } = await meResponse.json();
+
+  // Call VH3 with server-side credentials
+  const jobsResponse = await fetch('https://api.vh3connect.io/api:kP8T1CK7/jobs/feed', {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    // company_id and api_key stay on the server
+    // pass them as query params or body per the API spec
+  });
+
+  // Return only what the frontend needs — strip internal IDs
+  const data = await jobsResponse.json();
+  res.json(data);
+});
+```
+
+### Environment variables and deployment
+
+Store credentials as server-side environment variables only. On Railway, Render, Fly.io, or any similar platform, set these in the service settings — not in any file committed to your repository:
+
+```
+VH3_COMPANY_ID=your-company-id
+VH3_API_KEY=your-api-key
+```
+
+The frontend service should have zero secrets in its environment. If a coding agent suggests adding `NEXT_PUBLIC_VH3_API_KEY` or any credential prefixed for browser exposure, that is a mistake — reject it.
+
+### CORS
+
+Lock your backend to accept requests only from your frontend's exact origin:
+
+```javascript
+app.use(cors({
+  origin: 'https://your-frontend-domain.railway.app', // your frontend origin only
+  credentials: true, // required for httpOnly cookie support
+}));
+```
+
+When you add a custom domain later, update this to the production domain. Do not use `origin: '*'` at any point in a user-facing deployment.
+
+## 5. Typical internal apps
 
 | Internal app | Auth pattern | Discovery surfaces | Synthesis surfaces | Ownership |
 |--------------|--------------|--------------------|--------------------|-----------|
@@ -75,7 +168,7 @@ The platform ships with the controls below. Your job is to use them correctly.
 
 Each pattern reuses the same substrate. The differences are UX and the role mapping in front of it.
 
-## 5. Users, teams, and cases as governance
+## 6. Users, teams, and cases as governance
 
 Governance on this platform comes from using the user, team, and case model correctly.
 
@@ -90,9 +183,9 @@ The end-to-end loop:
 3. The team uses **discovery** for precedents and **Connie** for a brief.
 4. Decisions, replies, and follow-ups are logged against the case.
 
-See [Building on the layer](/guides/building-on-the-layer) for the sentinel-to-case flow in code.
+See [Building on the layer](/guides/building-on-the-layer) for the sentinel-to-case flow in code, and section 4 above for the custom app architecture that puts this in a secure deployment.
 
-## 6. Tier and capability map
+## 7. Tier and capability map
 
 | Tier | Best for | Auth surfaces | Notable governance features |
 |------|----------|---------------|------------------------------|
@@ -106,7 +199,7 @@ Choose the access point that matches your UI, permission, and governance needs. 
 
 See [Pricing](/pricing) for the full feature matrix.
 
-## 7. Deployment checklist
+## 8. Deployment checklist
 
 Before launching an internal app on the layer:
 

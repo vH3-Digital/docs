@@ -228,7 +228,12 @@ The same token works across both the User Auth endpoints and the main VH3 data A
 
 ### Using the token in your application
 
+<Warning>
+  The example below stores the token in `localStorage` and calls the VH3 API directly from the browser. **This is for local development and testing only.** In any app that real users can access — including internal tools, partner portals, and MVPs — the token must be stored in an `httpOnly` secure cookie and all VH3 API calls must originate from your backend server. Calling the VH3 API from browser code means anyone who can open the browser network tab can replay those calls directly against your organisation's data.
+</Warning>
+
 ```typescript
+// Development only — do not use this pattern in any user-facing application
 const token = localStorage.getItem('vh3_token');
 
 const response = await fetch('https://api.vh3connect.io/api:kP8T1CK7/connie/chat', {
@@ -242,6 +247,10 @@ const response = await fetch('https://api.vh3connect.io/api:kP8T1CK7/connie/chat
   }),
 });
 ```
+
+<Note>
+  **In production:** store the `authToken` from `/auth/login` in an `httpOnly` secure cookie on your backend. On every request, your server reads the cookie, calls `GET /auth/me` to validate the token and retrieve the user's company, then makes the VH3 API call server-side. The browser never sees the token directly and never calls the VH3 API. See [Deploying secure apps](/guides/deploying-secure-apps) for the full frontend/backend pattern.
+</Note>
 
 ---
 
@@ -407,4 +416,4 @@ All errors follow a consistent format:
 - All requests must use HTTPS
 - API keys can be rotated on request via your account manager
 - JWT tokens expire after 24 hours, use the refresh endpoint to obtain a new token before expiry
-- Store JWT tokens securely, use `httpOnly` cookies in production, or `localStorage` only for development
+- Store JWT tokens in `httpOnly` secure cookies in production. `localStorage` is acceptable for local development only — never in user-facing apps

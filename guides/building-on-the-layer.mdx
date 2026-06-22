@@ -152,6 +152,10 @@ VH3 AI ships **Agent Starter Kits** for that: AGENTS.md, Cursor rules, MCP setup
 ### Safe patterns
 
 <Warning>
+**Never call VH3 APIs from browser code.** Your `api_key` and `company_id` are server-side credentials. If they appear in a browser network request — even inside a fetch call in a React component or a bundled environment variable — they are visible to anyone who opens browser developer tools. Build a backend route that holds the credentials and proxies the call. The browser calls your backend; your backend calls VH3. This applies to every endpoint on `api:kP8T1CK7` and `api:YdihQNr3`. For browser-based apps, use [User Authentication (JWT)](/authentication#user-authentication) so users log in with email and password only, and no API key is ever involved in client code.
+</Warning>
+
+<Warning>
 **Never expose internal identifiers** in end-user interfaces: internal company, job, contact, resource, or linkage keys. Use names, references, and addresses in UI copy. Keep IDs in server-side calls only.
 </Warning>
 
@@ -215,14 +219,18 @@ The platform is the layer your agents and applications sit on while your field s
 
 ## Security and governance (builder-relevant)
 
+<Warning>
+  If you are building any app that a user will open in a browser — even an internal tool, a partner portal, or a quick MVP — read [Deploying secure apps](/guides/deploying-secure-apps) before you ship. Coding agents in particular will produce working code that exposes credentials insecurely unless you give them explicit guidance on the frontend/backend split. The checklist on that page is the minimum bar for any user-facing app.
+</Warning>
+
 Builders should assume:
 
 - **Data scoping** on every call (`company_id` + validated `api_key`). No API call can cross organisation boundaries.
-- **Built-in user management and auth**, invite users, assign roles, issue JWTs. No need to build the auth layer yourself.
+- **Built-in user management and auth**: invite users, assign roles, issue JWTs. You do not need to build the auth layer yourself.
 - **PII handling** aligned with your DPA: do not rebuild sensitive fields into public UIs.
 - **Read-only field integration** by default; write-back only when explicitly agreed.
 
-See [Authentication](/authentication) and your enterprise IT brief for full detail.
+See [Authentication](/authentication) for the full credential surface map and [Deploying secure apps](/guides/deploying-secure-apps) for the deployment checklist.
 
 ## Choose your starting kit
 
