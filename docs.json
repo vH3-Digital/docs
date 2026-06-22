@@ -40,7 +40,8 @@
               "agent-kits/mcp-setup",
               "agent-kits/claude-projects",
               "agent-kits/claude-skills",
-              "agent-kits/n8n-agents"
+              "agent-kits/n8n-agents",
+              "agent-kits/n8n-node-reference"
             ]
           }
         ]
