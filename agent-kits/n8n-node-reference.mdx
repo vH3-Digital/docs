@@ -31,13 +31,89 @@ The **official n8n connector** (developed by n8n GmbH, available in the Claude c
 | `create_workflow_from_code` | Compile SDK code and save to your instance |
 | `search_workflows` / `execute_workflow` | Find and run existing workflows |
 
-**Setup (Claude.ai):**
+**Setup (Claude.ai) — step by step:**
 
-1. Open the connector directory → search **n8n** → add connector
-2. Paste your instance URL (e.g. `https://dyno.n8n.vh3.ai`)
-3. Authenticate with OAuth or your n8n MCP access token
+<Steps>
+  <Step title="Open Claude Code in Code mode">
+    Switch to **Code** mode in Claude.ai. Your active connectors appear in the input bar at the bottom of the screen.
 
-**Setup (Claude Code):**
+    <Frame caption="Claude Code with an active n8n connector shown in the input bar.">
+      <img
+        src="https://cdn.prod.website-files.com/66f62ac0b4dbc96bb348eb73/6a3a8378d9971084e00fbea4_cc%20n8n%20step%201.png"
+        alt="Claude Code main screen showing the connector bar with an n8n connector active"
+      />
+    </Frame>
+  </Step>
+  <Step title="Open Connectors → Browse connectors">
+    Click on the **Connectors** area, then click **Add → Browse connectors** to open the connector directory.
+
+    <Frame caption="The Connectors panel with the Add dropdown showing Browse connectors and Add custom connector options.">
+      <img
+        src="https://cdn.prod.website-files.com/66f62ac0b4dbc96bb348eb73/6a3a83773e875b33c66df2f9_cc%20n8n%20step%202.png"
+        alt="Claude Code connectors panel with the Add dropdown open showing Browse connectors option"
+      />
+    </Frame>
+  </Step>
+  <Step title="Search for n8n in the directory">
+    In the Directory, select **Connectors** and search for **n8n**. The official n8n connector by n8n GmbH will appear.
+
+    <Frame caption="The Claude connector directory filtered to n8n — the official connector developed by n8n GmbH.">
+      <img
+        src="https://cdn.prod.website-files.com/66f62ac0b4dbc96bb348eb73/6a3a83776de789ee5ffbb533_cc%20n8n%20step%203.png"
+        alt="Claude.ai connector directory search showing the n8n connector result"
+      />
+    </Frame>
+  </Step>
+  <Step title="In n8n, open Settings → Instance-level MCP">
+    Switch to your n8n instance. Click **Settings** in the left sidebar and select **Instance-level MCP** from the menu.
+
+    <Frame caption="n8n Settings menu — Instance-level MCP is at the bottom of the list.">
+      <img
+        src="https://cdn.prod.website-files.com/66f62ac0b4dbc96bb348eb73/6a3a837746fee27b5d9cc341_cc%20n8n%20step%204.png"
+        alt="n8n settings sidebar with Instance-level MCP highlighted in the menu"
+      />
+    </Frame>
+  </Step>
+  <Step title="Enable MCP and copy the Server URL">
+    Toggle Instance-level MCP on, then copy the **Server URL** shown in the Connection details panel. This is the URL you'll paste back into Claude.
+
+    <Frame caption="n8n Instance-level MCP — enabled, with the Server URL ready to copy.">
+      <img
+        src="https://cdn.prod.website-files.com/66f62ac0b4dbc96bb348eb73/6a3a8377eaa4a6af9f52798c_cc%20n8n%20step%205.png"
+        alt="n8n Instance-level MCP settings page showing the toggle enabled and Server URL https://n8n.vh3.ai/mcp-server/http"
+      />
+    </Frame>
+
+    <Note>
+    **VH3-managed instances:** Your URL is `https://{your-company}.n8n.vh3.ai/mcp-server/http`. Contact VH3 support if Instance-level MCP is not yet enabled on your instance.
+    </Note>
+  </Step>
+  <Step title="Paste the Server URL and connect">
+    Back in the Claude connector directory, click the n8n connector. When the **Install n8n** dialog appears, paste your Server URL into the field and click **Continue**.
+  </Step>
+  <Step title="Allow OAuth access">
+    Claude will ask for permission to access your n8n instance. Click **Allow** — this grants Claude the ability to list, execute, create, and update workflows on your behalf.
+
+    <Frame caption="The OAuth permission screen — Claude requests access to your n8n instance.">
+      <img
+        src="https://cdn.prod.website-files.com/66f62ac0b4dbc96bb348eb73/6a3a83799c98bb7442debccf_cc%20n8n%20step%206.png"
+        alt="OAuth permission screen showing Claude wants access to your n8n instance with a list of permitted actions"
+      />
+    </Frame>
+  </Step>
+  <Step title="Connector active — start building">
+    The n8n connector now appears in your directory and is active in the Claude Code input bar. You can now ask Claude to build, validate, and deploy workflows directly on your instance.
+
+    <Frame caption="n8n connector installed and visible in the Claude connector directory.">
+      <img
+        src="https://cdn.prod.website-files.com/66f62ac0b4dbc96bb348eb73/6a3a837763621ac6c395a031_cc%20n8n%20step%207.png"
+        alt="Claude connector directory showing the n8n connector listed and active"
+      />
+    </Frame>
+  </Step>
+</Steps>
+
+**Setup (Claude Code — CLI):**
 
 ```bash
 claude mcp add --transport http n8n-mcp https://<your-n8n-domain>/mcp-server/http
