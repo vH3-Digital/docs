@@ -177,6 +177,17 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog/overview"
+            ]
+          }
+        ]
       }
     ],
     "global": {
@@ -232,16 +243,14 @@
     ]
   },
   "settings": {
-    "customScripts": ["/stripe-pricing.js"]
+    "customScripts": [
+      "/stripe-pricing.js"
+    ]
   },
   "redirects": [
     {
       "source": "/guides/semantic-search",
       "destination": "/guides/operational-discovery"
-    },
-    {
-      "source": "/changelog",
-      "destination": "/introduction"
     }
   ]
 }
