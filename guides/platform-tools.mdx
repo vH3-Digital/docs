@@ -33,8 +33,8 @@ A good integration uses fast tools for triggers and filters, calls synthesis onl
 | Enriched intake | `POST /search/intake/enriched` | Intake hits with their full connected context per record | When you want the thread, not just the snippet |
 | Summary-section search | `POST /search/summary-sections` | Search across the seven customer-knowledge sections | Portfolio questions ("which accounts mention recurring boiler issues?") |
 | Autocomplete / entity resolution | `GET /search/autocomplete` | Resolve fuzzy or misspelled customers, people, engineers, and jobs | Call handling, email triage, automations that need the right account |
-| Jobs feed | `GET /jobs/feed` | Paginated job list with structured filters (contact, date, type, status, engineer) | Account 360 views, workload audits, account-hierarchy roll-ups |
-| Job aggregate | `POST /jobs/aggregate` | Aggregations: count, on-time %, completion rate, grouped by engineer / type / period | KPIs, comparisons, charts |
+| Jobs feed | `GET /jobs/feed` | Paginated job list with structured filters (contact, date, type, status, engineer, punctuality) and sort by timing deltas | Account 360 views, workload audits, worst late-job lists, account-hierarchy roll-ups |
+| Job aggregate | `POST /aggregate/jobs` | Aggregations: job count, completion rate, first-visit fix rate, avg start/end deltas, punctuality filters, grouped by engineer / type / period | KPIs, late-job counts, comparisons, charts |
 | Contacts feed | `GET /contacts/feed` | Paginated contact list with parent / child hierarchy | Portfolio views, partner-portal scoping |
 | Dashboard snapshot | `GET /dashboard/snapshot` | Cached, deterministic tenant KPI snapshot across five sections | Home screens, no-LLM landing pages |
 | Customer summary by contact | `GET /search/summary-sections/by-contact/{company_id}/{contact_id}` | Full structured customer brief in one call | Account pages, briefing prep |

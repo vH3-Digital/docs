@@ -92,7 +92,7 @@ Different tools expose different levels of provenance:
 
 ### Aggregations and feeds
 
-`jobs_aggregate`, `job_feed`, and related tools return **counts, groups, and rows** with labels suitable for display. Connie is instructed to prefer correct **time axes** for field work (actual start/end vs planned vs created) and to note partial periods when comparing weeks.
+`jobs_aggregate`, `job_feed`, and related tools return **counts, groups, and rows** with labels suitable for display. Connie is instructed to prefer correct **time axes** for field work (actual start/end vs planned vs created), to count late jobs with punctuality filters (`finishedLate` / `startedLate`) rather than average deltas, and to note partial periods when comparing weeks.
 
 ### Search and precedent
 

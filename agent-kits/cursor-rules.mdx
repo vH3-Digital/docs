@@ -81,20 +81,31 @@ POST /aggregate/jobs accepts only these metrics:
 - `avg_start_delta_mins`
 - `avg_end_delta_mins`
 
-GroupBy: status, result, type, category, engineer, site, vertical,
-day, week, month.
+GroupBy: status, result, typeId, categoryId, resourceId, siteKey,
+vertical, day, week, month.
 
 Period shorthand: today, yesterday, this_week, last_week, this_month,
 last_month, last_7_days, last_30_days, last_90_days.
 
 CompareTo: previous_period, same_period_last_week, same_period_last_month.
 
+## Punctuality filters
+
+Prefer `filters.finishedLate=true` / `filters.startedLate=true` with
+`metric=job_count`. Early aliases (`finishedEarly`, `startedEarly`) also
+work. Finish/overrun → `timeAxis=actualEndAt`; start/arrival →
+`actualStartAt`. Never estimate late counts from avg delta metrics.
+
+For worst-N late lists: GET `/jobs/feed` with the same filters,
+matching `dateField`/`dateFrom`/`dateTo`, `sortBy=endDeltaMins` (or
+`startDeltaMins`), `direction=desc`.
+
 ## timeAxis: CRITICAL default
 
 Default `timeAxis = "actualStartAt"` for any retrospective question.
-Other values: actualEndAt (completions), plannedStartAt (forward-looking
-only, includes phantom jobs), createdAt (intake only), scheduledAt
-(dispatching).
+Other values: actualEndAt (completions / finish punctuality),
+plannedStartAt (forward-looking only, includes phantom jobs), createdAt
+(intake only), scheduledAt (dispatching).
 
 ## Error envelope
 

@@ -1,6 +1,6 @@
 ---
 title: Jobs
-description: Job feed, account job feed, and job details
+description: Job feed, account job feed, punctuality filters, and job details
 ---
 
 # Jobs
@@ -9,7 +9,7 @@ The Jobs endpoints provide access to your enriched job records, including AI-ext
 
 ## GET /jobs/feed
 
-Returns a paginated feed of enriched jobs for your company. Supports filtering by entity, status, date range, and sort direction. All filters are optional and composable as AND conditions.
+Returns a paginated feed of enriched jobs for your company. Supports filtering by entity, status, punctuality, date range, and sort field. All filters are optional and composable as AND conditions.
 
 **Query parameters:**
 
@@ -25,11 +25,20 @@ Returns a paginated feed of enriched jobs for your company. Supports filtering b
 | `category_id` | string | No | - | Filter by job category ID |
 | `status` | string | No | - | Filter by status, single value or comma-separated (e.g. `completedOk,completedWithIssues`) |
 | `result` | string | No | - | Filter by job result |
+| `finished_early` | boolean | No | - | `true` = finished on/before planned end |
+| `finished_late` | boolean | No | - | `true` = finished after planned end (preferred for late-finish lists; alias of `finished_early=false`) |
+| `started_early` | boolean | No | - | `true` = started on/before planned start |
+| `started_late` | boolean | No | - | `true` = started after planned start (preferred for late-start lists; alias of `started_early=false`) |
 | `date_from` | string | No | - | ISO date/datetime, include jobs on or after (inclusive) |
 | `date_to` | string | No | - | ISO date/datetime, exclude jobs on or after (exclusive) |
 | `date_field` | string | No | `createdAt` | Which timestamp `date_from`/`date_to` apply to: `createdAt`, `plannedStartAt`, `plannedEndAt`, `actualStartAt`, `actualEndAt` |
-| `direction` | string | No | `desc` | Sort direction on `createdAt`, `asc` or `desc` |
+| `sort_by` | string | No | `createdAt` | Sort field: `createdAt`, `endDeltaMins`, `startDeltaMins`, `actualEndAt`, `actualStartAt`. Null sort keys are pushed last |
+| `direction` | string | No | `desc` | Sort direction on `sort_by`, `asc` or `desc` |
 | `compact` | boolean | No | false | Strip nulls/empties to return a compact payload for AI agents |
+
+<Note>
+Punctuality filters combine with AND. Prefer `finished_late=true` / `started_late=true` for late questions. Job payloads still expose `finishedEarly` / `startedEarly` (and `startDeltaMins` / `endDeltaMins` where negative = early, positive = late). Do not pass conflicting early/late pairs for the same axis.
+</Note>
 
 **Example: completed jobs from May 2026**
 
@@ -42,6 +51,21 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
   --data-urlencode "date_from=2026-05-01" \
   --data-urlencode "date_to=2026-06-01" \
   --data-urlencode "date_field=actualEndAt"
+```
+
+**Example: worst late finishes in a date window**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "finished_late=true" \
+  --data-urlencode "date_from=2026-05-01" \
+  --data-urlencode "date_to=2026-06-01" \
+  --data-urlencode "date_field=actualEndAt" \
+  --data-urlencode "sort_by=endDeltaMins" \
+  --data-urlencode "direction=desc" \
+  --data-urlencode "page_size=5"
 ```
 
 ---
@@ -76,10 +100,15 @@ This endpoint resolves the parent/child account hierarchy. If you pass a child c
 | `category_id` | string | No | - | Filter by job category ID |
 | `status` | string | No | - | Filter by status, single value or comma-separated (e.g. `completedOk,completedWithIssues`) |
 | `result` | string | No | - | Filter by job result |
+| `finished_early` | boolean | No | - | `true` = finished on/before planned end |
+| `finished_late` | boolean | No | - | `true` = finished after planned end (preferred for late-finish lists) |
+| `started_early` | boolean | No | - | `true` = started on/before planned start |
+| `started_late` | boolean | No | - | `true` = started after planned start (preferred for late-start lists) |
 | `date_from` | string | No | - | ISO date/datetime, include jobs on or after (inclusive) |
 | `date_to` | string | No | - | ISO date/datetime, exclude jobs on or after (exclusive) |
 | `date_field` | string | No | `createdAt` | Which timestamp `date_from`/`date_to` apply to: `createdAt`, `plannedStartAt`, `plannedEndAt`, `actualStartAt`, `actualEndAt` |
-| `direction` | string | No | `desc` | Sort direction on `createdAt`, `asc` or `desc` |
+| `sort_by` | string | No | `createdAt` | Sort field: `createdAt`, `endDeltaMins`, `startDeltaMins`, `actualEndAt`, `actualStartAt` |
+| `direction` | string | No | `desc` | Sort direction on `sort_by`, `asc` or `desc` |
 | `compact` | boolean | No | false | Strip nulls/empties to return a compact payload for AI agents |
 
 **Response** includes an `account` block with the resolved hierarchy context:
@@ -120,6 +149,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed/account" \
 - **Monthly account reviews**, scope by `date_from`/`date_to` with `date_field=actualEndAt` to see all work delivered to a customer account in a period.
 - **Account + type filtering**, add `type_id` to see only fire alarm or HVAC jobs across the whole account hierarchy.
 - **Account performance**, combine with `status=completedOk,completedWithIssues` to measure first-visit fix rate across all child sites.
+- **Account late finishes**, use `finished_late=true` with `date_field=actualEndAt` and `sort_by=endDeltaMins` to rank overruns across the hierarchy.
 
 ---
 
@@ -155,7 +185,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/12345" \
 
 ## POST /aggregate/jobs
 
-Job metrics with groupBy dimensions and period comparison, powers dashboard charts and trend analysis.
+Job metrics with groupBy dimensions and period comparison. Powers dashboard charts, trend analysis, and punctuality counts.
 
 **Request body:**
 
@@ -163,15 +193,31 @@ Job metrics with groupBy dimensions and period comparison, powers dashboard char
 |-------|------|----------|-------------|
 | `company_id` | string | Yes | Your tenant identifier |
 | `api_key` | string | Yes | Your tenant API key |
-| `metric` | string | Yes | Metric to compute (e.g. `count`, `sla_punctuality`, `first_time_fix`) |
-| `time_axis` | string | No | Time bucketing (`day`, `week`, `month`) |
-| `period` | string | No | Period to analyse (e.g. `last_30_days`, `last_quarter`) |
-| `compare_to` | string | No | Comparison period (e.g. `previous_period`) |
-| `group_by` | string | No | Dimension to group by (`engineer`, `customer`, `job_type`, `site`) |
-| `filters` | object | No | Additional filters |
+| `metric` | string | Yes | One of: `job_count`, `completion_rate`, `first_visit_fix_rate`, `avg_start_delta_mins`, `avg_end_delta_mins` |
+| `time_axis` | string | No | Job timestamp for the period window (default `actualStartAt`): `actualStartAt`, `actualEndAt`, `createdAt`, `plannedStartAt`, `scheduledAt` |
+| `period` | string | No | Period shorthand (e.g. `last_7_days`, `this_week`, `last_30_days`) |
+| `compare_to` | string | No | Comparison period: `previous_period`, `same_period_last_week`, `same_period_last_month` |
+| `group_by` | string | No | Dimension: `status`, `result`, `typeId`, `categoryId`, `resourceId`, `siteKey`, `vertical`, `day`, `week`, `month` |
+| `filters` | object | No | Optional filters (see below) |
 | `limit` | integer | No | Max groups to return |
 
-**Example:**
+**`filters` fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `resourceId`, `contactId`, `siteKey`, `typeId`, `categoryId` | string | Entity scopes |
+| `vertical`, `status`, `result` | string | Property filters |
+| `finishedEarly` | boolean | `true` = finished on/before planned end |
+| `finishedLate` | boolean | `true` = finished after planned end (preferred for late-finish counts) |
+| `startedEarly` | boolean | `true` = started on/before planned start |
+| `startedLate` | boolean | `true` = started after planned start (preferred for late-start counts) |
+| `startDate`, `endDate` | string | Custom range when not using `period` |
+
+<Note>
+For punctuality counts, use `metric=job_count` with the boolean filters. Prefer `finishedLate=true` / `startedLate=true`. Pair `time_axis` with the question: finish / overrun → `actualEndAt`; start / arrival → `actualStartAt`. Do not estimate late counts from `avg_end_delta_mins` or `avg_start_delta_mins` — averages mask mixed early and late jobs. Follow up with `GET /jobs/feed` using the same filters, matching `date_field`, and `sort_by=endDeltaMins` (or `startDeltaMins`) for worst-N lists.
+</Note>
+
+**Example: jobs per engineer (last 30 days)**
 
 ```bash
 curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/aggregate/jobs" \
@@ -179,9 +225,27 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/aggregate/jobs" \
   -d '{
     "company_id": "your-company-id",
     "api_key": "your-api-key",
-    "metric": "count",
-    "time_axis": "week",
+    "metric": "job_count",
+    "time_axis": "actualStartAt",
     "period": "last_30_days",
-    "group_by": "engineer"
+    "group_by": "resourceId"
+  }'
+```
+
+**Example: finished late but started early (last 7 days)**
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/aggregate/jobs" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "metric": "job_count",
+    "time_axis": "actualEndAt",
+    "period": "last_7_days",
+    "filters": {
+      "startedEarly": true,
+      "finishedLate": true
+    }
   }'
 ```

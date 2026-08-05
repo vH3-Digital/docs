@@ -294,7 +294,8 @@ Question type                       → Recommended time axis
 How many jobs did we complete?      actualStartAt / actualEndAt
 What's our first-visit fix rate?    actualStartAt
 How many jobs came in this week?    createdAt
-Are engineers on time?              plannedStartAt → actualStartAt delta
+Finished late / overrun counts      actualEndAt + finishedLate=true
+Started late / late arrivals        actualStartAt + startedLate=true
 What's in the schedule for today?   plannedStartAt
 How long do jobs take?              actualStartAt → actualEndAt delta
 ```
@@ -315,6 +316,8 @@ Use this table when the user's intent is expressed in natural language, to selec
 |---|---|---|
 | "How many jobs did we complete last week?" | `jobFeed` | `aggregateJobs` — metric: `job_count`, timeAxis: `actualEndAt` |
 | "What's our first-visit fix rate?" | `jobFeed` | `aggregateJobs` — metric: `first_visit_fix_rate` |
+| "How many jobs finished late last week?" | `jobFeed` | `aggregateJobs` — metric: `job_count`, timeAxis: `actualEndAt`, filters: `finishedLate=true` |
+| "Show the worst 5 late finishes" | `jobFeed` | `listJobFeed` — `finishedLate=true`, matching date window on `actualEndAt`, `sortBy=endDeltaMins`, `direction=desc` |
 | "Show me jobs for customer X" | `jobFeed` | `listJobFeed` — filter: `contactId` |
 | "Show me all jobs for an account including children" | `jobFeed` | `listAccountJobFeed` |
 | "Get the detail for job FAB303178" | `jobFeed` | `getEnrichedJob` |
@@ -347,14 +350,18 @@ Use this table when the user's intent is expressed in natural language, to selec
 
 | Operation | Key inputs | Notes |
 |---|---|---|
-| `listJobFeed` | `status` (multi), `dateField`, `dateFrom`, `dateTo`, `contactId`, `resourceId`, `typeId` | Default `dateField`: `createdAt`. Add `simplify: true` to strip nulls. |
-| `listAccountJobFeed` | `contactId` (required — any in hierarchy) | Traverses full parent-child account tree automatically |
-| `aggregateJobs` | `metric`, `period`, `timeAxis`, `groupBy`, `compareTo` | Use `compareTo` for period-over-period. `groupBy` options: `status`, `result`, `typeId`, `categoryId`, `resourceId`, `siteKey`, `vertical`, `day`, `week`, `month` |
+| `listJobFeed` | `status` (multi), `dateField`, `dateFrom`, `dateTo`, `sortBy`, `direction`, `finishedLate` / `startedLate` / `finishedEarly` / `startedEarly`, `contactId`, `resourceId`, `typeId` | Default `dateField`/`sortBy`: `createdAt`. Use `sortBy=endDeltaMins` for worst late finishes. Add `simplify: true` to strip nulls. |
+| `listAccountJobFeed` | `contactId` (required — any in hierarchy), same punctuality/date/sort filters as `listJobFeed` | Traverses full parent-child account tree automatically |
+| `aggregateJobs` | `metric`, `period`, `timeAxis`, `groupBy`, `compareTo`, punctuality filters on `filters` | Use `compareTo` for period-over-period. Prefer `finishedLate`/`startedLate` with `metric=job_count`. `groupBy`: `status`, `result`, `typeId`, `categoryId`, `resourceId`, `siteKey`, `vertical`, `day`, `week`, `month` |
 | `getEnrichedJob` | `jobId` (required), `includeWorksheets` | Returns AI enrichment: vertical, sentiment, key phrases |
 
 **Aggregate metrics**: `job_count`, `completion_rate`, `first_visit_fix_rate`, `avg_start_delta_mins`, `avg_end_delta_mins`.
 
+**Punctuality**: prefer `finishedLate=true` / `startedLate=true` (or early counterparts). Count with `job_count` — do not infer late volume from average delta metrics. Finish/overrun → `timeAxis=actualEndAt`; start/arrival → `actualStartAt`.
+
 **Period presets**: `today`, `yesterday`, `this_week`, `last_week`, `this_month`, `last_month`, `last_7_days`, `last_30_days`, `last_90_days`. Override with `startDate`/`endDate` for custom ranges.
+
+**Feed sort fields**: `createdAt`, `endDeltaMins`, `startDeltaMins`, `actualEndAt`, `actualStartAt`.
 
 ### 6.2 Search (`search`)
 

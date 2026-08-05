@@ -44,6 +44,8 @@ variables `VH3_COMPANY_ID` and `VH3_API_KEY`.
 |---|---|---|
 | "Why / root cause / what's causing" | POST /investigate | 10–17s with narrative. Use for diagnostic questions only. |
 | "How many / rate / trend / top / compare" | POST /aggregate/jobs | Use `period` shorthand. Always pass `timeAxis`. |
+| "Late jobs / finished late / started late / overrun" | POST /aggregate/jobs | `metric=job_count` + punctuality filters (`finishedLate` / `startedLate`). Pair finish questions with `timeAxis=actualEndAt`. |
+| "Worst / top N late jobs" | GET /jobs/feed | Same punctuality filters + matching `dateField`/`dateFrom`/`dateTo`, `sortBy=endDeltaMins` (or `startDeltaMins`), `direction=desc`. |
 | "Show me / list / find / get" | GET /jobs/feed | Paginated. page_size max 200. |
 | "What alerts / what needs attention" | POST /sentinels/run | Returns only triggered sentinels. Empty array = all clear. |
 | "Generate report / briefing / debrief" | POST /reports/generate | 10–17s with narrative. |
@@ -88,13 +90,33 @@ Both `createdAt` and `plannedStartAt` include jobs that were never worked
 job_count | completion_rate | first_visit_fix_rate |
 avg_start_delta_mins | avg_end_delta_mins
 
-groupBy values: status | result | type | category | engineer | site |
+groupBy values: status | result | typeId | categoryId | resourceId | siteKey |
 vertical | day | week | month
 
 Period shorthand: today | yesterday | this_week | last_week | this_month |
 last_month | last_7_days | last_30_days | last_90_days
 
 compareTo: previous_period | same_period_last_week | same_period_last_month
+
+## Punctuality filters (aggregate + job feed)
+
+Prefer positive late aliases in filters:
+- `finishedLate=true` — finished after planned end
+- `startedLate=true` — started after planned start
+- `finishedEarly=true` / `startedEarly=true` — on or before plan
+
+Combine with AND (e.g. started early AND finished late → overrun signal).
+Use `metric=job_count` for counts. Never estimate late volume from
+`avg_start_delta_mins` / `avg_end_delta_mins`.
+
+timeAxis pairing:
+- Finish / late / overrun questions → `actualEndAt`
+- Start / arrival questions → `actualStartAt`
+
+Job feed ranking: `sortBy=endDeltaMins` or `startDeltaMins`,
+`direction=desc`. Null deltas sort last. Response fields remain
+`finishedEarly` / `startedEarly` plus `startDeltaMins` / `endDeltaMins`
+(negative = early, positive = late).
 
 ## Timeout guidance
 
