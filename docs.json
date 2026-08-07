@@ -177,6 +177,17 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog/overview"
+            ]
+          }
+        ]
       }
     ],
     "global": {
@@ -238,10 +249,6 @@
     {
       "source": "/guides/semantic-search",
       "destination": "/guides/operational-discovery"
-    },
-    {
-      "source": "/changelog",
-      "destination": "/introduction"
     }
   ]
 }
