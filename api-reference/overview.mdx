@@ -1,11 +1,11 @@
 ---
-title: VH3 AI Intelligence
+title: VH3 AI Intelligence API
 description: Semantic search, relationship-aware intelligence, Connie, sentinels, reports, and email triage
 ---
 
-# VH3 AI Intelligence
+# VH3 AI Intelligence API
 
-The intelligence layer exposes enriched operational data, semantic search, proactive sentinels, reports, Connie, and email triage. Every endpoint requires `company_id` and `api_key`.
+The VH3 AI Intelligence API provides enriched operational data, semantic search, proactive sentinels, reports, Connie, email triage, Cases, and Teams. Tenant-scoped server-to-server endpoints require `company_id` and `api_key`.
 
 For direct BigChange read/write (jobs, contacts, invoices, stock), use the separate [BigChange API](/api-reference/bigchange/overview), same API key, `X-API-Key` header only.
 
@@ -18,6 +18,14 @@ https://api.vh3connect.io/api:kP8T1CK7
 ## Authentication
 
 Pass `company_id` and `api_key` on every request. POST: JSON body. GET: query parameters.
+
+<Warning>
+  Do not send only an `X-API-Key` header to the VH3 AI Intelligence API. Keep
+  the tenant `api_key` in server-side code.
+
+  Server-side customer integrations must use the base URL above. Browser and
+  mobile applications must use JWT-authenticated VH3 Connect surfaces.
+</Warning>
 
 See [Authentication](/authentication) for the full two-API comparison and User Auth (JWT).
 
@@ -38,6 +46,7 @@ See [Authentication](/authentication) for the full two-API comparison and User A
 | [Connie](/api-reference/connie) | Conversational AI with cited answers |
 | [Cases](/api-reference/cases) | Case management |
 | [Teams](/api-reference/teams) | Team management and access scoping |
+| [Quotient](/api-reference/quotient) | List and fetch Quotient quotations (requires Quotient native integration) |
 
 ## Request format
 

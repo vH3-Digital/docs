@@ -7,6 +7,22 @@ description: Case management for multi-step operational workflows
 
 The Cases endpoints provide a lightweight case management system for tracking multi-step operational workflows, escalations, customer complaints, follow-up work, and anything that spans multiple jobs or interactions.
 
+<Info>
+  These server-to-server endpoints are part of the **VH3 AI Intelligence API**.
+  Use the base URL `https://api.vh3connect.io/api:kP8T1CK7` and send
+  `company_id` + tenant `api_key` in the JSON body for writes or as query
+  parameters for reads.
+</Info>
+
+<Warning>
+  Keep the tenant `api_key` in server-side environment variables. For
+  interactive Case administration, use [VH3 Connect](/connect/cases), which
+  authenticates signed-in users without exposing the key.
+
+  Use only the base URL above for Cases. Never send `api_key` from browser or
+  mobile code.
+</Warning>
+
 ## POST /cases/create
 
 Create a new case.

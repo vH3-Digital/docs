@@ -44,9 +44,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/create" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "supplierId": 999,
-  "contactId": 12345
-}'
+    "supplierId": 999,
+    "contactId": 12345
+  }'
 ```
 
 ### `POST` `/purchase_orders/edit`
@@ -58,8 +58,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/edit" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "id": 4001
-}'
+    "id": 4001
+  }'
 ```
 
 ### `POST` `/purchase_orders/list`
@@ -80,12 +80,12 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/list" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "jobId": 12345,
-  "createdAtFrom": "2026-01-01T00:00:00Z",
-  "createdAtTo": "2026-03-31T23:59:59Z",
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "jobId": 12345,
+    "createdAtFrom": "2026-01-01T00:00:00Z",
+    "createdAtTo": "2026-03-31T23:59:59Z",
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```
 
 ### `POST` `/purchase_orders/series/list`
@@ -97,9 +97,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/series/list
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```
 
 ### `GET` `/purchase_orders/series`
@@ -136,10 +136,10 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/l
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "purchaseOrderId": 4001,
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "purchaseOrderId": 4001,
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```
 
 ### `POST` `/purchase_orders/line_item/create`
@@ -151,8 +151,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/c
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "purchaseOrderId": 4001
-}'
+    "purchaseOrderId": 4001
+  }'
 ```
 
 ### `POST` `/purchase_orders/line_item/edit`
@@ -164,9 +164,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/e
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "purchaseOrderId": 4001,
-  "id": 1
-}'
+    "purchaseOrderId": 4001,
+    "id": 1
+  }'
 ```
 
 ### `POST` `/purchase_orders/line_item/delete`
@@ -178,7 +178,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/d
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "purchaseOrderId": 4001,
-  "id": 1
-}'
+    "purchaseOrderId": 4001,
+    "id": 1
+  }'
 ```

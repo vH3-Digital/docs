@@ -20,12 +20,15 @@ def curl_get(path: str, query: list[tuple[str, str]] | None = None) -> str:
 
 
 def curl_post(path: str, body: dict | None = None) -> str:
-    b = json.dumps(body or {"pageNumber": 1, "pageSize": 20}, indent=2)
+    # Match intelligence API docs: 4-space JSON keys inside -d '...'
+    raw = json.dumps(body or {"pageNumber": 1, "pageSize": 20}, indent=2)
+    lines = raw.split("\n")
+    indented = lines[0] + "\n" + "\n".join("  " + line for line in lines[1:])
     return (
         f'curl -X POST "{BASE}{path}" \\\n'
         f'  -H "{HDR}" \\\n'
         f'  -H "Content-Type: application/json" \\\n'
-        f"  -d '{b}'"
+        f"  -d '{indented}'"
     )
 
 

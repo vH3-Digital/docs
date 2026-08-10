@@ -47,6 +47,50 @@
         ]
       },
       {
+        "tab": "VH3 Connect",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "connect/overview",
+              "connect/sign-in",
+              "connect/sign-up",
+              "connect/company-setup",
+              "connect/app-overview"
+            ]
+          },
+          {
+            "group": "Day-to-day",
+            "pages": [
+              "connect/dashboard",
+              "connect/jobs",
+              "connect/knowledge-base",
+              "connect/sales",
+              "connect/contacts",
+              "connect/cases",
+              "connect/search",
+              "connect/notifications"
+            ]
+          },
+          {
+            "group": "AI assistants",
+            "pages": [
+              "connect/ai-assistants",
+              "connect/ask-connie"
+            ]
+          },
+          {
+            "group": "Admin",
+            "pages": [
+              "connect/integrations",
+              "connect/team-and-roles",
+              "connect/company-settings",
+              "connect/billing"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "API Reference",
         "groups": [
           {
@@ -68,7 +112,8 @@
               "api-reference/cases",
               "api-reference/teams",
               "api-reference/users",
-              "api-reference/user-auth"
+              "api-reference/user-auth",
+              "api-reference/quotient"
             ]
           },
           {
@@ -177,17 +222,6 @@
             ]
           }
         ]
-      },
-      {
-        "tab": "Changelog",
-        "groups": [
-          {
-            "group": "Changelog",
-            "pages": [
-              "changelog/overview"
-            ]
-          }
-        ]
       }
     ],
     "global": {
@@ -220,7 +254,7 @@
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://app.vh3connect.io"
+      "href": "https://app.vh3.ai"
     }
   },
   "footer": {
@@ -243,12 +277,18 @@
     ]
   },
   "settings": {
-    "customScripts": ["/stripe-pricing.js"]
+    "customScripts": [
+      "/stripe-pricing.js"
+    ]
   },
   "redirects": [
     {
       "source": "/guides/semantic-search",
       "destination": "/guides/operational-discovery"
+    },
+    {
+      "source": "/changelog",
+      "destination": "/introduction"
     }
   ]
 }

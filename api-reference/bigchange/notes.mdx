@@ -44,11 +44,11 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/notes/create" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "entityType": "job",
-  "entityId": 12345,
-  "typeId": 1,
-  "subject": "Follow-up"
-}'
+    "entityType": "job",
+    "entityId": 12345,
+    "typeId": 1,
+    "subject": "Follow-up"
+  }'
 ```
 
 ### `POST` `/notes/edit`
@@ -60,9 +60,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/notes/edit" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "noteId": 7001,
-  "subject": "Updated"
-}'
+    "noteId": 7001,
+    "subject": "Updated"
+  }'
 ```
 
 ### `POST` `/notes/list`
@@ -78,12 +78,12 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/notes/list" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "entityType": "job",
-  "entityId": 12345,
-  "status": "open",
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "entityType": "job",
+    "entityId": 12345,
+    "status": "open",
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```
 
 ### `POST` `/notes/progress_update`
@@ -95,9 +95,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/notes/progress_update" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "noteId": 7001,
-  "percentage": 50
-}'
+    "noteId": 7001,
+    "percentage": 50
+  }'
 ```
 
 ## Note types
@@ -123,7 +123,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/note_types/list" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```

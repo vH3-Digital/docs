@@ -34,9 +34,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/create" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "name": "Acme",
-  "reference": "ACME-01"
-}'
+    "name": "Acme",
+    "reference": "ACME-01"
+  }'
 ```
 
 ### `POST` `/contacts/edit`
@@ -48,9 +48,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/edit" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "contactId": 12345,
-  "name": "Acme Ltd"
-}'
+    "contactId": 12345,
+    "name": "Acme Ltd"
+  }'
 ```
 
 ### `POST` `/contacts/list`
@@ -68,12 +68,12 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/list" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "pageNumber": 1,
-  "pageSize": 50,
-  "createdAtFrom": "2025-04-01T00:00:00Z",
-  "sortBy": "name",
-  "direction": "ascending"
-}'
+    "pageNumber": 1,
+    "pageSize": 50,
+    "createdAtFrom": "2025-04-01T00:00:00Z",
+    "sortBy": "name",
+    "direction": "ascending"
+  }'
 ```
 
 ### `POST` `/contacts/on_stop`
@@ -89,10 +89,10 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/on_stop" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "contactId": 12345,
-  "status": "contactOnStop",
-  "stopReason": "Credit hold"
-}'
+    "contactId": 12345,
+    "status": "contactOnStop",
+    "stopReason": "Credit hold"
+  }'
 ```
 
 ### `POST` `/contacts/unstop`
@@ -108,9 +108,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/unstop" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "contactId": 12345,
-  "appliesTo": "contactOnly"
-}'
+    "contactId": 12345,
+    "appliesTo": "contactOnly"
+  }'
 ```
 
 ### `POST` `/contacts/site_access_hours_list`
@@ -122,10 +122,10 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/site_access_hours_
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "contactId": 12345,
-  "pageNumber": 1,
-  "pageSize": 10
-}'
+    "contactId": 12345,
+    "pageNumber": 1,
+    "pageSize": 10
+  }'
 ```
 
 ### `POST` `/contacts/site_access_hours_update`
@@ -137,15 +137,15 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contacts/site_access_hours_
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "contactId": 12345,
-  "body": [
-    {
-      "dayOfWeek": "monday",
-      "startTime": "08:00",
-      "endTime": "17:00"
-    }
-  ]
-}'
+    "contactId": 12345,
+    "body": [
+      {
+        "dayOfWeek": "monday",
+        "startTime": "08:00",
+        "endTime": "17:00"
+      }
+    ]
+  }'
 ```
 
 ## Contact groups
@@ -171,8 +171,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contact_groups/create" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "name": "Retail"
-}'
+    "name": "Retail"
+  }'
 ```
 
 ### `POST` `/contact_groups/list`
@@ -184,9 +184,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contact_groups/list" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```
 
 ### `POST` `/contact_groups/update`
@@ -198,7 +198,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/contact_groups/update" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "contactGroupId": 99,
-  "name": "Retail UK"
-}'
+    "contactGroupId": 99,
+    "name": "Retail UK"
+  }'
 ```

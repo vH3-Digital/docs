@@ -40,11 +40,11 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/persons/create" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "contactId": 12345,
-  "firstName": "Jane",
-  "surname": "Smith",
-  "email": "jane@example.com"
-}'
+    "contactId": 12345,
+    "firstName": "Jane",
+    "surname": "Smith",
+    "email": "jane@example.com"
+  }'
 ```
 
 ### `POST` `/persons/edit`
@@ -56,8 +56,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/persons/edit" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "personId": "550e8400-e29b-41d4-a716-446655440000"
-}'
+    "personId": "550e8400-e29b-41d4-a716-446655440000"
+  }'
 ```
 
 ### `POST` `/persons/list`
@@ -69,10 +69,10 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/persons/list" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "contactId": 12345,
-  "pageNumber": 1,
-  "pageSize": 25
-}'
+    "contactId": 12345,
+    "pageNumber": 1,
+    "pageSize": 25
+  }'
 ```
 
 ### `POST` `/persons/consent/set`
@@ -89,10 +89,10 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/persons/consent/set" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "personId": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "granted",
-  "medium": "email"
-}'
+    "personId": "550e8400-e29b-41d4-a716-446655440000",
+    "status": "granted",
+    "medium": "email"
+  }'
 ```
 
 ### `POST` `/persons/consent/history`
@@ -104,8 +104,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/persons/consent/history" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "personId": "550e8400-e29b-41d4-a716-446655440000",
-  "pageNumber": 1,
-  "pageSize": 20
-}'
+    "personId": "550e8400-e29b-41d4-a716-446655440000",
+    "pageNumber": 1,
+    "pageSize": 20
+  }'
 ```

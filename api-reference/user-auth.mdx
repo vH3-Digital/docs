@@ -92,7 +92,7 @@ Get the current user profile from the JWT token. Includes the user's company inf
 | `Authorization` | `Bearer <token>` |
 
 ```bash
-curl "https://api.vh3connect.io/api:lBQnyyZL/auth/me" \
+curl -G "https://api.vh3connect.io/api:lBQnyyZL/auth/me" \
   -H "Authorization: Bearer eyJhbGciOi..."
 ```
 
@@ -186,8 +186,10 @@ List all active users belonging to the authenticated user's company. Supports pa
 | `per_page` | integer | No | `25` | Items per page |
 
 ```bash
-curl "https://api.vh3connect.io/api:lBQnyyZL/users/list?page=1&per_page=25" \
-  -H "Authorization: Bearer eyJhbGciOi..."
+curl -G "https://api.vh3connect.io/api:lBQnyyZL/users/list" \
+  -H "Authorization: Bearer eyJhbGciOi..." \
+  --data-urlencode "page=1" \
+  --data-urlencode "per_page=25"
 ```
 
 **Response:**

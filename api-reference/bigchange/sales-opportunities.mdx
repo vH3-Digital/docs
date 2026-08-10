@@ -59,12 +59,12 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/list" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "contactId": 12345,
-  "createdAtFrom": "2026-01-01T00:00:00Z",
-  "createdAtTo": "2026-06-30T23:59:59Z",
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "contactId": 12345,
+    "createdAtFrom": "2026-01-01T00:00:00Z",
+    "createdAtTo": "2026-06-30T23:59:59Z",
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```
 
 ### `POST` `/sales_opportunities/edit`
@@ -76,8 +76,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/edit" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "id": 2001
-}'
+    "id": 2001
+  }'
 ```
 
 ### `POST` `/sales_opportunities/probabilities/list`
@@ -89,9 +89,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/probabi
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```
 
 ### `POST` `/sales_opportunities/stages/list`
@@ -103,9 +103,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/stages/
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```
 
 ## Line items
@@ -132,10 +132,10 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/line_it
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "salesOpportunityId": 2001,
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "salesOpportunityId": 2001,
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```
 
 ### `POST` `/sales_opportunities/line_item/create`
@@ -147,8 +147,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/line_it
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "salesOpportunityId": 2001
-}'
+    "salesOpportunityId": 2001
+  }'
 ```
 
 ### `POST` `/sales_opportunities/line_item/edit`
@@ -160,9 +160,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/line_it
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "salesOpportunityId": 2001,
-  "id": 1
-}'
+    "salesOpportunityId": 2001,
+    "id": 1
+  }'
 ```
 
 ### `POST` `/sales_opportunities/line_item/delete`
@@ -174,7 +174,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/sales_opportunities/line_it
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "salesOpportunityId": 2001,
-  "id": 1
-}'
+    "salesOpportunityId": 2001,
+    "id": 1
+  }'
 ```

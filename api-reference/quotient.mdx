@@ -1,0 +1,130 @@
+---
+title: Quotient
+description: List and fetch Quotient quotations synced into VH3 AI
+---
+
+# Quotient
+
+List and retrieve Quotient quotations for your company. Quotes are stored from the Quotient native integration and exposed on the intelligence API base URL.
+
+<Note>
+These endpoints only return data when the **Quotient** native integration is switched on for your company. If Quotient is not connected, list and get calls return empty results or not-found responses. To enable Quotient, contact your account manager.
+</Note>
+
+Base: `https://api.vh3connect.io/api:kP8T1CK7`
+
+Auth: `company_id` and `api_key` on every request (query parameters for GET).
+
+## Response depth (`full`)
+
+Both endpoints accept an optional `full` boolean. Default is slim (omit `full`, or pass `false`).
+
+| Mode | Behaviour |
+|------|-----------|
+| Slim (`full` false / omitted) | Curated essential fields only. Excludes OCR / full quote text. |
+| Full (`full=true`) | All quotation fields. OCR payload is included but slimmed to reduce noise. |
+
+---
+
+## GET /quotient/list
+
+Paginated list of Quotient quotations for your company, optionally filtered by creation date.
+
+**Query parameters:**
+
+| Param | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `company_id` | string | Yes | - | Your tenant identifier |
+| `api_key` | string | Yes | - | Your tenant API key |
+| `page` | integer | No | `1` | Page number |
+| `per_page` | integer | No | `25` | Items per page |
+| `sort_order` | string | No | `desc` | Sort by creation date: `asc` or `desc` |
+| `created_at_start` | timestamp | No | - | Include quotes created on or after this instant |
+| `created_at_end` | timestamp | No | - | Include quotes created on or before this instant |
+| `full` | boolean | No | slim | `true` = all fields (OCR slimmed); omit/`false` = essential fields only |
+
+**Slim item fields** (when `full` is false):
+
+| Field | Description |
+|-------|-------------|
+| `id` | Quote UUID |
+| `created_at` | Created timestamp |
+| `updated_at` | Updated timestamp |
+| `quote_status` | Quotient status |
+| `quote_from` | Sender / origin label |
+| `quote_number` | Quotient quote number |
+| `quote_for_company` | Customer company name |
+| `title` | Quote title |
+| `quote_for_first_name` | Customer contact first name |
+| `quote_for_last_name` | Customer contact last name |
+| `total_excludes_tax` | Total excluding tax |
+| `currency` | Currency code |
+| `quote_url` | Link to the quote in Quotient |
+
+Response is paginated (`items`, `itemsReceived`, `curPage`, `nextPage`, `prevPage`, `offset`, `itemsTotal`, `pageTotal`).
+
+**Example (slim list):**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/quotient/list" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "page=1" \
+  --data-urlencode "per_page=25" \
+  --data-urlencode "sort_order=desc"
+```
+
+**Example (full payload, date window):**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/quotient/list" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "full=true" \
+  --data-urlencode "created_at_start=2026-01-01T00:00:00.000Z" \
+  --data-urlencode "created_at_end=2026-06-30T23:59:59.999Z"
+```
+
+---
+
+## GET /quotient/quote
+
+Fetch a single Quotient quotation by UUID (`id`) or by quote number.
+
+**Query parameters:**
+
+| Param | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `company_id` | string | Yes | - | Your tenant identifier |
+| `api_key` | string | Yes | - | Your tenant API key |
+| `identifier` | string | Yes | - | Quote UUID, or integer quote number as a string (e.g. `1042`) |
+| `full` | boolean | No | slim | `true` = all fields (OCR slimmed); omit/`false` = essential fields only |
+
+Numeric `identifier` values are treated as quote numbers. Non-numeric values are treated as the quote UUID.
+
+If no quote matches the identifier for your company, the API returns not found.
+
+**Example (by quote number, slim):**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/quotient/quote" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "identifier=1042"
+```
+
+**Example (by UUID, full):**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/quotient/quote" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "identifier=your-quote-uuid" \
+  --data-urlencode "full=true"
+```
+
+## Related
+
+- [API overview](/api-reference/overview) — intelligence API base URL and auth
+- [Integrations (Connect)](/connect/integrations) — connect Quotient for your company
+- [BigChange quotes](/api-reference/bigchange/quotes) — separate FMS quote surface; not Quotient

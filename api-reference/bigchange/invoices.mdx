@@ -51,9 +51,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/create" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "contactId": 12345,
-  "createdAt": "2026-04-01T00:00:00Z"
-}'
+    "contactId": 12345,
+    "createdAt": "2026-04-01T00:00:00Z"
+  }'
 ```
 
 ### `POST` `/invoices/edit`
@@ -65,8 +65,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/edit" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "invoiceId": 5001
-}'
+    "invoiceId": 5001
+  }'
 ```
 
 ### `POST` `/invoices/list`
@@ -94,14 +94,14 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/list" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "pageNumber": 1,
-  "pageSize": 50,
-  "createdAtFrom": "2026-01-01T00:00:00Z",
-  "createdAtTo": "2026-03-31T23:59:59Z",
-  "contactId": "12345",
-  "sortBy": "createdAt",
-  "direction": "descending"
-}'
+    "pageNumber": 1,
+    "pageSize": 50,
+    "createdAtFrom": "2026-01-01T00:00:00Z",
+    "createdAtTo": "2026-03-31T23:59:59Z",
+    "contactId": "12345",
+    "sortBy": "createdAt",
+    "direction": "descending"
+  }'
 ```
 
 ### `POST` `/invoices/cancel`
@@ -113,8 +113,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/cancel" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "invoiceId": 5001
-}'
+    "invoiceId": 5001
+  }'
 ```
 
 ### `POST` `/invoices/mark_paid`
@@ -126,9 +126,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/mark_paid" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "invoiceId": 5001,
-  "paidAt": "2026-04-15T12:00:00Z"
-}'
+    "invoiceId": 5001,
+    "paidAt": "2026-04-15T12:00:00Z"
+  }'
 ```
 
 ### `POST` `/invoices/mark_sent`
@@ -140,9 +140,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/mark_sent" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "invoiceId": 5001,
-  "sentAt": "2026-04-10T09:00:00Z"
-}'
+    "invoiceId": 5001,
+    "sentAt": "2026-04-10T09:00:00Z"
+  }'
 ```
 
 ### `POST` `/invoices/document/create`
@@ -154,8 +154,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/document/create" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "invoiceId": 5001
-}'
+    "invoiceId": 5001
+  }'
 ```
 
 ## Invoice line items
@@ -193,11 +193,11 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item/create" 
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "invoiceId": 5001,
-  "description": "Labour",
-  "quantity": 2,
-  "unitSellingPrice": 85
-}'
+    "invoiceId": 5001,
+    "description": "Labour",
+    "quantity": 2,
+    "unitSellingPrice": 85
+  }'
 ```
 
 ### `POST` `/invoices/line_item/delete`
@@ -209,9 +209,9 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item/delete" 
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "invoiceId": 5001,
-  "lineItemId": 1
-}'
+    "invoiceId": 5001,
+    "lineItemId": 1
+  }'
 ```
 
 ### `POST` `/invoices/line_item/list`
@@ -223,8 +223,8 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item/list" \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-  "invoiceId": 5001,
-  "pageNumber": 1,
-  "pageSize": 50
-}'
+    "invoiceId": 5001,
+    "pageNumber": 1,
+    "pageSize": 50
+  }'
 ```
