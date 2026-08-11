@@ -1,57 +1,69 @@
 ---
 title: Cases
-description: Track operational cases, participants, comments, and linked evidence in VH3 Connect.
+description: Turn operational signals into owned work — status, evidence, Assigned Team, and activity.
 ---
 
 # Cases
 
-Cases are structured follow-through for investigations, sentinel-driven work, and team-owned issues.
+Cases turn something the platform found — or something you noticed — into owned follow-through. Link the jobs and customers, assign a Team, comment with the people who need to act, and close it when the work is done.
 
 **Path:** `/cases`
 
-## Prerequisites
+Concept model: [Teams and cases](/guides/users-and-teams). Day-to-day ownership groups: [Teams](/connect/teams).
 
-- Signed-in user.
-- Concept model: [Teams and cases](/guides/users-and-teams) and [Working with your operation](/guides/working-with-your-operation).
+## When to open a Case
 
-## Browse cases
+- Repeat visits or SLA drift that need a named owner
+- Customer complaints or account-risk reviews
+- Email triage outcomes that need human approval
+- Account-review commitments that must not disappear into chat
+- A cluster of jobs you found in [Search](/connect/search) that belong together
+
+Your field management system still runs dispatch. Cases wrap the cross-job investigation and decision trail.
+
+## Browse Cases
 
 1. Open **Cases** in the sidebar.
-2. Filter with scope pills: **Active**, **All**, **Closed**.
-3. Narrow further with status pills (for example Draft through Archived) and type filters when shown.
+2. Scope with **Active**, **All**, or **Closed**.
+3. Narrow by status (Draft through Archived) and type when those filters appear.
 4. Search with **Search cases…**.
-5. Switch grid/table view as needed.
-6. Open a case at `/cases/:caseId`.
+5. Open a Case at `/cases/:caseId`.
 
-Empty states point you to create cases from [Advanced search](/connect/search).
+Empty lists usually mean you have not created Cases yet — start from Advanced search or Connie.
 
-## Work a case
+## Work a Case
 
-Detail tabs:
-
-- **Overview**
-- **Linked items**
-- **Comments**
-- **Activity**
-- **Participants**
+| Tab | Use it for |
+|---|---|
+| **Overview** | Title, priority, status, Assigned Team, due date |
+| **Linked items** | Jobs, contacts, sites, and other evidence |
+| **Comments** | Decisions, briefs, and next actions (people and Connie) |
+| **Activity** | Who changed what, including agent and automation actors |
+| **Participants** | Individuals who need the Case beyond the Assigned Team |
 
 Typical actions:
 
-- Rename the case (owner)
-- Update priority (Low–Critical) and status (with optional note)
-- Add comments for the team or Connie
-- Add, change role, or remove participants
+- Rename the Case (owner)
+- Set priority (Low–Critical) and transition status (optional note)
+- Set or clear **Assigned Team** so the owning group is clear
+- Add comments; agent comments show Connie on the timeline
+- Add, change, or remove participants
 
-## Create a case from search
+## Create a Case from search
 
-On Advanced search, multi-select results and use **Create case**. See [Search](/connect/search).
+1. Open [Advanced search](/connect/search).
+2. Multi-select the jobs or contacts that belong together.
+3. Choose **Create case**.
+4. Assign a Team, set priority, and add a short comment for the next action.
 
-## Related concepts
+## From Connie to Case
 
-Sentinels and reports are intelligence-layer capabilities. Connect surfaces outcomes through cases, notifications, and assistants — there is no separate Sentinels screen in Connect today. Read [Sentinels](/guides/sentinels) and [Reports](/guides/reports).
+Ask Connie to investigate, then open or create the Case she briefed, assign the Team, and keep the thread on the Case — not only in chat. See [Ask Connie](/connect/ask-connie).
 
 ## Related
 
+- [Teams](/connect/teams)
+- [Search](/connect/search)
 - [Notifications](/connect/notifications)
 - [Ask Connie](/connect/ask-connie)
-- [Search](/connect/search)
+- [Cases API](/api-reference/cases)

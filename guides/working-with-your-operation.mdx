@@ -32,6 +32,15 @@ You steer the day through chat, search, and cases. The platform keeps working be
 
 Almost every operational question splits into two parts: find the precedent, then decide. VH3 AI separates those two speeds on purpose.
 
+```mermaid
+flowchart LR
+    Q(["Operational question"]) --> Dec{Have we seen this before?}
+    Dec -->|Yes, need a fact fast| L[Discovery: search, autocomplete]
+    Dec -->|Need a brief, comparison, or why| J[Connie: synthesis with citations]
+    L --> A(["Answer"])
+    J --> A
+```
+
 Operator rule of thumb: **search finds the precedent; Connie helps you decide.**
 
 - If the question is "have we seen this before," use discovery first ([Operational discovery](/guides/operational-discovery)).

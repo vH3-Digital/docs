@@ -143,6 +143,46 @@ Each section has its own searchable index. You can query **one dimension** (for 
 Use section-scoped search for portfolio questions: "Which accounts mention recurring boiler issues in risk sections?" Use the by-contact GET when you need the full account brief in one call.
 </Tip>
 
+## Account Summary (the whole account, not just one site)
+
+A parent contact rolls up more than one child site: a retail chain with dozens of stores, a housing association with dozens of blocks. The **Account Summary** pulls every child Customer Summary, the account-level job history, and light commercial context — notes, invoices, quotes — into one brief. An account manager asks how the whole tree is doing, not just one site, and Connie or the API answers from the rollup instead of stitching child summaries together by hand.
+
+```mermaid
+flowchart TD
+    P(["Parent contact — e.g. Tesco PLC"])
+    C1["Child contact: Tesco Watford"]
+    C2["Child contact: Tesco Manchester"]
+    C3["Child contact: Tesco Leeds"]
+    S1[Customer Summary]
+    S2[Customer Summary]
+    S3[Customer Summary]
+    J[Account-level jobs, notes, invoices, quotes]
+    A(["Account Summary"])
+    Q(["'How is this account doing across the whole tree?'"])
+
+    P --> C1 --> S1
+    P --> C2 --> S2
+    P --> C3 --> S3
+    S1 --> A
+    S2 --> A
+    S3 --> A
+    J --> A
+    A --> Q
+```
+
+Account Summary sections use the same searchable, kept-current pattern as Customer Summary, scoped one level up: to the parent contact rather than a single site or child account.
+
+**API paths**
+
+| Action | Endpoint |
+|--------|----------|
+| Fetch full Account Summary for a parent contact | `GET /search/account-summary/by-parent/{company_id}/{contact_id}` |
+| Search Account Summary sections by meaning | `POST /search/account-summary-sections` (optional section key and contact filters) |
+
+<Tip>
+Pass the ID of any child contact to `get_account_summary` (the Connie tool behind this) and it resolves up to the parent automatically, so you do not need to look up the parent contact first.
+</Tip>
+
 ## Ranking and similarity (without exposing the engine)
 
 Job similarity and result ordering use **combined meaning and keyword ranking**: signals from meaning-based matching and exact-term matching are fused into one ordered list. You do not maintain synonym lists or search dictionaries. Narrative text is indexed once at ingest and ranked against the same representation at query time.
@@ -219,6 +259,7 @@ Start with discovery when you need a ranked list, a resolved customer, or a quic
 | A ranked list of similar past jobs | `POST /search/outcomes` or `/search/intake/enriched` |
 | To resolve a misspelled customer or person | `GET /search/autocomplete` |
 | Themes across account knowledge sections | `POST /search/summary-sections` |
+| The whole account rolled up across every child site | `GET /search/account-summary/by-parent/{company_id}/{contact_id}` |
 | A cited narrative, comparison, or "why" | Connie (`POST /connie/chat`) or `POST /investigate` |
 | What changed this week without asking | `POST /sentinels/run` |
 | Structured follow-through | Cases API (escalations, complaints, multi-step work) |

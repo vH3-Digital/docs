@@ -68,6 +68,7 @@
               "connect/sales",
               "connect/contacts",
               "connect/cases",
+              "connect/teams",
               "connect/search",
               "connect/notifications"
             ]
@@ -83,7 +84,7 @@
             "group": "Admin",
             "pages": [
               "connect/integrations",
-              "connect/team-and-roles",
+              "connect/users-and-roles",
               "connect/company-settings",
               "connect/billing"
             ]
@@ -181,6 +182,8 @@
             "pages": [
               "guides/2027-blueprint",
               "guides/compounding-operational-capability",
+              "guides/your-fms-records-what-happened",
+              "guides/your-history-is-not-one-dataset",
               "guides/intelligence-in-the-agent-era",
               "guides/why-vertical-intelligence-wins",
               "guides/ai-you-can-check",
@@ -301,6 +304,10 @@
     {
       "source": "/changelog",
       "destination": "/changelog/overview"
+    },
+    {
+      "source": "/connect/team-and-roles",
+      "destination": "/connect/teams"
     }
   ]
 }

@@ -1,29 +1,20 @@
 ---
 title: Sign up, invitations, and email verification
-description: Register a VH3 Connect account, accept an invite, and verify your email.
+description: Accept an invite or register a VH3 Connect account and verify your email.
 ---
 
 # Sign up, invitations, and email verification
 
-There are two common entry paths: **you are invited to a company**, or **you register and create a company**.
+Most operators join via invite. Creating a company is for first-time company setup.
 
-<Frame caption="Create a VH3 Connect account">
-  <img
-    src="/images/connect/connect-sign-up-register.png"
-    alt="VH3 Connect Create your account screen with name, email, password, and confirm password fields"
-  />
-</Frame>
-
-## Path A — Invited user
-
-Use this when someone in your company sent you an invite.
+## Path A — Invited user (usual path)
 
 1. Open the invite link from your email (Connect routes `/invite/accept` into join).
-2. On **Join** *company name*, complete the form. The invite shows the role you were invited as.
+2. On **Join** *company name*, complete the form. The invite shows the **product role** you were invited as (Admin, Manager, Engineer, and so on) — not an operational Team membership.
 3. Verify your email if prompted (**Verify your email** at `/signup/verify`).
 4. Sign in and land in the app for that company.
 
-You do not need BigChange credentials for this path unless your company still requires setup and you have rights to finish it.
+You do not need BigChange credentials on this path unless your company still requires setup and you have rights to finish it.
 
 ## Path B — Register and create a company
 
@@ -31,10 +22,13 @@ You do not need BigChange credentials for this path unless your company still re
 2. Enter first name, last name, email, password, and any other required fields.
 3. Complete email verification (**Verify your email** → **Email verified**).
 4. Create the company under **Company details**, including **Your company role**.
-5. If approval is required, wait on **Pending approval** / **Review in progress** (`/signup/company/pending`).
+5. If approval is required, wait on **Pending approval** (`/signup/company/pending`).
 6. Complete [BigChange setup](/connect/company-setup) when the app requires it.
+
+Do not create a second company if you already have an invite — use Path A.
 
 ## Related
 
 - [Sign in](/connect/sign-in)
 - [Company and BigChange setup](/connect/company-setup)
+- [Users and roles](/connect/users-and-roles)

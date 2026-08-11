@@ -38,6 +38,8 @@ A good integration uses fast tools for triggers and filters, calls synthesis onl
 | Contacts feed | `GET /contacts/feed` | Paginated contact list with parent / child hierarchy | Portfolio views, partner-portal scoping |
 | Dashboard snapshot | `GET /dashboard/snapshot` | Cached, deterministic tenant KPI snapshot across five sections | Home screens, no-LLM landing pages |
 | Customer summary by contact | `GET /search/summary-sections/by-contact/{company_id}/{contact_id}` | Full structured customer brief in one call | Account pages, briefing prep |
+| Account summary by parent contact | `GET /search/account-summary/by-parent/{company_id}/{contact_id}` | Roll every child Customer Summary under a parent contact into one account-level brief | Portfolio QBRs, "how is the whole account doing" |
+| Account summary section search | `POST /search/account-summary-sections` | Search account-level knowledge sections by meaning | Cross-account portfolio questions |
 | Weather (forecast / historical) | `/weather/*` | Graph-resolved weather context for a site or job | Pre-visit risk, outdoor-work scheduling |
 
 ### Continuous monitoring: 24/7 detection at the graph

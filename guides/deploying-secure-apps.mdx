@@ -75,15 +75,17 @@ Your app needs two distinct parts:
 - **Frontend** (what runs in the browser): handles display, navigation, and user interaction. Contains no credentials. Makes API calls only to your own backend.
 - **Backend** (a server you control): holds credentials, validates identity, and makes all calls to the VH3 API. The browser never calls VH3 directly.
 
-```
-Browser
-  │  calls your backend only (no VH3 credentials)
-  ▼
-Your backend server
-  │  validates JWT → calls GET /auth/me → gets company_id
-  │  makes VH3 API call with api_key from environment variable
-  ▼
-VH3 API  (api.vh3connect.io)
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant S as Your backend
+    participant V as VH3 API (api.vh3connect.io)
+
+    B->>S: Calls your backend only (no VH3 credentials)
+    S->>V: Validates JWT, calls GET /auth/me for company_id
+    S->>V: Calls VH3 API with api_key from environment
+    V-->>S: Response data
+    S-->>B: Returns only what the frontend needs
 ```
 
 <Warning>

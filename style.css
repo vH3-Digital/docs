@@ -1,0 +1,5 @@
+/* Hide Mintlify footer attribution (paid plan). */
+footer a[href*="utm_campaign=poweredBy"],
+footer a[href*="mintlify.com?utm_campaign=poweredBy"] {
+  display: none !important;
+}

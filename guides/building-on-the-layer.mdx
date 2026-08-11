@@ -33,6 +33,13 @@ This guide is for **builders**: operations staff using no-code tools, and techni
 | **Level 3: Model** | Persistent graph, enriched jobs, fast discovery, sentinels |
 | **Level 4: Operate** | Agents, automations, cases, custom apps on the same substrate |
 
+```mermaid
+flowchart LR
+    L1[Level 1: Access — exports and dashboards] --> L2[Level 2: Ask — chat over files]
+    L2 --> L3[Level 3: Model — persistent graph, sentinels]
+    L3 --> L4[Level 4: Operate — agents, cases, custom apps]
+```
+
 VH3 AI targets levels 3 and 4. Level 2 is where cost and trust break down: every session re-interprets raw text, and nothing belongs to the organisation in a structured form.
 
 <Note>
@@ -63,7 +70,7 @@ The substrate is only half the story. The other half is the tool surface that si
 
 | Class | Tools | What they do |
 |-------|-------|--------------|
-| **Discovery** (no LLM) | `/search/outcomes`, `/search/intake`, `/search/autocomplete`, `/search/summary-sections`, `/jobs/feed`, `/jobs/aggregate`, `/contacts/feed`, `/dashboard/snapshot`, `/weather/*` | Sub-second lookups: precedents, entity resolution, account hierarchies, KPIs |
+| **Discovery** (no LLM) | `/search/outcomes`, `/search/intake`, `/search/autocomplete`, `/search/summary-sections`, `/search/account-summary*`, `/jobs/feed`, `/jobs/aggregate`, `/contacts/feed`, `/dashboard/snapshot`, `/weather/*` | Sub-second lookups: precedents, entity resolution, account hierarchies, KPIs |
 | **Monitoring** (no LLM at detection) | `/sentinels/run`, `/sentinels/digest`, `/sentinels/results` | 24/7 pattern detection on the graph |
 | **Synthesis, conversational** (BYOK) | `/connie/chat`, `/investigate` | Cited narrative, multi-step diagnosis |
 | **Synthesis, platform** (included) | `/briefings/*`, `/reports/generate` | Pre-visit briefings, scheduled report generation |
@@ -182,6 +189,8 @@ Builders should understand the **Customer Summary** knowledge object (see [Opera
 - **Injected** into Connie sessions together with recent jobs since generation, so conversations start with current context.
 
 Coding agents can call `POST /search/summary-sections` for thematic queries across accounts, or fetch a full brief per contact before rendering a custom account page.
+
+For parent contacts with multiple child sites (a retail chain, a housing association), the **Account Summary** rolls every child Customer Summary up into one account-level brief, refreshed the same way. Fetch it with `GET /search/account-summary/by-parent/{company_id}/{contact_id}`, or search across account-level sections with `POST /search/account-summary-sections`. Pass any child contact ID and the lookup resolves to the parent automatically — a customer 360 app does not need to look up the parent contact first. See [Operational discovery: Account Summary](/guides/operational-discovery#account-summary-the-whole-account-not-just-one-site) for the full shape.
 
 ## From signals to owned work
 

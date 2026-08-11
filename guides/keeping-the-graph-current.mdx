@@ -21,6 +21,18 @@ Field service operations do not wait for scheduled jobs.
 
 A job that closes at 17:47 on a Thursday needs to be enriched, linked to the right customer and site, and available for a Friday morning account review. A compliance certificate that expired yesterday needs to surface today. An engineer who just completed a job at a site with a three-visit history needs that history in the briefing before the next van leaves.
 
+```mermaid
+flowchart LR
+    subgraph periodic["Periodic extraction (most integrations)"]
+        direction LR
+        P1[Scheduled export] --> P2[Transform] --> P3[Load] --> P4(["Picture of the past"])
+    end
+    subgraph continuous["VH3 AI: continuous ingestion"]
+        direction LR
+        C1[Job closes] --> C2[Enriched on arrival] --> C3[Linked to customer, site, engineer] --> C4(["Available same day"])
+    end
+```
+
 VH3 AI processes operational data continuously. Every new job, updated contact, changed worksheet answer, or closed record flows through the enrichment pipeline on arrival. The graph does not accumulate a backlog. The operational picture stays current because the system was designed around continuous ingestion from the start, not retrofitted to it.
 
 ## Staleness and the relationship lifecycle
@@ -43,14 +55,7 @@ The graph has to pick the right candidate. At volume. Continuously.
 
 Entity resolution — deciding that "Tesco PLC", "Tesco Stores Ltd", and "Tesco Express Watford High St" are the same customer — is a solved problem in simple cases and a genuinely hard problem in operational data at scale.
 
-VH3 AI uses a layered approach to candidate selection:
-
-- **Structural signals:** field-level matches, reference codes, and identifier overlap
-- **Semantic similarity:** meaning-based comparison of names, addresses, and descriptions that handles abbreviations, misspellings, and formatting inconsistencies
-- **Historical match rates:** how previous records from this source have resolved, used to weight confidence in ambiguous cases
-- **Confidence scoring:** every resolution carries a confidence level, and low-confidence resolutions are flagged for review rather than silently committed
-
-Resolution is not perfect. Operational data is genuinely ambiguous in some cases. When that happens, the system surfaces the ambiguity rather than committing a guess. Those records sit in a review queue where a human can confirm or correct. Every confirmed or corrected resolution improves the logic for similar cases going forward.
+Resolution combines multiple complementary signals, weighted by confidence. When the data is genuinely ambiguous, VH3 AI surfaces the ambiguity rather than committing a guess — those records sit in a review queue where a human can confirm or correct. Every confirmed or corrected resolution improves the logic for similar cases going forward.
 
 ## Graph health monitoring
 

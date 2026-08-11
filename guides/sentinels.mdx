@@ -120,6 +120,15 @@ All of these are achievable via the VH3 AI n8n nodes (100+ pre-built templates) 
 
 A useful sentinel result should have somewhere to go. High-severity triggers can open a **case**, attach the relevant jobs or customer records, and assign ownership to the team responsible for that account, region, or function.
 
+```mermaid
+flowchart LR
+    S[Sentinel crosses threshold] --> D[Digest or API result]
+    D --> C[Case opened]
+    C --> T[Team notified]
+    T --> B[Connie drafts briefing with citations]
+    B --> H[Coordinator reviews and acts]
+```
+
 Example flow:
 
 1. Repeat attendance sentinel flags a customer with three fire-panel callouts in six weeks.

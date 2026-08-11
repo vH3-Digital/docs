@@ -1,51 +1,39 @@
 ---
 title: Jobs
-description: Browse active and planned jobs, open job detail, and ask Connie in job context.
+description: Browse active and planned jobs, open detail, ask Connie, and turn clusters into Cases.
 ---
 
 # Jobs
 
-Jobs is where you review work from your field service system inside VH3 Connect.
+Jobs is where work from your field service system shows up in Connect — Active, Planned, and Overview — with Connie on the job when you need context.
 
 **Path:** `/jobs`
-
-## Prerequisites
-
-- Signed-in user with company data available from BigChange (or your connected FMS path).
 
 ## Browse jobs
 
 1. Open **Jobs** in the sidebar.
-2. Use the tabs:
-   - **Active**
-   - **Planned**
-   - **Overview**
-3. Narrow the list with filters (job type groups such as Call out / Service / Other, categories, statuses, and resources).
-4. Open a job to see the detail drawer (`/jobs/:jobId`). Title format: **Job -** followed by the job reference.
+2. Use **Active**, **Planned**, or **Overview**.
+3. Narrow with filters (job type groups such as Call out / Service / Other, categories, statuses, resources).
+4. Open a job for the detail drawer (`/jobs/:jobId`). Title format: **Job -** followed by the job reference.
 
-The **Stats** tab is present but **disabled** in the product today.
+The **Stats** tab is present but **disabled** today.
 
-## Job detail
+## On a job
 
-Drawer tabs:
+Use the drawer for overview (including AI summary), worksheets, contact details, timekeeping, and job history. Side chat gives **Summary** and **Ask Connie** scoped to that job.
 
-- **Job Details** — Overview (including AI summary), Contact Details, Timekeeping, Description, Engineer Details, Custom Fields
-- **Worksheets**
-- **Contact Details**
-- **Job History**
+## From jobs to Cases
 
-Side chat on the job:
-
-- **Summary**
-- **Ask Connie** (job-scoped)
+When several jobs tell one story — three callouts to the same site, an SLA cluster, a complaint trail — multi-select them in [Advanced search](/connect/search), **Create case**, and [assign a Team](/connect/teams). Do not leave the investigation only in Connie chat.
 
 ## Tips
 
-- For “have we seen this fault before?”, prefer [Search](/connect/search) or [Ask Connie](/connect/ask-connie), then open the related job.
-- Concept habits: [Operational discovery](/guides/operational-discovery).
+- For “have we seen this fault before?”, use [Search](/connect/search) or [Ask Connie](/connect/ask-connie), then open the related job.
+- Discovery habits: [Operational discovery](/guides/operational-discovery).
 
 ## Related
 
 - [Ask Connie](/connect/ask-connie)
 - [Cases](/connect/cases)
+- [Teams](/connect/teams)
 - [Contacts](/connect/contacts)

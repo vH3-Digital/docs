@@ -51,6 +51,15 @@ The intelligence layer separates those steps clearly:
 | **Monitoring** | Sentinel pattern detection on the knowledge graph | Near-zero (no LLM at detection) |
 | **Synthesis** | Cited narrative, investigation, conversational answers | Yes (your own model key, visible cost) |
 
+```mermaid
+flowchart TD
+    D["Discovery: precedent search, entity resolution, aggregates (no LLM, deterministic, sub-second)"]
+    M["Monitoring: sentinel pattern detection (near-zero LLM, no LLM at detection)"]
+    S["Synthesis: cited narrative, investigation (LLM, your own model key)"]
+    D --> S
+    M --> S
+```
+
 Routing work to the right layer by task type produces predictable latency, visible costs, and trustworthy outputs. Sending everything through a single model call is expensive for the wrong tasks and unreliable because there is no prepared context to work from.
 
 ## Governance is built into the work, not bolted on

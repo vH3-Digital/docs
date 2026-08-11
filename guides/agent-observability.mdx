@@ -39,6 +39,19 @@ The same applies to **investigations** and **customer summaries**: the value is 
 
 Example: before an account manager tells a client that SLA completion fell last month, they should be able to see the aggregation window, excluded job types, and the job references behind the percentage.
 
+```mermaid
+sequenceDiagram
+    participant U as Operator
+    participant C as Connie
+    participant T as Tool (e.g. jobs_aggregate)
+
+    U->>C: "Which engineers had the most repeat visits?"
+    C->>T: Call tool with scope
+    T-->>C: Structured result (toolCallOutputs)
+    C-->>U: Natural-language answer + toolsUsed + toolCallOutputs + usage
+    Note over U,C: Assistant text is the interpretation.<br/>toolCallOutputs is the evidence.
+```
+
 ## What the API returns
 
 On [`POST /connie/chat`](/api-reference/connie), a typical successful turn includes:

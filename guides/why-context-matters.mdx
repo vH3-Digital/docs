@@ -19,6 +19,24 @@ By the time Connie answers a question, she is drawing from a prepared operationa
 
 This is assembly before inference: the expensive context-building work happens at ingest and refresh time, so each answer starts from a known operational picture.
 
+```mermaid
+flowchart TD
+    subgraph atQuestionTime["Most AI tools: the work starts when you ask"]
+        direction TB
+        A1(["You ask a question"]) --> A2[Search raw records]
+        A2 --> A3[Grab the closest-matching fragments]
+        A3 --> A4(["Answer from whatever surfaced"])
+    end
+
+    subgraph atIngestTime["VH3 AI: the work happens before you ask"]
+        direction TB
+        B1(["Job lands"]) --> B2[Enriched once: fault, outcome, relationships]
+        B2 --> B3[Held in the prepared operational picture]
+        B4(["You ask a question"]) --> B3
+        B3 --> B5(["Answer grounded in what was already prepared"])
+    end
+```
+
 ## Why most AI tools struggle with real operational questions
 
 A question like "which engineers are consistently late on HVAC jobs at multi-site retail accounts?" needs job data, engineer records, customer categories, SLA timing, and historical patterns at the same time. A tool that pulls snippets of raw data and hands them to a model will either miss half the picture, confuse relationships, or cost a significant amount just to get to a mediocre answer.
