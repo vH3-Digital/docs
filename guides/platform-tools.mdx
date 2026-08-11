@@ -65,7 +65,7 @@ All synthesis tools return citations (job references, names) and structured tool
 
 | Tool | Endpoint | What it does |
 |------|----------|--------------|
-| Cases | `/cases/*` | Create cases, attach jobs and sentinel triggers, transition status, log activity, assign participants. Connie: `cases_for_entity`, `list_cases` (company catalogue; drafts excluded from list), `get_case`, `create_case`, `annotate_case` |
+| Cases | `/cases/*` | Create cases, attach jobs and sentinel triggers, transition status, log activity, assign participants, set Assigned Team (`POST /cases/{case_id}/assign-team`). Connie: `cases_for_entity`, `list_cases` (company catalogue; drafts excluded from list), `get_case`, `create_case`, `annotate_case`, `assign_case_team` |
 | Teams | `/teams/*` | Create teams, link entities (customers, sites, regions), add members, scope visibility. Connie: `teams_for_entity`, `teams_for_user`, `list_teams` (company catalogue), `get_team` (members + entity links) |
 | Users (server-side) | `/users/*` | Invite, update, archive users from back-office automations |
 | User Auth (JWT) | `/auth/*` | Per-user login, refresh, session for client apps |

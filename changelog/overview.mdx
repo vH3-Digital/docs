@@ -1,0 +1,170 @@
+---
+title: Changelog
+description: New features, updates, and fixes shipped in VH3 AI
+---
+
+<Update label="2026-08-11" description="Week of 10–11 August 2026" tags={["Connie", "Connect", "API"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
+  <Badge color="blue">Connect</Badge>
+  <Badge color="gray">API</Badge>
+</div>
+
+## New features
+
+**Account Summaries for parent contacts.** Connie can produce an Account Summary for a parent contact — one overview that rolls up child Customer Summaries, account-level job history, and light commercial context (notes, invoices, and quotes). Account managers and ops leads can ask how an account is performing across the whole tree, not only one site or child contact. See [Operational discovery](/guides/operational-discovery) and [Connie](/guides/connie).
+
+**Cases and Teams with Connie.** Connie can find Cases and Teams, create and annotate Cases, and set or clear a Case’s Assigned Team. Writes use the [VH3 AI Intelligence API](/api-reference/overview) (`company_id` + tenant `api_key`). In Connect, Advanced Search helps you find jobs, create a Case, link evidence, assign a Team, add comments, and follow activity. Teams are first-class: manage members and roles, then assign Cases to the right ownership group. Agent comments show Connie’s avatar on the Case timeline. See [Cases](/api-reference/cases), [Teams](/api-reference/teams), [Teams and cases](/guides/users-and-teams), and [Platform tools](/guides/platform-tools).
+
+**Assign a Case’s Assigned Team.** `POST /cases/{case_id}/assign-team` sets or clears the Team responsible for a Case. Reassignment replaces the current Team; `team_id: 0` clears it. Activity records `actor_type` / `actor_id`.
+
+</Update>
+
+<Update label="2026-08-07" description="Week of 3–7 August 2026" tags={["Connie", "Connect", "API", "Integrations", "Platform"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
+  <Badge color="blue">Connect</Badge>
+  <Badge color="gray">API</Badge>
+  <Badge color="green">Integrations</Badge>
+  <Badge color="yellow">Platform</Badge>
+</div>
+
+## New features
+
+**Punctuality insight.** Ask Connie which jobs started or finished late, and rank them by the largest time variance so the jobs that need attention surface first. `GET /jobs/feed` and `GET /jobs/feed/account` accept `finished_late`, `finished_early`, `started_late`, and `started_early`. The same filters work under `filters` on `POST /aggregate/jobs` for late counts. Sort the feed by `endDeltaMins` or `startDeltaMins` for worst-N lists. See the [Jobs API](/api-reference/jobs).
+
+**Clearer Connie session history.** Chat history returns clearer session titles (and related list metadata) so conversations are easier to find again. See the [Connie API](/api-reference/connie).
+
+**ServiceChannel portal ingest.** ServiceChannel new requests and accepted proposals can flow through portal ingestion alongside other FM portals. See [Email Ingest](/api-reference/ingest).
+
+## Updates
+
+**VH3 AI n8n node 0.10.12.** Filter by Started Late or Finished Late, sort by start or finish variance, and use the same filters on account feeds and aggregates. Existing workflows stay unchanged unless you add the new fields. Upgrade from n8n Community Nodes or npm — see the [n8n community node](/n8n-node) and [node reference](/agent-kits/n8n-node-reference).
+
+**Agent kits for punctuality.** [AGENTS.md](/agent-kits/agents-md), [Cursor rules](/agent-kits/cursor-rules), and the n8n node reference route “late”, “overrun”, and “worst-N” questions to the new filters and sort keys.
+
+**Richer related-job context in search.** Related-work recent jobs now include job id and status for tighter follow-through from search results. See [Search](/api-reference/search).
+
+**Notifications open the right item.** In-app notifications now take you straight to the relevant job, case, or record when a deep link is available. See [Notifications](/connect/notifications).
+
+## Fixes
+
+**Report engineer counts.** Engineer counts in reports use the people who actually worked the jobs, not roster headcount alone. See [Reports](/api-reference/reports).
+
+**Tabular PPM imports.** Tabular PPM imports match the intended customer more reliably when branch and location evidence is present.
+
+</Update>
+
+<Update label="2026-07-24" description="Week of 20–24 July 2026" tags={["Connie", "Connect", "Platform"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
+  <Badge color="blue">Connect</Badge>
+  <Badge color="yellow">Platform</Badge>
+</div>
+
+## New features
+
+**Global Connie rollout.** Connie is available more widely across VH3 Connect, with streamed text and voice so you can send a voice note and watch the answer generate. See [Ask Connie](/connect/ask-connie) and the [Connie API](/api-reference/connie) (`/connie/chat` and `/connie/chat/voice`, including the unified stream).
+
+**Shared prompt caching.** Common tools and system context stay warmer for an hour, so repeated questions feel snappier and token use stays efficient. See [Connie](/guides/connie).
+
+## Updates
+
+**Steadier Connie on mobile.** Longer answers and large tables stay inside the chat on mobile. Tool activity is clearer mid-stream, then settles to a simple tools-used summary when the turn finishes.
+
+## Fixes
+
+**Job reconciliation under incomplete FMS lists.** Reconciliation no longer stalls when the FMS omits a handful of open IDs, so completed and returned jobs stay in sync with what you see in the FMS.
+
+</Update>
+
+<Update label="2026-07-17" description="Week of 13–17 July 2026" tags={["Connie", "Integrations"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
+  <Badge color="green">Integrations</Badge>
+</div>
+
+## Updates
+
+**Live BigChange and connected apps in Connie.** Connie can work with live BigChange information — notes, invoices, quotes, purchase orders, and sales opportunities — and, where enabled, connected apps such as Outlook, Gmail, Calendar, Drive, Sheets, Slack, and Xero. See [Connie](/guides/connie) and [Native integrations](/native-integrations).
+
+## Fixes
+
+**Connected-app resilience.** Calendar availability, Xero filters, and other connected-app steps recover more cleanly when a call is interrupted mid-turn.
+
+**Safer finance list queries.** Invoice and quote list tools require a filter or date range so broad, expensive pulls are harder to trigger by accident.
+
+</Update>
+
+<Update label="2026-07-10" description="Week of 6–10 July 2026" tags={["Platform"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="yellow">Platform</Badge>
+</div>
+
+## Fixes
+
+**Confirmed terminal statuses.** Confirmed terminal statuses from the FMS are honoured correctly so completed and closed jobs do not regress to open in the operational picture.
+
+**Open-job reconciliation.** Ghost and stuck open jobs are healed when source confirmation shows they have moved on, keeping status drift from compounding.
+
+</Update>
+
+<Update label="2026-07-03" description="Week of 29 June – 3 July 2026" tags={["Platform"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="yellow">Platform</Badge>
+</div>
+
+## Updates
+
+**Platform continuity.** The intelligence layer, [Connie](/guides/connie), [sentinels](/guides/sentinels), [reports and briefings](/guides/reports), [email triage](/faq/email-triage), and the [BigChange integration](/api-reference/bigchange/overview) continued to run as documented — see the [API overview](/api-reference/overview) for the current surface.
+
+</Update>
+
+<Update label="2026-06-26" description="Week of 23–26 June 2026" tags={["Connie", "API", "Integrations", "Platform"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
+  <Badge color="gray">API</Badge>
+  <Badge color="green">Integrations</Badge>
+  <Badge color="yellow">Platform</Badge>
+</div>
+
+## New features
+
+**Intelligence layer launch.** The VH3 AI intelligence layer is live: a maintained operational graph, meaning-based search, structured job enrichment, and continuous monitoring across your field service data. See [Intelligence layer](/intelligence-layer) and [Introduction](/introduction).
+
+**Connie.** Ask plain-language questions against your live operational graph and get cited, synthesised answers. See the [Connie guide](/guides/connie) and [Connie API](/api-reference/connie).
+
+**Sentinels, cases, and teams.** Sentinels watch the graph 24/7 for repeat visits, SLA drift, dormant customers, and emerging risk — and can open a [case](/api-reference/cases), draft context with Connie, and route it to the responsible [team](/api-reference/teams). Read the [Sentinels guide](/guides/sentinels) and [Users and teams](/guides/users-and-teams).
+
+**Email triage.** Inbound emails are classified, linked to the right job or account, and queued for the right team. See [Triage API](/api-reference/triage) and [Email triage FAQ](/faq/email-triage).
+
+**Reports and briefings.** Scheduled and on-demand operational reports and briefings draw from the live graph. See [Reports](/api-reference/reports), [Briefings](/api-reference/briefings), and the [Reports guide](/guides/reports).
+
+**Weather context.** Weather data is now available as first-class operational context for jobs and sites. See [Weather API](/api-reference/weather).
+
+**Agent Starter Kits.** Ready-to-use configurations for connecting AI tools to the intelligence layer, including [AGENTS.md](/agent-kits/agents-md), [Cursor rules](/agent-kits/cursor-rules), the [VH3 product MCP](/agent-kits/mcp-setup), [Claude Projects](/agent-kits/claude-projects), [Claude Skills](/agent-kits/claude-skills), and [n8n agents](/agent-kits/n8n-agents).
+
+**Verified n8n community node.** The official `n8n-nodes-vh3ai` node is [verified on n8n](https://link.vh3.ai/n8n), works on Cloud and self-hosted, and is usable as a tool by n8n AI agents. See [n8n community node](/n8n-node) and the [node reference](/agent-kits/n8n-node-reference).
+
+**BigChange native integration.** Direct BigChange API coverage through the intelligence layer and the n8n node: contacts, jobs, invoices, quotes, sales opportunities, purchase orders, notes, persons, resources, vehicles, stock, worksheets, and reference data. See the [BigChange API overview](/api-reference/bigchange/overview).
+
+## Updates
+
+**Unified API surface.** A single OpenAPI specification now covers jobs, contacts, search, sentinels, reports, briefings, weather, triage, ingest, Connie, cases, teams, users, and user auth. Start at the [API overview](/api-reference/overview).
+
+**Authentication and user auth.** End-to-end docs for tenant API keys plus end-user authentication flows. See [Authentication](/authentication) and [User auth API](/api-reference/user-auth).
+
+**Ingest pipeline.** Continuous ingest with entity resolution keeps the operational picture current as customer hierarchies, sites, and job types change. See [Ingest API](/api-reference/ingest) and [Keeping the graph current](/guides/keeping-the-graph-current).
+
+**Technology partners program.** Partner program details for FMS vendors, agencies, and platform integrators. See [Technology partners](/partners/technology-partners).
+
+**Pricing published.** Transparent pricing for the intelligence layer, Connie, sentinels, and ingest. See [Pricing](/pricing) and the [pricing FAQ](/faq/pricing).
+
+</Update>

@@ -99,7 +99,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/cases/search" \
 
 ---
 
-## GET /cases/{case_id}
+## GET /cases/\{case_id\}
 
 Retrieve a specific case with full details.
 
@@ -111,7 +111,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001" \
 
 ---
 
-## PATCH /cases/{case_id}
+## PATCH /cases/\{case_id\}
 
 Update a case (title, description, priority, status, etc.).
 
@@ -127,7 +127,7 @@ curl -X PATCH "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001" \
 
 ---
 
-## POST /cases/{case_id}/transition
+## POST /cases/\{case_id\}/transition
 
 Transition a case to a new status.
 
@@ -143,7 +143,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001/transition" 
 
 ---
 
-## POST /cases/{case_id}/comments
+## POST /cases/\{case_id\}/comments
 
 Add a comment to a case.
 
@@ -159,7 +159,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001/comments" \
 
 ---
 
-## GET /cases/{case_id}/activity
+## GET /cases/\{case_id\}/activity
 
 Retrieve the full activity timeline for a case, all updates, comments, transitions, and linked items.
 
@@ -171,7 +171,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001/activity" \
 
 ---
 
-## POST /cases/{case_id}/participants
+## POST /cases/\{case_id\}/participants
 
 Add a participant to a case.
 
@@ -187,7 +187,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001/participants
 
 ---
 
-## POST /cases/{case_id}/items
+## POST /cases/\{case_id\}/items
 
 Link an item (job, contact, site) to a case.
 
@@ -199,5 +199,33 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/cases/case-001/items" \
     "api_key": "your-api-key",
     "item_type": "job",
     "item_id": "12345"
+  }'
+```
+
+---
+
+## POST /cases/\{case_id\}/assign-team
+
+Set or clear the **Assigned Team** on a case (`case.team_id`). Reassignment replaces the current team. Send `team_id: 0` to clear. Activity is recorded with `actor_type` / `actor_id`.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `team_id` | integer | Yes | Team to assign, or `0` to clear |
+| `actor_type` | string | No | Who performed the action (`user`, `agent`, `system`) |
+| `actor_id` | integer | No | ID of the acting user or agent catalogue row |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/cases/101/assign-team" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "team_id": 42,
+    "actor_type": "agent",
+    "actor_id": 1
   }'
 ```

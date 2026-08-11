@@ -141,7 +141,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/users/invite" \
 
 ---
 
-## PUT /users/{user_id}/role
+## PUT /users/\{user_id\}/role
 
 Update the role of a user within your company. Returns the updated user record.
 
@@ -187,7 +187,7 @@ curl -X PUT "https://api.vh3connect.io/api:kP8T1CK7/users/42/role" \
 
 ---
 
-## DELETE /users/{user_id}
+## DELETE /users/\{user_id\}
 
 Archive (soft-delete) a user. The user's record is preserved but `is_archived` is set to `true`, they can no longer log in and will not appear in `GET /users/list`.
 

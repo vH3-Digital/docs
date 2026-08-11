@@ -76,19 +76,19 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/create" \
 
 ---
 
-## GET /teams/{team_id}
+## GET /teams/\{team_id\}
 
 Retrieve a specific team with its members and linked entities.
 
 ```bash
-curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001" \
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/42" \
   --data-urlencode "company_id=your-company-id" \
   --data-urlencode "api_key=your-api-key"
 ```
 
 ---
 
-## PATCH /teams/{team_id}
+## PATCH /teams/\{team_id\}
 
 Update team details.
 
@@ -105,7 +105,7 @@ Update team details.
 | `is_active` | boolean | No | Activate or deactivate the team |
 
 ```bash
-curl -X PATCH "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001" \
+curl -X PATCH "https://api.vh3connect.io/api:kP8T1CK7/teams/42" \
   -H "Content-Type: application/json" \
   -d '{
     "company_id": "your-company-id",
@@ -116,19 +116,19 @@ curl -X PATCH "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001" \
 
 ---
 
-## GET /teams/{team_id}/members
+## GET /teams/\{team_id\}/members
 
 List all members of a team.
 
 ```bash
-curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/members" \
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/42/members" \
   --data-urlencode "company_id=your-company-id" \
   --data-urlencode "api_key=your-api-key"
 ```
 
 ---
 
-## POST /teams/{team_id}/members
+## POST /teams/\{team_id\}/members
 
 Add a member to a team.
 
@@ -139,13 +139,13 @@ Add a member to a team.
 | `company_id` | string | Yes | Your tenant identifier |
 | `api_key` | string | Yes | Your tenant API key |
 | `user_id` | integer | Yes | User to add |
-| `role` | string | Yes | Role within team (`member`, `admin`) |
+| `role` | string | Yes | Role within team (`team_lead`, `manager`, `senior_member`, `member`, `observer`) |
 | `is_default_team` | boolean | No | Set as default team for this user |
 | `actor_type` | string | No | Who performed the action |
 | `actor_id` | integer | No | ID of the acting user |
 
 ```bash
-curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/members" \
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/42/members" \
   -H "Content-Type: application/json" \
   -d '{
     "company_id": "your-company-id",
@@ -157,12 +157,12 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/members" \
 
 ---
 
-## DELETE /teams/{team_id}/members/{membership_id}
+## DELETE /teams/\{team_id\}/members/\{membership_id\}
 
 Remove a member from a team.
 
 ```bash
-curl -X DELETE "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/members/membership-99" \
+curl -X DELETE "https://api.vh3connect.io/api:kP8T1CK7/teams/42/members/99" \
   -H "Content-Type: application/json" \
   -d '{
     "company_id": "your-company-id",
@@ -172,7 +172,7 @@ curl -X DELETE "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/members/me
 
 ---
 
-## GET /teams/{team_id}/entities
+## GET /teams/\{team_id\}/entities
 
 List all entities linked to a team.
 
@@ -185,14 +185,14 @@ List all entities linked to a team.
 | `type` | string | No | Filter by entity type |
 
 ```bash
-curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/entities" \
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/42/entities" \
   --data-urlencode "company_id=your-company-id" \
   --data-urlencode "api_key=your-api-key"
 ```
 
 ---
 
-## POST /teams/{team_id}/entities
+## POST /teams/\{team_id\}/entities
 
 Link an entity (customer, site, job type) to a team.
 
@@ -211,7 +211,7 @@ Link an entity (customer, site, job type) to a team.
 | `actor_id` | integer | No | ID of the acting user |
 
 ```bash
-curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/entities" \
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/42/entities" \
   -H "Content-Type: application/json" \
   -d '{
     "company_id": "your-company-id",
@@ -223,12 +223,12 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/entities" \
 
 ---
 
-## DELETE /teams/{team_id}/entities/{link_id}
+## DELETE /teams/\{team_id\}/entities/\{link_id\}
 
 Unlink an entity from a team.
 
 ```bash
-curl -X DELETE "https://api.vh3connect.io/api:kP8T1CK7/teams/team-001/entities/link-77" \
+curl -X DELETE "https://api.vh3connect.io/api:kP8T1CK7/teams/42/entities/77" \
   -H "Content-Type: application/json" \
   -d '{
     "company_id": "your-company-id",
@@ -261,7 +261,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/search" \
 
 ---
 
-## GET /entities/{entity_type}/{entity_id}/teams
+## GET /entities/\{entity_type\}/\{entity_id\}/teams
 
 Find which teams a given entity belongs to (reverse lookup).
 
@@ -273,7 +273,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/entities/customer/contact-456/te
 
 ---
 
-## GET /users/{user_id}/teams
+## GET /users/\{user_id\}/teams
 
 Get all teams a specific user belongs to.
 

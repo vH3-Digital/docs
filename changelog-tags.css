@@ -1,0 +1,68 @@
+/* Changelog surface tags — match Badge colours (Connie/Connect/API/Integrations/Platform). */
+
+:root {
+  --vh3-tag-connie-bg: #f3e8ff;
+  --vh3-tag-connie-fg: #6b21a8;
+  --vh3-tag-connect-bg: #dbeafe;
+  --vh3-tag-connect-fg: #1e40af;
+  --vh3-tag-api-bg: #f3f4f6;
+  --vh3-tag-api-fg: #374151;
+  --vh3-tag-integrations-bg: #dcfce7;
+  --vh3-tag-integrations-fg: #166534;
+  --vh3-tag-platform-bg: #fef3c7;
+  --vh3-tag-platform-fg: #92400e;
+}
+
+.dark {
+  --vh3-tag-connie-bg: #3b0764;
+  --vh3-tag-connie-fg: #e9d5ff;
+  --vh3-tag-connect-bg: #1e3a8a;
+  --vh3-tag-connect-fg: #bfdbfe;
+  --vh3-tag-api-bg: #374151;
+  --vh3-tag-api-fg: #e5e7eb;
+  --vh3-tag-integrations-bg: #14532d;
+  --vh3-tag-integrations-fg: #bbf7d0;
+  --vh3-tag-platform-bg: #78350f;
+  --vh3-tag-platform-fg: #fde68a;
+}
+
+/* Hide Mintlify's unstyled inline tag list under the date (Badges in the entry body are the visual). */
+[data-component-part="update-label"] ~ :not([data-component-part="update-description"]):not([data-component-part="update-content"]):not(a) {
+  /* no-op fallback — JS also hides the plain tag row */
+}
+
+.vh3-changelog-tag {
+  border-radius: 9999px !important;
+  border: 0 !important;
+  font-weight: 500 !important;
+}
+
+.vh3-changelog-tag--connie {
+  background: var(--vh3-tag-connie-bg) !important;
+  color: var(--vh3-tag-connie-fg) !important;
+}
+
+.vh3-changelog-tag--connect {
+  background: var(--vh3-tag-connect-bg) !important;
+  color: var(--vh3-tag-connect-fg) !important;
+}
+
+.vh3-changelog-tag--api {
+  background: var(--vh3-tag-api-bg) !important;
+  color: var(--vh3-tag-api-fg) !important;
+}
+
+.vh3-changelog-tag--integrations {
+  background: var(--vh3-tag-integrations-bg) !important;
+  color: var(--vh3-tag-integrations-fg) !important;
+}
+
+.vh3-changelog-tag--platform {
+  background: var(--vh3-tag-platform-bg) !important;
+  color: var(--vh3-tag-platform-fg) !important;
+}
+
+/* Plain-text tag row under the date chip */
+.vh3-hide-plain-update-tags {
+  display: none !important;
+}

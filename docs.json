@@ -222,6 +222,17 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog/overview"
+            ]
+          }
+        ]
       }
     ],
     "global": {
@@ -278,7 +289,8 @@
   },
   "settings": {
     "customScripts": [
-      "/stripe-pricing.js"
+      "/stripe-pricing.js",
+      "/changelog-tags.js"
     ]
   },
   "redirects": [
@@ -288,7 +300,7 @@
     },
     {
       "source": "/changelog",
-      "destination": "/introduction"
+      "destination": "/changelog/overview"
     }
   ]
 }
