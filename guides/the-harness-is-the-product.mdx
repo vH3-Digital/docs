@@ -1,0 +1,178 @@
+---
+title: The harness is the product
+description: Why field service AI needs a purpose-built harness, measurable quality loops, and a product-led deployment motion — and how VH3 AI is built for that work
+---
+
+# The harness is the product
+
+The first time a capable model meets a real field service operation, it gets a surprising amount right. It can summarise a job note, draft a briefing, and spot an obvious repeat visit. Then the messy work starts: inconsistent customer names, portal emails that do not match the job record, worksheets that say "resolved" when the site books again next week, and irreversible actions that need a human before they touch a customer.
+
+That gap — between a strong demo and work your team can run every week — is where Applied AI for field service actually lives. This guide explains how VH3 AI thinks about that gap: what the harness must do, how quality gets measured, what compounds inside your account, and how deployment should feed the next product capability.
+
+## What Applied AI means in field service
+
+In this market, the useful test is whether the system completes operational work with enough reliability that people trust it in the weekly rhythm.
+
+Field service organisations still buy systems of record for jobs, finance, and CRM. What they increasingly need beside those systems is a layer that:
+
+- Reads the full operational picture across the tools they already run
+- Prepares context before a person or agent asks a question
+- Watches for problems while the team is busy elsewhere
+- Routes ambiguous or high-impact work for human review
+- Leaves a trail of evidence the business can check
+
+VH3 AI is built as that layer. The FMS stays where jobs are created and closed. VH3 AI sits beside it, enriches what happened, connects history, and makes the result available to Connie, sentinels, reports, automations, and any agent you point at the same foundation.
+
+The commercial implication matters. VH3 AI sells **completed intelligence work and the surfaces to act on it**, with the asset living in your account. Your team still owns thresholds, cases, and judgment. The platform owns the hard infrastructure that makes those decisions possible at production quality.
+
+## The harness is the product
+
+A model alone is not enough to run field service work. General-purpose models are strong at long-horizon reasoning, and they still struggle with messy, multi-system operations that sit outside clean training examples. Off the shelf, a model will not reliably ingest years of job history, resolve "Tesco PLC" and "Tesco Express Watford" to the same customer, watch SLA drift overnight, triage a portal email into the right job shape, and hand an account manager a cited briefing — thousands of times a week, with an audit trail.
+
+Treat an AI system as three layers:
+
+1. **The model** — reasoning and language
+2. **The interface** — chat, digests, Connect, Slack, custom apps
+3. **The harness** — everything that lets the model do real work inside real systems
+
+From the operator's seat, the harness should feel closer to a capable new teammate than to another dashboard: same systems, same history, same need to ask for review when confidence drops.
+
+In field service, that harness has five jobs.
+
+### Tools
+
+Models can reason. They still need functions that act and functions that compensate for known weaknesses.
+
+VH3 AI gives agents and automations domain tools: hybrid search, graph traversal, aggregates, customer knowledge, sentinel runs, report generation, case creation, live finance lookups where connected, and briefing assembly. Deterministic work stays deterministic. Synthesis happens where narrative and judgment help. Connie uses that tool surface; builders get the same capabilities through the API, MCP, and n8n.
+
+### Integrations
+
+Enterprise field service stacks break the assumptions that simple connectors make. Jobs live in the FMS. Portal traffic lands in shared inboxes. Certificates sit in SharePoint or Drive. Invoices live in Xero or QuickBooks. Account notes sit in CRM.
+
+The harness has to connect those surfaces without forcing a single super-platform. VH3 AI connects BigChange for live operational ingestion today, with native connections for communication, storage, CRM, and accounting so the operating picture widens without a custom integration project for every tool.
+
+### Persistent operational memory
+
+An account review or a multi-day investigation does not finish in one model call. Context that only lives in a chat window disappears when the session ends.
+
+VH3 AI keeps structured working memory in the intelligence layer: enriched jobs, resolved entities, linked history, cases with evidence, sentinel definitions, and company operating rules. Agents and people pick up where the last shift left off because the record persists outside any single conversation.
+
+### Orchestration
+
+Not every task should hit the same model, or any model at all.
+
+| Work | Right layer |
+|------|-------------|
+| Precedent search, aggregates, entity lookups | Deterministic discovery |
+| Repeat visits, SLA clusters, dormant accounts | Sentinels on the graph |
+| Portal email with high extraction confidence | Automated triage path |
+| Ambiguous triage, investigation narrative, Connie Q&A | Model synthesis with citations |
+| Irreversible customer-facing actions | Human approval inside cases and review queues |
+
+Routing by task type keeps latency predictable, cost visible, and quality measurable. Sending every operational question through one chat call is expensive for the wrong work and unreliable when context was never prepared.
+
+### Oversight
+
+Field service organisations start with bounded autonomy — and many workflows should stay that way.
+
+Low-confidence triage waits for review. Cases assign owners. Connie answers carry job references. Agent sessions expose which tools ran and what they returned. Token spend sits on your own model provider account under BYOK. The policy layer is practical: who can see which tenant data, which actions need approval, and what evidence remains after the decision.
+
+As models improve, some scaffolding thins. Calculators and brittle extraction prompts get simpler. What remains is the need to act inside real systems, persist state across days, integrate with tools that will never be perfectly API-shaped, and prove who approved what.
+
+That layer is the product.
+
+## Quality loops are a platform primitive
+
+Without a way to measure whether the work was done correctly, there is no basis for promising that quality will hold as documents, portals, and operating habits drift.
+
+VH3 AI treats checkable quality as a core platform primitive from day one.
+
+**Start from real work.** Onboarding loads up to five years of history so the first discovery sprint runs against the customer's own jobs, notes, and relationships. Day-one output is useful precisely because it is graded by people who know the operation.
+
+**Build golden examples with the people who own the work.** Portal emails with known correct job mappings. Accounts where the risk story is already agreed. Fault classes where "repeat visit" has an operational definition. Those signed-off examples become the reference set for enrichment, triage, briefings, and sentinel thresholds.
+
+**Hillclimb with grading loops before you widen autonomy.** High-confidence triage can create work automatically. Ambiguous extractions stay in a review queue with ranked suggestions. Sentinel thresholds tighten only after operators confirm the signal is trustworthy. Autonomy expands where the grade holds.
+
+**Keep the loops running after go-live.** The agent or workflow that looked strong in UAT still needs drift detection: new job types, renamed customers, seasonal patterns, portal format changes. Continuous sentinel runs, cited Connie answers, and case outcomes are how the operation sees whether quality is holding.
+
+The standard is operational. The briefing either cited the right jobs or it did not. The triage either matched the right customer and site or it queued for review. The sentinel either fired on a real pattern or the threshold needs gardening.
+
+[AI you can check →](/guides/ai-you-can-check)  
+[Agent observability →](/guides/agent-observability)
+
+## What actually compounds
+
+The first instinct when people talk about AI moats is data. In regulated, relationship-dense operations, that story usually fails in the way buyers expect.
+
+A field service contractor will not — and should not — hand a vendor their full underwriting-style corpus of customer relationships, commercial exceptions, and safety-adjacent history so a shared model can train on it. The data that makes the domain hard is also the data that must stay inside the enterprise.
+
+What compounds is everything a real deployment builds up on the customer's side of the contract:
+
+- Enriched job history and resolved entities
+- Sentinel definitions tuned to how this operation actually runs
+- Cases, evidence, and decisions that become searchable precedent
+- Triage taxonomies and review habits
+- Automations and agent kits wired into the weekly rhythm
+- The field intelligence lead's judgment about what to build next
+
+Almost anyone can demo an agent that completes a workflow once. Building one that stays useful across shifting job types, portal formats, and seasonal load takes the harness and the quality loop above.
+
+That is also why VH3 AI is opinionated about ownership. Intelligence compounds in your account, and stays yours. Model spend stays on your provider key. If you leave, the enriched operational data is portable. Stickiness comes from the value of what you have built.
+
+[Compounding operational capability →](/guides/compounding-operational-capability)
+
+## Deployment should feed the product
+
+Hard deployments are a discovery problem before they are a delivery problem. Nobody has a mature playbook for "AI teammate inside my field service stack" that already matches every operation. Early work has to sit close to dispatch, account management, and the inbox.
+
+The trap is treating forward-deployed custom work as the permanent business model.
+
+Custom engineering in the field is valuable when it reveals the next platform primitive: a better triage confidence tier, a sentinel definition, a case pattern, an agent kit, a Connect surface. It becomes a liability when every customer request is answered with a one-off fix that never returns to the product. Cost to serve stays high. Each deployment fails to make the next one easier.
+
+VH3 AI is built for a product-led version of that loop:
+
+1. **Discovery on real history** — connect the FMS, enrich the record, let operators grade what the layer surfaces.
+2. **Standard surfaces first** — Connie, sentinels, reports, cases, triage, n8n templates, agent starter kits.
+3. **One bridge role inside the customer** — the [field intelligence lead](/guides/2027-blueprint), close enough to the work to tune thresholds and ship the next workflow.
+4. **Platform absorption** — repeated pain becomes a product capability the next tenant inherits.
+
+Implementation work still exists. Connecting Slack, wiring a digest, or configuring exclusions is real. It is execution against a known shape. Discovery work is different: watching the first enrichment miss a local job-type convention, sitting with the account team on a messy QBR pack, learning which portal emails must never auto-create. Bundle those two under one vague "services" label and you hide whether you are investing in product or growing a permanent delivery org.
+
+The goal is simple. Each deployment should shorten the next one.
+
+## Why this problem is worth working on
+
+Field service generates deep operational signal and deep operational judgment. Most of that value has lived in people's heads, inboxes, and FMS records that were never designed to learn.
+
+The organisations that pull ahead will treat AI as a harness on the stack they already run:
+
+- Prepared context before inference
+- Tools and integrations that reach the real systems of work
+- Oversight that matches operational risk
+- Quality loops that prove the work is holding
+- A deployment motion that turns field pain into shared product
+
+VH3 AI is committed to that seat: the intelligence layer beside your FMS, the harness your humans and agents share, and the compounding record that stays yours as models change.
+
+## What to do next
+
+<CardGroup cols={2}>
+  <Card title="The intelligence layer" icon="layer-group" href="/intelligence-layer">
+    How prepared relational, semantic, structured, and temporal memory work together.
+  </Card>
+  <Card title="Intelligence in the agent era" icon="robot" href="/guides/intelligence-in-the-agent-era">
+    How humans and agents share one foundation on the stack you already run.
+  </Card>
+  <Card title="AI you can check" icon="eye" href="/guides/ai-you-can-check">
+    Why evidence and definitions matter more than confident prose.
+  </Card>
+  <Card title="The 2027 blueprint" icon="map" href="/guides/2027-blueprint">
+    How the field intelligence lead turns deployment learning into owned capability.
+  </Card>
+  <Card title="Compounding operational capability" icon="chart-line" href="/guides/compounding-operational-capability">
+    What accumulates in your account as the learning loop runs.
+  </Card>
+  <Card title="Discovery sprint" icon="rocket" href="/quickstart">
+    Connect real history and grade what the layer produces on your own data.
+  </Card>
+</CardGroup>
