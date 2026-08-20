@@ -1,0 +1,77 @@
+---
+title: Every correction is teaching something
+description: Why the corrections, prompts, and decisions your team makes while using AI are operational knowledge in their own right — and how VH3 AI keeps that learning inside your account
+---
+
+# Every correction is teaching something
+
+There is an old paradox in the market for information: you cannot know what an idea is worth until someone shows it to you, and by then you have it for free. The seller risks giving away the goods just to sell them.
+
+AI creates the opposite problem for the buyer.
+
+To get a genuinely useful answer from a model, you have to tell it things that are specific to your business: which customer needs a careful call, why an SLA clause is really a commercial issue, what a fault description means at this site that it would not mean at another. The better the answer needs to be, the more of that knowledge you have to hand over.
+
+Field service operations make this trade constantly, usually without noticing. A coordinator corrects a sentinel's false alarm. An account manager rewrites a generic briefing with the real reason a customer is upset. An engineer's note changes how a fault gets classified next time. Every one of those moments turns a piece of institutional judgment into a correction a system can learn from.
+
+The question that matters is where that correction ends up.
+
+## What a correction actually is
+
+Every interaction with an AI system produces more than an answer. It produces a trace: the question that was asked, the context that was supplied, whether the answer was accepted or corrected, and what the correction said instead.
+
+None of that requires a formal training run to matter. A product can honestly say it never trains a foundation model on your data while every prompt and correction still teaches the *product* something about how your operation works — a pattern that, on a shared platform, compounds across every customer using it, not just you.
+
+The risk is whether your team's judgment ends up as a durable asset inside your business, or evaporates into a system you do not control and cannot take with you.
+
+## Why this matters more as the tool gets more useful
+
+The exposure grows as your AI tool gets better, not worse.
+
+A generic assistant answering from a public knowledge base learns nothing proprietary from you. A field service AI that gives genuinely good answers about your operation has to be told about your customers, your SLA history, your compliance exceptions, and the judgment calls your best people make under pressure. That is exactly the information that makes your operation hard to copy.
+
+The businesses getting the most value from AI are, by construction, revealing the most about how they actually work. If that revealed knowledge stays with the vendor rather than compounding inside the business that generated it, the incumbent and the AI-native competitor end up learning from the same lessons — except only one of them owns what was learned.
+
+## How VH3 AI is built around this
+
+**Bring your own key.** Connie and agent workflows run on your own model provider account. Your prompts and corrections are not pooled with any other customer's traffic. See [Pricing](/pricing) for the BYOK model.
+
+**Your data is scoped, not shared.** Every API call is scoped to your organisation on the server. No call can cross organisation boundaries. Dedicated, isolated infrastructure is available on Enterprise plans. See [Deploying secure apps](/guides/deploying-secure-apps).
+
+**Your intelligence lives in your account.** Enriched job history, resolved customers and sites, sentinel definitions, and case evidence all live inside your organisation's account. When your team corrects a sentinel threshold or closes a case with the real reasoning behind it, that correction updates your operational picture.
+
+**The model is a reader, not the memory.** Because operational intelligence sits in a substrate separate from the model, you can change providers without losing what your operation has learned. See [Compounding operational capability](/guides/compounding-operational-capability) for the sovereignty test this makes possible.
+
+**Every answer carries its evidence.** Investigations, briefings, and reports cite the jobs and records behind them, so a correction is a correction to something specific and traceable. See [AI you can check](/guides/ai-you-can-check).
+
+## Questions to ask before you hand over operational knowledge
+
+Before deciding how deeply to integrate any AI tool with your operation, it is worth asking:
+
+**Control.** If you stopped using this vendor tomorrow, what record of your team's decisions, corrections, and reasoning would you keep? Where does it live today?
+
+**Capability.** Can your team tune how the system behaves — thresholds, rules, templates — against your real operation, without that tuning becoming the vendor's product?
+
+**Choice.** If the model underneath were replaced tomorrow, would your operational picture survive intact, or would you be starting again?
+
+**Cost.** Is the cost of the model itself visible to you, or is it bundled into a subscription where you cannot tell what you are paying for the AI versus the wrapper around it?
+
+**Compound.** Does using the system more make your operation smarter, specifically, or does it just make the vendor's product better for everyone, including your competitors?
+
+## What to look for when evaluating operational AI
+
+Ask any AI vendor directly: when my team corrects a wrong answer, where does that correction go? The answer you want is that it compounds in your account — tuned sentinels, case history, and the reasoning behind closed investigations — so you can take it with you.
+
+<CardGroup cols={2}>
+  <Card title="Compounding operational capability" icon="chart-line" href="/guides/compounding-operational-capability">
+    The sovereignty test, and how human judgment and operational intelligence compound together in your account.
+  </Card>
+  <Card title="AI you can check" icon="eye" href="/guides/ai-you-can-check">
+    Why traceability matters more than confidence in operational decisions.
+  </Card>
+  <Card title="Deploying secure apps" icon="shield" href="/guides/deploying-secure-apps">
+    Tenant scoping, access boundaries, and governance for teams building on the platform.
+  </Card>
+  <Card title="Keeping the graph current" icon="arrows-rotate" href="/guides/keeping-the-graph-current">
+    The engineering behind an operational picture that stays accurate and yours.
+  </Card>
+</CardGroup>

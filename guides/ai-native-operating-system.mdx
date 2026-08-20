@@ -1,0 +1,168 @@
+---
+title: Building an AI-native operating system
+description: Why field service companies at £2M to £10M with an FMS and no ERP are in the best position to build — and the six-step process to do it
+---
+
+# Building an AI-native operating system
+
+We work with every size of field service business, from solo operators to companies with hundreds of employees. We still work across that whole range today.
+
+There is one segment where the maths works better than anywhere else, and if you are in it, you should see why.
+
+£2M to £10M in annual revenue. Somewhere around 20 employees, give or take 5. An FMS you already run for jobs. No ERP yet. Each department living in its own tool around that FMS. Quotes in a CRM or a spreadsheet, jobs in the field system, finance in Xero or Excel, documents in a shared drive nobody can navigate, FM portal mail in a shared inbox, and a handful of Zapier connections holding it together.
+
+For companies in that range, connecting the stack around the FMS you already run is the highest ROI move available with AI right now. Bigger contractors get real value from these builds too, and we ship them constantly. The difference is percentage impact. At your size, this one project can change how the entire company runs, and later in this guide we break down why the maths tilts so hard in your favour.
+
+If that is you, you have probably been told you are too small for real systems and that you should wait until you are big enough for NetSuite or SAP. You already have an FMS. You can skip the legacy ERP era entirely and go straight to something better.
+
+We run this exact build with field service customers now, and the number we watch is whether the team actually uses the system every day. A purchased tool that nobody opens does not count. That is the number that matters most.
+
+This is the full process, step by step. Everything we do with customers, laid out so you can run it yourself or know exactly what you are buying if you hire it out.
+
+## What an AI-native operating system is
+
+The usual move with AI is to add it on top of the stack you already have. A chatbot here, an AI feature inside the FMS there, a ChatGPT subscription for the office. The tools stay fragmented, the data stays scattered, and the AI cannot see the full picture.
+
+An AI-native operating system reverses the order. You connect the tools around the FMS you already run, put every department on the same operational picture, and build AI into the workflows themselves.
+
+Your FMS stays the system of record for jobs. Dispatch still raises the job. Engineers still close it in the field app. Accounting, email, and calendar stay where they are. VH3 reads all of it, holds one picture of the operation, and lets every department work from that picture.
+
+One login for the intelligence. One connected record of the work. Every department drawing from the same history. AI reading your documents, drafting your outputs, routing your work, and answering questions with the full context of the operation.
+
+AI is only as useful as the data it can see. When your operation lives across seven disconnected tools around the FMS, no model can see the full picture. When everything that matters is connected, the AI becomes useful on day one.
+
+Here is the build order. Six steps, in sequence, and the sequence is the whole game.
+
+## Step 1: Map everything
+
+Before you touch a single tool or write a line of code, you map the entire operation. Every failed AI project we have been called in to rescue skipped this step.
+
+Here is how to actually do it.
+
+**List every workflow by department.** Sales and quoting, dispatch, engineers, finance, compliance, account management, support. For each one, write out what triggers it, every step in the middle, and what "done" looks like. A workflow is anything that happens more than once a week.
+
+**Walk each workflow with the person who runs it.** You will be surprised how different reality is from what you assumed. The founder's version of "how a recall works" and the coordinator's version are usually two different processes.
+
+**Mark every handoff.** Anywhere work passes from one person to another, or from the FMS to a spreadsheet, an inbox, or a shared drive, is a friction point. Handoffs are where jobs sit, get lost, or get retyped.
+
+**Mark every duplicate entry.** Anywhere the same customer, site, or job gets typed into two places is waste, and it is also a data integrity problem waiting to happen.
+
+**Time the manual work.** For each workflow, estimate hours per week spent on the manual parts. You will use these numbers to prioritise the build, and they will also show you the ROI before you spend a pound.
+
+At a 20-person contractor this takes about a week of focused effort. When it is done you will have something almost no company your size has: a complete picture of how the business actually runs. Founders consistently tell us the map alone was worth the engagement, before we built anything.
+
+## Step 2: Decide what stays and what goes
+
+Now run the consolidation audit. Take every tool in your stack and sort it into three buckets.
+
+**Absorb.** Tools that are really just holding structured data and views on top of it. Spreadsheet trackers beside the FMS, CRMs used as glorified contact lists, form tools, internal wikis, unofficial boards in Monday or Asana or ClickUp. These become part of your operating system. At the typical company in this range, this bucket holds most of the satellite stack.
+
+**Keep.** Tools that do one specialised job extremely well and have no business being rebuilt. Your FMS. Your accounting software. Your email. Your calendar. Industry tools with regulatory weight behind them. These stay, and they connect to the system through integrations.
+
+**Kill.** Tools nobody uses, tools that duplicate another tool, and the subscriptions everyone forgot about. Every stack we have audited has these. Cancel them this week and enjoy the first ROI of the project before the build even starts.
+
+A useful test for the absorb bucket: if the tool's main value is "our stuff is organised in here," it gets absorbed. Organisation is exactly what your single source of truth will do, except connected to the FMS and everything else instead of siloed.
+
+Companies in this range typically walk out of this step with a plan to collapse 7 to 12 satellite tools into one system plus 2 or 3 keepers — the FMS, accounts, and email. That alone usually recovers a meaningful chunk of the monthly software spend, and the real win is what it does to your data.
+
+## Step 3: Design your data model
+
+This is the step everyone wants to skip and the step that determines whether the whole thing works. Your data model is the single source of truth, and everything else in the system sits on top of it.
+
+Start by listing your entities. An entity is any noun your business runs on: customers, sites, jobs, engineers, equipment, quotes, invoices, documents, team members, contracts, vehicles. Most companies in this range have 15 to 30 of them.
+
+Then define the relationships. A customer has many sites. A site has many jobs. A job has many notes, many documents, and one attending engineer. A team member is assigned to many jobs. Draw it out. This diagram is the skeleton of your company.
+
+Then decide, for every entity, where the truth lives. One place. If customer contact info lives in the FMS, it does not also live in a spreadsheet someone maintains on the side. The moment data lives in two places, they disagree, and the moment they disagree, your team stops trusting the system.
+
+Two rules from this kind of build:
+
+- **Model the business you have, plus one size up.** Design for where you will be at 2x revenue, and stop there. Companies that design for a fantasy 50x future build bloated systems nobody understands.
+- **Every record connects to something.** Nothing floats in isolation. If a document cannot be tied to a customer, a site, a job, or a process, ask why you are storing it at all.
+
+Get this right and every later phase gets easy. Get it wrong and you will rebuild it in a year.
+
+## Step 4: Build the core and consolidate
+
+Now you build the system your team actually works in. Databases, screens, and views, all reading from the data model you just designed. The FMS keeps creating and closing jobs. The operating system is where the connected picture lives, and where the work that used to sit in spreadsheets and side boards moves.
+
+The migration order matters. Move one department at a time, starting with whichever one had the most manual hours in your Step 1 map. Get them fully moved in, working out of the new system daily, before you start the next department. Trying to move everyone at once is how these projects die.
+
+For each department, rebuild their views to match how they already work. The board they had in Monday becomes a board in the new system. The "which sites are on fire" spreadsheet becomes a view they already recognise. Same mental model, same daily motions, now connected to everything else. This is the core reason adoption holds: the system feels familiar on day one because it was designed from the map of how the team actually operates, and the team's life gets simpler because we are removing tools rather than adding one.
+
+One rule for this phase: do not automate anything yet. Teams that consolidate and automate at the same time end up automating processes they have not fixed, and the whole thing collapses. Phase 4 is about clean, connected data and a team fully living in one system. That is it.
+
+## Step 5: Put AI agents on top
+
+Once the single source of truth exists, this phase moves fast, because the agents have everything they need.
+
+The four surfaces we build most, in the order we would build them:
+
+**Document and inbox intake.** Portal emails, invoices, estimates, certificates, and contracts come in as PDFs and emails. AI reads them, extracts the data, and files structured records. For most field service teams, this alone ends years of retyping work out of a shared inbox. Build this first, because it feeds the database and everyone feels it immediately.
+
+**Generation.** Account reports, engineer briefings, client updates, proposals. Because the system holds all the context on the customer, the site, and the job, generation is one click instead of an afternoon.
+
+**Operational answers.** Connie, connected to the full picture, that anyone on the team can ask. Which sites have had three emergency callouts this quarter. What we billed a customer last quarter. Which invoices are overdue. Questions that used to mean 20 minutes of digging get answered in seconds.
+
+**Routing and triage.** Inbound requests get read, categorised, and assigned to the right person with the right priority before a human ever looks at them.
+
+One piece of architecture that will save you real money: model routing. Not every task needs the most powerful model. Route simple extraction and classification to fast, cheap models, and reserve the frontier models for reasoning, drafting, and decisions. Done right, this keeps quality where it counts and stops you burning money on tasks a much cheaper model handles. Companies that run everything through the biggest model available are paying frontier prices for work that does not need them.
+
+## Step 6: Automate the background
+
+The last layer is the work that should never touch a human. Status changes trigger customer emails. Overdue items trigger reminders. Completed milestones trigger invoices. Documents generate and file themselves.
+
+Pull your list straight from the Step 1 map: every handoff and every repetitive task you marked is an automation candidate. Rank them by the hours you timed, and build from the top.
+
+The largest systems we ship run a few dozen of these automations in the background, handling the reminders, emails, and documents that used to sit on someone's plate all day. The team stopped thinking about that work entirely.
+
+## What this looks like finished
+
+A multi-trade contractor comes in running jobs in the FMS, recalls in Excel, certificates in SharePoint, and FM portal mail in a shared inbox, with five coordinators each doing the workflow their own way.
+
+We run this exact process. Mapped everything, killed and absorbed the satellite stack, designed the data model, consolidated, then layered on the AI.
+
+The result is one AI-native operating system beside the FMS they already trust. History is connected. AI reads inbound mail, invoices, and certificates. Reports and briefings generate in one click. Billing and operational questions draw from the same picture. Their customers can see account intelligence without anyone exporting a file.
+
+Every satellite tool in the old stack is gone, and every hour that went into moving data between those tools came back to the team.
+
+## Why the £2M to £10M range wins biggest
+
+Enterprise companies implementing AI have to fight decades of legacy systems, migration projects, and internal politics. A 20-person contractor has none of that. There is nothing to migrate off of except spreadsheets, shared inboxes, and month-to-month SaaS around an FMS you already know.
+
+The percentage impact is the other half. Removing 60 hours of weekly manual work from a 20-person company changes it. The founder gets 10+ hours a week back, the team stops living in copy-paste work between the FMS and everything else, and you can grow revenue without growing headcount at the same rate. The same 60 hours inside a 500-person company is a rounding error.
+
+You also skip a generation. Companies that never adopted a legacy ERP do not have to unwind one. You go straight from an FMS plus scattered tools to an AI-native system, the same way countries that never built landlines went straight to mobile.
+
+Right now, running on an AI-native operating system is a competitive advantage. Within a few years it will be table stakes. The companies building now get to spend those years compounding.
+
+## Where to start this week
+
+Start with Step 1 and nothing else. Block a week, map every workflow, and time the manual hours. Even if you never build anything, the map will change how you see your company. And if you do build, everything downstream depends on it.
+
+Follow the order. Map first. Consolidate second. Data model third. Build fourth. AI fifth. Automate last. Every failed AI project we have seen skipped a step, and it is usually the first one.
+
+## Want this built for your company?
+
+This is what VH3 AI does. [Contact us](mailto:hello@vh3.ai) and we will walk through your current stack, where the biggest opportunities sit, and what an AI-native operating system would look like beside the FMS you already run.
+
+<CardGroup cols={2}>
+  <Card title="The 2027 blueprint" icon="compass" href="/guides/2027-blueprint">
+    How field service organisations turn operational knowledge into tools and automations they own.
+  </Card>
+  <Card title="Your FMS records what happened" icon="clipboard" href="/guides/your-fms-records-what-happened">
+    Why the job record is not the whole operation — and what sits beside it.
+  </Card>
+  <Card title="Get started: discovery sprint" icon="rocket" href="/quickstart">
+    Connect your operation and see what VH3 reads from your own jobs, notes, and history.
+  </Card>
+  <Card title="Working with your operation" icon="user-tie" href="/guides/working-with-your-operation">
+    What operators have after onboarding, and how to brief Connie on real work.
+  </Card>
+  <Card title="Building on the layer" icon="hammer" href="/guides/building-on-the-layer">
+    APIs, automations, and custom surfaces on the same foundation.
+  </Card>
+  <Card title="VH3 AI for BigChange users" icon="plug" href="/guides/bigchange">
+    If your operation already runs on BigChange, start here.
+  </Card>
+</CardGroup>

@@ -3,31 +3,33 @@ title: Changelog
 description: New features, updates, and fixes shipped in VH3 AI
 ---
 
-<Update label="2026-08-14" description="Week of 10–14 August 2026" tags={["Connect", "Integrations", "API"]}>
+<Update label="2026-08-20" description="Week of 17–20 August 2026" tags={["Connie", "Connect", "API"]}>
 
 <div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
   <Badge color="blue">Connect</Badge>
-  <Badge color="green">Integrations</Badge>
   <Badge color="gray">API</Badge>
 </div>
 
 ## New features
 
-**VH3 Connect app documentation.** Full product docs for VH3 Connect at [app.vh3.ai](https://app.vh3.ai) are live. Coverage includes [sign-in](/connect/sign-in), [sign-up](/connect/sign-up), the [app overview](/connect/app-overview), and [dashboard](/connect/dashboard). Daily work pages cover [jobs](/connect/jobs), [contacts](/connect/contacts), [cases](/connect/cases), [search](/connect/search), [notifications](/connect/notifications), [knowledge base](/connect/knowledge-base), and [sales and quotes](/connect/sales). Admin pages cover [integrations](/connect/integrations), [company settings](/connect/company-settings), and [billing](/connect/billing). Start at the [Connect overview](/connect/overview).
+**Quote drafts from follow-on work.** After a job, VH3 can assemble a draft Quote Document from the documented follow-on: catalog materials, Rate Set labour, and a letter that follows the priced lines. An engineer or estimator reviews and approves before anything goes to the customer. See [Sales and quotes](/connect/sales).
 
-**AI assistants in Connect.** Connie, Tia, and Salma are documented as first-class assistants in the app. Connie handles operational questions from the header, job side chat, contact drawer, and Advanced search. Tia is grounded in a specific knowledge base document. Salma is grounded in a specific quote. See [AI assistants](/connect/ai-assistants) and [Ask Connie](/connect/ask-connie).
+**Estimate from the Intelligence API.** Server-side automations can start that same quote path with `company_id` and `api_key` on the [VH3 AI Intelligence API](/api-reference/overview). Recipients are the list you pass. The commercial send stays the Quote Document approve path.
 
-**Quotient native integration.** List and fetch Quotient quotations directly from the intelligence API when the Quotient integration is switched on for your company. `GET /quotient/list` supports pagination, sort, and creation-date filters. `GET /quotient/get` returns a single quote. Both endpoints support slim (default) and `full=true` payloads. Contact your account manager to enable it. See the [Quotient API](/api-reference/quotient).
+**Guides for operating-system builds and corrections.** New guides on connecting the stack around the FMS you already run, and on keeping the judgment your team applies to AI inside your account. See [Building an AI-native operating system](/guides/ai-native-operating-system) and [Every correction is teaching something](/guides/every-correction-is-teaching-something).
 
 ## Updates
 
-**Teams and Users are separate in Connect.** [Teams](/connect/teams) are operational ownership groups (regions, portfolios, incident rooms) that get assigned to Cases. [Users and roles](/connect/users-and-roles) covers company access and product roles (Admin, Manager, Developer, Engineer, Standard) under Profile. The old combined page redirects to Teams.
+**Catalog sold units.** Measured lengths and pack sizes on a quote line convert to how the catalog sells the part. A 1,200 mm batten prices as one 3.9 m length, not millimetres times the length price.
 
-**VH3 AI Intelligence API name.** The server-to-server API previously labelled "FSI" is now the **VH3 AI Intelligence API** across the [API overview](/api-reference/overview) and OpenAPI spec. Base URL, auth, and endpoints are unchanged.
+**Blanking plates stay plates.** When the follow-on asks for blanks, the quote does not attach a consumer unit. Named fittings on the documented next job still price as usual.
 
-**Clearer auth guidance on Cases and Teams.** [Cases](/api-reference/cases) and [Teams](/api-reference/teams) reference pages now spell out that server-to-server calls require `company_id` + tenant `api_key` in the body (writes) or query (reads). Browser and mobile clients should use JWT-authenticated Connect surfaces instead.
+**Job Ask Connie session titles.** Job-scoped Connie sessions get a usable title after the first customer-summary turn, so they are easier to find in history. See [Ask Connie](/connect/ask-connie) and the [Connie API](/api-reference/connie).
 
-**Find your API key in Connect.** Your `company_id` and `api_key` are visible in Connect under Profile / company settings at [app.vh3.ai](https://app.vh3.ai). See [Authentication](/authentication).
+## Fixes
+
+**Steadier first read after a quiet period.** Ask Connie and quote requests recover more cleanly when the intelligence layer has been idle.
 
 </Update>
 
