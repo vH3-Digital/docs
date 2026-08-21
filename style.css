@@ -3,3 +3,104 @@ footer a[href*="utm_campaign=poweredBy"],
 footer a[href*="mintlify.com?utm_campaign=poweredBy"] {
   display: none !important;
 }
+
+/* Mermaid: transparent canvas, brand lilac on nodes and lines only.
+   Subgraphs stay clear (no yellow, no grey slabs, no filled cluster boxes). */
+:root {
+  --vh3-mermaid-node: #f3ecfb;
+  --vh3-mermaid-stroke: #a379e7;
+  --vh3-mermaid-text: #1c1228;
+  --vh3-mermaid-line: #7b4fc4;
+  --vh3-mermaid-cluster-title: #1c1228;
+  --vh3-mermaid-message: #1c1228;
+}
+
+.dark {
+  --vh3-mermaid-node: #f3ecfb;
+  --vh3-mermaid-stroke: #c4a6f0;
+  --vh3-mermaid-text: #1c1228;
+  --vh3-mermaid-line: #c4a6f0;
+  --vh3-mermaid-cluster-title: #f5f0fa;
+  --vh3-mermaid-message: #f5f0fa;
+}
+
+svg[id^="mermaid"] .cluster rect,
+svg[id^="mermaid"] .cluster-rect {
+  fill: none !important;
+  stroke: none !important;
+}
+
+svg[id^="mermaid"] .node rect,
+svg[id^="mermaid"] .node circle,
+svg[id^="mermaid"] .node ellipse,
+svg[id^="mermaid"] .node polygon,
+svg[id^="mermaid"] .node path,
+svg[id^="mermaid"] rect.actor,
+svg[id^="mermaid"] .actor > rect,
+svg[id^="mermaid"] .actor-man circle,
+svg[id^="mermaid"] rect.note,
+svg[id^="mermaid"] .activation0,
+svg[id^="mermaid"] .activation1,
+svg[id^="mermaid"] .activation2 {
+  fill: var(--vh3-mermaid-node) !important;
+  stroke: var(--vh3-mermaid-stroke) !important;
+}
+
+svg[id^="mermaid"] .edgePath .path,
+svg[id^="mermaid"] .flowchart-link,
+svg[id^="mermaid"] path.flowchart-link,
+svg[id^="mermaid"] .messageLine0,
+svg[id^="mermaid"] .messageLine1,
+svg[id^="mermaid"] line.actor-line,
+svg[id^="mermaid"] .actor-line,
+svg[id^="mermaid"] .loopLine,
+svg[id^="mermaid"] .actor-man line {
+  fill: none !important;
+  stroke: var(--vh3-mermaid-line) !important;
+}
+
+svg[id^="mermaid"] marker path,
+svg[id^="mermaid"] .arrowheadPath {
+  fill: var(--vh3-mermaid-line) !important;
+  stroke: var(--vh3-mermaid-line) !important;
+}
+
+svg[id^="mermaid"] .edgeLabel rect,
+svg[id^="mermaid"] .labelBox {
+  fill: #ffffff !important;
+  stroke: var(--vh3-mermaid-stroke) !important;
+}
+
+.dark svg[id^="mermaid"] .edgeLabel rect,
+.dark svg[id^="mermaid"] .labelBox {
+  fill: var(--vh3-mermaid-node) !important;
+}
+
+svg[id^="mermaid"] .nodeLabel,
+svg[id^="mermaid"] .nodeLabel span,
+svg[id^="mermaid"] .node foreignObject,
+svg[id^="mermaid"] .node foreignObject span,
+svg[id^="mermaid"] .node foreignObject div,
+svg[id^="mermaid"] .node foreignObject p,
+svg[id^="mermaid"] .noteText,
+svg[id^="mermaid"] .actor tspan {
+  color: var(--vh3-mermaid-text) !important;
+  fill: var(--vh3-mermaid-text) !important;
+}
+
+svg[id^="mermaid"] .cluster-label,
+svg[id^="mermaid"] .cluster-label span,
+svg[id^="mermaid"] .cluster-label foreignObject,
+svg[id^="mermaid"] .cluster-label foreignObject span,
+svg[id^="mermaid"] .cluster-label foreignObject div {
+  color: var(--vh3-mermaid-cluster-title) !important;
+  fill: var(--vh3-mermaid-cluster-title) !important;
+}
+
+svg[id^="mermaid"] .edgeLabel,
+svg[id^="mermaid"] .edgeLabel span,
+svg[id^="mermaid"] .messageText,
+svg[id^="mermaid"] .loopText {
+  color: var(--vh3-mermaid-message) !important;
+  fill: var(--vh3-mermaid-message) !important;
+}

@@ -3,6 +3,43 @@ title: Changelog
 description: New features, updates, and fixes shipped in VH3 AI
 ---
 
+<Update label="2026-08-21" description="Week of 14–21 August 2026" tags={["Connie", "Connect"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
+  <Badge color="blue">Connect</Badge>
+</div>
+
+## New features
+
+**Quote Documents in Connect.** Sidebar **Quote Documents** (`/quoting/documents`) is the working commercial record: letter, lines, Price, versions, and activity. Sales performance stays the Quotient quote list. See [Quote Documents](/connect/quote-documents) and [Sales and quotes](/connect/sales).
+
+**Ask Salma on a Quote Document.** Streamed chat, apply or discard proposals, sessions per document. Full-screen on a phone; split pane on desktop. See [Quote Documents](/connect/quote-documents) and [AI assistants](/connect/ai-assistants).
+
+**Add catalog parts on a quote.** Search make, part number, or title and add a line with quantity. Parts also appear in header search. See [Quote Documents](/connect/quote-documents) and [Search](/connect/search).
+
+**My Cases and Create case.** Cases opens on **My Cases**. **Create case** is on the list: details and Team, then optional people. Filters match Jobs (status, type, priority). See [Cases](/connect/cases).
+
+## Updates
+
+**Quote Price and NTE.** The document header shows Total and Net. The Price tab breaks out buckets, VAT, and unpriced lines. An NTE over/under banner appears; Approve is still available when the quote is over NTE. See [Quote Documents](/connect/quote-documents).
+
+**Job and Contact Connie.** The same streamed Connie as the global drawer. Job sessions are listed by customer. Voice notes sit on the composer. See [Ask Connie](/connect/ask-connie) and [Jobs](/connect/jobs).
+
+**Chat chrome.** **New chat**, **Sessions**, and **Close** sit in the header. **+** opens prompt commands. Thinking chrome and tool chips are quieter; answers stream live. See [Ask Connie](/connect/ask-connie).
+
+**Sidebar rail.** Desktop nav starts collapsed; hover or pin to expand. Quote Documents and Teams are in the rail. See [App overview](/connect/app-overview).
+
+## Fixes
+
+**Quote cards show the job Ref**, the reference your team uses.
+
+**Parts notes keep line breaks** in markdown preview.
+
+**Empty Case tags** no longer break the list.
+
+</Update>
+
 <Update label="2026-08-20" description="Week of 17–20 August 2026" tags={["Connie", "Connect", "API"]}>
 
 <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -13,7 +50,7 @@ description: New features, updates, and fixes shipped in VH3 AI
 
 ## New features
 
-**Quote drafts from follow-on work.** After a job, VH3 can assemble a draft Quote Document from the documented follow-on: catalog materials, Rate Set labour, and a letter that follows the priced lines. An engineer or estimator reviews and approves before anything goes to the customer. See [Sales and quotes](/connect/sales).
+**Quote drafts from follow-on work.** After a job, VH3 can assemble a draft Quote Document from the documented follow-on: catalog materials, Rate Set labour, and a letter that follows the priced lines. Open **Quote Documents** in Connect to review the letter and lines. An engineer or estimator reviews and approves before anything goes to the customer. See [Quote Documents](/connect/quote-documents).
 
 **Estimate from the Intelligence API.** Server-side automations can start that same quote path with `company_id` and `api_key` on the [VH3 AI Intelligence API](/api-reference/overview). Recipients are the list you pass. The commercial send stays the Quote Document approve path.
 

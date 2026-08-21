@@ -1,6 +1,6 @@
 ---
 title: App overview
-description: Sidebar map of VH3 Connect — jobs, Cases, Teams, Connie, and admin.
+description: Sidebar map of VH3 Connect — jobs, Quote Documents, Cases, Teams, Connie, and admin.
 ---
 
 # App overview
@@ -9,6 +9,8 @@ VH3 Connect uses a left sidebar for primary areas, a header for search and Conni
 
 **URL:** [https://app.vh3.ai](https://app.vh3.ai)
 
+On desktop the sidebar starts as an icon rail. Hover or pin it to expand the labels.
+
 ## Sidebar
 
 | Area | Path | Purpose |
@@ -16,39 +18,44 @@ VH3 Connect uses a left sidebar for primary areas, a header for search and Conni
 | Dashboard | `/` | Stats and activity tabs |
 | Jobs | `/jobs` | Active, Planned, Overview (+ job detail drawer) |
 | Knowledge base | `/knowledge` | Documents, upload, Tia |
-| Sales performance | `/sales` | Quotes and Salma |
+| Quote Documents | `/quoting/documents` | VH3 follow-on drafts — letter, lines, Price, Salma |
+| Sales performance | `/sales` | Quotient quotes |
 | Contacts | `/contacts` | Directory and contact drawer (Connie) |
-| Cases | `/cases` | Owned work — status, evidence, Assigned Team |
+| Cases | `/cases` | My Cases / All Cases — status, evidence, Assigned Team |
+| Teams | `/teams` | Ownership groups for Cases and portfolios |
 | Notifications | `/notifications` | Unread, Read, Cleared |
 | Integrations | `/integrations` | Connected / available systems, CSV upload |
 
-Operational **Teams** live with Cases: assign an ownership group on a Case, manage membership for regions and portfolios. See [Teams](/connect/teams) and [Cases](/connect/cases). Company user invites live under Profile → [Users and roles](/connect/users-and-roles).
+Company user invites live under Profile → [Users and roles](/connect/users-and-roles).
 
 ## Header
 
-- **Search** — global overlay; **Advanced search** at `/search` (Create case, Ask Connie).
+- **Search** — global overlay (jobs, contacts, and a parts preview); **Advanced search** at `/search` (Create case, Ask Connie).
 - **Ask Connie** — global Connie drawer on every signed-in screen.
 
 ## Profile
 
-Open **Profile** (`/profile`) for **User Profile**, **About Company** (API Key and **Manage members**), **Subscription**, and **Invoices** (role-gated).
+Open **Profile** (`/profile`) for **User Profile**, **About Company** (API Key and **Manage members**), **Subscription**, and **Invoices** (role-gated). The user menu sits on the sidebar rail.
 
 ## Available today
 
 - Sign-in, invite/join, register, verify, company create, BigChange setup
 - Dashboard **Stats** (prefer this over **Recent Activity** until the activity feed is fully live)
 - Jobs Active / Planned / Overview and job detail tabs
-- Knowledge upload/share + Tia; Sales Quotes + Salma; Contacts + Connie
-- Cases with scope/status filters, Assigned Team, participants, comments, and activity
-- Teams as ownership groups on Cases (create and manage via the Teams model; Connie can assign)
-- Global and advanced search; Create case / Ask Connie from a selection
+- Knowledge upload/share + Tia
+- Quote Documents (list, letter, lines, Price, versions, activity, Ask Salma)
+- Sales performance Quotes (Quotient)
+- Contacts + Connie
+- Cases: My Cases / All Cases, Create case on the list, Assigned Team, participants, comments, and activity
+- Teams as a sidebar area (`/teams`) and as Assigned Team on a Case
+- Global and advanced search, including a parts preview in header search
 - Notifications with Read/Clear and filters
 - Integrations portal + CSV **Upload file**
 - Profile invite (Admin/Manager) and company API key
 
 ## Not in the app yet
 
-- Workflow Builder
+- Workflow Builder — in development; it is not in the sidebar today
 - Dedicated engineers / vehicles / resources pages
 - Jobs **Stats** tab and Sales **Report** tab (present but disabled)
 - Some header-search filters that are not backed yet
@@ -57,6 +64,7 @@ Open **Profile** (`/profile`) for **User Profile**, **About Company** (API Key a
 ## Related
 
 - [Dashboard](/connect/dashboard)
+- [Quote Documents](/connect/quote-documents)
 - [Cases](/connect/cases)
 - [Teams](/connect/teams)
 - [Ask Connie](/connect/ask-connie)

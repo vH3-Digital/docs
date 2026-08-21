@@ -65,6 +65,7 @@
               "connect/dashboard",
               "connect/jobs",
               "connect/knowledge-base",
+              "connect/quote-documents",
               "connect/sales",
               "connect/contacts",
               "connect/cases",

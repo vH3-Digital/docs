@@ -1,0 +1,101 @@
+---
+title: Quote Documents
+description: Work the letter, lines, and price for follow-on work — then ask Salma to propose edits.
+---
+
+# Quote Documents
+
+Quote Documents are VH3’s working commercial record for follow-on work. Open **Quote Documents** in the sidebar, review the letter and lines, add catalog parts, check Price against the not-to-exceed (NTE) figure, snapshot a version, then ask Salma to propose edits.
+
+**Path:** `/quoting/documents`
+
+<Card title="Sales performance lists Quotient quotes" icon="chart-line" href="/connect/sales">
+  Open **Sales performance** (`/sales`) for quotes from Quotient.
+</Card>
+
+<Note>
+**Approve** records an internal checkpoint. Sending the quote to the customer and capturing acceptance still happen outside this screen.
+</Note>
+
+## Browse Quote Documents
+
+1. Open **Quote Documents** in the sidebar.
+2. Stay on **Live**, or switch to **Archived**.
+3. Search with **Search Quote Documents…**.
+4. Open a card, or use the card menu for **Reopen**, **Duplicate**, or **Archive** when those actions are available.
+
+Each card shows customer, site, engineer, job **Ref** (the job reference your team uses), type, status, run status, total, and whether the priced net is over or under NTE.
+
+On a phone, the list uses a tighter layout. Open a document at `/quoting/documents/:documentId`.
+
+## Work a document
+
+| Tab | What you do |
+|---|---|
+| **Quote** | Read and edit the commercial letter |
+| **Items** | Review quote lines; add a catalog part |
+| **Price** | Check buckets, VAT, unpriced lines, and NTE |
+| **Versions** | Snapshot the live document, or open a past version |
+| **Activity** | Follow who changed what |
+
+The header shows **Total** and **Net**, plus how many lines are still unpriced. An NTE banner appears when the priced net is over or under the agreed cap. You can still **Approve** when the quote is over NTE — the banner says so.
+
+### Quote
+
+**Commercial Narrative** is the letter:
+
+- **Overview** — headline and summary of works
+- **Source Job** — collapsed by default; expand when you need the originating job
+- **Background**, **Recommended works**, **Why needed**, **Exclusions**, **Assumptions**, **Validity**, **Next steps**
+
+Edit on this tab. If someone else saved first, refresh before you keep typing.
+
+### Items
+
+**Quote Lines** lists description, quantity, unit, sell, and flags such as POA, TBC, or indicative.
+
+**Add part** searches the parts catalog by make, part number, or title. Set the quantity, then add the line.
+
+### Price
+
+The Price tab breaks out labour, materials, and the other buckets, then net priced, VAT %, unpriced counts, total, and the NTE row.
+
+### Versions
+
+Create a version to checkpoint the live document. Opening an older version is read-only. Salma still works on the live document.
+
+### Activity
+
+The Activity tab is the timeline for this document.
+
+## Lifecycle
+
+Actions depend on the document’s status and your permissions. Typical ones:
+
+- **Approve** — internal checkpoint (see the note above)
+- **Accept** / **Decline**
+- **Reopen** / **Duplicate** / **Archive**
+
+## Ask Salma
+
+On a Quote Document, **Ask Salma** is scoped to that document — the letter, lines, and price in front of you.
+
+- **Desktop** — right-hand split pane
+- **Phone** — full-screen Ask Salma
+
+In the chat header: **New chat**, **Sessions**, and **Close**. Sessions belong to this document.
+
+Ask in plain language. Answers stream live, with thinking chrome and compact tool chips while Salma works. After a turn, a proposal card can preview narrative and line changes — **Apply** or **Discard**.
+
+In the composer, **+** opens saved prompts. The mic on the composer records a voice note.
+
+## Automate an estimate
+
+From n8n, Salma › Generate Estimate starts a Quote Run for a job. You must supply recipient emails on the node; they are not taken from the site contact. The result lands here as a Quote Document. See the [n8n community node](/n8n-node) and [node reference](/agent-kits/n8n-node-reference).
+
+## Related
+
+- [Sales and quotes](/connect/sales)
+- [AI assistants](/connect/ai-assistants)
+- [Search](/connect/search)
+- [n8n community node](/n8n-node)
