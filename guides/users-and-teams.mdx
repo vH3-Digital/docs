@@ -132,6 +132,7 @@ Users still matter. This page focuses on the identity patterns that support team
 - **People sign in** through VH3 Connect or your custom app and receive a JWT.
 - **Coding agents and MCP clients** authenticate as a named user with a JWT.
 - **Server-side automations** use `company_id` + `api_key` and can set `actor_type` such as `system` or `automation`.
+- **n8n workflows** use the [VH3 AI community node](/n8n-node) (`n8n-nodes-vh3ai@0.11.0`): Team for members and entity links, and Case › Assign Team to set or clear ownership (Team ID `0` clears it).
 
 That identity is recorded on cases and activities so the timeline shows whether a human, agent, or automation created the work.
 
@@ -199,6 +200,9 @@ If you are implementing this in a custom app, start with the team/entity links a
   </Card>
   <Card title="Agent observability" icon="chart-mixed" href="/guides/agent-observability">
     Evidence standards for human review of agent output.
+  </Card>
+  <Card title="n8n Community Node" icon="puzzle-piece" href="/n8n-node">
+    Teams, Assign Team, Contact Feed, Quote Documents, and Salma on the verified community node.
   </Card>
   <Card title="Deploying secure apps" icon="shield" href="/guides/deploying-secure-apps">
     Auth, JWT, API-key, and governance patterns for custom apps.

@@ -162,6 +162,7 @@ Setup: [github.com/czlonkowski/n8n-mcp](https://github.com/czlonkowski/n8n-mcp)
 | Property | Value |
 |---|---|
 | NPM package | `n8n-nodes-vh3ai` |
+| Package version | `0.11.0` |
 | Node type name | `vh3Ai` |
 | Display name | `VH3 AI` |
 | Credential type | `vh3AiApi` |
@@ -193,7 +194,7 @@ When generating a VH3 AI node block in JSON, reference the credential as:
 
 ## 3. Resource taxonomy
 
-The node exposes **30 resources** split across three internal API layers. This split is invisible in the UI but critical for understanding timeout, latency, and data freshness expectations.
+The node exposes **38 resources** split across three internal API layers. This split is invisible in the UI but critical for understanding timeout, latency, and data freshness expectations.
 
 ### 3a. BigChange data resources (CRUD)
 
@@ -235,19 +236,24 @@ These call the FSI intelligence layer. They are **slower** (2–25 s depending o
 | Display name | `resource` value | Latency tier | What it covers |
 |---|---|---|---|
 | Job Feed (VH3 AI) | `jobFeed` | Fast (\< 3 s) | Enriched, paginated job feed with aggregation and analytics |
+| Contact Feed (VH3 AI) | `contactFeed` | Fast | Enriched customer/contact list and get-one with operational snapshot |
 | Search (VH3 AI) | `search` | Fast (\< 3 s) | Semantic and outcome search, autocomplete, customer knowledge base |
 | Sentinel (VH3 AI) | `sentinel` | Medium (3–8 s) | Proactive monitoring checks |
 | Pulse (VH3 AI) | `pulse` | Fast | Cached business-health dashboard snapshot |
 | Email (VH3 AI) | `email` | Fast–Medium | Email triage: classify, ingest, batch classify, list rules |
 | Briefing (VH3 AI) | `briefing` | Medium (5–10 s) | Pre-visit intelligence briefing + call script for an engineer |
-| Case (VH3 AI) | `cases` | Fast | Case management: create, update, transition, comment, link items |
-| Connie (VH3 AI) | `connie` | Medium (5–15 s) | Conversational AI assistant: chat, sessions, history search |
+| Case (VH3 AI) | `cases` | Fast | Case management: create, update, transition, assign team, comment, link items |
+| Team (VH3 AI) | `teams` | Fast | Create teams, members, entity links, reverse lookup |
+| Connie (VH3 AI) | `connie` | Medium (5–15 s) | Conversational AI assistant: chat, generate summary, sessions, history search |
+| Salma (VH3 AI) | `salma` | Slow (10–25 s) | Quote Run estimate for a job; recipients must be supplied on the node |
+| Quote Document (VH3 AI) | `quoteDocuments` | Fast–Medium | VH3-owned quotes: list/get/create, commercial and lifecycle, revisions, rate cards, parts catalog |
+| Quotient (VH3 AI) | `quotient` | Fast | List and get Quotient quotations (requires Quotient native integration) |
 | Report (VH3 AI) | `reports` | Slow (10–25 s) | Operational reports (daily, weekly, monthly) with narrative |
 | Investigate (VH3 AI) | `investigate` | Slow (10–25 s) | Multi-step hybrid vector + graph investigation |
 | Account Report (VH3 AI) | `accountReport` | Slow (10–25 s) | Monthly account review across full parent-child hierarchy |
 | Intelligence (VH3 AI) | `intelligence` | Medium | Job type profiling — list, get, generate intelligence profiles |
 | Weather (VH3 AI) | `weather` | Fast | Weather for jobs, sites, forecasts, historical lookups |
-| User (VH3 AI) | `users` | Fast | User management — list, invite, update role, delete |
+| User (VH3 AI) | `users` | Fast | User management — list, list user teams, invite, update role, delete |
 
 ### 3d. FSI-first principle
 
@@ -258,13 +264,14 @@ The FSI layer ingests and enriches all job data continuously. For read operation
 | Question | Prefer | Reason |
 |---|---|---|
 | List or search jobs | `jobFeed` (VH3 AI) over `jobs` (BigChange) | Enriched, cached, supports aggregation |
+| List customers with operational context | `contactFeed` (VH3 AI) over `contacts` (BigChange) | Snapshot plus optional customer summary |
 | What needs attention? | `sentinel` (VH3 AI) | Pre-computed, no extra API calls |
 | Business health snapshot | `pulse` (VH3 AI) | Cached dashboard, single call |
 | Find a customer by name | `search → autocomplete` (VH3 AI) | Fuzzy match, no ID required |
 | Historical job analysis | `jobFeed → aggregateJobs` (VH3 AI) | Built-in metrics, period comparison |
 
 <Note>
-The intelligence layer does not write to BigChange. It is read-only for operational intelligence. To create or modify records — jobs, contacts, invoices, notes — use the BigChange CRUD resources (section 3a).
+The intelligence layer does not write to BigChange. To create or modify FMS records — jobs, contacts, invoices, notes — use the BigChange CRUD resources (section 3a). Cases, Teams, Quote Documents, and Salma estimates write on the VH3 tenant API.
 </Note>
 
 ---
@@ -321,9 +328,10 @@ Use this table when the user's intent is expressed in natural language, to selec
 | "Show me jobs for customer X" | `jobFeed` | `listJobFeed` — filter: `contactId` |
 | "Show me all jobs for an account including children" | `jobFeed` | `listAccountJobFeed` |
 | "Get the detail for job FAB303178" | `jobFeed` | `getEnrichedJob` |
-| "Find jobs like this one / similar past work" | `search` | `searchOutcomes` or `searchIntake` |
-| "What do we know about this customer?" | `search` | `getSummaryByContact` or `searchSummarySections` |
+| "Find jobs like this one / similar past work" | `search` | `searchOutcomes` or `searchOutcomesEnriched` |
+| "What do we know about this customer?" | `search` or `contactFeed` | `getSummaryByContact` / `searchSummarySections`, or `getEnrichedContact` |
 | "Find a customer / engineer / site" | `search` | `autocomplete` |
+| "List customers with operational snapshot" | `contactFeed` | `listContactFeed` |
 | "What needs attention today?" | `sentinel` | `runSentinels` (sentinelId: `all`) |
 | "Is there a pattern of problems at a site?" | `sentinel` | `runSentinels` — `new_problem_site` or `site_deterioration` |
 | "Why are roofing jobs running late?" | `investigate` | `runInvestigation` |
@@ -336,7 +344,14 @@ Use this table when the user's intent is expressed in natural language, to selec
 | "Extract job data from this FM portal email" | `email` | `ingestEmail` |
 | "What's our current business health?" | `pulse` | `getPulse` |
 | "Ask Connie about..." | `connie` | `connieChat` |
+| "Generate a contact summary" | `connie` | `connieGenerateSummary` |
 | "Create a case for this incident" | `cases` | `createCase` |
+| "Assign or clear the team on a case" | `cases` | `assignTeam` — Team ID `0` clears it |
+| "Create a team / who is on this job" | `teams` | `createTeam` / `listTeamsForEntity` |
+| "Draft a Quote Run estimate for this job" | `salma` | `generateEstimate` — pass recipient emails on the node |
+| "List VH3 quote documents" | `quoteDocuments` | `listQuoteDocuments` |
+| "List Quotient quotations" | `quotient` | `listQuotientQuotes` |
+| "Which teams is this user on?" | `users` | `listUserTeams` |
 | "Create / update a job" | `jobs` | `create` / `update` |
 | "Create / update a contact" | `contacts` | `create` / `update` |
 | "What's the weather for this job?" | `weather` | `getWeatherForJob` |
@@ -369,12 +384,13 @@ Use this table when the user's intent is expressed in natural language, to selec
 |---|---|---|
 | `autocomplete` | `query`, `typeFilter` (multi: `customer`, `engineer`, `job`, `person`, `site`) | Fast fuzzy lookup across all entity types |
 | `searchOutcomes` | `queryText`, `contactId`, `resourceId`, `typeId`, `maxAgeMonths` | Semantic search on job diagnostic summaries |
+| `searchOutcomesEnriched` | same as `searchOutcomes`, plus `dateFrom`, `dateTo`, `status`, `result` | Server-side date, status, and result filters; related job, site, and customer context |
 | `searchIntake` | `queryText`, `contactId`, `resourceId`, `typeId` | Semantic search with knowledge graph enrichment |
 | `searchIntakeBasic` | `queryText` | Same as above, without graph enrichment (faster) |
 | `searchSummarySections` | `query`, `contactId`, `sectionKey` | Search the CustomerSummary knowledge base. Section keys: `customer_overview`, `job_history_patterns`, `operational_performance`, `risk_opportunity`, `systems_equipment`, `communication_summary`, `key_analyses` |
 | `getSummaryByContact` | `contactId`, `fullReport` | Retrieves all stored CustomerSummary sections. Set `fullReport: true` for assembled markdown. |
 
-Date filtering on semantic search operations is applied **client-side** after the API responds. Set `maxAgeMonths` to limit result age.
+Date filtering on `searchOutcomes` and intake operations is applied **client-side** after the API responds. Set `maxAgeMonths` to limit result age. `searchOutcomesEnriched` applies date, status, and result filters **server-side**. Existing `searchOutcomes` workflows are unchanged.
 
 ### 6.3 Sentinel (`sentinel`)
 
@@ -417,6 +433,7 @@ Set workflow/node timeout to ≥ 30 s for narrative reports.
 | `getCase` | Returns participants, items, latest activity |
 | `updateCase` | Patch — only provided fields change |
 | `transitionCase` | Lifecycle-validated status changes. Statuses: `draft` → `open` → `in_progress` → `under_review` → `resolved` → `closed` / `archived` |
+| `assignTeam` | Sets the Case Assigned Team. Team ID `0` clears it |
 | `addComment` | Adds to activity timeline |
 | `addCaseItem` | Links a job, customer, site, engineer, job group, note, or document |
 | `listCasesForItem` | Reverse lookup — find all cases referencing a specific record |
@@ -426,7 +443,8 @@ Set workflow/node timeout to ≥ 30 s for narrative reports.
 | Operation | Key inputs | Notes |
 |---|---|---|
 | `connieChat` | `message`, `sessionId` (optional), `contactId`, `userId` | Pass `sessionId` to continue an existing conversation. Set `experimentalMode: true` for the experimental pipeline. |
-| `listSessions` | `userId`, `contactId` | — |
+| `connieGenerateSummary` | `contactId` (required) | Generate a Connie summary for a contact. Optional `industry`. |
+| `connieListSessions` | `userId`, `contactId` | — |
 | `connieGetSessionMessages` | `sessionId` | — |
 | `connieSearchHistory` | `query`, `userId`, `contactId` | — |
 
@@ -495,10 +513,56 @@ For AI Agent workflows, use `connieChat` with `sessionKey`-scoped `sessionId` so
 | Operation | Key inputs | Notes |
 |---|---|---|
 | `listUsers` | — | Returns active users only |
+| `listUserTeams` | `userId` | Teams the user belongs to |
 | `listInvites` | — | Returns pending (unaccepted) invitations |
 | `inviteUser` | `email`, `role`, `companyName`, `inviterName` | Roles: `admin`, `manager`, `user` |
 | `updateUserRole` | `userId`, `role` | — |
 | `deleteUser` | `userId` | Soft-delete (archive) — not permanent |
+
+### 6.15 Teams (`teams`)
+
+| Operation | Key inputs | Notes |
+|---|---|---|
+| `createTeam` | `name` | Optional purpose, description, metadata |
+| `listTeams` / `searchTeams` | filters | Paginated catalogue |
+| `getTeam` / `updateTeam` | `teamId` | Members and entity links on get |
+| `addTeamMember` / `removeTeamMember` | `userId` / `membershipId`, `role` | Roles: `owner`, `lead`, `member`, `observer` |
+| `listTeamMembers` | `teamId` | — |
+| `addTeamEntity` / `removeTeamEntity` | `entityType`, `entityId` | Types include `job`, `customer`, `site`, `engineer`, `job_group`, `document`, `note`, `case` |
+| `listTeamEntities` | `teamId` | Optional `entityType` filter |
+| `listTeamsForEntity` | `entityType`, `entityId` | Reverse lookup — which teams an entity belongs to |
+
+### 6.16 Contact Feed (`contactFeed`)
+
+| Operation | Key inputs | Notes |
+|---|---|---|
+| `listContactFeed` | `q`, group, reference, account status | Paginated enriched customer/contact list. `simplify` for compact payloads. |
+| `getEnrichedContact` | `contactId` | Operational snapshot; optional customer summary |
+
+Use `contactFeed` when you want VH3 context around a contact. Use `contacts` (BigChange) to create or edit FMS records.
+
+### 6.17 Quotient (`quotient`)
+
+| Operation | Key inputs | Notes |
+|---|---|---|
+| `listQuotientQuotes` | date window, status, `full` | Issued vs accepted date fields; slim payload unless `full` is on |
+| `getQuotientQuote` | UUID or quote number, `full` | Requires Quotient native integration |
+
+### 6.18 Quote Documents (`quoteDocuments`)
+
+| Operation | Notes |
+|---|---|
+| `listQuoteDocuments` / `getQuoteDocument` / `createQuoteDocument` | VH3-owned quotes from Quote Run |
+| `updateQuoteCommercial` / `updateQuoteLifecycle` | Commercial content and lifecycle status |
+| `listQuoteRevisions` / `getQuoteRevision` / `updateQuoteRevisionStatus` | Immutable revisions |
+| `listRateCards` / `listRateDefaults` | Rate cards and default pointers |
+| `listPartsCatalog` / `getManyParts` | Parts catalog for quote-time pricing |
+
+### 6.19 Salma (`salma`)
+
+| Operation | Key inputs | Notes |
+|---|---|---|
+| `generateEstimate` | `jobId` (required), `recipients` (required) | Quote Run estimate for a job. Recipient emails must be supplied on the node; they are not taken from the site contact. Optional `contactId`, `additionalGuidance`, `jobPayload`, `rateSetContactId`. |
 
 ---
 
@@ -595,7 +659,7 @@ Reply / next workflow step
 1. **System prompt**: Copy the system message from [/agent-kits/n8n-agents](/agent-kits/n8n-agents). It encodes the time-axis rules, identity scoping, and response format. Do not re-describe parameter enums in the system prompt — they live in the tool descriptions already.
 2. **Memory**: Use Buffer Window with `contextWindowLength: 10`. Set `sessionKey` to the channel ID or user ID so follow-up queries retain context.
 3. **Timeouts**: Set the VH3 AI Tool timeout to ≥ 30 s. Investigation and narrative reports regularly take 20–25 s; default short timeouts will fail silently.
-4. **Token cost**: Each tool call adds tokens. Prefer fast operations (`search`, `jobFeed`, `sentinel`) in high-frequency triggers. Reserve `investigate` and `reports` for steps that genuinely need language synthesis.
+4. **Token cost**: Each tool call adds tokens. Prefer fast operations (`search`, `jobFeed`, `contactFeed`, `sentinel`) in high-frequency triggers. Reserve `investigate`, `reports`, and `salma` for steps that genuinely need language synthesis.
 
 ### Combining the VH3 AI Tool with other LangChain sub-nodes
 
@@ -688,6 +752,15 @@ Outlook trigger (new email)
         → Reply email: confirmation with job reference
     → "Review":  send to human approval queue (email / Slack)
     → "Unprocessable" / "Rejected": log to spreadsheet / case and exit
+```
+
+### Pattern H: Follow-on job → Quote Run estimate
+
+```
+Webhook / job-complete trigger
+  → VH3 AI: Salma — Generate Estimate (jobId + recipients)
+  → VH3 AI: Quote Document — List / Get Document
+  → Email or Slack: notify estimator with the draft
 ```
 
 <Tip>

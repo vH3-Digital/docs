@@ -9,6 +9,8 @@ The VH3 AI n8n node is [verified on n8n](https://link.vh3.ai/n8n) — built and 
 
 The node provides a single unified credential type that covers both the BigChange API and the VH3 AI intelligence layer. Every operation is clearly labelled in the dropdown so builders can mix direct FMS operations with intelligence layer calls in the same workflow. The node is marked `usableAsTool: true`, which means n8n AI agents can call it directly without any additional configuration.
 
+Current package: [`n8n-nodes-vh3ai@0.11.0`](https://www.npmjs.com/package/n8n-nodes-vh3ai) (tag `v0.11.0`). Workflows on 0.10.x keep working.
+
 ## Installation
 
 **Recommended:** install from the [verified VH3 AI node on n8n](https://link.vh3.ai/n8n). Open the integration page, follow n8n's verified-node setup, then search for **VH3 AI** in the node panel.
@@ -19,7 +21,7 @@ The node provides a single unified credential type that covers both the BigChang
 n8n-nodes-vh3ai
 ```
 
-**Manual / development:**
+**Manual / development:** clone [VH3DIGITAL/n8n-nodes-vh3ai](https://github.com/VH3DIGITAL/n8n-nodes-vh3ai), then:
 
 ```bash
 cd n8n-nodes-vh3ai
@@ -38,7 +40,7 @@ n8n start
     Full read/write access to jobs, contacts, engineers, vehicles, worksheets, invoices, quotes, notes, stock, and reference data. List, get, create, edit, cancel, schedule, the complete operational surface.
   </Card>
   <Card title="VH3 AI intelligence" icon="brain">
-    Semantic search, enriched job feed, aggregated metrics, sentinels, reports, briefings, Connie chat, case management, email triage, intelligence profiles, pulse snapshots, and weather context for jobs and sites.
+    Semantic search, enriched job and contact feeds, teams, cases, Connie, Salma estimates, Quote Documents, Quotient, sentinels, reports, briefings, email triage, and weather context for jobs and sites.
   </Card>
   <Card title="Model-ready compact payloads" icon="bolt">
     Every read operation has a Simplify toggle. When on, the API returns compact payloads: empty values stripped, nested structures flattened, custom fields collapsed. Smaller tokens, lower cost, better agent performance.
@@ -59,8 +61,11 @@ n8n start
 | **Engineer** | List · Get · Create · Update · Groups |
 | **Vehicle** | List · Get · Create · Update |
 | **Worksheet** | List Definitions · Get · Questions · Answers |
+| **Worksheet Group** | List · Get |
 | **Invoice** | List · Get · Create · Edit · Cancel · Mark Sent/Paid · Line Items |
 | **Quote** | List · Get · Create · Edit · Mark Sent/Accepted/Rejected · Line Items |
+| **Sales Opportunity** | List · Get · Edit · Probabilities · Stages · Line Items |
+| **Purchase Order** | List · Get · Create · Edit · Series · Line Items |
 | **Note** | List · Get · Create · Edit · Progress Update · Types |
 | **Person** | List · Get · Create · Edit · Consent History |
 | **Job Group** | List · Get · Create · Edit · Complete · Financially Complete · Status History |
@@ -72,15 +77,21 @@ n8n start
 
 | Resource | Operations |
 |----------|------------|
-| **Search** | Search Outcomes · Search Intake · Autocomplete |
-| **Job Feed** | List Feed · Get Enriched Job · Aggregate Jobs (metrics, grouping, period-over-period) |
+| **Search** | Autocomplete · Search Outcomes · Search Outcomes (Enriched) · Search Intake · Search Intake (Basic) · Search Summary Sections · Get Summary By Contact |
+| **Job Feed** | List Feed · List Account Feed · Get Enriched Job · Aggregate Jobs (metrics, grouping, period-over-period) |
+| **Contact Feed** | List Contact Feed · Get Enriched Contact |
+| **Teams** | Create · Get · Update · Search · List · Members · Entity links · List Teams for Entity |
+| **Cases** | Create · Get · Update · List · Search · Transition · Assign Team · Comments · Activity · Items · Participants |
+| **Connie** | Chat · Generate Summary · List Sessions · Get Messages · Search History |
+| **Salma** | Generate Estimate (recipient emails are required on the node) |
+| **Quote Documents** | List · Get · Create · Update Commercial · Update Lifecycle · Revisions · Rate Cards · Rate Defaults · Parts Catalog |
+| **Quotient** | List Quotes · Get Quote |
 | **Sentinels** | Run All · Run Single · List Registry · Get Latest Results |
 | **Reports** | Generate Report · List Report Sections |
 | **Briefing** | Generate Engineer Pre-Visit Briefing |
 | **Account Report** | Generate Monthly Account Review |
-| **Connie** | Chat · List Sessions · Get Messages · Search History |
-| **Cases** | Create · Get · Update · List · Search · Transition · Comments · Activity · Items · Participants |
-| **Email** | Classify · Ingest Portal Email · List Triage Categories |
+| **Users** | List Users · List User Teams · List Invites · Invite · Update Role · Delete |
+| **Email** | Classify · Batch Classify · Ingest Portal Email · List Triage Categories · List Triage Rules |
 | **Intelligence** | List Profiles · Get Profile · Generate Profiles |
 | **Investigate** | Run Investigation (hybrid graph + semantic) |
 | **Pulse** | Get Business Health Snapshot |

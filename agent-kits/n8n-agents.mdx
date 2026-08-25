@@ -20,7 +20,7 @@ The [verified VH3 AI community node](https://link.vh3.ai/n8n) puts field service
 | **Production automation** | Scheduling, branching, retries, and observability on a platform teams already run in anger |
 | **Visual + optional code** | Operations can build on the canvas; technical teams can version workflows when they need to |
 | **1,000+ connectors** | Route VH3 intelligence to Gmail, Outlook, Slack, Teams, HubSpot, Xero, Google Sheets, and the rest of your stack |
-| **VH3 node + AI Tool** | 150+ operations (jobs, contacts, sentinels, reports, Connie, cases, email triage) with descriptions the agent reads at runtime |
+| **VH3 node + AI Tool** | 150+ operations (jobs, contacts, teams, cases, sentinels, reports, Connie, Salma, Quote Documents, email triage) with descriptions the agent reads at runtime |
 | **Included on your plan** | Full n8n automation platform on Core and above; community node free to install |
 | **Templates and managed hosting** | 100+ starter workflows, or `{your-company}.n8n.vh3.ai` with the node pre-installed |
 
@@ -170,10 +170,13 @@ Paste this **below** the main system message if you want a short reminder withou
 
 - Why / root cause / what is driving → investigate (or Connie for dialogue)
 - How many / rate / trend / top / compare → aggregate jobs
-- Show / list / find a job or account → job feed or search tools
+- Show / list / find a job or account → job feed, contact feed, or search tools
+- Similar past work / precedent → search outcomes, or search outcomes enriched when you need date/status filters and related context
 - What needs attention / alerts → run sentinels
 - Briefing / debrief / report → generate report
-- Similar past work / precedent → semantic search on outcomes or customer sections
+- Contact summary → Connie generate summary
+- Assign case ownership → cases assign team (team ID 0 clears it)
+- Draft a quote estimate for a job → Salma generate estimate (pass recipient emails)
 
 Follow each tool's description for parameters. Do not guess internal IDs.
 ````
