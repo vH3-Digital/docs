@@ -3,15 +3,27 @@ title: Changelog
 description: New features, updates, and fixes shipped in VH3 AI
 ---
 
-<Update label="2026-08-28" description="Week of 24–28 August 2026" tags={["Connect"]}>
+<Update label="2026-09-02" description="2 September 2026" tags={["API", "Integrations", "Platform"]}>
 
 <div className="flex flex-wrap items-center gap-2 mb-4">
-  <Badge color="blue">Connect</Badge>
+  <Badge color="gray">API</Badge>
+  <Badge color="green">Integrations</Badge>
+  <Badge color="yellow">Platform</Badge>
 </div>
+
+## New features
+
+**VH3 AI n8n node 0.12.0.** The community node now includes **Ingest General Email** for emails that do not come from a recognised portal. **Ingest Portal Email** remains available for structured portal work orders. Upgrade from n8n Community Nodes or npm. See the [n8n community node](/n8n-node) and [node reference](/agent-kits/n8n-node-reference).
 
 ## Updates
 
-**Indicative labour joins the draft total.** On a Quote Document, indicative labour lines show their sell price and count toward the draft total, so the number you see is the number the customer would get. Review those hours before you approve. See [Quote Documents](/connect/quote-documents).
+**Clearer email handling.** General inbox emails and portal work orders now use separate ingest actions. Each action extracts job details and sends uncertain results for review.
+
+**Source email traceability.** Portal email results can retain the original mailbox and message references, so the office can trace a request back to the source email.
+
+## Fixes
+
+**Safer property and unit resolution.** Housing work orders now favour the portal's labelled address and location details when the email contains conflicting flat or block references. If the source does not provide a reliable unit, VH3 leaves the unit blank for review.
 
 </Update>
 

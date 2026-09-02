@@ -132,7 +132,7 @@ The official n8n MCP knows n8n's built-in nodes and the Workflow SDK. It does **
 - Which resource and operation to choose for a given question (section 5)
 - That `jobFeed` should be preferred over `jobs` for reads (section 3d)
 - The correct `timeAxis` for performance vs intake questions (section 4)
-- How `ingestEmail` status values route downstream (section 6.8)
+- How General Email and Portal Email ingest results route downstream (section 6.8)
 - That custom field IDs must be fetched from the job type first (section 10)
 - The exact node type name (`n8n-nodes-vh3ai.vh3Ai`) and credential type (`vh3AiApi`)
 
@@ -162,7 +162,7 @@ Setup: [github.com/czlonkowski/n8n-mcp](https://github.com/czlonkowski/n8n-mcp)
 | Property | Value |
 |---|---|
 | NPM package | `n8n-nodes-vh3ai` |
-| Package version | `0.11.0` |
+| Package version | `0.12.0` |
 | Node type name | `vh3Ai` |
 | Display name | `VH3 AI` |
 | Credential type | `vh3AiApi` |
@@ -177,8 +177,8 @@ Four fields are stored in the credential. Two are fixed defaults and should not 
 
 | Field | Internal name | Required | Default | Notes |
 |---|---|---|---|---|
-| API Key | `apiKey` | Yes | — | Sent as `X-API-KEY` header on every request |
-| Company ID | `companyId` | Conditionally | — | Required for single-record operations (e.g. Get Job). Omit for list/feed operations. |
+| API Key | `apiKey` | Yes | — | Sent as a header for BigChange operations and in the request body for VH3 AI Intelligence operations. |
+| Company ID | `companyId` | Conditionally | — | Required for VH3 AI Intelligence operations and single-record BigChange operations. |
 | Base URL | `baseUrl` | Yes | `https://api.vh3connect.io` | BigChange Web Services proxy base |
 | FSI Base URL | `fsiBaseUrl` | Yes | `https://api.vh3connect.io/api:kP8T1CK7` | VH3 AI intelligence layer base |
 
@@ -240,7 +240,7 @@ These call the FSI intelligence layer. They are **slower** (2–25 s depending o
 | Search (VH3 AI) | `search` | Fast (\< 3 s) | Semantic and outcome search, autocomplete, customer knowledge base |
 | Sentinel (VH3 AI) | `sentinel` | Medium (3–8 s) | Proactive monitoring checks |
 | Pulse (VH3 AI) | `pulse` | Fast | Cached business-health dashboard snapshot |
-| Email (VH3 AI) | `email` | Fast–Medium | Email triage: classify, ingest, batch classify, list rules |
+| Email (VH3 AI) | `email` | Fast–Medium | Email triage: classify, general ingest, portal ingest, batch classify, list rules |
 | Briefing (VH3 AI) | `briefing` | Medium (5–10 s) | Pre-visit intelligence briefing + call script for an engineer |
 | Case (VH3 AI) | `cases` | Fast | Case management: create, update, transition, assign team, comment, link items |
 | Team (VH3 AI) | `teams` | Fast | Create teams, members, entity links, reverse lookup |
@@ -341,6 +341,7 @@ Use this table when the user's intent is expressed in natural language, to selec
 | "Monthly account review for client X" | `accountReport` | `generateAccountReport` |
 | "Brief the engineer before they visit" | `briefing` | `generateBriefing` |
 | "Classify this incoming email" | `email` | `classifyEmail` or `batchClassifyEmail` |
+| "Extract job data from this general inbox email" | `email` | `ingestGeneralEmail` |
 | "Extract job data from this FM portal email" | `email` | `ingestEmail` |
 | "What's our current business health?" | `pulse` | `getPulse` |
 | "Ask Connie about..." | `connie` | `connieChat` |
@@ -456,21 +457,22 @@ For AI Agent workflows, use `connieChat` with `sessionKey`-scoped `sessionId` so
 |---|---|
 | `classifyEmail` | `subject` + `emailBody` + `senderAddress` required. Supports attachment via URL or binary data. |
 | `batchClassifyEmail` | JSON array of up to 50 email objects. Portal/pre-filter hits are instant; novel emails consume LLM tokens. |
-| `ingestEmail` | Extracts structured job data from FM portal emails. Returns resolved entities and a `status` field. Always switch on `status` downstream. |
+| `ingestGeneralEmail` | Runs a non-portal email through full extraction and review. Uses the same fields and attachment options as Portal Ingest. |
+| `ingestEmail` | Extracts structured job data from recognised FM portal emails. Returns resolved entities and a `status` field. |
 | `listTriageCategories` | Returns active categories with priority, destination, and prompt rules. |
 | `listTaxonomyRules` | Filter by `phase`: `pre_classify` (noise filters) or `post_classify` (routing decisions). |
 
-**`ingestEmail` status values** — every implementation must route on this field:
+Both ingest operations return the same status values. Always switch on `status` downstream:
 
 | Status | Meaning |
 |---|---|
-| `Create` | Entities resolved, confident — proceed to job creation |
-| `Review` | Ambiguity or missing data — route to human review queue |
-| `Unprocessable` | Email could not be parsed as a portal job email |
-| `Rejected` | Matched a noise or exclusion rule — discard silently |
+| `auto_created` | New work passed the confidence checks. Use the returned job preview and creation result. |
+| `classified` | The email was understood, but it does not require a new job. |
+| `pending_review` | Customer, site, type, or other job details need human review. |
+| `unprocessable` | The email did not contain enough reliable information to continue. |
 
 <Note>
-**PDF vs HTML input**: Many FM portals send job orders as PDF attachments rather than HTML body. The `ingestEmail` operation accepts plain text (`emailText`) — it does not process binary PDFs directly. For PDF-based portals, extract the text first using n8n's **Extract From File** node before passing it to `ingestEmail`. Build your workflow to switch on whether the email has a PDF attachment and handle both paths feeding the same `ingestEmail` node.
+**Attachments:** General Email and Portal Email ingest accept files by URL or from n8n binary data. Supported work-order attachments can be sent with the email, so a separate **Extract From File** step is not required.
 </Note>
 
 ### 6.9 Briefing (`briefing`)
@@ -739,9 +741,9 @@ Outlook trigger (new email)
   → Switch: has PDF attachment?
     → [PDF]  Get Binary Attachment → Extract From File (PDF→text)
     → [HTML] extract body text
-  → VH3 AI: Email — Ingest Email (emailText + preferredTypeIds from config)
+  → VH3 AI: Email — Ingest Portal Email (emailText + preferredTypeIds from config)
   → Switch: ingestEmail.status
-    → "Create":
+    → "auto_created":
         → VH3 AI: Job Type — Get All (fetch schema for matched type)
         → Information Extractor LLM node (Gemini Flash)
              prompt built from job type custom field definitions + email text
@@ -750,8 +752,9 @@ Outlook trigger (new email)
         → Wait (30 s — allow FSI indexing)
         → VH3 AI: Job Feed — Get Enriched Job (lightweight verify)
         → Reply email: confirmation with job reference
-    → "Review":  send to human approval queue (email / Slack)
-    → "Unprocessable" / "Rejected": log to spreadsheet / case and exit
+    → "pending_review": send to human approval queue (email / Slack)
+    → "classified": record the result and exit
+    → "unprocessable": log to spreadsheet / case and exit
 ```
 
 ### Pattern H: Follow-on job → Quote Run estimate
@@ -777,8 +780,8 @@ Form trigger (file upload — xlsx or csv)
     → Extract From File (xlsx) / Extract From File (csv)
   → Code: build synthetic portal email body from each row
   → Split in Batches (configurable batch size, e.g. 5)
-    → VH3 AI: Email — Ingest Email (per row)
-    → Switch: status → "Create" path (same as Pattern F) / record result
+    → VH3 AI: Email — Ingest Portal Email (per row)
+    → Switch: status → "auto_created" path (same as Pattern F) / record result
     → [loop continues]
   → Summary email: total created / review / failed
 ```
@@ -790,7 +793,7 @@ Form trigger (file upload — xlsx or csv)
 ### General
 
 - **Never expose internal IDs** in agent replies. Use job references, engineer names, customer names, and site addresses.
-- **`companyId` in credentials** is required for single-record Get operations on BigChange resources. It is not required for VH3 AI intelligence operations.
+- **`companyId` in credentials** is required for VH3 AI Intelligence operations and single-record BigChange operations.
 - **`simplify: true`** (where available) strips null, empty string, and empty array fields from responses — recommended when passing data downstream.
 - **`returnAll: true`** on list operations uses automatic pagination. Only use it when you genuinely need the full dataset; large tenants can have thousands of jobs.
 - **Batch email classification** (`batchClassifyEmail`) is significantly more efficient than calling `classifyEmail` in a loop. Use it whenever you have multiple emails to process in the same step.
