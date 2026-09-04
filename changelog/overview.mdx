@@ -15,9 +15,13 @@ description: New features, updates, and fixes shipped in VH3 AI
 
 **VH3 AI n8n node 0.12.0.** The community node now includes **Ingest General Email** for emails that do not come from a recognised portal. **Ingest Portal Email** remains available for structured portal work orders. Upgrade from n8n Community Nodes or npm. See the [n8n community node](/n8n-node) and [node reference](/agent-kits/n8n-node-reference).
 
+**Attachments on email ingest.** Both ingest actions accept work-order attachments by URL or from workflow binary data. Portals that send job orders as PDF attachments no longer need a separate text-extraction step in the workflow. See the [node reference](/agent-kits/n8n-node-reference).
+
 ## Updates
 
 **Clearer email handling.** General inbox emails and portal work orders now use separate ingest actions. Each action extracts job details and sends uncertain results for review.
+
+**Consistent status routing.** Both ingest actions return the same `status` values: `auto_created`, `classified`, `pending_review`, and `unprocessable`. Workflows can switch on one field to create the job, record the result, or send it to a review queue. See the [node reference](/agent-kits/n8n-node-reference).
 
 **Source email traceability.** Portal email results can retain the original mailbox and message references, so the office can trace a request back to the source email.
 
