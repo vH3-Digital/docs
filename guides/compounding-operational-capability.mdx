@@ -1,101 +1,105 @@
 ---
 title: Compounding operational capability
-description: How field service organisations build a learning loop between human judgment and operational intelligence — and why the substrate matters more than the model
+description: How field service organisations build a learning loop between human judgement and operational intelligence
 ---
 
 # Compounding operational capability
 
-Every platform shift changes what tools an organisation runs. The AI shift changes how an organisation **learns**.
+Every platform shift changes the tools an organisation runs. The AI shift changes how an organisation **learns**.
 
-In field service, that learning has always happened in two places at once. Your people carry judgment: which customer needs a careful call, which engineer knows the plant room, which fault description in a worksheet actually means something specific, which sentinel threshold has gone noisy. Your systems carry records: jobs, outcomes, sites, engineers, invoices, emails, certificates.
+Field service teams learn in two places at once. People carry judgement about which customer needs a careful call, which engineer knows the plant room, which worksheet phrase signals a specific fault, and which sentinel threshold has become noisy. Systems carry jobs, outcomes, sites, engineers, invoices, emails, and certificates.
 
-AI creates a cognitive loop between those two for the first time. Questions that used to require a report request, a spreadsheet, or someone with five years in the business can be answered in seconds — if the operational intelligence underneath is prepared, owned, and improving.
+AI connects those two sources in a working loop. People can answer questions that once required a report request, a spreadsheet, or five years of experience when their team prepares, owns, and improves the operational intelligence underneath.
 
-The durable opportunity is building a loop where human judgment and operational intelligence compound together — regardless of which model you use this quarter.
+The durable opportunity sits in a loop where human judgement and operational intelligence compound together, regardless of the model a team uses this quarter.
 
-## Human judgment and operational intelligence
+In this guide, VH3 AI calls the decoupled, persistent operational knowledge graph and vector index in the customer's account the **substrate**. The platform stores enriched records, resolved entities, relationships, cases, sentinel definitions, and operating rules there. An LLM context window and response support ephemeral inference for one request.
 
-**Human judgment** is what your team already has: relationships with facilities managers, pattern recognition across accounts, trade knowledge, dispatch judgment, commercial instinct, and the ability to decide what matters when the data is ambiguous.
+The **harness** gives that model runtime access and controls. It provides domain tools, connects third-party integrations, maintains persistent graph and vector memory, routes tasks deterministically, and enforces human oversight.
 
-**Operational intelligence** is what your organisation builds in systems: enriched job history, resolved customers and sites, sentinel rules, case records, briefing templates, automation workflows, company preseeds, and the structured memory that survives when people move on.
+## Human judgement and operational intelligence
 
-As operational intelligence grows, human judgment becomes more valuable — because your people spend less time assembling context and more time applying judgment.
+**Human judgement** includes relationships with facilities managers, pattern recognition across accounts, trade knowledge, dispatch decisions, commercial instinct, and the ability to decide what matters when data carries ambiguity.
 
-The account manager who used to spend a morning rebuilding the story before a review now walks in with evidence, job references, and time to decide what to do about it.
+**Operational intelligence** includes enriched job history, resolved customers and sites, sentinel rules, case records, briefing templates, automation workflows, company preseeds, and structured memory that remains available when people move on.
 
-The operations lead who used to manually spot repeat-visit patterns now reviews sentinel findings, adjusts thresholds, and owns the cases that need a human call.
+As operational intelligence grows, people spend less time assembling context and more time applying judgement.
 
-The field intelligence lead who used to chase exports now gardens workflows, tunes automations, and ships the next internal tool the operation actually needs.
+The account manager who once rebuilt the story before a review now enters with evidence, job references, and time to decide what to do.
 
-Operational intelligence handles the legwork. Human judgment directs what gets built next.
+The operations lead who once spotted repeat-visit patterns manually now reviews sentinel findings, adjusts thresholds, and owns cases that need a human decision.
+
+The field intelligence lead who once chased exports now maintains workflows, tunes automations, and ships the next internal tool the operation needs.
+
+Operational intelligence handles the legwork. Human judgement directs what the team builds next.
 
 ## The learning loop
 
-A field service operation that compounds capability runs a loop:
+A field service operation that compounds capability runs a repeatable loop.
 
-1. **Jobs and signals enter** — from the FMS, email, documents, integrations.
-2. **Records are enriched and linked** — fault types structured, entities resolved, history connected.
-3. **Intelligence is used** — Connie answers, sentinels fire, reports run, briefings go out, cases open.
-4. **People review and act** — thresholds adjusted, ambiguous matches confirmed, cases closed with outcomes recorded.
-5. **The substrate improves** — exclusions updated, preseeds refined, workflows tuned, the next question starts from a better foundation.
+1. **Jobs and signals enter.** The FMS, email, documents, and integrations supply new work.
+2. **The pipeline enriches and links records.** It structures fault types, resolves entities, and connects history.
+3. **People and systems use the intelligence.** Connie answers, sentinels fire, reports run, briefings go out, and cases open.
+4. **People review and act.** They adjust thresholds, confirm ambiguous matches, and close cases with recorded outcomes.
+5. **The team improves the substrate.** It updates exclusions, refines preseeds, tunes workflows, and gives the next question a better foundation.
 
-Each pass through the loop makes the next pass cheaper and more accurate. A sentinel that fires correctly three months in a row becomes a trusted signal. A briefing template that account managers actually use gets refined. A workflow that routes portal email correctly stops needing manual review.
+Each pass through the loop makes the next pass cheaper and more accurate. A sentinel that fires correctly for three months becomes a trusted signal. Account managers refine briefing templates that they use. A workflow that routes portal email correctly reduces manual review.
 
-This is institutional learning encoded in operational systems — not in a model vendor's training run.
+The loop stores institutional learning in operational systems while model providers handle ephemeral inference.
 
-You can offload a task. You can automate a briefing. You cannot offload the discipline of improving the loop.
+People can automate a task or a briefing. They still need the discipline to improve the loop.
 
 ## The sovereignty test
 
-There is a practical test for whether your organisation owns its operational intelligence or rents it from a vendor:
+Use a practical question to check whether your organisation owns its operational intelligence.
 
 **Can you change the model underneath without losing what your operation has learned?**
 
-If your operational memory lives inside a black-box chat product, switching models means starting again. If your intelligence lives in a prepared substrate — enriched records, graph relationships, sentinel definitions, case history, automation logic — the model is interchangeable. Connie can run on your provider account through BYOK. Agent kits can point Cursor or Claude at the same API tomorrow. n8n workflows keep calling the same endpoints regardless of which LLM sits in the decision node.
+When a black-box chat product holds the operational memory, switching models forces the team to start again. When the account holds a prepared substrate with enriched records, graph relationships, sentinel definitions, case history, and automation logic, the team can change the model without losing its operational record. Connie can run through your provider account with BYOK. Agent kits can point Cursor or Claude at the same API tomorrow. n8n workflows can call the same endpoints regardless of the LLM in the decision node.
 
-The generalist model changes every six months. The operational veteran — five years of resolved jobs, tuned thresholds, accumulated cases — should not.
+The generalist model may change every six months. The account keeps five years of resolved jobs, tuned thresholds, and accumulated cases.
 
-VH3 AI is built around that separation. The platform fee covers enrichment, graph, sentinels, and synthesis infrastructure. Model spend stays on your provider account, visible and portable. The intelligence compounds in your organisation's account.
+VH3 AI maintains that separation. The platform fee covers enrichment, graph, sentinels, and synthesis infrastructure. Your provider account carries model spend. The intelligence compounds in your organisation's account.
 
 ## What compounds in your account
 
 Operational intelligence that belongs to your organisation includes:
 
-- **Enriched job history** — classified faults, structured outcomes, linked engineers, sites, and customers, up to five years loaded on day one.
-- **Resolved entities** — customers, sites, and engineers connected across naming inconsistencies and source systems.
-- **Sentinel definitions** — thresholds, scopes, and exclusions your team has tuned to match how the operation actually runs.
-- **Cases and evidence** — investigations, linked jobs, participant decisions, and the record of what was done about a signal.
-- **Automations and workflows** — n8n templates, routing rules, digest schedules, and integrations your field intelligence lead maintains.
-- **Company preseeds and operating rules** — how your business wants Connie and agents to behave, refined as the operation changes.
+- **Enriched job history.** The pipeline classifies faults, structures outcomes, links engineers, sites, and customers, and loads up to five years on day one.
+- **Resolved entities.** The platform connects customers, sites, and engineers across naming inconsistencies and source systems.
+- **Sentinel definitions.** Your team tunes thresholds, scopes, and exclusions to match the operation.
+- **Cases and evidence.** Investigations, linked jobs, participant decisions, and action records give the team searchable precedent.
+- **Automations and workflows.** n8n templates, routing rules, digest schedules, and integrations support the weekly rhythm.
+- **Company preseeds and operating rules.** Your team refines how Connie and agents should behave as the operation changes.
 
-This is the asset that gets harder for a competitor to replicate the longer you run it, because it encodes **your** operation's judgment over time.
+The longer your team runs this loop, the more of its operational judgement the account records.
 
 ## What your team must own
 
-VH3 AI provides the substrate. The loop still needs people inside the business:
+VH3 AI provides the substrate. People inside the business direct the loop.
 
-- **Direction** — which problems to solve first, which accounts need attention, which workflows are worth automating.
-- **Gardening** — sentinel thresholds, triage taxonomies, exclusions, and preseeds that drift as the operation changes.
-- **Review** — ambiguous entity matches, investigation conclusions, compliance-adjacent signals, and case outcomes.
-- **Building** — the next report, workflow, briefing, or internal tool that removes a recurring manual step.
+- **Direction.** Choose which problems to solve first, which accounts need attention, and which workflows merit automation.
+- **Gardening.** Maintain sentinel thresholds, triage taxonomies, exclusions, and preseeds as the operation changes.
+- **Review.** Assess ambiguous entity matches, investigation conclusions, compliance-adjacent signals, and case outcomes.
+- **Building.** Create the next report, workflow, briefing, or internal tool that removes a recurring manual step.
 
-The [2027 blueprint](/guides/2027-blueprint) describes the person who often owns this loop: the field intelligence lead, close enough to the work to understand it, technical enough to build on the platform.
+The [2027 blueprint](/guides/2027-blueprint) describes the field intelligence lead who often owns this loop. That person stays close enough to the work to understand it and technical enough to build on the platform.
 
-Organisations that invest in upskilling that person — or developing that capability across a small team — compound faster than organisations that treat AI as a subscription to finish.
+Organisations that upskill this role, or distribute the capability across a small team, compound faster than organisations that treat AI as a subscription to finish.
 
-## A frontier for operators, not just model vendors
+## Operators should own the returns
 
-Field service generates deep operational signal and deep operational judgment. Most of that value has never been encoded in systems that compound — it lived in people's heads, scattered spreadsheets, and FMS records that were never designed to learn.
+Field service generates operational signal and operational judgement. People have kept much of that value in their heads, scattered spreadsheets, and FMS records.
 
-When operational knowledge flows only into a handful of generalist models, operators risk hollowing out while a few platforms capture the returns.
+When operators keep the learning loop inside their own account, they retain the returns from each correction, review, and workflow change.
 
-Every field service organisation can own the loop that encodes **its** expertise — portable, inspectable, improvable — and ride each new model generation against that foundation.
+Every field service organisation can own an inspectable, portable loop that encodes **its** expertise. Operators can improve that loop as the work changes, then use each new model generation against the same foundation.
 
-That is what VH3 AI is built to be: a harness on the stack you already run, intelligence that compounds in your account, with human judgment at the centre of the loop.
+VH3 AI provides the harness on the stack you already run. It keeps intelligence in your account and puts human judgement at the centre of the loop.
 
 <CardGroup cols={2}>
   <Card title="Every correction is teaching something" icon="fingerprint" href="/guides/every-correction-is-teaching-something">
-    Why the corrections your team makes are proprietary knowledge — and how to keep them in your account.
+    Why the corrections your team makes are proprietary knowledge and how to keep them in your account.
   </Card>
   <Card title="The harness is the product" icon="gears" href="/guides/the-harness-is-the-product">
     Why tools, oversight, and quality loops matter more than the model alone.
@@ -104,7 +108,7 @@ That is what VH3 AI is built to be: a harness on the stack you already run, inte
     How to organise for capability inside your operation.
   </Card>
   <Card title="Why context matters" icon="database" href="/guides/why-context-matters">
-    How operational context is prepared before any question is asked.
+    How the platform prepares operational context before people ask questions.
   </Card>
   <Card title="AI you can check" icon="eye" href="/guides/ai-you-can-check">
     Why traceability matters more than confidence in operational decisions.
@@ -119,3 +123,7 @@ That is what VH3 AI is built to be: a harness on the stack you already run, inte
     The engineering work behind an accurate, live operational picture.
   </Card>
 </CardGroup>
+
+## Next step
+
+Name one recurring manual task and one person who owns its outcome. Record the evidence that person checks today, automate the deterministic lookup first, and capture each correction in the account before adding model inference.

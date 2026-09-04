@@ -1,158 +1,150 @@
 ---
 title: The harness is the product
-description: Why field service AI needs a purpose-built harness, measurable quality loops, and a product-led deployment motion, and how VH3 AI is built for that work
+description: The runtime harness, quality loops, and deployment work that make field service AI reliable
 ---
 
 # The harness is the product
 
-The first time a capable model meets a real field service operation, it gets a surprising amount right. It can summarise a job note, draft a briefing, and spot an obvious repeat visit. Then the messy work starts. Inconsistent customer names. Portal emails that do not match the job record. Worksheets that say "resolved" when the site books again next week. Irreversible actions that need a human before they touch a customer.
+A capable model can summarise a job note, draft a briefing, and spot an obvious repeat visit. Live operations add inconsistent customer names, portal emails that do not match job records, worksheets that say "resolved" before the site books again, and actions that require a human before they reach a customer.
 
-A strong demo is easy. Work your team can run every week is the actual product. This guide is how VH3 AI thinks about that gap: what the harness must do, how quality gets measured, what compounds inside your account, and how each deployment should make the next one easier.
+Weekly operational work tests more than model quality. This guide defines the runtime harness, the quality loops that measure it, the capability that compounds in an account, and the deployment work that improves the next release.
 
-## What Applied AI means in field service
+## What applied AI means in field service
 
-The useful test in this market is simple. Does the system complete operational work reliably enough that people trust it in the weekly rhythm?
+The useful test is simple. Can the system complete operational work reliably enough for people to trust it in the weekly rhythm?
 
-Field service organisations still buy systems of record for jobs, finance, and CRM. What they need beside those systems is a layer that:
+Field service organisations already use systems of record for jobs, finance, and CRM. They need a layer beside those systems that:
 
-- Reads the full operational picture across the tools they already run
+- Reads the operational picture across the tools they run
 - Prepares context before a person or agent asks a question
-- Watches for problems while the team is busy elsewhere
+- Watches for problems while the team works elsewhere
 - Routes ambiguous or high-impact work for human review
-- Leaves a trail of evidence the business can check
+- Leaves evidence that the business can inspect
 
-VH3 AI is built as that layer. The FMS stays where jobs are created and closed. VH3 AI sits beside it, enriches what happened, connects history, and makes the result available to Connie, sentinels, reports, automations, and any agent you point at the same substrate.
+VH3 AI runs beside the FMS. The FMS records job creation and closure. VH3 AI enriches the work, connects its history, and exposes the result to Connie, sentinels, reports, automations, and agents that use the same substrate.
 
-The commercial implication matters. VH3 AI sells completed intelligence work and the surfaces to act on it, with the asset living in your account. Your team still owns thresholds, cases, and judgment. The platform owns the hard infrastructure that makes those decisions possible at production quality.
+In this guide, the **substrate** names the decoupled, persistent operational knowledge graph and vector index in the customer's account. VH3 AI stores enriched jobs, resolved entities, linked history, cases, sentinel definitions, and operating rules there. Model context and generated text belong to ephemeral inference. They can read the substrate, but they do not replace its persistent records.
 
-## The harness is the product
+Your team owns thresholds, cases, approvals, and judgement. VH3 AI supplies the runtime infrastructure that lets people and agents act on those decisions.
 
-A model that summarises a job note is a demo. A model that ingests years of job history, resolves "Tesco PLC" and "Tesco Express Watford" to the same customer, watches SLA drift overnight, triages a portal email into the right job shape, and hands an account manager a cited briefing, thousands of times a week, with an audit trail, is a product. Off the shelf, general-purpose models do not do that reliably. They are strong at long-horizon reasoning. They still struggle with messy, multi-system operations that sit outside clean training examples.
+## The harness
 
-Treat an AI system as three layers:
+A job-note summary demonstrates language generation. A production workflow ingests years of history, resolves "Tesco PLC" and "Tesco Express Watford" when the evidence supports one customer, watches SLA drift overnight, classifies a portal email, and gives an account manager a cited briefing thousands of times each week. The harness makes that workflow repeatable and auditable.
 
-1. **The model.** Reasoning and language.
-2. **The interface.** Chat, digests, Connect, Slack, custom apps.
-3. **The harness.** Everything that lets the model do real work inside real systems.
+Treat an AI system as three layers.
 
-From the operator's seat, the harness should feel closer to a capable new teammate than to another dashboard. Same systems, same history, same need to ask for review when confidence drops.
+1. **The model.** It supplies reasoning and language.
+2. **The interface.** It presents chat, digests, Connect, Slack, or custom applications.
+3. **The harness.** It supplies the runtime controls, data access, routing, and review paths that let the model work inside real systems.
 
-In field service, that harness has five jobs.
+The harness gives an operator a repeatable workflow against the same systems and history. It requests review when a task crosses a defined risk boundary.
 
-### Tools
+The harness has five runtime responsibilities. It provides domain tools, connects third-party integrations, maintains persistent graph and vector memory, routes tasks deterministically, and enforces human oversight.
 
-Models can reason. They still need functions that act, and functions that compensate for known weaknesses.
+### 1. Domain tools
 
-VH3 AI gives agents and automations domain tools: hybrid search, graph traversal, aggregates, customer knowledge, sentinel runs, report generation, case creation, live finance lookups where connected, and briefing assembly. Deterministic work stays deterministic. Synthesis happens where narrative and judgment help. Connie uses those tools internally. Builders get the same capabilities through the API, MCP, and n8n.
+Models reason about a task. They need functions that retrieve operational facts and take bounded actions.
 
-### Integrations
+VH3 AI exposes domain tools for hybrid search, graph traversal, aggregates, customer knowledge, sentinel runs, report generation, case creation, connected finance lookups, and briefing assembly. Deterministic tools handle lookups and calculations. Model synthesis handles narrative and judgement. Connie uses these tools internally, and builders call the same capabilities through the API, MCP, and n8n.
 
-Enterprise field service stacks break the assumptions that simple connectors make. Jobs live in the FMS. Portal traffic lands in shared inboxes. Certificates sit in SharePoint or Drive. Invoices live in Xero or QuickBooks. Account notes sit in CRM.
+### 2. Third-party integrations
 
-The harness has to connect those systems without forcing a single super-platform. VH3 AI connects BigChange for live operational ingestion today, with native connections for communication, storage, CRM, and accounting, so the operating picture widens without a custom integration project for every tool.
+Field service work crosses multiple systems. Jobs live in the FMS. Portal traffic reaches shared inboxes. Certificates sit in SharePoint or Drive. Invoices live in Xero or QuickBooks. Account notes sit in a CRM.
 
-### Persistent operational memory
+The harness connects those systems without requiring one replacement platform. BigChange supplies live operational ingestion today. Native connections add communication, storage, CRM, and accounting context. Managed ingestion and entity resolution attach incoming records to the right customer, site, and job.
 
-An account review or a multi-day investigation does not finish in one model call. Context that only lives in a chat window disappears when the session ends.
+### 3. Persistent graph and vector memory
 
-VH3 AI keeps structured working memory in the intelligence layer: enriched jobs, resolved entities, linked history, cases with evidence, sentinel definitions, and company operating rules. Agents and people pick up where the last shift left off because the record persists outside any single conversation.
+An account review and a multi-day investigation continue after one model call. The substrate keeps the working record outside a chat session.
 
-### Orchestration
+VH3 AI stores enriched jobs, resolved entities, graph links, vector search representations, cases with evidence, sentinel definitions, and company operating rules in the customer's account. People and agents can resume work across shifts. The model reads prepared records and performs ephemeral inference only for the part of the task that needs language or judgement.
 
-Not every task should hit the same model, or any model at all.
+### 4. Deterministic task routing
 
-| Work | Right layer |
+The harness selects a runtime path from the task type. Some work needs no model call.
+
+| Work | Runtime path |
 |------|-------------|
 | Precedent search, aggregates, entity lookups | Deterministic discovery |
-| Repeat visits, SLA clusters, dormant accounts | Sentinels on the graph |
-| Portal email with high extraction confidence | Automated triage path |
-| Ambiguous triage, investigation narrative, Connie Q&A | Model synthesis with citations |
+| Repeat visits, SLA clusters, dormant accounts | Background sentinels on the graph |
+| Portal email with high extraction confidence | Automated triage |
+| Ambiguous triage, investigation narrative, Connie questions | Cited model synthesis |
 | Irreversible customer-facing actions | Human approval inside cases and review queues |
 
-Routing by task type keeps latency predictable, cost visible, and quality measurable. Sending every operational question through one chat call is expensive for the wrong work, and unreliable when context was never prepared.
+Task routing keeps latency predictable, costs visible, and quality measurable. A single chat call should not handle work that a stored query or sentinel can complete.
 
-### Oversight
+### 5. Human oversight
 
-Field service organisations start with bounded autonomy, and many workflows should stay that way.
+Field service organisations need bounded autonomy. The harness sends low-confidence triage to review, assigns case owners, carries job references into Connie answers, and records the tools that each agent session used.
 
-Low-confidence triage waits for review. Cases assign owners. Connie answers carry job references. Agent sessions expose which tools ran and what they returned. Token spend sits on your own model provider account under BYOK. The policy is practical: who can see which tenant data, which actions need approval, and what evidence remains after the decision.
+BYOK keeps model spend on the organisation's provider account. Access rules scope each request to a tenant. Approval rules identify actions that need a person. Cases retain the evidence and decision after the workflow ends.
 
-As models improve, some of the workarounds get simpler. Calculators and brittle extraction prompts thin out. What remains is the need to act inside real systems, persist state across days, integrate with tools that will never be perfectly API-shaped, and prove who approved what.
+Model improvements can remove brittle extraction prompts and manual calculations. The harness still needs to act inside real systems, persist state across days, connect imperfect APIs, and show who approved each consequential action.
 
-That layer is the product.
+## Quality loops
 
-## Quality loops are built in
+VH3 AI builds checkable quality into the platform from day one. The team measures the work against real examples, then widens autonomy only when the results hold.
 
-Without a way to measure whether the work was done correctly, there is no basis for promising that quality will hold as documents, portals, and operating habits drift.
+**Start from real work.** Onboarding loads up to five years of history so the first discovery sprint runs against the customer's jobs, notes, and relationships. People who know the operation grade the day-one output.
 
-VH3 AI treats checkable quality as part of the platform from day one.
+**Build reference examples with the people who own the work.** Operators approve portal email mappings, agree the risk story for selected accounts, and define what counts as a repeat visit for each fault class. Those examples guide enrichment, triage, briefings, and sentinel thresholds.
 
-**Start from real work.** Onboarding loads up to five years of history so the first discovery sprint runs against the customer's own jobs, notes, and relationships. Day-one output is useful because people who know the operation grade it.
+**Raise the grade before widening autonomy.** High-confidence triage can create work automatically. Ambiguous extraction stays in a review queue with ranked suggestions. Operators tighten sentinel thresholds after they confirm the signal.
 
-**Build golden examples with the people who own the work.** Portal emails with known correct job mappings. Accounts where the risk story is already agreed. Fault classes where "repeat visit" has an operational definition. Those signed-off examples become the reference set for enrichment, triage, briefings, and sentinel thresholds.
+**Keep the loops running after go-live.** New job types, renamed customers, seasonal patterns, and portal format changes create drift. Continuous sentinel runs, cited Connie answers, and case outcomes show whether the workflow still meets its grade.
 
-**Raise the grade before you widen autonomy.** High-confidence triage can create work automatically. Ambiguous extractions stay in a review queue with ranked suggestions. Sentinel thresholds tighten only after operators confirm the signal is trustworthy. Autonomy expands where the grade holds.
-
-**Keep the loops running after go-live.** The agent or workflow that looked strong in UAT still needs drift detection: new job types, renamed customers, seasonal patterns, portal format changes. Continuous sentinel runs, cited Connie answers, and case outcomes are how the operation sees whether quality is holding.
-
-The standard is operational. The briefing either cited the right jobs or it did not. The triage either matched the right customer and site or it queued for review. The sentinel either fired on a real pattern or the threshold needs gardening.
+The standard stays operational. A briefing must cite the right jobs. Triage must match the right customer and site or reach review. A sentinel must fire on a real pattern, or the team must adjust its threshold.
 
 [AI you can check →](/guides/ai-you-can-check)  
 [Agent observability →](/guides/agent-observability)
 
-## What actually compounds
+## What compounds
 
-The first instinct when people talk about AI moats is data. In regulated, relationship-dense operations, that story usually fails in the way buyers expect.
-
-A field service contractor should not hand a vendor their full history of customer relationships, commercial exceptions, and safety-adjacent work so a shared model can train on it. The data that makes the domain hard is also the data that must stay inside the enterprise.
-
-What compounds is everything a real deployment builds up on the customer's side of the contract:
+Field service contractors need to keep customer relationships, commercial exceptions, and safety-adjacent work inside their own account. The substrate stores the capability that a deployment builds.
 
 - Enriched job history and resolved entities
-- Sentinel definitions tuned to how this operation actually runs
-- Cases, evidence, and decisions that become searchable precedent
+- Sentinel definitions tuned to the operation
+- Cases, evidence, and decisions that form searchable precedent
 - Triage taxonomies and review habits
-- Automations and agent kits wired into the weekly rhythm
-- The field intelligence lead's judgment about what to build next
+- Automations and agent kits that the team wires into its weekly rhythm
+- The field intelligence lead's judgement about the next workflow
 
-Almost anyone can demo an agent that completes a workflow once. Building one that stays useful across shifting job types, portal formats, and seasonal load takes the harness and the quality loop above.
+An agent may complete a workflow once in a demonstration. The harness and the quality loop keep it useful across changing job types, portal formats, and seasonal load.
 
-That is also why VH3 AI is opinionated about ownership. Intelligence compounds in your account, and stays yours. Model spend stays on your provider key. If you leave, the enriched operational data is portable. Stickiness comes from the value of what you have built.
+Intelligence compounds in the customer's account and remains portable. Model spend stays on the organisation's provider key. If the organisation leaves, its enriched operational data comes with it.
 
 [Compounding operational capability →](/guides/compounding-operational-capability)
 
 ## Deployment should feed the product
 
-Hard deployments are a discovery problem before they are a delivery problem. Nobody has a mature playbook for "AI teammate inside my field service stack" that already matches every operation. Early work has to sit close to dispatch, account management, and the inbox.
+Hard deployments begin as discovery work. No playbook matches every field service operation, so early work must sit close to dispatch, account management, and the inbox.
 
-The trap is treating forward-deployed custom work as the permanent business model.
+Custom engineering creates value when it reveals the next platform capability. Examples include a better triage confidence tier, a sentinel definition, a case pattern, an agent kit, or a Connect surface. The work loses value when the team answers every customer request with a one-off fix that never returns to the product.
 
-Custom engineering in the field is valuable when it reveals the next platform capability: a better triage confidence tier, a sentinel definition, a case pattern, an agent kit, a Connect surface. It becomes a liability when every customer request is answered with a one-off fix that never returns to the product. Cost to serve stays high. Each deployment fails to make the next one easier.
+VH3 AI uses a product-led deployment loop.
 
-VH3 AI is built for a product-led version of that loop:
+1. **Discover on real history.** Connect the FMS, enrich the record, and let operators grade what the layer surfaces.
+2. **Start with standard surfaces.** Use Connie, sentinels, reports, cases, triage, n8n templates, and agent starter kits.
+3. **Give the customer one bridge role.** The [field intelligence lead](/guides/2027-blueprint) stays close to the work, tunes thresholds, and ships the next workflow.
+4. **Absorb repeated pain into the platform.** A recurring problem becomes a capability that the next tenant can use.
 
-1. **Discovery on real history.** Connect the FMS, enrich the record, let operators grade what the layer surfaces.
-2. **Standard surfaces first.** Connie, sentinels, reports, cases, triage, n8n templates, agent starter kits.
-3. **One bridge role inside the customer.** The [field intelligence lead](/guides/2027-blueprint), close enough to the work to tune thresholds and ship the next workflow.
-4. **Platform absorption.** Repeated pain becomes a product capability the next tenant inherits.
+Implementation work still matters. Connecting Slack, wiring a digest, and configuring exclusions execute a known shape. Discovery work watches the first enrichment miss a local job-type convention, reviews a messy QBR pack with the account team, and identifies portal emails that must never auto-create work. Keeping those activities distinct shows whether the team invests in product capability or grows a permanent delivery organisation.
 
-Implementation work still exists. Connecting Slack, wiring a digest, or configuring exclusions is real. It is execution against a known shape. Discovery work is different: watching the first enrichment miss a local job-type convention, sitting with the account team on a messy QBR pack, learning which portal emails must never auto-create. Bundle those two under one vague "services" label and you hide whether you are investing in product or growing a permanent delivery org.
-
-The goal is simple. Each deployment should shorten the next one.
+Each deployment should shorten the next one.
 
 ## What pulling ahead looks like
 
-Field service generates deep operational signal and deep operational judgment. Most of that value has lived in people's heads, inboxes, and FMS records that were never designed to learn.
+Field service generates operational signal and operational judgement. People have kept much of that value in their heads, inboxes, and FMS records.
 
-The organisations that pull ahead will treat AI as a harness on the stack they already run:
+Organisations that pull ahead use a harness on the stack they already run.
 
 - Prepared context before inference
 - Tools and integrations that reach the real systems of work
-- Oversight that matches operational risk
-- Quality loops that prove the work is holding
-- A deployment motion that turns field pain into shared product
+- Oversight matched to operational risk
+- Quality loops that prove the work still holds
+- A deployment motion that turns field pain into shared product capability
 
-VH3 AI occupies that seat: the intelligence layer beside your FMS, the harness your humans and agents share, and the compounding record that stays yours as models change.
+VH3 AI provides the intelligence layer beside the FMS, the harness that people and agents share, and the account record that compounds as models change.
 
 ## What to do next
 
@@ -176,3 +168,5 @@ VH3 AI occupies that seat: the intelligence layer beside your FMS, the harness y
     Connect real history and grade what the layer produces on your own data.
   </Card>
 </CardGroup>
+
+Start a bounded discovery sprint with one workflow. Load representative history, define ten reference examples, and require human approval for every customer-facing action until the workflow meets its agreed quality grade.
