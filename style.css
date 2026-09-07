@@ -1,3 +1,20 @@
+/* Hidden in the article so MDX spacing stays intact. JS moves it into the header. */
+.mdx-content .guide-byline {
+  display: none;
+}
+
+.guide-byline {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #1c1228;
+}
+
+.dark .guide-byline {
+  color: #ffffff;
+}
+
 /* Hide Mintlify footer attribution (paid plan). */
 footer a[href*="utm_campaign=poweredBy"],
 footer a[href*="mintlify.com?utm_campaign=poweredBy"] {

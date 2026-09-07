@@ -69,6 +69,7 @@
               "connect/sales",
               "connect/contacts",
               "connect/cases",
+              "connect/portal-jobs",
               "connect/teams",
               "connect/search",
               "connect/notifications"
@@ -298,7 +299,8 @@
   "settings": {
     "customScripts": [
       "/stripe-pricing.js",
-      "/changelog-tags.js"
+      "/changelog-tags.js",
+      "/guide-byline.js"
     ]
   },
   "redirects": [

@@ -1,0 +1,66 @@
+---
+title: Portal Jobs
+description: Review portal ingest outcomes — check the suggested customer, site, and job type, then mark the result.
+---
+
+# Portal Jobs
+
+Portal Jobs is the review queue for portal ingest. Open **Portal Jobs** in the sidebar, check the suggested customer, site, and job type, then mark **Correct** or **Incorrect**.
+
+**Path:** `/portal-jobs`
+
+<Card title="Owned follow-through lives on Cases" icon="folder-open" href="/connect/cases">
+  **Cases** (`/cases`) are for investigations and account work with an Assigned Team. Portal Jobs is the ingest review list.
+</Card>
+
+Each portal ingest attempt writes a Case of type `job_extraction`. Work orders and purchase orders can become jobs. Variations, quote decisions, quote requests, status updates, and invoice-only notices stay on existing work.
+
+## Browse Portal Jobs
+
+The list opens on **Awaiting evaluation**.
+
+1. Open **Portal Jobs** in the sidebar.
+2. Choose **Awaiting evaluation**, **Correct**, **Incorrect**, or **All**.
+3. Search, open the filter panel, and **Load more** as needed.
+4. Open a record at `/portal-jobs/:caseId`.
+
+Filters cover pipeline status, document type, portal, and review flags. On desktop the list can use a table. On a phone it uses cards.
+
+Use **Overview** (`/portal-jobs/overview`) for match scores and trends. Refresh updates the figures.
+
+## Work a record
+
+The header shows the portal, the work-order reference, a one-line situation, pipeline status, and whether you have already marked it.
+
+| Area | What you do |
+|---|---|
+| **Evidence** | Check the suggested customer, site, address, and job type |
+| **Evaluate** | Mark **Correct** or **Incorrect** |
+| **Conversation** | Add a comment. Incorrect needs a short note |
+
+Typical pipeline labels:
+
+- **Matched automatically** — customer, site, and type matched with high confidence
+- **Needs review** — something could not be matched with certainty
+- **Lifecycle event** — an update to existing work
+- **Couldn't process** — the document could not be read reliably
+
+When a job was created from the match, the header says so. Linked jobs and contacts on the evidence panel open the usual Connect records.
+
+## Mark the outcome
+
+1. Read the situation line. It tells you what to check.
+2. Confirm or correct the suggested customer, site, and type.
+3. Choose **Correct** or **Incorrect**.
+4. For **Incorrect**, add a comment so the office can see why.
+
+The queue then moves the record to **Correct** or **Incorrect**. You can still add comments after you mark it.
+
+## Related
+
+- [Cases](/connect/cases)
+- [Jobs](/connect/jobs)
+- [Contacts](/connect/contacts)
+- [App overview](/connect/app-overview)
+- [Ingest API](/api-reference/ingest)
+- [Cases API](/api-reference/cases)
