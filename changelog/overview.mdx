@@ -3,6 +3,30 @@ title: Changelog
 description: New features, updates, and fixes shipped in VH3 AI
 ---
 
+<Update label="2026-09-08" description="8 September 2026" tags={["Connect", "API", "Integrations"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="blue">Connect</Badge>
+  <Badge color="gray">API</Badge>
+  <Badge color="green">Integrations</Badge>
+</div>
+
+## Updates
+
+**Block and unit matching on portal orders.** When a work order names a unit or a numbered range on a street, ingest ranks the property that contains that unit first. Neighbouring blocks on the same road stay behind it. See [Portal Jobs](/connect/portal-jobs) and the [ingest API](/api-reference/ingest).
+
+**New sites stay in review.** If no existing child contact covers that unit, ingest proposes a new site under the matching regional parent. The office still creates the contact and the job. See [Portal Jobs](/connect/portal-jobs).
+
+**Job type profiles tell similar work apart.** Profiles now describe each type next to nearby types, so matching follows the phrases on the current order. Routing phrases the office adds or removes stay on the type when a profile is regenerated. Check the suggested type in [Portal Jobs](/connect/portal-jobs).
+
+**Job type profile calls use your tenant key.** Generate, list, and get job type profiles on the [VH3 AI Intelligence API](/api-reference/overview) require `company_id` and `api_key`, the same as other tenant-scoped endpoints.
+
+## Fixes
+
+**Prefix-and-number work-order references stay one reference** through portal ingest.
+
+</Update>
+
 <Update label="2026-09-04" description="4 September 2026" tags={["Connect", "API", "Connie", "Integrations"]}>
 
 <div className="flex flex-wrap items-center gap-2 mb-4">
