@@ -1,6 +1,6 @@
 ---
 title: Jobs
-description: Job feed, account job feed, punctuality filters, and job details
+description: Job feed, account job feed, punctuality and follow-on work filters, and job details
 ---
 
 # Jobs
@@ -9,7 +9,7 @@ The Jobs endpoints provide access to your enriched job records, including AI-ext
 
 ## GET /jobs/feed
 
-Returns a paginated feed of enriched jobs for your company. Supports filtering by entity, status, punctuality, date range, and sort field. All filters are optional and composable as AND conditions.
+Returns a paginated feed of enriched jobs for your company. Supports filtering by entity, status, punctuality, follow-on work, date range, and sort field. All filters are optional and composable as AND conditions. Each row includes `followUp` (`[]` or documented return-visit / parts-on-order lines).
 
 **Query parameters:**
 
@@ -35,9 +35,15 @@ Returns a paginated feed of enriched jobs for your company. Supports filtering b
 | `sort_by` | string | No | `createdAt` | Sort field: `createdAt`, `endDeltaMins`, `startDeltaMins`, `actualEndAt`, `actualStartAt`. Null sort keys are pushed last |
 | `direction` | string | No | `desc` | Sort direction on `sort_by`, `asc` or `desc` |
 | `compact` | boolean | No | false | Strip nulls/empties to return a compact payload for AI agents |
+| `has_follow_up` | boolean | No | false | `true` = only jobs with a non-empty `followUp`. Unset or `false` keeps the mixed feed |
+| `include_vh3_ai` | boolean | No | false | `true` = append get-by-id-shaped `vh3_ai` on each job. Unset or `false` omits the key |
 
 <Note>
 Punctuality filters combine with AND. Prefer `finished_late=true` / `started_late=true` for late questions. Job payloads still expose `finishedEarly` / `startedEarly` (and `startDeltaMins` / `endDeltaMins` where negative = early, positive = late). Do not pass conflicting early/late pairs for the same axis.
+</Note>
+
+<Note>
+`followUp` is a string array derived at read time from `technicalCore.follow_up`. Empty `[]` when there is no documented follow-on work. The Job object has no `hasFollowUp` field. `has_follow_up=true` paginates after the filter, so a page of 20 is 20 matching jobs and `totalJobs` / `totalPages` match that subset. `include_vh3_ai=true` appends get-by-id `vh3_ai` (duplication with top-level `followUp` is expected). Worksheets stay on get-by-id.
 </Note>
 
 **Example: completed jobs from May 2026**
@@ -66,6 +72,26 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
   --data-urlencode "sort_by=endDeltaMins" \
   --data-urlencode "direction=desc" \
   --data-urlencode "page_size=5"
+```
+
+**Example: jobs with documented follow-on work**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "has_follow_up=true" \
+  --data-urlencode "page_size=20"
+```
+
+**Example: list rows with get-by-id AI enrichment**
+
+```bash
+curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
+  --data-urlencode "company_id=your-company-id" \
+  --data-urlencode "api_key=your-api-key" \
+  --data-urlencode "include_vh3_ai=true" \
+  --data-urlencode "page_size=20"
 ```
 
 ---
@@ -110,6 +136,12 @@ This endpoint resolves the parent/child account hierarchy. If you pass a child c
 | `sort_by` | string | No | `createdAt` | Sort field: `createdAt`, `endDeltaMins`, `startDeltaMins`, `actualEndAt`, `actualStartAt` |
 | `direction` | string | No | `desc` | Sort direction on `sort_by`, `asc` or `desc` |
 | `compact` | boolean | No | false | Strip nulls/empties to return a compact payload for AI agents |
+| `has_follow_up` | boolean | No | false | `true` = only jobs with a non-empty `followUp`. Unset or `false` keeps the mixed feed |
+| `include_vh3_ai` | boolean | No | false | `true` = append get-by-id-shaped `vh3_ai` on each job. Unset or `false` omits the key |
+
+<Note>
+Each job includes `followUp` (string array) derived from `technicalCore.follow_up`. Empty `[]` when there is no documented follow-on work. `include_vh3_ai=true` appends get-by-id `vh3_ai` (duplication with top-level `followUp` is expected).
+</Note>
 
 **Response** includes an `account` block with the resolved hierarchy context:
 
@@ -150,6 +182,8 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed/account" \
 - **Account + type filtering**, add `type_id` to see only fire alarm or HVAC jobs across the whole account hierarchy.
 - **Account performance**, combine with `status=completedOk,completedWithIssues` to measure first-visit fix rate across all child sites.
 - **Account late finishes**, use `finished_late=true` with `date_field=actualEndAt` and `sort_by=endDeltaMins` to rank overruns across the hierarchy.
+- **Follow-on work across an account**, set `has_follow_up=true` to list only jobs with documented return visits or parts on order.
+- **AI enrichment on the list**, set `include_vh3_ai=true` to include get-by-id-shaped `vh3_ai` without a second round-trip.
 
 ---
 

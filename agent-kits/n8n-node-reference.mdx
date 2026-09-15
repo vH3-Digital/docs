@@ -162,7 +162,7 @@ Setup: [github.com/czlonkowski/n8n-mcp](https://github.com/czlonkowski/n8n-mcp)
 | Property | Value |
 |---|---|
 | NPM package | `n8n-nodes-vh3ai` |
-| Package version | `0.12.0` |
+| Package version | `0.13.0` |
 | Node type name | `vh3Ai` |
 | Display name | `VH3 AI` |
 | Credential type | `vh3AiApi` |
@@ -366,8 +366,8 @@ Use this table when the user's intent is expressed in natural language, to selec
 
 | Operation | Key inputs | Notes |
 |---|---|---|
-| `listJobFeed` | `status` (multi), `dateField`, `dateFrom`, `dateTo`, `sortBy`, `direction`, `finishedLate` / `startedLate` / `finishedEarly` / `startedEarly`, `contactId`, `resourceId`, `typeId` | Default `dateField`/`sortBy`: `createdAt`. Use `sortBy=endDeltaMins` for worst late finishes. Add `simplify: true` to strip nulls. |
-| `listAccountJobFeed` | `contactId` (required — any in hierarchy), same punctuality/date/sort filters as `listJobFeed` | Traverses full parent-child account tree automatically |
+| `listJobFeed` | `status` (multi), `dateField`, `dateFrom`, `dateTo`, `sortBy`, `direction`, `finishedLate` / `startedLate` / `finishedEarly` / `startedEarly`, `hasFollowUp`, `includeVh3Ai`, `contactId`, `resourceId`, `typeId` | Default `dateField`/`sortBy`: `createdAt`. Use `sortBy=endDeltaMins` for worst late finishes. `hasFollowUp: true` lists only jobs with a non-empty `followUp`. `includeVh3Ai: true` appends get-by-id `vh3_ai`. Add `simplify: true` to strip nulls. |
+| `listAccountJobFeed` | `contactId` (required — any in hierarchy), same punctuality/date/sort/follow-up filters as `listJobFeed` | Traverses full parent-child account tree automatically |
 | `aggregateJobs` | `metric`, `period`, `timeAxis`, `groupBy`, `compareTo`, punctuality filters on `filters` | Use `compareTo` for period-over-period. Prefer `finishedLate`/`startedLate` with `metric=job_count`. `groupBy`: `status`, `result`, `typeId`, `categoryId`, `resourceId`, `siteKey`, `vertical`, `day`, `week`, `month` |
 | `getEnrichedJob` | `jobId` (required), `includeWorksheets` | Returns AI enrichment: vertical, sentiment, key phrases |
 
