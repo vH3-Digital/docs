@@ -411,10 +411,10 @@ For scheduled automations, use `getSentinelResults` (cached, instant) rather tha
 
 | Operation | Key inputs | Notes |
 |---|---|---|
-| `generateReport` | `reportType`, `date`, `includeNarrative`, `sections` | Narrative adds 2–5 s. Omit `sections` to include all. |
+| `generateReport` | `reportType`, `date`, `includeNarrative`, `sections` | Narrative adds 2–5 s. Omit `sections` to include all. `account_monthly` also needs `contactId` (optional `month`). |
 | `listReportSections` | — | Discover section IDs for selective report generation |
 
-**Report types**: `start_of_day`, `midday`, `close_of_business`, `day_review`, `start_of_week`, `midweek`, `end_of_week`.
+**Report types**: `start_of_day`, `midday`, `close_of_business`, `day_review`, `start_of_week`, `midweek`, `end_of_week`, `account_monthly`.
 
 Set workflow/node timeout to ≥ 30 s for narrative reports.
 

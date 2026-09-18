@@ -5,24 +5,26 @@ description: Automated operational reporting
 
 # Reports
 
-The Reports endpoints let you generate automated operational reports. Eight report types are available, covering daily operations, weekly summaries, and account-level performance analysis.
+The Reports endpoints generate structured operational reports for a time-of-day, week, or customer month. Eight `report_type` values are valid. Names such as `daily_operations`, `weekly_summary`, and `executive_health_check` are rejected with HTTP 422.
 
 ## Report types
 
 | Type | Description |
 |------|-------------|
-| `daily_operations` | Daily job completions, SLA performance, and notable events |
-| `weekly_summary` | Weekly trends, engineer rankings, and operational highlights |
-| `account_monthly` | Per-customer monthly performance report |
-| `executive_health` | Five-dimension health check across up to 3 years of history |
-| `engineer_performance` | Individual engineer performance breakdown |
-| `site_health` | Site-level fault and maintenance trends |
-| `customer_intelligence` | Customer relationship and risk summary |
-| `sentinel_digest` | Summary of all sentinel triggers in period |
+| `start_of_day` | Morning briefing: scheduled work, carryovers, predicted overruns, repeat alerts, weather |
+| `midday` | Midday check-in: progress, SLA risk, engineer capacity |
+| `close_of_business` | End-of-day wrap-up: completions, first-visit fix, overruns, tomorrow's outlook |
+| `day_review` | Full-day recap: volume, timing, type breakdown, site activity |
+| `start_of_week` | Monday briefing: last week summary, this week volume and workload |
+| `midweek` | Wednesday pulse: week-to-date progress and pace versus last week |
+| `end_of_week` | Friday wrap-up: weekly completion, site hotspots, next week outlook |
+| `account_monthly` | Per-customer month. Requires `contact_id`. Optional `month` (`YYYY-MM`) |
+
+Call `GET /reports/sections` for the section names available on each type.
 
 ## POST /reports/generate
 
-Trigger generation of a report.
+Generate a report. The request waits for the result and returns structured JSON plus an optional narrative in the same response. With narrative, allow 10–17 seconds and set the client timeout to at least 30 seconds.
 
 **Request body:**
 
@@ -30,12 +32,12 @@ Trigger generation of a report.
 |-------|------|----------|-------------|
 | `company_id` | string | Yes | Your tenant identifier |
 | `api_key` | string | Yes | Your tenant API key |
-| `report_type` | string | Yes | Report type identifier (from table above) |
-| `sections` | array | No | Specific sections to include (omit for all) |
-| `date` | string | No | Report date (YYYY-MM-DD) |
-| `include_narrative` | boolean | No | Include AI-generated narrative text |
-| `contact_id` | integer | No | Scope to a specific customer (for account reports) |
-| `month` | string | No | Month to report on (YYYY-MM) |
+| `report_type` | string | Yes | One of the values in the table above |
+| `sections` | array of strings | No | Section names to include. Omit for all sections of that type |
+| `date` | string | No | Report date (`YYYY-MM-DD`). Defaults to today. Weekly types derive the ISO week from this date |
+| `include_narrative` | boolean | No | Include an AI-generated narrative. Defaults to true |
+| `contact_id` | integer | No | Customer contact ID. Required when `report_type` is `account_monthly` |
+| `month` | string | No | Report month (`YYYY-MM`). Used by `account_monthly`. Defaults to the previous calendar month |
 
 ```bash
 curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/reports/generate" \
@@ -43,8 +45,23 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/reports/generate" \
   -d '{
     "company_id": "your-company-id",
     "api_key": "your-api-key",
-    "report_type": "weekly_summary",
-    "date": "2024-11-10",
+    "report_type": "start_of_day",
+    "date": "2026-09-15",
+    "include_narrative": true
+  }'
+```
+
+Account monthly example:
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/reports/generate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "report_type": "account_monthly",
+    "contact_id": 12345,
+    "month": "2026-08",
     "include_narrative": true
   }'
 ```
@@ -53,7 +70,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/reports/generate" \
 
 ## GET /reports/sections
 
-Returns available report sections and their metadata.
+Returns the valid `report_type` values and the section names for each type.
 
 **Query parameters:**
 
@@ -61,11 +78,9 @@ Returns available report sections and their metadata.
 |-------|------|----------|-------------|
 | `company_id` | string | Yes | Your tenant identifier |
 | `api_key` | string | Yes | Your tenant API key |
-| `report_type` | string | No | Filter sections by report type |
 
 ```bash
 curl -G "https://api.vh3connect.io/api:kP8T1CK7/reports/sections" \
   --data-urlencode "company_id=your-company-id" \
-  --data-urlencode "api_key=your-api-key" \
-  --data-urlencode "report_type=weekly_summary"
+  --data-urlencode "api_key=your-api-key"
 ```

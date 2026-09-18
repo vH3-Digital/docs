@@ -61,7 +61,7 @@ Sentinels run on the data layer. They cost no LLM tokens. They are the most cost
 | Connie chat | `POST /connie/chat` | Cited, multi-turn conversation grounded in the model | Operator briefings, investigations, "why" questions |
 | Investigate | `POST /investigate` | Diagnostic synthesis with ranked findings, recommendations, and evidence | Multi-step problem analysis (preset-driven) |
 | Pre-visit briefings | `POST /briefings/pre-visit` | Engineer briefing assembled from history, similar faults, kit, risks | Mobile engineer prep before a visit |
-| Report generation | `POST /reports/generate` | Eight scheduled report types (daily, weekly, account monthly, exec health, engineer, site, customer, growth) | Operational rhythms, account reviews, QBRs |
+| Report generation | `POST /reports/generate` | Eight cadence types: `start_of_day`, `midday`, `close_of_business`, `day_review`, `start_of_week`, `midweek`, `end_of_week`, `account_monthly` | Operational rhythms, account reviews, QBRs |
 
 All synthesis tools return citations (job references, names) and structured tool outputs. See [Agent observability](/guides/agent-observability) for evidence standards.
 

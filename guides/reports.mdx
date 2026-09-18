@@ -11,103 +11,132 @@ published: May 2026
   Review in-app notifications in VH3 Connect. Reports concepts stay on this page; Connect surfaces outcomes via notifications, cases, and assistants.
 </Card>
 
-VH3 AI generates structured operational reports from the intelligence layer so the right briefing lands before the team needs it: daily operations before standup, weekly summaries before planning, account reports before QBRs, and executive health checks before leadership review.
+VH3 AI generates structured operational reports from the intelligence layer so the briefing lands when the team needs it: start of day before dispatch, midday while the board is live, close of business after the last job, weekly rhythms for planning, and a monthly account report before a QBR.
 
-Reports read from the same prepared model as discovery, sentinels, and Connie. That means the numbers, cited jobs, customer summaries, and risk signals stay aligned across chat, dashboards, scheduled emails, and custom apps.
+Reports read from the same prepared model as discovery, sentinels, and Connie. The numbers, cited jobs, and risk signals stay aligned across chat, scheduled email, automations, and custom apps.
 
 ## Report types
 
-### Daily operations
+Eight `report_type` values are valid on `POST /reports/generate`. Use the value that matches the operating rhythm you are automating. Other names — including `daily_operations`, `weekly_summary`, and `executive_health_check` — return HTTP 422.
 
-A snapshot of yesterday's work, jobs completed, SLA performance, notable events, and any sentinel triggers. Designed to land in an ops manager's inbox before the morning standup.
+### Daily
 
-### Weekly summary
+**Start of day** (`start_of_day`)
 
-Trends, rankings, and operational highlights across the week. Identifies patterns that aren't visible in a single day's data.
+Morning briefing: today's scheduled work, yesterday's carryovers, predicted overruns, repeat-visit alerts, and weather. Designed to land before dispatch.
+
+**Midday** (`midday`)
+
+Progress check while the day is still in play: completions so far, SLA risk, engineer capacity, and comparison to the previous period.
+
+**Close of business** (`close_of_business`)
+
+End-of-day wrap-up: completions, first-visit fix, punctuality, overruns, engineer leaderboard, and tomorrow's outlook.
+
+**Day review** (`day_review`)
+
+Full-day recap: volume, timing, type breakdown, site activity, and comparison. Use this when you want the whole day in one pass, often the next morning for the previous day.
+
+### Weekly
+
+**Start of week** (`start_of_week`)
+
+Monday briefing: last week's summary, this week's scheduled volume, engineer workload, carryover, and weather outlook.
+
+**Midweek** (`midweek`)
+
+Wednesday pulse: week-to-date progress, daily breakdown, overrun trend, and whether the week is ahead or behind last week.
+
+**End of week** (`end_of_week`)
+
+Friday wrap-up: weekly completion, first-visit fix, site hotspots, type performance, and next week's outlook.
 
 ### Account monthly
 
-Per-customer performance report covering job volumes, SLA metrics, response times, and any flagged risks. Suitable for sharing directly with FM clients.
+**Account monthly** (`account_monthly`)
 
-### Executive health check
+Per-customer month: volume, completion, site hotspots, job-type mix, timing, engineer activity, findings, and trend versus the previous month. Suitable for QBR prep. Requires `contact_id`. Pass `month` as `YYYY-MM`; if omitted, the previous calendar month is used.
 
-A five-dimension health assessment spanning up to three years of operational history. Scored across quality, efficiency, coverage, risk, and growth.
-
-### Engineer performance
-
-Individual breakdown, completion rates, SLA punctuality, first-time-fix rates, customer feedback, and workload distribution.
-
-### Site health
-
-Site-level trends, fault frequency, repeat visit rates, equipment failure patterns, and maintenance trajectory.
-
-### Customer intelligence
-
-Relationship summary, job history, risk signals, communication patterns, commercial activity, and recommended actions.
-
-### Sentinel digest
-
-Aggregated summary of all sentinel triggers for a given period, useful as a standalone report or as a section within a broader briefing.
+Engineer leaderboards, site hotspots, and first-visit-fix sit **inside** these reports as sections. They are not separate `report_type` values. Call `GET /reports/sections` for the section list per type. Continuous alerts belong on [Sentinels](/guides/sentinels), not on this endpoint.
 
 ## Report type values
 
-Use the report type that matches the operating rhythm you are automating.
-
 | Friendly name | API value | Typical audience |
 |---------------|-----------|------------------|
-| Daily operations | `daily_operations` | Ops manager, dispatch lead |
-| Weekly summary | `weekly_summary` | Operations leadership |
+| Start of day | `start_of_day` | Dispatch, ops manager |
+| Midday | `midday` | Ops manager |
+| Close of business | `close_of_business` | Operations leadership |
+| Day review | `day_review` | Ops manager |
+| Start of week | `start_of_week` | Operations leadership |
+| Midweek | `midweek` | Ops manager, dispatch lead |
+| End of week | `end_of_week` | Operations leadership |
 | Account monthly | `account_monthly` | Account manager, client review |
-| Executive health check | `executive_health_check` | Owner, MD, senior leadership |
-| Engineer performance | `engineer_performance` | Service manager, regional manager |
-| Site health | `site_health` | Contract manager, technical lead |
-| Customer intelligence | `customer_intelligence` | Account manager |
-| Sentinel digest | `sentinel_digest` | Ops channel, regional team |
 
 ## Generating reports
 
+Customer calls go to the Intelligence API with `company_id`, `api_key`, and `report_type` in the JSON body.
+
 ```bash
 curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/reports/generate" \
-  -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{
-    "companyId": "your-company-id",
-    "reportType": "weekly_summary",
-    "startDate": "2024-11-04",
-    "endDate": "2024-11-10"
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "report_type": "start_of_day",
+    "date": "2026-09-15",
+    "include_narrative": true
   }'
 ```
 
-Reports are generated asynchronously. The response includes a task ID you can poll for completion.
+The request waits for the report and returns the structured JSON (and optional narrative) in the same response. With narrative, allow 10–17 seconds and set the client timeout to at least 30 seconds.
+
+`date` is `YYYY-MM-DD` and defaults to today. Weekly types derive the ISO week from that date. Omit `sections` to include every section for the type; pass a list of section names from `GET /reports/sections` to generate a subset.
+
+For an account report:
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/reports/generate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "report_type": "account_monthly",
+    "contact_id": 12345,
+    "month": "2026-08",
+    "include_narrative": true
+  }'
+```
+
+See the [Reports API](/api-reference/reports) for field names and the sections catalogue.
 
 ## Delivery options
 
 Reports can be consumed through the channel that matches the work:
 
-- **API polling:** retrieve the generated report content for custom apps or portals.
+- **API response:** use the generated JSON in custom apps or portals.
 - **Email delivery:** send scheduled reports to named recipients.
-- **Slack/Teams:** route digests and exceptions to channels via automation.
-- **VH3 Connect:** view rendered reports in the application dashboard.
+- **Slack/Teams:** route briefings and exceptions to channels via automation.
+- **VH3 Connect:** notifications, cases, and assistants surface outcomes in the app.
 
 ## Scheduling
 
-Report generation can be triggered on demand via the API or scheduled via automation. Common patterns:
+Trigger generation on demand via the API, or schedule it with automation. Common patterns:
 
-- Daily operations report at 06:30 before the morning standup.
-- Weekly summary on Monday morning for operational planning.
-- Account monthly report before client review meetings.
-- Sentinel digest every morning for the regional channel.
+- `start_of_day` around 06:30–07:00 before dispatch.
+- `close_of_business` after the last job.
+- `start_of_week` on Monday morning for planning.
+- `account_monthly` before client review meetings.
 
-n8n cron triggers are the usual low-code path for scheduling and routing. Custom apps can trigger the same endpoint from a server-side scheduler.
+n8n cron triggers are the usual low-code path. Custom apps can call the same endpoint from a server-side scheduler. Set workflow timeout to at least 30 seconds when `include_narrative` is true.
 
 ## How operators use reports
 
-Reports work best when they become part of a regular operating loop:
+Reports work best as part of a regular operating loop:
 
-- Read the **daily operations** report before standup, then ask Connie to explain one exception.
-- Use the **weekly summary** to decide which sentinel findings need cases.
+- Read **start of day** before standup, then ask Connie to explain one exception.
+- Use **end of week** to decide which sentinel findings need cases.
 - Use **account monthly** for QBR prep, then verify the cited jobs before sharing externally.
-- Use **engineer performance** and **site health** reports to spot coaching or maintenance actions.
+- Use engineer and site **sections** inside the daily and weekly reports to spot coaching or maintenance actions.
 
 For wider operator habits, see [Working with your operation](/guides/working-with-your-operation).
 
@@ -118,12 +147,12 @@ For wider operator habits, see [Working with your operation](/guides/working-wit
     How reports fit into standups, account reviews, and case follow-through.
   </Card>
   <Card title="Sentinels" icon="bell" href="/guides/sentinels">
-    Continuous signals that can feed scheduled reports and digests.
+    Continuous signals that can feed scheduled reports and briefings.
   </Card>
   <Card title="Connie" icon="message-bot" href="/guides/connie">
     Ask follow-up questions against report findings with citations.
   </Card>
-  <Card title="Agent observability" icon="chart-mixed" href="/guides/agent-observability">
-    Evidence standards for numbers and cited job references.
+  <Card title="Reports API" icon="code" href="/api-reference/reports">
+    Request fields, valid report types, and the sections catalogue.
   </Card>
 </CardGroup>
