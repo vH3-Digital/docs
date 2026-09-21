@@ -107,7 +107,19 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/reports/generate" \
   }'
 ```
 
-See the [Reports API](/api-reference/reports) for field names and the sections catalogue.
+See the [Reports API](/api-reference/reports) for field names, the `findings` array, and the sections catalogue.
+
+## Findings
+
+Every generate response includes `findings`. Each Finding is one condition on one job:
+
+- **Still incomplete** (`watch`): planned before this report's window and not completed. Start of day and start of week.
+- **Overrunning** (`act_now`): still open and past its planned duration. Midday and midweek.
+- **Finished late** (`watch`): finished past its planned duration. Close of business, day review, end of week, and midweek.
+
+The card names the job by its reference, says what to check, and includes an Open job action for that job. The same job can appear on two cards when it is both overrunning and finished late. When the window has no qualifying jobs, `findings` is `[]`. Account monthly returns `[]` as well; account issues stay in the account sections.
+
+The narrative uses UK English. Dates in the narrative are `dd/mm/yy`. Times use the 24-hour clock. Findings are returned when `include_narrative` is false.
 
 ## Delivery options
 
@@ -153,6 +165,6 @@ For wider operator habits, see [Working with your operation](/guides/working-wit
     Ask follow-up questions against report findings with citations.
   </Card>
   <Card title="Reports API" icon="code" href="/api-reference/reports">
-    Request fields, valid report types, and the sections catalogue.
+    Request fields, Findings, valid report types, and the sections catalogue.
   </Card>
 </CardGroup>

@@ -35,7 +35,7 @@ Generate a report. The request waits for the result and returns structured JSON 
 | `report_type` | string | Yes | One of the values in the table above |
 | `sections` | array of strings | No | Section names to include. Omit for all sections of that type |
 | `date` | string | No | Report date (`YYYY-MM-DD`). Defaults to today. Weekly types derive the ISO week from this date |
-| `include_narrative` | boolean | No | Include an AI-generated narrative. Defaults to true |
+| `include_narrative` | boolean | No | Include an AI-generated narrative. Defaults to true. Narratives use UK English, dates as `dd/mm/yy`, and the 24-hour clock. Findings are returned either way |
 | `contact_id` | integer | No | Customer contact ID. Required when `report_type` is `account_monthly` |
 | `month` | string | No | Report month (`YYYY-MM`). Used by `account_monthly`. Defaults to the previous calendar month |
 
@@ -64,6 +64,73 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/reports/generate" \
     "month": "2026-08",
     "include_narrative": true
   }'
+```
+
+**Response fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `reportId` | string | Identifier for this generation |
+| `companyId` | string | Tenant identifier |
+| `reportType` | string | Report type that was generated |
+| `reportDate` | string | Report date (`YYYY-MM-DD`) |
+| `generatedAt` | string | ISO 8601 time the report was generated |
+| `sectionsIncluded` | array of strings | Sections that were computed |
+| `data` | object | Section payloads for this report type |
+| `narrative` | object or null | `headline`, `executiveSummary`, `keyHighlights`, `concerns`, `recommendations`. Null when narrative is off or unavailable |
+| `generationTimeMs` | integer | Time spent generating the report |
+| `notes` | array of strings | Generation notes |
+| `findings` | array | Evidence-backed conditions. Always present. Empty when nothing qualifies |
+
+`findings` is built from job lists the report has already computed. Each item is one condition on one job.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `fingerprint` | string | Stable id for this job and condition: `job_exception:{condition}:job:{jobId}` |
+| `operationalTier` | string | `critical`, `act_now`, `watch`, or `informational` |
+| `minimumTier` | string | Same value as `operationalTier` |
+| `title` | string | Job reference and the condition |
+| `summary` | string | What the evidence shows |
+| `recommendation` | string | What to check on that job |
+| `observedAt` | string | Same instant as `generatedAt` |
+| `evidence` | array | One row: `sourceId`, `label`, `observedValue`, `observedAt` |
+| `affectedEntities` | array | One job: `kind` is `job`, `id` is the source job id, `label` is the job reference |
+| `primaryAction` | object | `kind` is `open_job`, `jobId` is the source job id |
+| `source` | object | `kind` is `job_exception`. `sourceId` is the condition key |
+
+| Condition | Tier | Produced from |
+|-----------|------|----------------|
+| `incomplete_carryover` | `watch` | `carryover` on start of day and start of week |
+| `overrunning` | `act_now` | `at_risk_jobs` on midday, `at_risk` on midweek |
+| `overran` | `watch` | `overruns` on close of business, day review, and end of week; `overrun_trend` on midweek |
+
+Evidence `sourceId` is the section name prefixed with `report.` (`report.carryover`, `report.at_risk_jobs`, `report.at_risk`, `report.overruns`, `report.overrun_trend`).
+
+The array is ordered by tier (`critical`, `act_now`, `watch`, `informational`), then condition (`overrunning`, `incomplete_carryover`, `overran`), then job id. The same job can appear twice when it is both still open past its planned duration and finished late. A job is left off the array when its source job id or reference is missing, or when an overrun condition has no overrun minutes. Account monthly returns `findings: []`. Account issues stay in the account sections.
+
+```json
+{
+  "fingerprint": "job_exception:incomplete_carryover:job:4821",
+  "operationalTier": "watch",
+  "minimumTier": "watch",
+  "title": "Job JOB-1042 is still incomplete",
+  "summary": "It was planned before this report's window and is not completed.",
+  "recommendation": "Check whether this job still needs a visit.",
+  "observedAt": "2026-09-21T21:44:42+00:00",
+  "evidence": [
+    {
+      "sourceId": "report.carryover",
+      "label": "Still incomplete",
+      "observedValue": 1,
+      "observedAt": "2026-09-21T21:44:42+00:00"
+    }
+  ],
+  "affectedEntities": [
+    { "kind": "job", "id": 4821, "label": "JOB-1042" }
+  ],
+  "primaryAction": { "kind": "open_job", "jobId": 4821 },
+  "source": { "kind": "job_exception", "sourceId": "incomplete_carryover" }
+}
 ```
 
 ---
