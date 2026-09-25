@@ -1,0 +1,119 @@
+---
+title: Where AI projects stall in field service
+description: Twelve mistakes field service companies make when they bring AI into the business, what each one looks like on a real operation, and how to avoid it
+author: Riccardo Vezza
+published: September 2026
+---
+
+<div className="guide-byline">Riccardo Vezza · September 2026</div>
+
+Most AI projects in field service stall for ordinary reasons. The model is rarely the problem. The job history is messy, nobody owns the rollout, the team got one training session, and six months later nobody can say whether first-time fix moved.
+
+We've spent ten years building automations and software for field service contractors, most of it before anyone called it AI. The patterns that sank those projects are the same ones sinking AI projects now. Here are twelve of them, grouped by where they show up. Each one comes with what it looks like on a real operation and what to do instead.
+
+## Starting in the wrong place
+
+### 1. Starting with "we need AI"
+
+The board wants an AI story, so someone buys a tool and goes looking for a use for it. We watched the same thing happen with mobile job sheets and customer portals, and it ends the same way each time.
+
+Start with a problem your team already complains about. Repeat visits to the same asset. Quotes that sit unchased for three weeks. The morning scramble to work out which jobs will breach SLA. If you can name the problem and the person who feels it, you have a project. If you can only name the technology, you have a demo.
+
+### 2. Thinking too big
+
+The flashy version is an autonomous agent that runs dispatch. The useful version is a coordinator who gets a list of at-risk jobs at 7am instead of building it by hand.
+
+Small wins build the trust the big ones depend on. When a sentinel flags the third callout to the same boiler and the service manager acts on it, that is adoption. Nobody needed a steering committee.
+
+### 3. Building an agent where a rule would do
+
+Some problems need a model. Plenty don't. A check for jobs that have been open past their SLA window is a database query, and it should run as one. It is cheaper, faster, and gives the same answer every time.
+
+VH3 AI sentinels work this way. They watch for recurring faults, SLA trends, and customers going quiet with plain reads against your connected job history. The model does the work models are good at, like reading engineer notes and writing the report, and the rules do the rest.
+
+The reverse mistake also happens. Teams obsess over cost and start on the smallest, cheapest model before they know whether the task works at all. Prove it works with a capable model first. Then make it cheaper.
+
+## Skipping the groundwork
+
+### 4. Expecting the tool to clean the data
+
+Five years of FMS history has five years of change in it. Job types get renamed. Engineers join and leave. A customer appears under three spellings. Notes say "same as last time" and mean a job from 2022.
+
+A tool pointed at that history will give confident answers built on a mess. Someone has to decide how the data gets cleaned, joined, and kept current before the answers mean anything. That work is most of the job. [Your history is not one dataset](/guides/your-history-is-not-one-dataset) covers what it involves.
+
+### 5. Mapping the process in a meeting room
+
+On a whiteboard, closing a job is simple. The engineer finishes, the job closes, the invoice goes out. In practice, the engineer finishes, the worksheet is incomplete, the coordinator phones him, the customer emails a photo to the shared inbox, someone re-keys it, and the invoice waits on a PO number nobody has.
+
+AI applied to the whiteboard version fails on the real one. Sit with the coordinator for a morning before you design anything. The gap between what people say happens and what happens is where the useful work is.
+
+### 6. Bolting AI onto the old workflow
+
+The easy move is to take an existing process and add AI to one step. An AI summary of the weekly report nobody reads is still a report nobody reads.
+
+Ask what the process was for in the first place. The weekly report exists so managers know which accounts need attention. A briefing that names those accounts, with the jobs that put them there, answers the question directly. Sometimes the right answer is to delete a step, not to automate it.
+
+## People and ownership
+
+### 7. Nobody owns it
+
+AI gets handed to IT, or to one enthusiastic person, or to a committee. It stalls in all three cases. IT treats it as a software rollout. The enthusiast becomes a bottleneck with a backlog. The committee meets.
+
+Someone senior in operations has to own it, with the authority to change how work gets done. The MD has to back that person in public and use the tools themselves. When leaders ask the team to adopt something they have never opened, the team notices.
+
+### 8. Training once and calling it done
+
+A lunch-and-learn gets the keen people started. Everyone else nods, goes back to their desk, and carries on as before. Six months later, usage is three people.
+
+Adoption takes months. People need time in their week to try things, somewhere to ask questions, and examples from their own jobs. A coordinator learns faster from a colleague asking Connie "which customers have had three emergency callouts this quarter?" than from a slide about prompting.
+
+### 9. Telling people their jobs are safe
+
+Nobody believes it, and it costs you trust when roles do change. Be straight instead. Some tasks will go away. Re-keying worksheets and chasing PO numbers should. The people who know your customers and sites become more valuable, because their judgement is what the AI can't supply.
+
+Judgement matters in the other direction too. AI multiplies whoever is using it. A coordinator with good instincts gets through twice the work. One who hands over the thinking gets confident wrong answers faster.
+
+### 10. Bringing in Legal, Finance, and IT at the end
+
+The fastest way to kill a project is to show Legal a finished tool that processes engineer performance data. Bring them in at the start. Legal needs to understand what data is processed and why. Finance needs to see how AI spend works. IT needs to know who can see what.
+
+Permissions deserve their own conversation before any agent goes live. An engineer should not see another engineer's performance record through a chat window. For the engineer data question specifically, see [AI Act and engineer data](/guides/ai-act-and-engineer-data).
+
+## Measuring and keeping it honest
+
+### 11. No baseline, and no checks
+
+If you don't measure first-time fix, repeat visit rate, SLA compliance, and quote conversion before you start, you can't show anything moved afterwards. Use the KPIs you already run the business on. New "AI metrics" like prompts sent or hours saved tell you people used the tool. They say nothing about whether the operation got better.
+
+Checking the output matters as much. If a report cites the wrong job, someone has to catch it, and the fix has to stick. Tolerate sloppy output once and your team learns to stop reading it. Test new models against your own tasks before you switch, and track cost per task done right, not cost per call. [AI you can check](/guides/ai-you-can-check) covers why every answer should point back to the jobs behind it.
+
+### 12. Locking in
+
+Some teams stay with a tool because they already paid for it. Others build everything inside one vendor's ecosystem and find out later that the data only works there.
+
+Models change every few months. Keep the ability to change with them. With VH3 AI, conversational AI runs on your own model provider account ([BYOK](/pricing)), and the enriched job history lives in your account. You can switch models, or bring in a different agent, without starting again.
+
+## Where to start
+
+1. Pick one problem an operations lead already complains about, with a number attached.
+2. Record that number today, before anything changes.
+3. Spend a morning watching how the work happens, then write down the real process.
+4. Get Legal, Finance, and IT in the room for an hour, and agree who can see what.
+5. Run it for a quarter with one owner, and check the number again.
+
+If the number moved, you have your case for the next project. If it didn't, you learned something cheap.
+
+<CardGroup cols={2}>
+  <Card title="Building an AI-native operating system" icon="sitemap" href="/guides/ai-native-operating-system">
+    The six-step process for connecting the stack around your FMS.
+  </Card>
+  <Card title="Your history is not one dataset" icon="database" href="/guides/your-history-is-not-one-dataset">
+    Why raw job history misleads operational AI, and how VH3 AI normalises it.
+  </Card>
+  <Card title="AI you can check" icon="eye" href="/guides/ai-you-can-check">
+    Why traceability matters more than confidence in operational decisions.
+  </Card>
+  <Card title="Every correction is teaching something" icon="graduation-cap" href="/guides/every-correction-is-teaching-something">
+    How your team's corrections become operational knowledge in your account.
+  </Card>
+</CardGroup>
