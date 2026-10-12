@@ -1,0 +1,27 @@
+---
+title: Routes
+description: BigChange routes
+---
+
+# Routes
+
+BigChange routes. Auth: `X-API-Key` header. Base: `https://api.vh3connect.io/api:YdihQNr3`.
+
+## Routes
+
+Planned routes.
+
+### `GET` `/routes/list`
+
+Routes for the tenant. The page has `items`, `pageNumber`, `pageSize`, and `pageItemCount`. An empty list is a successful response.
+
+Optional inputs are `pageNumber` and `pageSize` only. When they are omitted, BigChange's default page size of 100 is left as BigChange sets it. Page size 0 and page number 0 return BigChange's 400.
+
+Each item, from BigChange's published schema, has `id`, `name`, `stopCount`, `stopDurationMinutes`, `distanceKm`, and `durationMinutes`. `name` is the route name. `stopCount` is the number of stops. `stopDurationMinutes` is the time spent at stops, in minutes. `distanceKm` is the driving distance, in kilometres. `durationMinutes` is the driving time, in minutes.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/routes/list" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "pageNumber=1" \
+  --data-urlencode "pageSize=100"
+```

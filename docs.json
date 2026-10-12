@@ -134,6 +134,7 @@
               "api-reference/bigchange/persons",
               "api-reference/bigchange/resources",
               "api-reference/bigchange/vehicles",
+              "api-reference/bigchange/routes",
               "api-reference/bigchange/stock",
               "api-reference/bigchange/worksheets",
               "api-reference/bigchange/reference-data"
@@ -183,6 +184,7 @@
             "group": "Strategy",
             "pages": [
               "guides/2027-blueprint",
+              "guides/what-your-team-should-be-able-to-do-without-us",
               "guides/ai-native-operating-system",
               "guides/buy-and-build-field-service",
               "guides/the-harness-is-the-product",

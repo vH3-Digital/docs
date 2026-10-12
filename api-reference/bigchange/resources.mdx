@@ -73,6 +73,52 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/resources/resources_list" \
   }'
 ```
 
+### `GET` `/resources/skills`
+
+Skills assigned to one resource. The page has `items`, `pageNumber`, `pageSize`, and `pageItemCount`. Each item has `resourceId`, `skillId`, `skillName`, and `expiresAt`.
+
+`resourceId` is required. Optional filters are `skillId`, `includeExpired`, `pageNumber`, and `pageSize` (1–1000). When `pageSize` is omitted, BigChange uses 100.
+
+Expired skills stay hidden until `includeExpired` is true. A lapsed skill then appears with its `expiresAt`.
+
+An unknown `skillId` on a real resource returns 200 and an empty `items` array. An unknown `resourceId` returns 404. `pageSize` 0 and `pageNumber` 0 return BigChange's 400.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/resources/skills" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "resourceId=100" \
+  --data-urlencode "includeExpired=true" \
+  --data-urlencode "pageNumber=1" \
+  --data-urlencode "pageSize=100"
+```
+
+### `GET` `/resources/absences`
+
+Absences for a resource, a type, a status, and a date window. The page has `items`, `pageNumber`, `pageSize`, and `pageItemCount`. Paging slices the list.
+
+Each item has `id`, `resourceId`, `startAt`, `endAt`, `daysRequested`, `typeId`, `typeName`, `status`, `statusChangedAt`, `owner`, `reason`, and `isPaidLeave`. `resourceId` and `typeName` may be null, and those rows are returned as BigChange sends them.
+
+The date window is containment, not overlap. `dateFrom` means the absence starts on or after that instant. `dateTo` means it ends on or before that instant. A leave that only overlaps the window is absent from the page. A leave that runs 17–28 August is absent from a 20–21 August window, and present when the window covers the whole of August.
+
+`daysRequested` is working time, not the calendar span. That 17–28 August leave is 10 working days.
+
+Optional filters are `resourceId`, `dateFrom`, `dateTo`, `status`, `absenceTypeId`, `pageNumber`, and `pageSize` (1–1000). `pageSize` 0 returns BigChange's 400.
+
+Status filters accept `approved` and `Approved`, and the same for `rejected` and `requested`. Rows come back as `Approved`, `Rejected`, or `Requested`.
+
+Requested or rejected leave can still appear as scheduling suggestions. This route explains leave. It does not remove slots from `POST /jobs/scheduling/suggestions`.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/resources/absences" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "resourceId=100" \
+  --data-urlencode "dateFrom=2026-11-01T00:00:00Z" \
+  --data-urlencode "dateTo=2026-11-08T00:00:00Z" \
+  --data-urlencode "status=approved" \
+  --data-urlencode "pageNumber=1" \
+  --data-urlencode "pageSize=50"
+```
+
 ## Resource groups
 
 Teams.

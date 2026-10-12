@@ -157,6 +157,48 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/scheduling" \
   }'
 ```
 
+### `POST` `/jobs/scheduling/suggestions`
+
+Candidate slots for resources or vehicles. Each item includes the resource or vehicle, `startAt`, extra distance, extra driving time, estimated cost, and skills.
+
+`fromDate` and `toDate` are required UTC timestamps. The window is at most seven days. A longer window returns BigChange's 422, with BigChange's validation body.
+
+A window from 13 October to 16 October returned slots on the 13th, 14th, and 15th only.
+
+`latitude` and `longitude` are required when `jobId` is absent. They have no default. Omitting both without a `jobId` returns BigChange's 400. When `jobId` is sent, coordinates may be omitted and BigChange uses that job's site.
+
+`averageDurationMinutes`, `successRatePercent`, and `punctualityPercent` are filled when `jobId` is sent and BigChange has history for that job type. A coordinates-only request leaves those three null.
+
+`when` is `anytime`, `morning`, `afternoon`, or `custom`. For `custom`, `whenFrom` and `whenTo` are the tenant's local clock as `HH:mm`. `startAt` on each slot is UTC.
+
+Optional filters are repeated upstream query parameters, 50 values each: `resourceId`, `resourceGroupId`, `vehicleId`, `vehicleGroupId`, `skillIds`, `attributeIds`. The `items` array stays in BigChange's order.
+
+This call leaves the job unassigned. Apply a chosen slot with `POST /jobs/scheduling`.
+
+**Enum values:**
+
+- **schedulingType:** `resources`, `vehicles`
+- **when:** `anytime`, `morning`, `afternoon`, `custom`
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/scheduling/suggestions" \
+  -H "X-API-Key: your-api-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "schedulingType": "resources",
+    "fromDate": "2026-11-02T00:00:00Z",
+    "toDate": "2026-11-08T00:00:00Z",
+    "latitude": 51.5,
+    "longitude": -0.12,
+    "when": "custom",
+    "whenFrom": "09:00",
+    "whenTo": "11:00",
+    "resourceId": [
+      100
+    ]
+  }'
+```
+
 ### `POST` `/jobs/status/history`
 
 Status history.

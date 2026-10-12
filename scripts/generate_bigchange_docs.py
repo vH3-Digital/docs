@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate BigChange API reference MDX — one curl per endpoint."""
+# ruff: noqa: E501, RUF001  (generated doc text: long prose lines and typographic dashes)
 
 from __future__ import annotations
 
@@ -115,6 +116,42 @@ PAGES = {
                 E("POST", "/jobs/result", "Set result.", body={"jobId": 12345, "status": "completedOk", "result": "Job complete"},
                   enums={"status": ["completedOk", "completedWithIssues"]}),
                 E("POST", "/jobs/scheduling", "Schedule job.", body={"jobId": 12345, "resourceId": 100, "vehicleId": 50, "plannedStartAt": "2026-04-20T09:00:00Z"}),
+                E(
+                    "POST",
+                    "/jobs/scheduling/suggestions",
+                    "\n".join([
+                        "Candidate slots for resources or vehicles. Each item includes the resource or vehicle, `startAt`, extra distance, extra driving time, estimated cost, and skills.",
+                        "",
+                        "`fromDate` and `toDate` are required UTC timestamps. The window is at most seven days. A longer window returns BigChange's 422, with BigChange's validation body.",
+                        "",
+                        "A window from 13 October to 16 October returned slots on the 13th, 14th, and 15th only.",
+                        "",
+                        "`latitude` and `longitude` are required when `jobId` is absent. They have no default. Omitting both without a `jobId` returns BigChange's 400. When `jobId` is sent, coordinates may be omitted and BigChange uses that job's site.",
+                        "",
+                        "`averageDurationMinutes`, `successRatePercent`, and `punctualityPercent` are filled when `jobId` is sent and BigChange has history for that job type. A coordinates-only request leaves those three null.",
+                        "",
+                        "`when` is `anytime`, `morning`, `afternoon`, or `custom`. For `custom`, `whenFrom` and `whenTo` are the tenant's local clock as `HH:mm`. `startAt` on each slot is UTC.",
+                        "",
+                        "Optional filters are repeated upstream query parameters, 50 values each: `resourceId`, `resourceGroupId`, `vehicleId`, `vehicleGroupId`, `skillIds`, `attributeIds`. The `items` array stays in BigChange's order.",
+                        "",
+                        "This call leaves the job unassigned. Apply a chosen slot with `POST /jobs/scheduling`.",
+                    ]),
+                    body={
+                        "schedulingType": "resources",
+                        "fromDate": "2026-11-02T00:00:00Z",
+                        "toDate": "2026-11-08T00:00:00Z",
+                        "latitude": 51.5,
+                        "longitude": -0.12,
+                        "when": "custom",
+                        "whenFrom": "09:00",
+                        "whenTo": "11:00",
+                        "resourceId": [100],
+                    },
+                    enums={
+                        "schedulingType": ["resources", "vehicles"],
+                        "when": ["anytime", "morning", "afternoon", "custom"],
+                    },
+                ),
                 E("POST", "/jobs/status/history", "Status history.", body={"jobId": 12345, "pageNumber": 1, "pageSize": 50}),
             ]),
             ("Job constraints", "Scheduling constraints.", [
@@ -245,7 +282,53 @@ PAGES = {
             E("GET", "/resources/resource_get", "Get resource.", query=[("resourceId", "100")]),
             E("POST", "/resources/resource_create", "Create resource.", body={"name": "Alex Engineer", "groupId": 5}),
             E("POST", "/resources/update", "Update resource.", body={"resourceId": 100, "name": "Alex Engineer"}),
-            E("POST", "/resources/resources_list", "List resources.", body={"pageNumber": 1, "pageSize": 50}),
+                E("POST", "/resources/resources_list", "List resources.", body={"pageNumber": 1, "pageSize": 50}),
+                E(
+                    "GET",
+                    "/resources/skills",
+                    "\n".join([
+                        "Skills assigned to one resource. The page has `items`, `pageNumber`, `pageSize`, and `pageItemCount`. Each item has `resourceId`, `skillId`, `skillName`, and `expiresAt`.",
+                        "",
+                        "`resourceId` is required. Optional filters are `skillId`, `includeExpired`, `pageNumber`, and `pageSize` (1–1000). When `pageSize` is omitted, BigChange uses 100.",
+                        "",
+                        "Expired skills stay hidden until `includeExpired` is true. A lapsed skill then appears with its `expiresAt`.",
+                        "",
+                        "An unknown `skillId` on a real resource returns 200 and an empty `items` array. An unknown `resourceId` returns 404. `pageSize` 0 and `pageNumber` 0 return BigChange's 400.",
+                    ]),
+                    query=[
+                        ("resourceId", "100"),
+                        ("includeExpired", "true"),
+                        ("pageNumber", "1"),
+                        ("pageSize", "100"),
+                    ],
+                ),
+                E(
+                    "GET",
+                    "/resources/absences",
+                    "\n".join([
+                        "Absences for a resource, a type, a status, and a date window. The page has `items`, `pageNumber`, `pageSize`, and `pageItemCount`. Paging slices the list.",
+                        "",
+                        "Each item has `id`, `resourceId`, `startAt`, `endAt`, `daysRequested`, `typeId`, `typeName`, `status`, `statusChangedAt`, `owner`, `reason`, and `isPaidLeave`. `resourceId` and `typeName` may be null, and those rows are returned as BigChange sends them.",
+                        "",
+                        "The date window is containment, not overlap. `dateFrom` means the absence starts on or after that instant. `dateTo` means it ends on or before that instant. A leave that only overlaps the window is absent from the page. A leave that runs 17–28 August is absent from a 20–21 August window, and present when the window covers the whole of August.",
+                        "",
+                        "`daysRequested` is working time, not the calendar span. That 17–28 August leave is 10 working days.",
+                        "",
+                        "Optional filters are `resourceId`, `dateFrom`, `dateTo`, `status`, `absenceTypeId`, `pageNumber`, and `pageSize` (1–1000). `pageSize` 0 returns BigChange's 400.",
+                        "",
+                        "Status filters accept `approved` and `Approved`, and the same for `rejected` and `requested`. Rows come back as `Approved`, `Rejected`, or `Requested`.",
+                        "",
+                        "Requested or rejected leave can still appear as scheduling suggestions. This route explains leave. It does not remove slots from `POST /jobs/scheduling/suggestions`.",
+                    ]),
+                    query=[
+                        ("resourceId", "100"),
+                        ("dateFrom", "2026-11-01T00:00:00Z"),
+                        ("dateTo", "2026-11-08T00:00:00Z"),
+                        ("status", "approved"),
+                        ("pageNumber", "1"),
+                        ("pageSize", "50"),
+                    ],
+                ),
         ]),
         ("Resource groups", "Teams.", [
             E("GET", "/resource_groups/resource_group/get", "Get group.", query=[("resourceGroupId", "5")]),
@@ -258,8 +341,47 @@ PAGES = {
             E("POST", "/vehicles/create", "Create vehicle.", body={"registration": "AB12 CDE"}),
             E("POST", "/vehicles/update", "Update vehicle.", body={"vehicleId": 50}),
             E("POST", "/vehicles/list", "List vehicles.", body={"pageNumber": 1, "pageSize": 50}),
+            E(
+                "GET",
+                "/vehicles/defects",
+                "\n".join([
+                    "Defects recorded against one vehicle. The page has `items`, `pageNumber`, `pageSize`, and `pageItemCount`.",
+                    "",
+                    "Each item has `defectId`, `vehicleId`, `reportedByResourceId`, `severity`, `category`, `description`, `status`, `occurredAt`, and `createdAt`. `category` may be null. `severity` is free text.",
+                    "",
+                    "`vehicleId` is required. Optional filters are `status` (`open`, `inProgress`, `closed`), `reportedFrom`, `reportedTo`, `page`, and `pageSize`. The page query is named `page`, not `pageNumber`. `reportedFrom` and `reportedTo` accept `YYYY-MM-DD` and a UTC timestamp.",
+                    "",
+                    "An unknown vehicle id returns 200 with an empty `items` array. A bad status, a bad date, or a `pageSize` outside 1–1000 returns BigChange's 400.",
+                    "",
+                    "Do not treat `pageSize` as a cap until BigChange slices the list. On a vehicle with several closed defects, `pageSize` 2 still returns the full set, and `pageItemCount` equals that full set. `page` and `pageSize` are echoed and then ignored. When both are omitted, BigChange echoes `pageNumber` 1 and `pageSize` 20.",
+                ]),
+                query=[
+                    ("vehicleId", "50"),
+                    ("status", "closed"),
+                    ("reportedFrom", "2020-01-01"),
+                    ("page", "1"),
+                    ("pageSize", "2"),
+                ],
+                enums={"status": ["open", "inProgress", "closed"]},
+            ),
         ]),
     ], COMMON),
+    "routes": page("Routes", "BigChange routes", [
+        ("Routes", "Planned routes.", [
+            E(
+                "GET",
+                "/routes/list",
+                "\n".join([
+                    "Routes for the tenant. The page has `items`, `pageNumber`, `pageSize`, and `pageItemCount`. An empty list is a successful response.",
+                    "",
+                    "Optional inputs are `pageNumber` and `pageSize` only. When they are omitted, BigChange's default page size of 100 is left as BigChange sets it. Page size 0 and page number 0 return BigChange's 400.",
+                    "",
+                    "Each item, from BigChange's published schema, has `id`, `name`, `stopCount`, `stopDurationMinutes`, `distanceKm`, and `durationMinutes`. `name` is the route name. `stopCount` is the number of stops. `stopDurationMinutes` is the time spent at stops, in minutes. `distanceKm` is the driving distance, in kilometres. `durationMinutes` is the driving time, in minutes.",
+                ]),
+                query=[("pageNumber", "1"), ("pageSize", "100")],
+            ),
+        ]),
+    ]),
     "stock": page("Stock", "Inventory, movements, suppliers", [
         ("Stock details", "Product catalogue.", [
             E("GET", "/stock/stock_details", "Get details.", query=[("stockDetailsId", "10")]),

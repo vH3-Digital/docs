@@ -1,0 +1,110 @@
+---
+title: What your team should be able to do without us
+description: How to judge an embedded engineering engagement in field service, and the API controls your team needs to own the next change
+author: Riccardo Vezza
+published: October 2026
+---
+
+<div className="guide-byline">Riccardo Vezza · October 2026</div>
+
+[Gartner predicts](https://www.gartner.com/en/newsroom/press-releases/2026-09-29-gartner-predicts-70-percent-of-enterprises-will-abandon-agentic-ai-built-by-vendor-forward-deployed-engineering-by-2028) that by 2028, 70% of enterprises will abandon agentic AI built by a vendor's forward-deployed engineers. Costs rise, and the customer's own team cannot change the system.
+
+VH3 AI holds the same standard in field service. An engineer who sits inside the operation can get useful software into production. The engagement succeeds when your people can keep changing that software after we step back.
+
+## A live workflow is a weak test
+
+The first release looks like the result. A sentinel flags the third visit to the same boiler. A briefing reaches the coordinator before the morning scramble. A portal email opens a case with the job history attached.
+
+That shows the engineer understood the work. Ask what your team can change the next time a contract adds an exception the workflow has never seen.
+
+- Change the workflow when that exception appears.
+- Investigate a sentinel that fired on the wrong jobs, using the jobs and notes on the case.
+- Run the same job history through a different model, check the output, and put it live only after someone on your team has signed it off.
+- Find the written reason a threshold, an exclusion, or a briefing template was set that way.
+- Ship the next small report, alert, or workflow with your own people leading it.
+
+Count how many of those your team can do. That count is the result of the engagement.
+
+The prepared job history stays in your account when you change model. Conversational AI runs on your own provider key, so a model trial uses the same jobs, sites, and history your team already trusts. See [compounding operational capability](/guides/compounding-operational-capability).
+
+## What your team can change through the API
+
+Field service companies usually meet AI in one of two places.
+
+One is a connector in front of a model. It sends the job note, a long instruction, and a list of rules, then returns a paragraph. The model answers from that text alone. When the paragraph is wrong, the usual fix is a longer instruction. A coordinator still has no job to open behind that paragraph.
+
+The other sits inside the field management system. Several of those products, including ones owned by private equity or venture capital, are adding the feature to the screen coordinators already use. The vendor ships it on their release cycle. A threshold, a region, a contract, or a job type changes when they ship, or when their support team makes the change. To try another model on the same history, the team waits for that next release.
+
+We built VH3 AI as an API in front of prepared jobs so the six-month test is a practical one. Connie, your workflows, and your own tools call the same endpoints. The controls below are the ones your team needs if they are going to change the system after we step back. See [Building on the layer](/guides/building-on-the-layer).
+
+**Corrections.** A false alarm should change the next run. When a coordinator marks a sentinel wrong, the threshold or the case note in your account is what the next check reads. The model can stay the same. The correction reinforces your operation, on your jobs. See [Every correction is teaching something](/guides/every-correction-is-teaching-something).
+
+**Provenance.** An answer should show where it came from. The API returns the tools that ran, the figures they returned, and the job references behind them. An account manager can open those jobs before a number reaches a customer. See [AI you can check](/guides/ai-you-can-check) and [Agent observability](/guides/agent-observability).
+
+**A fallback.** Some steps should stay with a rule or a person. A sentinel is a database check, so it gives the same result every time the jobs match. A case holds the exception for someone on your team. A workflow can run the check first and call a model only when the case needs a written explanation.
+
+**Configuration.** Your team sets the thresholds, the exclusions, the job types that count, the briefing template, and the operating rules for how Connie should behave. Those settings live in the account. Your team can read them and edit them there.
+
+**A check before a customer sees it.** Keep a set of real jobs and run a change against them. Compare two models on that same history, read the citations, and keep the run. Ship the output someone on your team has signed.
+
+**Documents and the other systems.** Worksheets, certificates, and files from the stores you already use, such as Drive, OneDrive, Dropbox, and PandaDoc, attach to the account and the job. Mail, calendar, CRM, and finance can feed the same picture. Your team chooses which connections are on, and the same API reads them. See [Native integrations](/native-integrations).
+
+## Who should be in the room
+
+Field service judgement already sits with the people who run the week. Dispatch knows which engineer suits a difficult site. The account manager knows which complaint is really a contract argument. The coordinator knows which note means the fault from March has come back.
+
+Those people need to be present while scope, review, and trade-offs are decided. A handover pack written in the last week records what shipped. The habit of making the next decision comes from being in the room while this one is made.
+
+The usual owner inside your business is a [field intelligence lead](/guides/2027-blueprint). That person might already be an operations lead, an account manager, or an engineer who has been building unofficial spreadsheets for years. A VH3 Field Intelligence Engineer works beside them.
+
+## What we transfer
+
+The working habits transfer in the sessions where the work is happening.
+
+**Scope.** Name the job the business needs. Repeat visits, a missed SLA, an account going quiet, a coordinator rebuilding the same brief by hand. Write the outcome down before anyone builds it.
+
+**Review.** Read the change against live jobs. Check the citations, the thresholds, and any output that would reach a customer.
+
+**Blockers.** Say early when the job history is too messy to trust, when a plain rule would answer the question, or when a requirement would only produce a demo.
+
+**The business result.** Tie the technical choice to a number the operation already tracks. First-time fix, SLA breaches, repeat visits, or hours spent assembling a brief.
+
+Your people practise those moves with us. After a few cycles they can run the next one.
+
+## A long engagement can still be right
+
+Field service context takes time to learn. Job-type names hide several kinds of work. Site history contradicts the latest worksheet. A difficult customer has informal rules that never reached a policy document.
+
+Staying long enough to learn that context is reasonable. Through those months, your team's pace of shipping should keep rising. At six months, you should be able to list the changes your people now make on their own.
+
+## Put the question in the scope
+
+Before the work starts, ask this.
+
+What will my team be able to do without you six months from now?
+
+Write the answer into the scope. Name the people. Name the workflows they will own. Review the list in working sessions, while the decisions are still open.
+
+Gartner calls the engagement a success when the enterprise can manage the system and change it as the work changes, including how people and models share a decision.
+
+<CardGroup cols={2}>
+  <Card title="The 2027 blueprint" icon="map" href="/guides/2027-blueprint">
+    Who owns operational capability inside the business, and how to organise for it.
+  </Card>
+  <Card title="Compounding operational capability" icon="chart-line" href="/guides/compounding-operational-capability">
+    The loop your team should be able to run: direction, upkeep, review, and the next tool.
+  </Card>
+  <Card title="Where AI projects stall" icon="triangle-exclamation" href="/guides/where-ai-projects-stall">
+    Twelve ordinary reasons field service AI projects stop, and the practical fix for each.
+  </Card>
+  <Card title="Building on the layer" icon="hammer" href="/guides/building-on-the-layer">
+    APIs, automations, and agents your team can change against the same prepared jobs.
+  </Card>
+  <Card title="AI you can check" icon="eye" href="/guides/ai-you-can-check">
+    Citations, defined scope, and the job references behind an operational number.
+  </Card>
+</CardGroup>
+
+## Next step
+
+Name one workflow and one person on your team who will own it. Record what they can change today. Review that list again at six months.

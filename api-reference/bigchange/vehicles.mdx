@@ -70,3 +70,25 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/vehicles/list" \
     "pageSize": 50
   }'
 ```
+
+### `GET` `/vehicles/defects`
+
+Defects recorded against one vehicle. The page has `items`, `pageNumber`, `pageSize`, and `pageItemCount`.
+
+Each item has `defectId`, `vehicleId`, `reportedByResourceId`, `severity`, `category`, `description`, `status`, `occurredAt`, and `createdAt`. `category` may be null. `severity` is free text.
+
+`vehicleId` is required. Optional filters are `status` (`open`, `inProgress`, `closed`), `reportedFrom`, `reportedTo`, `page`, and `pageSize`. The page query is named `page`, not `pageNumber`. `reportedFrom` and `reportedTo` accept `YYYY-MM-DD` and a UTC timestamp.
+
+An unknown vehicle id returns 200 with an empty `items` array. A bad status, a bad date, or a `pageSize` outside 1–1000 returns BigChange's 400.
+
+Do not treat `pageSize` as a cap until BigChange slices the list. On a vehicle with several closed defects, `pageSize` 2 still returns the full set, and `pageItemCount` equals that full set. `page` and `pageSize` are echoed and then ignored. When both are omitted, BigChange echoes `pageNumber` 1 and `pageSize` 20.
+
+```bash
+curl -G "https://api.vh3connect.io/api:YdihQNr3/vehicles/defects" \
+  -H "X-API-Key: your-api-key" \
+  --data-urlencode "vehicleId=50" \
+  --data-urlencode "status=closed" \
+  --data-urlencode "reportedFrom=2020-01-01" \
+  --data-urlencode "page=1" \
+  --data-urlencode "pageSize=2"
+```
