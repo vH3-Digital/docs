@@ -1,15 +1,190 @@
 ---
 title: MCP Server
-description: Connect any MCP-compatible AI client, Claude Desktop, Cursor, custom agents, directly to the VH3 intelligence layer
+description: Connect VH3 AI to Claude, Cursor, n8n or your own agent through the Model Context Protocol
 ---
 
 # MCP Server
 
-The VH3 AI MCP server exposes the full intelligence layer as [Model Context Protocol](https://modelcontextprotocol.io) tools. Any MCP-compatible client, Claude Desktop, Cursor, a custom agent, or your own toolchain, can connect directly without building middleware.
+Connect VH3 AI to Claude and ask about your jobs, engineers, sites, customers, quotes and invoices in plain English. Claude calls VH3 AI tools through the [Model Context Protocol](https://modelcontextprotocol.io) (MCP), and every answer comes from your own company's data.
 
-Once connected, the client gets the same tools used by the Connie assistant: `investigate`, `aggregate_jobs`, `jobs_feed`, `run_sentinels`, `reports_generate`, `search_outcomes`, and more, with all credentials and routing handled server-side via JWT authentication.
+Most people connect in Claude with a VH3 sign-in and nothing to install. Developers who use Cursor, Claude Code, n8n or a custom agent can connect with a token under [Advanced: developer access](#advanced-developer-access).
 
-## Server details
+## Connect in Claude
+
+Choose the route that suits you. All three use the same VH3 account and give you the same tools.
+
+<Tabs>
+  <Tab title="Custom connector">
+    Works on claude.ai, Claude Desktop, Claude mobile and Cowork. Your plan needs to allow custom connectors; on Team and Enterprise plans an owner adds the connector once for the organisation.
+
+    <Steps>
+      <Step title="Open the connector settings">
+        In Claude, open **Customize → Connectors** and choose **Add custom connector**.
+      </Step>
+      <Step title="Enter the VH3 AI details">
+        Name it `VH3 AI` and use this server URL:
+
+        ```text
+        https://mcp.vh3.ai/mcp
+        ```
+      </Step>
+      <Step title="Connect and sign in">
+        Choose **Add**, then **Connect**, and [sign in with your VH3 account](#sign-in-with-your-vh3-account).
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Plugin">
+    The VH3 AI plugin adds the connector and a field service skill, so Claude already knows which tool to use for counts, lists, root causes and scheduling questions. It also adds three commands: `morning-brief`, `weekly-review` and `who-can-take`.
+
+    In Claude Code, install it with one line:
+
+    ```text
+    /plugin install vh3-ai --marketplace vH3-Digital/vh3-ai-claude-plugin
+    ```
+
+    On claude.ai or Cowork, open **Customize → Plugins** and upload the plugin zip from the [plugin repository](https://github.com/vH3-Digital/vh3-ai-claude-plugin).
+  </Tab>
+  <Tab title="Claude directory">
+    {/* TODO(#847): replace this paragraph with the Claude Connectors Directory link once the listing is live. Do not invent a URL. */}
+    The VH3 AI listing in the Claude Connectors Directory is coming soon. When it is live, search for **VH3 AI**, choose **Connect**, and sign in.
+  </Tab>
+</Tabs>
+
+### Sign in with your VH3 account
+
+A VH3 AI page opens in your browser. Enter the email and password you use for VH3 Connect. Your password goes to VH3 only.
+
+If sign-in fails, check the message on the page:
+
+| Message | What to do |
+|---|---|
+| That email or password is not right | Check both and try again. Reset your password from the VH3 Connect login page if needed. |
+| Too many attempts | Wait a few minutes, then try again. |
+| This VH3 account is no longer active | Contact your VH3 administrator. |
+| Your company has not finished setting up VH3 AI access | Ask your VH3 administrator to enable it. |
+| VH3 sign-in is not available right now | Try again shortly. |
+
+### Choose what Claude may do
+
+After sign-in, the page asks what to allow.
+
+- **Read access** is always granted. Claude can read jobs, engineers, sites, customers, quotes, invoices and reports for your company, and runs these tools without asking each time.
+- **Allow actions** appears only when VH3 AI offers a tool that can act for you, such as **Ask Connie**, which can send email and SMS, create drafts and queue quotes. It is unticked by default. Tick it only if you want those actions. Each action asks you to confirm first.
+
+Choose **Allow** to finish. See the [privacy policy](https://www.vh3.ai/legal-and-compliance/privacy-policy) and [terms](https://www.vh3.ai/legal-and-compliance/vh3-ai-product-terms-and-conditions) for how VH3 handles your data. You can disconnect VH3 AI in Claude's connector settings at any time. To change your choice, disconnect and connect again.
+
+### Try it
+
+Ask Claude:
+
+- *"How many jobs did we complete last week, broken down by engineer?"*
+- *"Which sites have had repeat visits this month?"*
+- *"Who could take job 12345 this week?"*
+
+Claude calls **Job metrics** for the first question and shows a chart in the chat. For the third, it calls **Who could take a job, and when** and lists engineers with times.
+
+### What you'll see in Claude
+
+In claude.ai and Claude Desktop, many answers open as a card you can use in the chat. Claude Code shows the same answers as text.
+
+| Ask about | Card |
+|---|---|
+| Counts, rates and trends | A chart. Switch the measure or the grouping, and compare two periods |
+| Who could take a job | A picker of engineers and start times. Each slot is an offer; a person books it on the schedule |
+| One job | A job card with status, customer and site, engineer, planned against actual times, and the VH3 summary |
+| One invoice or quote | The status, dates, line items, VAT and totals |
+| A list of invoices or quotes | A sortable table with a status filter and totals for each currency |
+| One customer or site | Details, job totals, recent jobs and the VH3 customer summary |
+
+## For test customers and early access
+
+You can connect today, before the listing in the Claude directory goes live.
+
+- **claude.ai, Claude Desktop or mobile:** open **Customize → Connectors**, choose **Add custom connector**, and enter `https://mcp.vh3.ai/mcp`. Then [sign in with your VH3 account](#sign-in-with-your-vh3-account).
+- **Claude Code:** run `claude mcp add --transport http vh3-ai https://mcp.vh3.ai/mcp`, or install the plugin above.
+
+On Team and Enterprise plans, an Owner may need to allow custom connectors first. Tell your VH3 contact if a tool returns a "not found" error, because a few tools switch on as each release rolls out.
+
+## Available tools
+
+Once connected, Claude can use these tools. They need no `company_id` or `api_key`, because your sign-in identifies your company.
+
+### Jobs and sites
+
+| Tool | What it does |
+|---|---|
+| **List jobs** (`list_jobs`) | Lists jobs with filters for status, type, customer and engineer. Filter by the date a job was created, or by the day it is planned |
+| **Get job** (`get_job`) | Returns one job with worksheets and site history. Shows a job card in the chat |
+| **Job metrics** (`aggregate_jobs`) | Counts, rates, rankings and trends for a period, with comparison and grouping. Shows a chart in the chat |
+| **Investigate an operational question** (`investigate`) | Finds the cause behind a pattern, using evidence from your jobs |
+| **Search past job outcomes** (`search_outcomes`) | Finds similar faults and what happened last time |
+| **Weather for a job** (`weather_for_job`) | Shows the weather at a job's site and time |
+| **Run sentinel checks** (`run_sentinels`) | Runs your early-warning checks on demand |
+
+### Customers, engineers and search
+
+| Tool | What it does |
+|---|---|
+| **Search customers, engineers, jobs and sites** (`search_autocomplete`) | Finds records by name, postcode or reference |
+| **List contacts** (`contacts_feed`) | Lists customers with free-text search |
+| **Get contact** (`contact_detail`) | Returns one customer with history. Shows a customer card in the chat |
+| **Engineer skills** (`resource_skills`) | Lists the skills held by one engineer |
+| **List resource groups** (`list_resource_groups`) | Lists your engineer and vehicle groups |
+| **Who could take a job, and when** (`scheduling_suggestions`) | Offers engineers and times for a job, ranked by VH3. Shows a picker in the chat. It suggests; a person books on the schedule |
+| **Company and platform status** (`company_snapshot`) | Shows your company profile and platform health |
+
+### Quotes and invoices
+
+| Tool | What it does |
+|---|---|
+| **List BigChange quotes** (`list_quotes`) | Lists quotes with filters. Shows a sortable table in the chat |
+| **Get BigChange quote** (`get_quote`) | Returns one quote with line items. Shows a quote card in the chat |
+| **List Quotient quotes** (`list_quotient_quotes`) | Lists Quotient quotations, for companies that use Quotient |
+| **Get Quotient quote** (`get_quotient_quote`) | Returns one Quotient quotation with line items |
+| **Quote totals and conversion** (`quote_summary`) | Exact quote totals and conversion for a period |
+| **List invoices** (`list_invoices`) | Lists invoices with filters. Shows a sortable table in the chat |
+| **Get invoice** (`get_invoice`) | Returns one invoice with line items and payment status. Shows an invoice card in the chat |
+| **Invoice totals** (`invoice_summary`) | Exact invoice totals and outstanding amounts for a period |
+
+<Note>
+Reports and **Ask Connie** are switching on in stages. **Generate operational report** (`reports_generate`) and **Ask Connie (can take actions)** (`connie_chat`) appear in the list when they are live for your company. Connie through this connector sends email, SMS and notifications. It does not place voice calls.
+</Note>
+
+<Warning>
+`investigate`, the totals tools and `scheduling_suggestions` can take a while on large periods. If Claude reports that a call took too long, narrow the period or the question and ask again.
+</Warning>
+
+## Troubleshooting a Claude connection
+
+### "Add custom connector" is missing
+
+Your plan or organisation settings may not allow custom connectors. On Team and Enterprise plans, ask an owner to add the connector in **Organization settings → Connectors**.
+
+### Sign-in opens, but Claude shows an error afterwards
+
+Disconnect VH3 AI in Claude's connector settings and connect again. The connector URL is exactly `https://mcp.vh3.ai/mcp`, with no trailing slash and no path after `mcp`.
+
+### VH3 tools disappear after working for a while
+
+Your VH3 account may have been archived, or your sign-in expired after a long period of no use. Connect again. If sign-in then fails with a message, see the table above.
+
+### Connie is missing from the tool list
+
+Disconnect and connect again, and tick **Allow actions** on the consent page. Connie also appears only once it is live for your company.
+
+### Your organisation blocks the connection
+
+Ask your IT team to allow outbound HTTPS to `mcp.vh3.ai`.
+
+## Advanced: developer access
+
+Developers can connect Cursor, Claude Code, n8n and custom agents directly with a Bearer token. This path needs no OAuth sign-in. It talks to the VH3 MCP server at `api.vh3connect.io`, and it works for tools such as Claude Desktop that read a local config file.
+
+<Note>
+Most Claude users should use [Connect in Claude](#connect-in-claude). The direct server also lists `jobs_feed` (an alias for `list_jobs`), and it lists `reports_generate` and `connie_chat` ahead of the connector.
+</Note>
+
+### Server details
 
 | Property | Value |
 |---|---|
@@ -22,7 +197,7 @@ Once connected, the client gets the same tools used by the Connie assistant: `in
 If an existing client config still uses a URL ending `/mcp/sse`, change it to `/mcp/stream` and fully restart the client. Your JWT is unchanged.
 </Note>
 
-## Prerequisites
+### Prerequisites
 
 Claude Desktop and Cursor connect to remote MCP servers via a lightweight proxy called [`mcp-remote`](https://www.npmjs.com/package/mcp-remote). It runs automatically through `npx`, which ships with Node.js.
 
@@ -40,7 +215,7 @@ Claude Desktop and Cursor connect to remote MCP servers via a lightweight proxy 
     npx --version
     ```
 
-    Both should return a version number (e.g. `v22.x.x`). If `npx` is not recognised, Node.js is either not installed or not in your system PATH — see [Troubleshooting](#troubleshooting) below.
+    Both should return a version number (e.g. `v22.x.x`). If `npx` is not recognised, Node.js is either not installed or not in your system PATH — see [Troubleshooting developer access](#troubleshooting-developer-access) below.
   </Step>
   <Step title="Confirm your IT policy allows outbound HTTPS">
     The MCP proxy makes outbound HTTPS connections to `api.vh3connect.io` and `registry.npmjs.org` (to fetch `mcp-remote` on first use). If your organisation uses a firewall or proxy, ask your IT team to allowlist these domains.
@@ -51,7 +226,7 @@ Claude Desktop and Cursor connect to remote MCP servers via a lightweight proxy 
 **Why Node.js?** Claude Desktop's config file launches local (stdio) MCP processes. The [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) proxy runs locally and opens the HTTPS connection to VH3. This is [the standard pattern](https://modelcontextprotocol.io/quickstart/user) recommended by the MCP specification.
 </Info>
 
-## Get your MCP token
+### Get your MCP token
 
 Before connecting any client, you need a long-lived MCP token (valid for 90 days).
 
@@ -86,7 +261,7 @@ Before connecting any client, you need a long-lived MCP token (valid for 90 days
   </Step>
 </Steps>
 
-## Quick start: Claude Desktop
+### Quick start: Claude Desktop
 
 Claude Desktop connects to the VH3 MCP server using the [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) proxy. Requires [Node.js 18+](#prerequisites).
 
@@ -170,7 +345,7 @@ Claude Desktop connects to the VH3 MCP server using the [`mcp-remote`](https://w
 The auth token is placed in the `env` block rather than inline in `args`. This is the [recommended pattern](https://www.npmjs.com/package/mcp-remote) — `mcp-remote` can misparse header values containing spaces when they appear directly in the args array on Windows.
 </Note>
 
-## Quick start: Cursor
+### Quick start: Cursor
 
 Go to **Cursor Settings → MCP** and add a new server, or edit `.cursor/mcp.json` in your project root. Requires [Node.js 18+](#prerequisites).
 
@@ -226,48 +401,23 @@ Replace `YOUR_MCP_TOKEN` with your token. See [Get your MCP token](#get-your-mcp
 Prefer environment variables over inline tokens. Set `VH3_MCP_TOKEN` in your shell profile and reference it from the config, or use [Cursor Rules](/agent-kits/cursor-rules) alongside the MCP connection to keep tokens out of config files.
 </Note>
 
-## Available tools
+### Quick start: Claude Code
 
-Once connected, these tools are available in any MCP-compatible client. No `company_id` or `api_key` inputs are needed, credentials are resolved automatically from your JWT.
+Claude Code connects over Streamable HTTP with your Bearer token and needs no Node.js proxy. See [Get your MCP token](#get-your-mcp-token) first.
 
-### FSI Intelligence
+```bash
+claude mcp add --transport http vh3-ai \
+  https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream \
+  --header "Authorization: Bearer $VH3_MCP_TOKEN"
+```
 
-| Tool | Description | Typical latency |
-|---|---|---|
-| `connie_chat` | Conversational AI assistant trained on your company's data | 5–15 s |
-| `investigate` | Deep evidence-backed investigation using graph + vector search | 10–17 s |
-| `search_outcomes` | Semantic search over job outcome text | < 2 s |
-| `search_autocomplete` | Fast typeahead across jobs, contacts, engineers, sites | < 1 s |
-| `contacts_feed` | Paginated contact list with free-text search | < 3 s |
-| `contact_detail` | Full contact detail with optional stored summary | < 3 s |
-| `weather_for_job` | Weather conditions for a job's location and time | < 2 s |
-| `company_snapshot` | Company profile and FSI platform health | < 2 s |
-| `reports_generate` | Operational reports (start_of_day, close_of_business, etc.) | 10–17 s |
-| `run_sentinels` | Run sentinel alert rules on demand | 3–8 s |
+To skip the token, use the plugin or custom connector under [Connect in Claude](#connect-in-claude).
 
-### Jobs
+### Quick start: n8n
 
-| Tool | Description | Typical latency |
-|---|---|---|
-| `list_jobs` | Paginated job listing with filters (status, type, contact, resource) | < 3 s |
-| `get_job` | Full FSI-enriched job detail with worksheets and graph context | < 3 s |
-| `jobs_feed` | Paginated job feed (alias for list_jobs) | < 3 s |
-| `aggregate_jobs` | KPI metrics with period comparison and group-by dimensions | < 3 s |
+Add an **MCP Client Tool** node with the endpoint `https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream`, the **HTTP Streamable** transport, and a **Bearer** credential holding your MCP token. To build workflows without MCP, use the [VH3 AI n8n node](/n8n-node).
 
-### Quotes & Invoices
-
-| Tool | Description | Typical latency |
-|---|---|---|
-| `list_quotes` | Paginated quote listing with filters | < 3 s |
-| `get_quote` | Full quote detail with line items | < 2 s |
-| `list_invoices` | Paginated invoice listing with filters | < 3 s |
-| `get_invoice` | Full invoice detail with line items and payment status | < 2 s |
-
-<Warning>
-`investigate`, `reports_generate`, and `connie_chat` have 10–17s expected latency. Some MCP clients have aggressive timeouts. If you see tool call failures on these endpoints, check your client's timeout setting and increase it to at least 25 seconds.
-</Warning>
-
-## Authentication
+### Authentication
 
 The MCP server uses JWT Bearer token authentication. Tokens are obtained via the `auth/mcp-token` endpoint (see [Get your MCP token](#get-your-mcp-token) above).
 
@@ -283,20 +433,20 @@ The JWT encodes your user identity. All tool calls are automatically scoped to y
 Never commit your MCP token to source control. Use environment variables and reference them from your MCP client configuration.
 </Warning>
 
-## Troubleshooting
+### Troubleshooting developer access
 
-### `spawn npx ENOENT` (Windows)
+#### `spawn npx ENOENT` (Windows)
 
 Claude Desktop cannot find `npx`. Two possible causes:
 
 1. **Node.js is not installed.** Install it from [nodejs.org](https://nodejs.org/en/download) and restart Claude Desktop.
 2. **Node.js is installed but not in Claude Desktop's PATH.** Use `"command": "cmd"` with `"/c"` as the first arg (see [Windows config above](#quick-start-claude-desktop)). Alternatively, use the full path to npx: `"command": "C:\\Program Files\\nodejs\\npx.cmd"`.
 
-### `npx is not recognized` (Windows)
+#### `npx is not recognized` (Windows)
 
 Same root cause as above — Node.js is not on the system PATH. Install Node.js using the `.msi` installer (not the zip), which adds it to PATH automatically. After installing, **restart Claude Desktop** (or reboot) so it picks up the new PATH.
 
-### "Not valid MCP server configuration"
+#### "Not valid MCP server configuration"
 
 The config JSON is malformed. Common causes:
 
@@ -306,7 +456,7 @@ The config JSON is malformed. Common causes:
 
 Paste your config into [jsonlint.com](https://jsonlint.com) to validate the JSON syntax.
 
-### Tools don't appear after restart
+#### Tools don't appear after restart
 
 - Verify you fully quit Claude Desktop (**Cmd+Q** / **File → Quit**), not just closed the window.
 - Check logs: **Settings → Developer → Open Logs Folder** and look for `mcp-remote` stderr output.
@@ -314,18 +464,18 @@ Paste your config into [jsonlint.com](https://jsonlint.com) to validate the JSON
 - Confirm outbound HTTPS to `api.vh3connect.io` and `registry.npmjs.org` is not blocked by a firewall.
 - Confirm the server URL ends `/mcp/stream`, not `/mcp/sse`.
 
-### Tool calls timeout
+#### Tool calls timeout
 
-`investigate`, `reports_generate`, and `connie_chat` can take 10–17 seconds. Some clients have aggressive timeouts. Increase your client's tool call timeout to at least 25 seconds.
+`investigate`, `reports_generate`, and `connie_chat` can take 10–17 seconds. Some clients have aggressive timeouts. Increase your client's tool call timeout to at least 25 seconds. `scheduling_suggestions` can take up to 45 seconds, and a live `invoice_summary` or `quote_summary` up to 90 seconds.
 
-### Further reading
+#### Further reading
 
 - [MCP Specification](https://modelcontextprotocol.io) — the protocol standard
 - [MCP Debugging Guide](https://modelcontextprotocol.io/docs/tools/debugging) — official troubleshooting
 - [`mcp-remote` on npm](https://www.npmjs.com/package/mcp-remote) — the local proxy for remote MCP servers
 - [Claude Desktop MCP Quickstart](https://modelcontextprotocol.io/quickstart/user) — Anthropic's setup guide
 
-## Using the MCP server from custom agents
+### Using the MCP server from custom agents
 
 For agents built with the Anthropic SDK, OpenAI Agents SDK, or similar frameworks:
 
@@ -371,12 +521,12 @@ const client = new Client({ name: "my-agent", version: "1.0.0" });
 await client.connect(transport);
 
 const tools = await client.listTools();
-console.log(tools); // lists all 19 VH3 tools
+console.log(tools); // lists the VH3 tools
 ```
 
 </CodeGroup>
 
-## Tool selection guide for agents
+### Tool selection guide for agents
 
 When your agent receives a free-form question and needs to decide which tool to call:
 
@@ -384,6 +534,10 @@ When your agent receives a free-form question and needs to decide which tool to 
 |---|---|
 | "why / root cause / what's causing / investigate" | `investigate` |
 | "how many / rate / trend / top / compare / period over period" | `aggregate_jobs` |
+| "who could take this Job / when could we send someone" | `scheduling_suggestions` |
+| "how much / how many invoices" | `invoice_summary` |
+| "how many quotes / conversion" | `quote_summary` |
+| "which group / resource group name" | `list_resource_groups` |
 | "show me / list / find / get jobs" | `list_jobs` or `jobs_feed` |
 | "what needs attention / alerts / sentinels" | `run_sentinels` |
 | "generate report / briefing / debrief / weekly summary" | `reports_generate` |
@@ -395,7 +549,7 @@ When your agent receives a free-form question and needs to decide which tool to 
 
 For a full system prompt you can paste directly into your agent, see the [Claude.ai Projects](/agent-kits/claude-projects) and [n8n Agent Prompts](/agent-kits/n8n-agents) kits, both include routing logic optimised for agent use.
 
-## Pairing with AGENTS.md
+### Pairing with AGENTS.md
 
 If you're using the MCP server inside a Cursor or Claude Code session, pair it with the [AGENTS.md](/agent-kits/agents-md) file in your project root. The MCP server handles execution; AGENTS.md handles routing logic, field name correctness, and the rules around what IDs to expose to users.
 

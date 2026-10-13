@@ -163,7 +163,7 @@ Candidate slots for resources or vehicles. Each item includes the resource or ve
 
 `fromDate` and `toDate` are required UTC timestamps. The window is at most seven days. A longer window returns BigChange's 422, with BigChange's validation body.
 
-A window from 13 October to 16 October returned slots on the 13th, 14th, and 15th only.
+A window from 13 October to 16 October returned slots on the 13th, 14th, and 15th only, so a `toDate` at midnight leaves out the day it names. The end is not an exact bound within a day: on DSSL a `toDate` of 08:05 and one of 08:04:59 both returned slots up to 08:20, so BigChange appears to keep the rest of the slot block that `toDate` falls in. Slots start in working hours, so no slot starts at midnight and the boundary itself cannot be seen on that tenant.
 
 `latitude` and `longitude` are required when `jobId` is absent. They have no default. Omitting both without a `jobId` returns BigChange's 400. When `jobId` is sent, coordinates may be omitted and BigChange uses that job's site.
 
@@ -171,7 +171,7 @@ A window from 13 October to 16 October returned slots on the 13th, 14th, and 15t
 
 `when` is `anytime`, `morning`, `afternoon`, or `custom`. For `custom`, `whenFrom` and `whenTo` are the tenant's local clock as `HH:mm`. `startAt` on each slot is UTC.
 
-Optional filters are repeated upstream query parameters, 50 values each: `resourceId`, `resourceGroupId`, `vehicleId`, `vehicleGroupId`, `skillIds`, `attributeIds`. The `items` array stays in BigChange's order.
+`resourceId`, `resourceGroupId`, `vehicleId`, and `vehicleGroupId` each restrict to a single id; if you send several, only the first takes effect. To cover more, send one request per id. `skillIds` and `attributeIds` take up to 50 ids, and a slot must match all of them. The `items` array stays in BigChange's order.
 
 This call leaves the job unassigned. Apply a chosen slot with `POST /jobs/scheduling`.
 
