@@ -3,86 +3,137 @@ title: Changelog
 description: New features, updates, and fixes shipped in VH3 AI
 ---
 
-<Update label="2026-10-16" description="16 October 2026" tags={["API", "Integrations", "Platform"]}>
+<Update label="2026-10-22" description="22 October 2026" tags={["Connect", "Platform"]}>
 
 <div className="flex flex-wrap items-center gap-2 mb-4">
-  <Badge color="gray">API</Badge>
-  <Badge color="green">Integrations</Badge>
+  <Badge color="blue">Connect</Badge>
   <Badge color="yellow">Platform</Badge>
 </div>
 
 ## New features
 
-**Connect VH3 AI to Claude with your VH3 sign-in.** Add a custom connector at `https://mcp.vh3.ai/mcp` on claude.ai, Claude Desktop, mobile, or Cowork, then sign in with your VH3 Connect account. Nothing to install. Read access is always granted. Actions such as **Ask Connie** stay off until you tick **Allow actions**, and each one asks you to confirm. See [Connect in Claude](/agent-kits/mcp-setup#connect-in-claude).
+**Sign in with a passkey.** Use Face ID, Touch ID, Windows Hello, or your password manager to sign in. Choose **Sign in with a passkey**, or pick your passkey from the email field. Password sign-in works as before. See [Sign in](/connect/sign-in).
 
-**Claude plugin and interactive cards.** The VH3 AI plugin adds a field service skill and the `morning-brief`, `weekly-review`, and `who-can-take` commands. In claude.ai and Claude Desktop, answers about metrics, jobs, invoices, quotes, customers, and scheduling open as charts, cards, and tables. See [What you'll see in Claude](/agent-kits/mcp-setup#what-youll-see-in-claude).
+**Manage passkeys in Profile.** Add, rename, and remove passkeys from **Profile → Passkeys**. Adding or removing one asks you to confirm it's you when your sign-in is more than a few minutes old, and VH3 AI emails you each time. See [Sign in](/connect/sign-in).
 
-**Scheduling suggestions.** `POST /jobs/scheduling/suggestions` returns candidate slots for engineers or vehicles over a window of up to seven days, with extra distance, driving time, and cost. Nothing is booked. Apply a slot with `POST /jobs/scheduling`. See [BigChange jobs](/api-reference/bigchange/jobs).
-
-**Engineer skills and absences.** `GET /resources/skills` lists one engineer's skills, with expired skills on request. `GET /resources/absences` lists leave by engineer, type, status, and date window. See [BigChange resources](/api-reference/bigchange/resources).
-
-**Vehicle defects and routes.** `GET /vehicles/defects` lists defects recorded against a vehicle, filterable by status and date. `GET /routes/list` returns planned routes with stops, distance, and driving time. See [BigChange vehicles](/api-reference/bigchange/vehicles) and [BigChange routes](/api-reference/bigchange/routes).
+**An offer to add a passkey.** After a password sign-in on a device with Face ID, Touch ID, or Windows Hello, Connect offers to set up a passkey once.
 
 ## Updates
 
-**MCP setup guide reorganised.** The guide now leads with the Claude sign-in flow, lists every tool by name, and adds troubleshooting for Claude connections. Token-based access for Cursor, Claude Code, n8n, and custom agents is under [Advanced: developer access](/agent-kits/mcp-setup#advanced-developer-access).
+**Connect lives at `app.vh3.ai`.** Links to `app.vh3connect.io` redirect to the same page on `app.vh3.ai`.
 
-**New strategy guide.** Learn how to judge an embedded engagement by what your own team can change six months on. See [What your team should be able to do without us](/guides/what-your-team-should-be-able-to-do-without-us).
+**The early-access notice shows once per device.**
 
 </Update>
 
-<Update label="2026-09-25" description="25 September 2026" tags={["API", "Platform"]}>
+<Update label="2026-10-21" description="21 October 2026" tags={["Connie", "Integrations"]}>
 
 <div className="flex flex-wrap items-center gap-2 mb-4">
-  <Badge color="gray">API</Badge>
-  <Badge color="yellow">Platform</Badge>
+  <Badge color="purple">Connie</Badge>
+  <Badge color="green">Integrations</Badge>
 </div>
 
 ## New features
 
-**Findings on every report.** `POST /reports/generate` now returns a `findings` array. Each Finding is one condition on one job, with a tier, evidence, a recommendation, and an Open job action:
+**Your company's own Microsoft 365 app.** Admins set the company's Microsoft 365 app in **Integrations**. The in-app setup guide lists every permission, so your IT team sets it up once. Outlook and SharePoint use it today. See [Integrations](/connect/integrations).
 
-- **Still incomplete** (`watch`) on start of day and start of week.
-- **Overrunning** (`act_now`) on midday and midweek.
-- **Finished late** (`watch`) on close of business, day review, end of week, and midweek.
-
-Findings are returned even when `include_narrative` is false. `account_monthly` returns `findings: []`. See [Findings](/guides/reports#findings) and the [Reports API](/api-reference/reports).
+**Connie reads Outlook mail and calendar.** Ask about your inbox or your week. Recurring meetings are included, and times are in your local time. Reconnect Outlook once in **Integrations** to allow it. See [Ask Connie](/connect/ask-connie).
 
 ## Updates
 
-**Consistent narrative formatting.** Report narratives use UK English, `dd/mm/yy` dates, and the 24-hour clock. See the [Reports guide](/guides/reports).
-
-**Response fields documented.** The [Reports API](/api-reference/reports) now lists every field on the generate response, including `narrative` and `findings`.
+**Personal integrations always use your own connection.** Gmail, Outlook, Calendar, and the other personal integrations act only as the member who asked. If you haven't connected one yet, Connie asks you to connect it in **Integrations** first.
 
 </Update>
 
-<Update label="2026-09-18" description="18 September 2026" tags={["API", "Integrations", "Platform"]}>
+<Update label="2026-10-17" description="17 October 2026" tags={["Connect", "Connie", "Integrations"]}>
 
 <div className="flex flex-wrap items-center gap-2 mb-4">
-  <Badge color="gray">API</Badge>
+  <Badge color="blue">Connect</Badge>
+  <Badge color="purple">Connie</Badge>
   <Badge color="green">Integrations</Badge>
-  <Badge color="yellow">Platform</Badge>
 </div>
 
 ## New features
 
-**Reports follow the operating day and week.** `POST /reports/generate` now takes eight cadence-based `report_type` values that match how a service team actually runs: `start_of_day`, `midday`, `close_of_business`, `day_review`, `start_of_week`, `midweek`, `end_of_week`, and `account_monthly`. Each report bundles the right sections for that moment — dispatch and weather at start of day, SLA risk and capacity at midday, completions and tomorrow's outlook at close of business, weekly rhythms for planning, and a per-customer month for QBR prep. See the [Reports API](/api-reference/reports) and the [Reports guide](/guides/reports).
+**Company and personal integrations.** Admins manage company integrations such as Xero, BigChange, and Slack. Each user connects their own Gmail, Google Calendar, Drive, Docs, Sheets, Outlook, OneDrive, SharePoint, Excel, and Teams. See [Integrations](/connect/integrations).
+
+**Files and photos in Connie.** Job photos appear in Connie's replies, with photo links kept in the sentence. Attachment PDFs open in the chat. Files from a chat collect in a drawer above the message box, and you can save them as one zip. See [Ask Connie](/connect/ask-connie).
+
+</Update>
+
+<Update label="2026-10-16" description="Week of 12–16 October 2026" tags={["Connie", "Integrations"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
+  <Badge color="green">Integrations</Badge>
+</div>
+
+## New features
+
+**VH3 AI in Claude.** Add VH3 AI to Claude as a custom connector, or install the VH3 AI plugin. The plugin adds a field service skill and three commands: `morning-brief`, `weekly-review`, and `who-can-take`. See [MCP setup](/agent-kits/mcp-setup).
+
+**A card for every VH3 AI tool in Claude.** Invoice and quote totals, reports, job and customer lists, search results, investigations, sentinels, weather, quotes, and Connie each show as a card. Open any result's own card from a list.
+
+**Worksheet answers, photos, and attachments in Claude.** Ask Claude for a job's worksheet answers, or browse a customer's photos and files.
+
+**New tools for Claude and Connie.** Invoice and quote totals, scheduling suggestions, and engineer skills. See [MCP setup](/agent-kits/mcp-setup).
 
 ## Updates
 
-**One request, one response.** `POST /reports/generate` now returns the structured JSON and the optional narrative in the same response. Allow 10–17 seconds with narrative and set the client timeout to at least 30 seconds. See the [Reports API](/api-reference/reports).
+**Summary cards in Connie.** Invoice, quote, and position summaries show the period, customer, grouping, and how complete the data is. See [Ask Connie](/connect/ask-connie).
 
-**Discover sections in one call.** `GET /reports/sections` returns every valid `report_type` value alongside the section names available on each. Pass a subset of section names on `POST /reports/generate` to generate a slice; omit `sections` for the full report. See the [Reports API](/api-reference/reports).
+**Open the record from Connie.** Calendar, Gmail, Outlook, and Pipedrive results have an **Open** button beside the tool.
 
-**Engineer, site, and first-visit-fix now live inside reports.** Leaderboards, site hotspots, and first-visit-fix appear as sections within the daily and weekly reports rather than as separate report types. Continuous alerts stay on [Sentinels](/guides/sentinels). See the [Reports FAQ](/faq/reports-and-notifications).
+</Update>
 
-**VH3 AI n8n node — Generate Report gains `account_monthly`.** Set Report Type to `account_monthly` and pass Contact ID (optional Month, `YYYY-MM`). The other seven cadence types are available on the same operation. Set workflow timeout to at least 30 seconds when narrative is on. Upgrade from n8n Community Nodes or npm. See the [n8n community node](/n8n-node) and [node reference](/agent-kits/n8n-node-reference).
+<Update label="2026-10-09" description="9 October 2026" tags={["Connie", "Connect"]}>
 
-**Agent kits routed to the new report types.** [Claude Skills](/agent-kits/claude-skills), [Cursor rules](/agent-kits/cursor-rules), and the [n8n node reference](/agent-kits/n8n-node-reference) list the eight valid `report_type` values and flag the retired names so agents stop calling them.
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
+  <Badge color="blue">Connect</Badge>
+</div>
+
+## Updates
+
+**A new look for sign-in.** The sign-in, forgot password, and create account pages have a new design with larger, easier-to-read form text. See [Sign in](/connect/sign-in).
+
+**Progress notes sit under the reply.** Connie, Tia, and Salma show progress notes below the answer, with a paragraph break when a reply resumes after a tool. Answers are easier to read on the dark panel.
+
+**Usage on every reply.** Connie, Tia, and Salma show token counts and the route for each reply. Expand **Usage** to copy the session ID for support.
+
+**Worksheet chips name what they read**, such as contact note or job worksheets.
+
+</Update>
+
+<Update label="2026-10-01" description="Weeks of 15 September – 1 October 2026" tags={["Connect", "API", "Connie"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="blue">Connect</Badge>
+  <Badge color="gray">API</Badge>
+  <Badge color="purple">Connie</Badge>
+</div>
+
+## New features
+
+**Dashboard Stats.** Key figures with period and customer filters, volume, breakdowns, and an Operations pulse. See [Dashboard](/connect/dashboard).
+
+**Ask Tia reads whole Library documents.** Answers cite the pages they come from. Click a page to scroll the PDF to it. Ask Tia also takes voice notes. See [Knowledge base](/connect/knowledge-base).
+
+**Reports return Findings.** `POST /reports/generate` adds a `findings` array: carryover jobs, jobs overrunning their planned time, and jobs that finished over. Connie lists the top Findings in chat. See [Reports](/api-reference/reports).
+
+**Connie reads worksheet answers** for the job, note, or asset you're looking at. See [Ask Connie](/connect/ask-connie).
+
+## Updates
+
+**Sharper repeat sections.** Repeat Alerts, Repeat Faults, and Repeat Watch flag a site and job type only when work was completed with issues across two or more visit days. Each row can list the visit days and the most common job results.
+
+**Invites ask for a mobile number.** An invited person picks a country and enters a mobile number with its calling code.
 
 ## Fixes
 
-**Retired report names return a clear error.** `daily_operations`, `weekly_summary`, `executive_health_check`, `engineer_performance`, `site_health`, `customer_intelligence`, and `sentinel_digest` now return HTTP 422 instead of silently generating the wrong shape. Switch to the equivalent cadence type or section. See the [Reports API](/api-reference/reports).
+**Unscheduled jobs drop their planned time and engineer**, and get them back when rescheduled.
+
+**Completed jobs missing an AI summary are retried** until the summary is written.
 
 </Update>
 
