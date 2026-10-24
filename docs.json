@@ -102,6 +102,7 @@
             "pages": [
               "api-reference/overview",
               "api-reference/search",
+              "api-reference/knowledge",
               "api-reference/jobs",
               "api-reference/contacts",
               "api-reference/dashboard",

@@ -61,6 +61,19 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/chat" \
 
 ---
 
+## Answers from your knowledge base
+
+When page-level search is switched on for your company, Connie can answer from your [knowledge base](/api-reference/knowledge). These tool calls appear in `toolCallOutputs`:
+
+| Tool | What it does |
+|------|-------------|
+| `search_library` | Finds Library documents and their best matching pages, with each document's date and, for an imported file, its source. Returns no page text |
+| `read_library_pages` | Reads up to 4 pages per call and 8 per turn. Connie cites each statement drawn from them as `[document name, p. N]` |
+| `list_library_documents` | Lists the documents the user may see, newest first |
+| `import_to_library` | Imports one file from the user's own connected Google Drive, only when the user asks. Private unless the user asks to share it |
+
+Library tools always run as the signed-in user in `user_id`. Without a `user_id`, only shared documents are searched, and pages cannot be read or imported.
+
 ## POST /connie/chat/voice
 
 Send a voice interaction to Connie, designed for voice-first interfaces where the input is a transcribed audio message. Optimised for concise, text-to-speech-friendly responses.

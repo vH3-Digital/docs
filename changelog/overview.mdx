@@ -3,38 +3,87 @@ title: Changelog
 description: New features, updates, and fixes shipped in VH3 AI
 ---
 
-<Update label="2026-10-23" description="Week of 17–23 October 2026" tags={["Connect", "Connie", "Integrations", "Platform"]}>
+<Update label="2026-10-24" description="23–24 October 2026" tags={["Connie", "Connect", "API"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
+  <Badge color="blue">Connect</Badge>
+  <Badge color="orange">API</Badge>
+</div>
+
+## New features
+
+**Connie answers from your knowledge base, with page citations.** Ask about a manual, SOP or supplier document and Connie finds the right pages, reads them, and cites each statement, for example *[Vaillant ecoTEC Manual.pdf, p. 13]*. Where page-level search is switched on for your company, model numbers, fault codes and procedure steps find the right page even when the summary doesn't mention them. See [Knowledge base](/connect/knowledge-base).
+
+**Import from Google Drive.** Ask Connie to add a file from your connected Google Drive to your Library, or use the Google Drive picker on the upload screen. Word files and Google Docs arrive as PDFs. Importing the same file again returns your existing copy, or updates it in place if the file has changed. See [Knowledge base](/connect/knowledge-base).
+
+**Your newest documents.** Ask Connie for "the most recent library doc" to get your newest documents with their dates.
+
+**Knowledge base API.** Search your Library and your customer and account intelligence, and upload, share and delete Library documents, with your company ID and API key. See [Knowledge base API](/api-reference/knowledge).
+
+## Updates
+
+**Library links open at the cited page.** **Open in Library** and the file drawer open the document at the page Connie cited, with a new Tia chat ready. Hover a document in the file drawer to see its summary.
+
+**One copy per document in results.** When the same document has been uploaded more than once, search shows one copy.
+
+</Update>
+
+<Update label="2026-10-22" description="22 October 2026" tags={["Connect", "Platform"]}>
 
 <div className="flex flex-wrap items-center gap-2 mb-4">
   <Badge color="blue">Connect</Badge>
-  <Badge color="purple">Connie</Badge>
-  <Badge color="green">Integrations</Badge>
   <Badge color="yellow">Platform</Badge>
 </div>
 
 ## New features
 
-**Sign in with a passkey.** Use Face ID, Touch ID, Windows Hello, your phone, or your password manager. Choose **Sign in with a passkey**, or pick your passkey from the email field. Password sign-in works as before. See [Sign in with a passkey](/connect/sign-in#sign-in-with-a-passkey).
+**Sign in with a passkey.** Use Face ID, Touch ID, Windows Hello, or your password manager to sign in. Choose **Sign in with a passkey**, or pick your passkey from the email field. Password sign-in works as before. See [Sign in](/connect/sign-in).
 
-**Manage passkeys in Profile.** Add, rename, and remove passkeys from **Profile → Passkeys**. If you signed in more than 10 minutes ago, Connect asks you to confirm it's you first. VH3 AI emails you whenever a passkey is added or removed. See [Add a passkey](/connect/sign-in#add-a-passkey).
+**Manage passkeys in Profile.** Add, rename, and remove passkeys from **Profile → Passkeys**. Adding or removing one asks you to confirm it's you when your sign-in is more than a few minutes old, and VH3 AI emails you each time. See [Sign in](/connect/sign-in).
 
 **An offer to add a passkey.** After a password sign-in on a device with Face ID, Touch ID, or Windows Hello, Connect offers to set up a passkey once.
 
-**Company and personal integrations.** Admins manage company integrations such as Xero, BigChange, and Slack. Each user connects their own Gmail, Google Calendar, Drive, Docs, Sheets, Outlook, OneDrive, SharePoint, Excel, and Teams. See [Integrations](/connect/integrations).
-
-**Your company's own Microsoft 365 app.** Admins set the company's Microsoft 365 app in **Integrations**. The in-app setup guide lists every permission, so your IT team sets it up once. Outlook and SharePoint use it today. See [Integrations](/connect/integrations).
-
-**Connie reads Outlook mail and calendar.** Ask about your inbox or your week. Recurring meetings are included, and times show in your local time. Reconnect Outlook once in **Integrations** to allow it. See [Ask Connie](/connect/ask-connie).
-
-**Files and photos in Connie.** Job photos appear in Connie's replies. Attachment PDFs open in the chat. Files from a chat collect in a drawer above the message box, and you can save them all as one zip. See [Ask Connie](/connect/ask-connie).
-
 ## Updates
-
-**Personal integrations always use your own connection.** Gmail, Outlook, Calendar, and other personal integrations act only as the member who asked. If you haven't connected one yet, Connie asks you to connect it in **Integrations** first.
 
 **Connect lives at `app.vh3.ai`.** Links to `app.vh3connect.io` redirect to the same page on `app.vh3.ai`.
 
 **The early-access notice shows once per device.**
+
+</Update>
+
+<Update label="2026-10-21" description="21 October 2026" tags={["Connie", "Integrations"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="purple">Connie</Badge>
+  <Badge color="green">Integrations</Badge>
+</div>
+
+## New features
+
+**Your company's own Microsoft 365 app.** Admins set the company's Microsoft 365 app in **Integrations**. The in-app setup guide lists every permission, so your IT team sets it up once. Outlook and SharePoint use it today. See [Integrations](/connect/integrations).
+
+**Connie reads Outlook mail and calendar.** Ask about your inbox or your week. Recurring meetings are included, and times are in your local time. Reconnect Outlook once in **Integrations** to allow it. See [Ask Connie](/connect/ask-connie).
+
+## Updates
+
+**Personal integrations always use your own connection.** Gmail, Outlook, Calendar, and the other personal integrations act only as the member who asked. If you haven't connected one yet, Connie asks you to connect it in **Integrations** first.
+
+</Update>
+
+<Update label="2026-10-17" description="17 October 2026" tags={["Connect", "Connie", "Integrations"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="blue">Connect</Badge>
+  <Badge color="purple">Connie</Badge>
+  <Badge color="green">Integrations</Badge>
+</div>
+
+## New features
+
+**Company and personal integrations.** Admins manage company integrations such as Xero, BigChange, and Slack. Each user connects their own Gmail, Google Calendar, Drive, Docs, Sheets, Outlook, OneDrive, SharePoint, Excel, and Teams. See [Integrations](/connect/integrations).
+
+**Files and photos in Connie.** Job photos appear in Connie's replies, with photo links kept in the sentence. Attachment PDFs open in the chat. Files from a chat collect in a drawer above the message box, and you can save them as one zip. See [Ask Connie](/connect/ask-connie).
 
 </Update>
 

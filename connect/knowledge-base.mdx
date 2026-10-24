@@ -1,11 +1,11 @@
 ---
 title: Knowledge base
-description: Upload SOPs and shared docs, then ask Tia before you update a Case or brief the team.
+description: Upload or import manuals, SOPs and shared docs, then ask Connie or Tia and get answers with page citations.
 ---
 
 # Knowledge base
 
-The knowledge base holds the documents your operation actually uses — SOPs, method statements, commercial packs. Upload them once, share them, and ask Tia instead of hunting the shared drive.
+The knowledge base holds the documents your operation actually uses: technical manuals, SOPs, method statements, supplier documents and commercial packs. Upload them once, share them, and ask Connie or Tia instead of hunting the shared drive. Answers point to the exact page they came from.
 
 **Path:** `/knowledge`
 
@@ -17,16 +17,40 @@ The knowledge base holds the documents your operation actually uses — SOPs, me
 4. Open a document at `/knowledge/:documentId`.
 5. Use **Share this document** when it should appear under Shared Documents.
 
-Keep shared SOPs in **Shared Documents** so coordinators and Connie-adjacent workflows can find the same source.
+Keep shared SOPs in **Shared Documents** so coordinators and Connie can find the same source. Documents in **My Documents** stay private to you.
 
-## Ask Tia
+## Import from Google Drive
 
-On a document, open **Ask Tia** to chat in document context — for example, what the SOP says before you update a Case comment or brief an engineer. Tia is contextual to knowledge, not a separate sidebar app. See [AI assistants](/connect/ai-assistants).
+If you have connected Google Drive in [Integrations](/connect/integrations), you can bring a file straight in without downloading it first:
+
+- **From the knowledge base:** where Google Drive import is available for your company, use the Google Drive picker on the upload screen. PDFs, Google Docs and Word documents can be imported; Word and Google Docs arrive as PDFs.
+- **From Connie:** ask her to import a file, for example "import the board pre-read from my Drive into my Library". Connie names the file before importing it, imports one file at a time, and keeps it private unless you ask her to share it.
+
+Importing the same file again returns the copy you already have. If the file has changed in Drive since, the Library copy is updated in place, so links and chats keep working.
+
+## Ask about your documents
+
+**Ask Connie** (header) searches the whole knowledge base. She finds the right pages, reads them, and cites each statement, for example *[Vaillant ecoTEC Manual.pdf, p. 13]*. In the reply:
+
+- The **Search Library** and **Read Library Pages** chips show which documents and pages she used.
+- **Open in Library** opens the document at the cited page, with a new Tia chat ready.
+- The file drawer lists each document Connie used. Hover for its summary, select it to open the PDF at the cited page, or use the arrow to open its chat.
+
+You can also ask Connie for "the most recent library doc" to get your newest documents with their dates.
+
+**Ask Tia** on a document chats in that document's context, for example what the SOP says before you update a Case comment or brief an engineer. Tia reads the pages she needs and cites them; select a citation to jump to that page. See [AI assistants](/connect/ai-assistants).
 
 For company-wide operational questions, use [Ask Connie](/connect/ask-connie).
+
+## Page-level search
+
+Where page-level search is switched on for your company, search looks at what is written on each page, not only the document's title and summary. A model number, fault code, part number or procedure step finds the right page even when the summary doesn't mention it. When the same document has been uploaded more than once, results show one copy.
+
+Developers can search the knowledge base, and upload, share and delete documents, through the [Knowledge base API](/api-reference/knowledge).
 
 ## Related
 
 - [AI assistants](/connect/ai-assistants)
 - [Ask Connie](/connect/ask-connie)
+- [Integrations](/connect/integrations)
 - [Cases](/connect/cases)

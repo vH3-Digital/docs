@@ -1,0 +1,278 @@
+---
+title: Knowledge base
+description: Search, upload, share and delete Library documents, and search customer and account intelligence
+---
+
+# Knowledge base
+
+These endpoints search and manage your knowledge base: the Library documents your team uploads or imports (manuals, SOPs, method statements, supplier documents), plus the customer and account summaries VH3 AI builds from your job history.
+
+Search looks at each document's title, summary and contents. Where page-level search is switched on for your company, it also matches **what is written on each page**, so a model number, fault code, part number or procedure step finds the right page even when the summary does not mention it. Results never include page text.
+
+Every result is checked against the document's current sharing settings before it is returned. A document that was deleted, or made private, drops out of results straight away.
+
+**Base URL:** `https://api.vh3connect.io/api:kP8T1CK7`
+
+Send `company_id` and `api_key` in every request, as with the rest of the VH3 AI API. Keep the API key in server-side code.
+
+<Note>
+  **Private documents.** Library documents are either shared with the whole company or private to one user. Searches return shared documents only, unless you pass `acting_user_id`: then that user's private documents are included too. `acting_user_id` must be a user in your company.
+</Note>
+
+---
+
+## POST /knowledge/documents/search
+
+Find Library documents, and their best matching pages, that answer a question.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `query` | string | Yes | What to look for, in plain words or as an exact identifier. An empty query returns `no_context` |
+| `acting_user_id` | integer | No | Include this user's private documents. Omit for shared documents only |
+| `limit` | integer | No | Maximum documents to return (default 5, maximum 10) |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/knowledge/documents/search" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query": "how do I bleed the system on an ecoTEC boiler",
+    "limit": 5
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "status": "ok",
+  "hits": [
+    {
+      "documentId": "0f5c2a4e-9b1d-4c3e-8a7f-000000000101",
+      "name": "Vaillant ecoTEC Manual.pdf",
+      "passage": "Installation and servicing instructions for the ecoTEC range…",
+      "vector": "document",
+      "score": 0.91,
+      "rank": 1,
+      "pages": [
+        {
+          "pageNumber": 13,
+          "guide": "Filling and venting the heating system; automatic air vent; pressure 1.0–1.5 bar",
+          "score": 0.88,
+          "matchedWords": ["bleed", "system"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `status` | `ok`, or `no_context` when nothing relevant was found. Treat `no_context` as "the knowledge base does not cover this" |
+| `hits[].documentId` | The Library document's id. Open it in VH3 Connect at `/knowledge/{documentId}` |
+| `hits[].name` | The document's name |
+| `hits[].passage` | A short extract from the part of the document that matched |
+| `hits[].vector` | Which part matched best: `title`, `summary`, `navigation` or `document` |
+| `hits[].score`, `hits[].rank` | Relevance score and position |
+| `hits[].pages` | Present only when page-level search is on. Up to 3 best matching pages, each with its page number, a one-line guide to the page, a score and the query words found on it |
+
+When the same document has been uploaded more than once, page-level results show one copy: the copy with the best match.
+
+---
+
+## POST /knowledge/search
+
+Search across Library documents and customer and account intelligence in one call. Use it for questions either could answer, such as "which customers have a history of door entry faults" or "what does our method statement say about lone working".
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `query` | string | Yes | What to look for. An empty query returns `no_context` |
+| `acting_user_id` | integer | No | Include this user's private documents. Omit for shared documents only |
+| `sources` | array | No | Any of `knowledge_document`, `customer_summary`, `account_summary`. Default: all three |
+| `sections` | array | No | Summary sections to search, for example `systems_equipment` or `risk_opportunity` |
+| `limit` | integer | No | Maximum hits (default 10, maximum 20) |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/knowledge/search" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "query": "access control maintenance contract",
+    "sources": ["knowledge_document", "customer_summary"],
+    "limit": 10
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "status": "ok",
+  "hits": [
+    {
+      "sourceType": "knowledge_document",
+      "sourceId": "0f5c2a4e-9b1d-4c3e-8a7f-000000000202",
+      "section": "document",
+      "vector": "document",
+      "passage": "Planned preventive maintenance for access control systems…",
+      "score": 0.84,
+      "rank": 1
+    }
+  ]
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `hits[].sourceType` | `knowledge_document`, `customer_summary` or `account_summary` |
+| `hits[].sourceId` | The Library document id, or the customer or account id |
+| `hits[].section` | The section or part of the source that matched |
+| `hits[].passage` | A short extract from the match |
+| `hits[].pages` | For Library documents with page-level search on: the best matching pages, as in `/knowledge/documents/search` |
+
+---
+
+## POST /knowledge/documents/upload
+
+Upload one PDF to your Library. The document goes through the same processing as an upload in VH3 Connect: text extraction, a summary, a page-by-page guide, and indexing for search.
+
+Send the request as `multipart/form-data`.
+
+**Form fields:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `user_id` | integer | Yes | The user who will own the document. Must be an active user in your company |
+| `file` | file | Yes | The PDF. Up to 100 MB and 150 pages |
+| `share` | boolean | No | `true` adds it to Shared Documents. Default: private to `user_id` |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/knowledge/documents/upload" \
+  -F "company_id=your-company-id" \
+  -F "api_key=your-api-key" \
+  -F "user_id=42" \
+  -F "share=true" \
+  -F "file=@boiler-manual.pdf;type=application/pdf"
+```
+
+**Response:**
+
+```json
+{
+  "documentId": "5beb9b45-e309-43fe-a120-600c9f5a0c73",
+  "name": "boiler-manual.pdf",
+  "status": "processing",
+  "summary": "Installation and servicing manual for the …"
+}
+```
+
+The response returns as soon as the file is stored and read. `status` is `processing` while the summary, page guide and search index finish, then `ready`. Short documents are usually searchable within a minute.
+
+<Note>
+  Uploading the identical file again within an hour returns the first upload's result instead of adding a second copy.
+</Note>
+
+**Errors:** `403` for an invalid API key or a `user_id` outside your company; `400` for a file over 100 MB or 150 pages.
+
+---
+
+## POST /knowledge/documents/share
+
+Share a Library document with the whole company, or make it private to its owner again.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `document_id` | string | Yes | The Library document's id |
+| `user_id` | integer | Yes | The document's owner |
+| `share` | boolean | Yes | `true` shares it with everyone in your company; `false` makes it private to the owner |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/knowledge/documents/share" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "document_id": "5beb9b45-e309-43fe-a120-600c9f5a0c73",
+    "user_id": 42,
+    "share": true
+  }'
+```
+
+**Response:** `{ "documentId": "…", "shared": true }`. Search results reflect the change straight away.
+
+---
+
+## POST /knowledge/documents/delete
+
+Delete a Library document. The file is removed, and the document stops appearing in search, Connie and Tia straight away.
+
+**Request body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `company_id` | string | Yes | Your tenant identifier |
+| `api_key` | string | Yes | Your tenant API key |
+| `document_id` | string | Yes | The Library document's id |
+| `user_id` | integer | Yes | The document's owner |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/knowledge/documents/delete" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company_id": "your-company-id",
+    "api_key": "your-api-key",
+    "document_id": "5beb9b45-e309-43fe-a120-600c9f5a0c73",
+    "user_id": 42
+  }'
+```
+
+**Response:** `{ "deleted": true, "documentId": "…" }`
+
+**Errors (share and delete):** `403` for an invalid API key; `404` when the document doesn't exist, isn't in your company, or isn't owned by `user_id`. Deleting can't be undone.
+
+---
+
+## From a front end
+
+For a browser or mobile app with no back end of its own, use the signed-in user versions instead. They take a JWT from [User Authentication (JWT)](/api-reference/user-auth) and never an API key, and they run as the signed-in user.
+
+**Base URL:** `https://api.vh3connect.io/api:uCamsOiN`
+
+| Method | Path | Request |
+|--------|------|--------------|
+| POST | `/documents/search` | `query`, and `options.limit` (default 5, maximum 10) |
+| POST | `/knowledge/search` | `query`, and `filters` with `sources`, `sections` and `limit` |
+| GET | `/documents/share/id?id={documentId}&share=true` | Share or unshare one of the signed-in user's own documents |
+| DELETE | `/documents/{documentId}` | Delete one of the signed-in user's own documents. Returns `404` for anyone else's |
+
+```bash
+curl -X POST "https://api.vh3connect.io/api:uCamsOiN/documents/search" \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{ "query": "lone working method statement", "options": { "limit": 5 } }'
+```
+
+Responses match the API-key endpoints above.
+
+---
+
+## Connie and the knowledge base
+
+Connie can answer from your knowledge base too. When page-level search is on for your company, Connie searches the Library, reads the pages that match, and gives a page citation for each statement, for example `[Vaillant ecoTEC Manual.pdf, p. 13]`. She can also list the newest documents and, when a user asks, import a file from their own connected Google Drive into the Library. See [Connie](/api-reference/connie) and [Knowledge base in VH3 Connect](/connect/knowledge-base).
