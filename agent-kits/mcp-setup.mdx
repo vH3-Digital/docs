@@ -29,6 +29,13 @@ This works on claude.ai, Claude Desktop, Claude mobile and Cowork. Your plan nee
     ```
 
     Use that URL exactly, with no trailing slash and no path after `mcp`.
+
+    <Frame caption="Add custom connector: name VH3 AI, server URL https://mcp.vh3.ai/mcp. Then choose Continue.">
+      <img
+        src="/images/mcp/claude-add-custom-connector.png"
+        alt="Claude Add custom connector dialog with the name VH3 AI and the server URL https://mcp.vh3.ai/mcp"
+      />
+    </Frame>
   </Step>
   <Step title="Leave the defaults, then Add and Connect">
     Leave the defaults. The OAuth client stays on **Use Claude's published identity**. Transport stays on **Streamable HTTP**. Click **Add**, then **Connect**.
@@ -41,14 +48,21 @@ This works on claude.ai, Claude Desktop, Claude mobile and Cowork. Your plan nee
     </Frame>
   </Step>
   <Step title="Sign in with your VH3 email and password, then Allow">
-    A VH3 page opens. Sign in with your VH3 Connect email and password. Your password goes to VH3 only.
-
     On Claude Desktop, the browser may ask you to finish connecting. Choose **Continue connecting** only if you started this from Claude. A link on its own does not connect anything to your account.
 
     <Frame caption="Claude Desktop asks you to finish connecting. Choose Continue connecting.">
       <img
         src="/images/mcp/claude-finish-connecting.png"
         alt="Finish connecting a connector page with a Continue connecting button"
+      />
+    </Frame>
+
+    A VH3 page opens. Sign in with your VH3 Connect email and password. Your password goes to VH3 only.
+
+    <Frame caption="Sign in to VH3 AI with the email and password you use for VH3 Connect.">
+      <img
+        src="/images/mcp/claude-sign-in.png"
+        alt="VH3 AI sign-in page asking for email address and password to connect Claude"
       />
     </Frame>
 
@@ -170,12 +184,26 @@ Leave the OAuth settings as ChatGPT fills them in. Tick the custom plugin risk a
 
     - **Registration method:** Client Identifier Metadata Document (CIMD)
     - Leave the Callback URL, the CIMD client metadata URL, and the default scopes unchanged
+
+    <Frame caption="Add custom MCP server: name VH3 AI, URL https://mcp.vh3.ai/mcp, Authentication OAuth, and Client Identifier Metadata Document (CIMD). Leave the callback URL, CIMD client metadata URL, and scopes unchanged.">
+      <img
+        src="/images/mcp/chatgpt-add-custom-mcp.png"
+        alt="ChatGPT Add custom MCP server dialog with VH3 AI, server URL https://mcp.vh3.ai/mcp, Authentication OAuth, and CIMD client registration"
+      />
+    </Frame>
   </Step>
   <Step title="Create the plugin">
     Tick **I understand and want to continue**, then click **Create as a plugin**.
   </Step>
   <Step title="Connect your VH3 account">
     Find **VH3 AI** in installed plugins → **Connect** → **Continue to VH3 AI**. Sign in with your VH3 Connect email and password, then **Approve**.
+
+    <Frame caption="Connect VH3 AI, then choose Continue to VH3 AI and sign in with your VH3 Connect email and password.">
+      <img
+        src="/images/mcp/chatgpt-connect.png"
+        alt="ChatGPT Connect VH3 AI dialog with a Continue to VH3 AI button"
+      />
+    </Frame>
   </Step>
   <Step title="Test the connection">
     Open a new chat and ask:
