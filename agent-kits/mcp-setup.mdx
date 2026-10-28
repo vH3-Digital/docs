@@ -1,58 +1,106 @@
 ---
 title: MCP Server
-description: Connect VH3 AI to Claude, Cursor, n8n or your own agent through the Model Context Protocol
+description: Connect VH3 AI to Claude or ChatGPT with hosted MCP OAuth and your VH3 Connect email and password
 ---
 
 # MCP Server
 
-Connect VH3 AI to Claude and ask about your jobs, engineers, sites, customers, quotes and invoices in plain English. Claude calls VH3 AI tools through the [Model Context Protocol](https://modelcontextprotocol.io) (MCP), and every answer comes from your own company's data.
+VH3 AI is an MCP connector in Claude and ChatGPT. You sign in on VH3's hosted page with the email and password you use for VH3 Connect. Same sign-in, same company data: jobs, invoice and quote totals, scheduling suggestions, worksheets and photos. You only ever see your own company's data.
 
-Most people connect in Claude with a VH3 sign-in and nothing to install. Developers who use Cursor, Claude Code, n8n or a custom agent can connect with a token under [Advanced: developer access](#advanced-developer-access).
+Use **hosted MCP OAuth**. There is nothing to install and no local key file. Developers who connect Cursor, Claude Code, n8n or a custom agent can use a token under [Advanced: developer access](#advanced-developer-access). Most Claude and ChatGPT users should use hosted OAuth.
+
+<Note>
+If you still have the old Claude developer test connector, delete it before you add this one: **Settings → Developer → Delete VH3**.
+</Note>
 
 ## Connect in Claude
 
-Choose the route that suits you. All three use the same VH3 account and give you the same tools.
+This works on claude.ai, Claude Desktop, Claude mobile and Cowork. Your plan needs to allow custom connectors. On Team and Enterprise plans, an owner adds the connector once for the organisation.
 
-<Tabs>
-  <Tab title="Custom connector">
-    Works on claude.ai, Claude Desktop, Claude mobile and Cowork. Your plan needs to allow custom connectors; on Team and Enterprise plans an owner adds the connector once for the organisation.
+<Steps>
+  <Step title="Open Connectors">
+    Open Claude, then **Customize** or **Settings → Connectors → Add custom connector**.
+  </Step>
+  <Step title="Enter the VH3 AI details">
+    Name it `VH3 AI`. Server URL:
 
-    <Steps>
-      <Step title="Open the connector settings">
-        In Claude, open **Customize → Connectors** and choose **Add custom connector**.
-      </Step>
-      <Step title="Enter the VH3 AI details">
-        Name it `VH3 AI` and use this server URL:
+    ```text
+    https://mcp.vh3.ai/mcp
+    ```
 
-        ```text
-        https://mcp.vh3.ai/mcp
-        ```
-      </Step>
-      <Step title="Connect and sign in">
-        Choose **Add**, then **Connect**, and [sign in with your VH3 account](#sign-in-with-your-vh3-account).
-      </Step>
-    </Steps>
-  </Tab>
-  <Tab title="Plugin">
-    The VH3 AI plugin adds the connector and a field service skill, so Claude already knows which tool to use for counts, lists, root causes and scheduling questions. It also adds three commands: `morning-brief`, `weekly-review` and `who-can-take`.
+    Use that URL exactly, with no trailing slash and no path after `mcp`.
+  </Step>
+  <Step title="Leave the defaults, then Add and Connect">
+    Leave the defaults. The OAuth client stays on **Use Claude's published identity**. Transport stays on **Streamable HTTP**. Click **Add**, then **Connect**.
 
-    In Claude Code, install it with one line:
+    <Frame caption="Leave the defaults: Claude's published identity, no custom headers, and Streamable HTTP. Then click Add.">
+      <img
+        src="/images/mcp/claude-leave-defaults.png"
+        alt="Claude custom connector defaults: Use Claude's published identity selected, Streamable HTTP selected, and the Add button"
+      />
+    </Frame>
+  </Step>
+  <Step title="Sign in with your VH3 email and password, then Allow">
+    A VH3 page opens. Sign in with your VH3 Connect email and password. Your password goes to VH3 only.
+
+    On Claude Desktop, the browser may ask you to finish connecting. Choose **Continue connecting** only if you started this from Claude. A link on its own does not connect anything to your account.
+
+    <Frame caption="Claude Desktop asks you to finish connecting. Choose Continue connecting.">
+      <img
+        src="/images/mcp/claude-finish-connecting.png"
+        alt="Finish connecting a connector page with a Continue connecting button"
+      />
+    </Frame>
+
+    On the VH3 page, choose **Allow**. **Read access** is always on. **Allow actions** is unticked by default. Tick it only if you want Connie-style actions (email, SMS, notifications, drafts, queued quotes). Each action still asks you to confirm.
+
+    <Frame caption="Allow Claude to use VH3 AI. Allow actions is optional. The box in this screenshot is ticked; leave it unticked for read-only access. Each action still asks you to confirm.">
+      <img
+        src="/images/mcp/claude-allow.png"
+        alt="VH3 consent page titled Allow Claude to use VH3 AI, with Allow actions ticked and Allow and Deny buttons"
+      />
+    </Frame>
+  </Step>
+  <Step title="Wait for the tools and set permissions">
+    Wait a few moments for the connector tools to load, then set permissions. Read tools can stay on. You can disconnect VH3 AI in Claude's connector settings at any time. To change the Allow actions choice, disconnect and connect again.
+
+    <Frame caption="VH3 AI connected at https://mcp.vh3.ai/mcp, with the tool list loaded.">
+      <img
+        src="/images/mcp/claude-tool-permissions.png"
+        alt="Claude connector settings for VH3 AI showing the server URL https://mcp.vh3.ai/mcp and a list of interactive tools such as Job metrics, Get job and Get invoice"
+      />
+    </Frame>
+  </Step>
+  <Step title="Optional: quit and restart Claude">
+    Quit the Claude app and open it again if the tools do not appear straight away.
+  </Step>
+  <Step title="Optional: paste the field service skill">
+    In a new chat you can paste:
+
+    ```text
+    Please install this skill and walk me through the new VH3 AI connector:
+    https://github.com/vH3-Digital/vh3-ai-claude-plugin/blob/main/skills/field-service/SKILL.md
+    ```
+
+    The [VH3 AI Claude plugin](https://github.com/vH3-Digital/vh3-ai-claude-plugin) adds that field service skill plus `morning-brief`, `weekly-review` and `who-can-take`. It sits on top of the same MCP connector. In Claude Code you can install it with:
 
     ```text
     /plugin install vh3-ai --marketplace vH3-Digital/vh3-ai-claude-plugin
     ```
 
-    On claude.ai or Cowork, open **Customize → Plugins** and upload the plugin zip from the [plugin repository](https://github.com/vH3-Digital/vh3-ai-claude-plugin).
-  </Tab>
-  <Tab title="Claude directory">
-    {/* TODO(#847): replace this paragraph with the Claude Connectors Directory link once the listing is live. Do not invent a URL. */}
-    The VH3 AI listing in the Claude Connectors Directory is coming soon. When it is live, search for **VH3 AI**, choose **Connect**, and sign in.
-  </Tab>
-</Tabs>
+    On claude.ai or Cowork, open **Customize → Plugins** and upload the plugin zip from that repository.
+  </Step>
+</Steps>
+
+<Note>
+The VH3 AI listing in the Claude Connectors Directory is coming soon. When it is live, search for **VH3 AI**, choose **Connect**, and sign in with the same VH3 account.
+</Note>
+
+{/* TODO(#847): replace the note above with the Claude Connectors Directory link once the listing is live. Do not invent a URL. */}
 
 ### Sign in with your VH3 account
 
-A VH3 AI page opens in your browser. Enter the email and password you use for VH3 Connect. Your password goes to VH3 only.
+The hosted page asks for the email and password you use for VH3 Connect.
 
 If sign-in fails, check the message on the page:
 
@@ -71,7 +119,7 @@ After sign-in, the page asks what to allow.
 - **Read access** is always granted. Claude can read jobs, engineers, sites, customers, quotes, invoices and reports for your company, and runs these tools without asking each time.
 - **Allow actions** appears only when VH3 AI offers a tool that can act for you, such as **Ask Connie**, which can send email and SMS, create drafts and queue quotes. It is unticked by default. Tick it only if you want those actions. Each action asks you to confirm first.
 
-Choose **Allow** to finish. See the [privacy policy](https://www.vh3.ai/legal-and-compliance/privacy-policy) and [terms](https://www.vh3.ai/legal-and-compliance/vh3-ai-product-terms-and-conditions) for how VH3 handles your data. You can disconnect VH3 AI in Claude's connector settings at any time. To change your choice, disconnect and connect again.
+Choose **Allow** to finish. See the [privacy policy](https://www.vh3.ai/legal-and-compliance/privacy-policy) and [terms](https://www.vh3.ai/legal-and-compliance/vh3-ai-product-terms-and-conditions) for how VH3 handles your data.
 
 ### Try it
 
@@ -96,18 +144,52 @@ In claude.ai and Claude Desktop, many answers open as a card you can use in the 
 | A list of invoices or quotes | A sortable table with a status filter and totals for each currency |
 | One customer or site | Details, job totals, recent jobs and the VH3 customer summary |
 
-## For test customers and early access
+<Note>
+**Claude Code** can use the same hosted server. Run `claude mcp add --transport http vh3-ai https://mcp.vh3.ai/mcp`, then sign in when Claude asks. The Bearer token and local JSON config are under [Advanced: developer access](#advanced-developer-access).
+</Note>
 
-You can connect today, before the listing in the Claude directory goes live.
+## Connect in ChatGPT
 
-- **claude.ai, Claude Desktop or mobile:** open **Customize → Connectors**, choose **Add custom connector**, and enter `https://mcp.vh3.ai/mcp`. Then [sign in with your VH3 account](#sign-in-with-your-vh3-account).
-- **Claude Code:** run `claude mcp add --transport http vh3-ai https://mcp.vh3.ai/mcp`, or install the plugin above.
+Leave the OAuth settings as ChatGPT fills them in. Tick the custom plugin risk acknowledgement when it appears.
 
-On Team and Enterprise plans, an Owner may need to allow custom connectors first. Tell your VH3 contact if a tool returns a "not found" error, because a few tools switch on as each release rolls out.
+<Steps>
+  <Step title="Open Add custom MCP server">
+    Go to [chatgpt.com](https://chatgpt.com) → **Plugins** (left menu) → **Add** (top right) → **Add custom MCP server**.
+  </Step>
+  <Step title="Enter the VH3 AI details">
+    Fill in:
+
+    - **Name:** VH3 AI
+    - **Description:** Connects to the Job and field service operations
+    - **Connection:** Server URL
+    - **URL:** `https://mcp.vh3.ai/mcp`
+    - **Authentication:** OAuth
+  </Step>
+  <Step title="Leave the Advanced OAuth defaults">
+    Open **Advanced OAuth settings** and confirm the hosted defaults below.
+
+    - **Registration method:** Client Identifier Metadata Document (CIMD)
+    - Leave the Callback URL, the CIMD client metadata URL, and the default scopes unchanged
+  </Step>
+  <Step title="Create the plugin">
+    Tick **I understand and want to continue**, then click **Create as a plugin**.
+  </Step>
+  <Step title="Connect your VH3 account">
+    Find **VH3 AI** in installed plugins → **Connect** → **Continue to VH3 AI**. Sign in with your VH3 Connect email and password, then **Approve**.
+  </Step>
+  <Step title="Test the connection">
+    Open a new chat and ask:
+
+    ```text
+    Using VH3 AI, show me the latest five jobs and their current status.
+    ```
+
+    If ChatGPT retrieves the jobs, the connection is working.
+  </Step>
+</Steps>
 
 ## Available tools
-
-Once connected, Claude can use these tools. They need no `company_id` or `api_key`, because your sign-in identifies your company.
+Once connected, Claude and ChatGPT can use these tools. They need no `company_id` or `api_key`, because your sign-in identifies your company.
 
 ### Jobs and sites
 
@@ -176,12 +258,16 @@ Disconnect and connect again, and tick **Allow actions** on the consent page. Co
 
 Ask your IT team to allow outbound HTTPS to `mcp.vh3.ai`.
 
+### ChatGPT does not finish connecting
+
+Check the server URL is exactly `https://mcp.vh3.ai/mcp`. Authentication stays **OAuth**. Registration method stays **Client Identifier Metadata Document (CIMD)**. Leave the callback URL, the CIMD client metadata URL, and the scopes unchanged, and tick **I understand and want to continue** before **Create as a plugin**. Then use **Connect → Continue to VH3 AI** and sign in with your VH3 Connect email and password.
+
 ## Advanced: developer access
 
 Developers can connect Cursor, Claude Code, n8n and custom agents directly with a Bearer token. This path needs no OAuth sign-in. It talks to the VH3 MCP server at `api.vh3connect.io`, and it works for tools such as Claude Desktop that read a local config file.
 
 <Note>
-Most Claude users should use [Connect in Claude](#connect-in-claude). The direct server also lists `jobs_feed` (an alias for `list_jobs`), and it lists `reports_generate` and `connie_chat` ahead of the connector.
+Most Claude and ChatGPT users should use hosted OAuth: [Connect in Claude](#connect-in-claude) or [Connect in ChatGPT](#connect-in-chatgpt). This section is for developers. The direct server also lists `jobs_feed` (an alias for `list_jobs`), and it lists `reports_generate` and `connie_chat` ahead of the connector.
 </Note>
 
 ### Server details
