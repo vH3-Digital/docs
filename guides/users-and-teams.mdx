@@ -132,7 +132,7 @@ The important fields are practical: `title`, `type`, `priority`, `status`, `tags
 Users still matter. This page focuses on the identity patterns that support teams, cases, and agent handoffs:
 
 - **People sign in** through VH3 Connect or your custom app and receive a JWT.
-- **Coding agents and MCP clients** authenticate as a named user with a JWT.
+- **Claude and ChatGPT** sign in as a named VH3 Connect user. See [MCP setup](/agent-kits/mcp-setup).
 - **Server-side automations** use `company_id` + `api_key` and can set `actor_type` such as `system` or `automation`.
 - **n8n workflows** use the [VH3 AI community node](/n8n-node) (`n8n-nodes-vh3ai@0.11.0`): Team for members and entity links, and Case › Assign Team to set or clear ownership (Team ID `0` clears it).
 

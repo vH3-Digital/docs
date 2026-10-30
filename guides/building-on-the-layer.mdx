@@ -110,7 +110,7 @@ Field service already spans several systems. VH3 AI brings those records into on
 The platform exposes its internal capabilities through APIs.
 
 - REST API for search, jobs feeds, sentinels, reports, Connie, cases, teams, and backfill tasks.
-- MCP server so Claude Desktop, Cursor, and other MCP clients can call the tools Connie uses. The server handles credentials after JWT authentication.
+- MCP server so Claude and ChatGPT can call the tools Connie uses. Sign-in is the VH3 Connect account. See [MCP setup](/agent-kits/mcp-setup).
 - n8n community node for workflow builders who want automation without writing a backend.
 
 When email arrives or a calendar event appears, ingestion and entity resolution map people, domains, and addresses back to contacts in the model. Personal agents and shared automations then use the same identity.
@@ -178,7 +178,7 @@ VH3 AI ships Agent Starter Kits with AGENTS.md, Cursor rules, MCP setup, and n8n
 
 ### MCP without writing a backend
 
-The MCP server exposes search, investigate, sentinels, jobs feeds, and reports. A coding agent can call operational discovery directly, then generate UI or workflow code from the response.
+The MCP server exposes search, investigate, sentinels, jobs feeds, and reports to Claude and ChatGPT. Sign in with the VH3 Connect account.
 
 See [MCP setup](/agent-kits/mcp-setup).
 

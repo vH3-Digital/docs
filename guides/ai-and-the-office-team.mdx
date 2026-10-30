@@ -1,0 +1,81 @@
+---
+title: "The office is where AI lands first"
+description: "UK and US research says admin, secretarial and customer service roles are the most exposed to AI. What that means for the field service office, and what VH3 AI does for that team."
+author: Riccardo Vezza
+published: October 2026
+---
+
+<div className="guide-byline">Riccardo Vezza · October 2026</div>
+
+It's 7:40 on a Monday. Two engineers have rung in sick. The phones started at 7:30. The planner has the board open, a customer on hold, and a portal email asking for a reactive visit by noon.
+
+Nobody in that room is waiting for AI. They're waiting for the kettle.
+
+That room is also where the research says AI lands first.
+
+## What the UK research says
+
+In March 2024 IPPR looked at 22,000 tasks across the UK economy. It found 11% of the tasks people do were exposed to the generative AI available then. If companies wired AI deeper into their systems, that rose to 59%.
+
+The roles most exposed in that first wave were back office, entry level and part time. Secretarial, customer service and administrative work led the list. Personal assistants and other secretaries scored 69% exposure. IPPR expects women to be hit hardest, because they hold more of those jobs. In its central scenario, about a third of jobs in administrative occupations could be displaced. IPPR says these are scenarios, not predictions.
+
+The Department for Education's Unit for Future Skills published its own analysis in November 2023. Its list of the occupations most exposed to large language models includes human resources administrative occupations, credit controllers and local government administrative occupations. The report measures exposure only. It doesn't say whether AI will help a job or replace it.
+
+PwC's 2025 AI Jobs Barometer adds a signal from job ads. Between 2019 and 2024, UK vacancies in more AI-exposed occupations grew 12%. Vacancies in less exposed occupations grew 50%. Wages in AI-exposed industries grew twice as fast, including in jobs classed as automatable.
+
+The ONS Annual Population Survey for 2025 counts about 2.6 million people in UK administrative occupations and about 470,000 in secretarial and related ones. Nearly 150,000 of them work for construction firms.
+
+## What the US research adds
+
+The UK studies tell you who is exposed. None of them asks who would cope if the job went.
+
+Sam Manning and Tomás Aguirre asked that for the US in a 2026 NBER working paper. They built an "adaptive capacity" index from four things: savings, how well a worker's skills carry over to other jobs, how many jobs are nearby, and age. They scored 356 occupations covering 95.9% of the US workforce, against AI exposure scores from Eloundou et al. (2024).
+
+Most exposed workers are well placed. Of the 37.1 million in the top quarter for exposure, 26.5 million work in occupations with above-median adaptive capacity. Software developers, lawyers and financial managers sit there.
+
+6.1 million workers, 4.2% of the sample, are both highly exposed and low on adaptive capacity. Most are in clerical and administrative roles: office clerks, secretaries and administrative assistants, receptionists. Brookings, which published a write-up of the paper, says about 86% of them are women.
+
+The authors are careful here. Exposure means the tasks could change. It doesn't mean the job goes.
+
+I haven't found a UK equivalent of the adaptive capacity index. So read the US split as a pointer, not a UK number.
+
+## Read the job titles again
+
+Office clerks. Receptionists. Secretaries. Customer service. Credit controllers. Admin.
+
+In a field service business that's the planner, the person answering job calls, whoever works through the portal emails, the quoting clerk and the person chasing invoices. It's the team that holds the operation together, and in a lot of firms it has the least slack.
+
+They also carry knowledge nobody wrote down. Which site needs a call before the engineer turns up. Which customer's "urgent" really is urgent. Why one job type keeps coming back. [Your FMS records what happened](/guides/your-fms-records-what-happened). The office remembers why.
+
+## What we build for
+
+We build VH3 AI for that room. It takes the retyping and the searching off the office team and leaves them the judgement.
+
+The planner gets a [pre-visit briefing](/api-reference/briefings) for each job, built from the job, the site and the customer's history.
+
+The person on the phones can ask [Connie](/guides/connie) about an account and get an answer with its sources, so they can [check it](/guides/ai-you-can-check) before they repeat it to a customer.
+
+[Sentinels](/guides/sentinels) watch the operation overnight. Repeat visits on one account, SLA slips in a region, an engineer's follow-up that needs a quote. The office starts the day with a short list.
+
+Portal emails get [classified](/api-reference/triage) and [turned into draft jobs](/api-reference/ingest) for someone to review, instead of being retyped.
+
+Follow-on work gets a [Quote Document](/connect/quote-documents) with the lines and the price checked against the not-to-exceed figure.
+
+At [Sherwoods](https://www.vh3.ai/case-studies/sherwoods-accelerates-quote-time-reduces-admin-and-frees-teams-to-do-higher-value-work-with-vh3-ai), the team had a backlog of 480 quotes. With VH3 AI they completed the equivalent of 240 hours of work in a single six-hour push. Their contracts director says it changed how they prioritise resources.
+
+## What I can't promise
+
+I can't tell you what AI does to UK admin jobs over the next ten years. Nobody can, and the researchers above say so.
+
+Here's what I think. If the office is first in line, the firms that come out well will treat their office team as the people who run the AI. Every correction that team makes is knowledge, and it should [stay in the business](/guides/every-correction-is-teaching-something).
+
+The planner at 7:40 still runs the board. They just start with the briefings done and the overnight list waiting.
+
+## Sources
+
+- IPPR, [Transformed by AI](https://www.ippr.org/media-office/up-to-8-million-uk-jobs-at-risk-from-ai-unless-government-acts-finds-ippr) (March 2024). [Full report (PDF)](https://ippr-org.files.svdcdn.com/production/Downloads/Transformed_by_AI_March24_2024-03-25-172800_bvyk.pdf)
+- Department for Education, [The impact of AI on UK jobs and training](https://www.gov.uk/government/publications/the-impact-of-ai-on-uk-jobs-and-training) (November 2023)
+- PwC UK, [2025 AI Jobs Barometer press release](https://www.pwc.co.uk/press-room/press-releases/research-commentary/2024/ai-exposed-sectors-see-pay-and-productivity-uplift--but-job-open.html) (June 2025)
+- ONS, [Employment by occupation and industry section by UK region and country: 2025](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/adhocs/3476employmentbyoccupationandindustrysectionbyukregionandcountry2025) (Annual Population Survey, January to December 2025)
+- Sam Manning and Tomás Aguirre, [How Adaptable Are American Workers to AI-Induced Job Displacement?](https://www.nber.org/papers/w34705), NBER Working Paper 34705 (2026)
+- Brookings, [Measuring US workers' capacity to adapt to AI-driven job displacement](https://www.brookings.edu/articles/measuring-us-workers-capacity-to-adapt-to-ai-driven-job-displacement/) (January 2026)

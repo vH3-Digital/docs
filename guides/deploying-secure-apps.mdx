@@ -28,7 +28,7 @@ Pick the pattern that matches the surface. Do not mix.
 | **VH3 Connect** | You want the managed UI, users, roles, cases out of the box | JWT (managed by VH3 Connect) | Browser, mobile |
 | **Custom app** | You need bespoke UI/UX for your operators or customers | Per-user JWT ([User Auth](/api-reference/user-auth)) | Browser, mobile |
 | **Automation** | n8n workflows, back-office scripts, integrations | `company_id` + `api_key` | Server only |
-| **Coding agents / MCP** | Cursor, Claude, Claude Code, MCP-compatible clients | JWT ([MCP setup](/agent-kits/mcp-setup)) | Developer machines, server-side agents |
+| **Claude and ChatGPT** | Ask about jobs, sites and customers in the chat | VH3 Connect sign-in ([MCP setup](/agent-kits/mcp-setup)) | Claude, ChatGPT |
 
 **Rule:** `api_key` is a server credential. It must never appear in a browser, mobile bundle, or anything a customer can inspect.
 
@@ -206,7 +206,7 @@ See [Pricing](/pricing) for the full feature matrix.
 
 Before launching an internal app on the layer:
 
-- [ ] Auth choice is explicit (Connect / JWT custom / server `api_key` / MCP JWT).
+- [ ] Auth choice is explicit (Connect / JWT custom / server `api_key` / hosted MCP OAuth).
 - [ ] `api_key` never appears in client code, browser bundles, or mobile binaries.
 - [ ] JWT refresh policy is implemented; idle and absolute session limits are agreed with security.
 - [ ] CORS allowlist is restricted to your app origins.
@@ -232,7 +232,7 @@ Before launching an internal app on the layer:
     Builder patterns for citizen builders, coding agents, and integrations.
   </Card>
   <Card title="MCP setup" icon="plug" href="/agent-kits/mcp-setup">
-    Coding-agent and MCP-client access with JWT.
+    Connect Claude or ChatGPT with hosted OAuth.
   </Card>
   <Card title="Agent observability" icon="chart-mixed" href="/guides/agent-observability">
     Evidence standards for commercial and safety-critical answers.

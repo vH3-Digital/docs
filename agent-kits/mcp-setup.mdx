@@ -1,13 +1,21 @@
 ---
 title: MCP Server
-description: Connect VH3 AI to Claude, Cursor, n8n or your own agent through the Model Context Protocol
+description: Connect VH3 AI to Claude or ChatGPT with hosted MCP OAuth and your VH3 Connect email and password
 ---
 
 # MCP Server
 
-Connect VH3 AI to Claude and ask about your jobs, engineers, sites, customers, quotes and invoices in plain English. Claude calls VH3 AI tools through the [Model Context Protocol](https://modelcontextprotocol.io) (MCP), and every answer comes from your own company's data.
+Connect VH3 AI to Claude or ChatGPT and ask about your jobs, engineers, sites, customers, quotes and invoices in plain English. Claude and ChatGPT call VH3 AI tools through the [Model Context Protocol](https://modelcontextprotocol.io) (MCP), and every answer comes from your own company's data.
 
-Most people connect in Claude with a VH3 sign-in and nothing to install. Developers who use Cursor, Claude Code, n8n or a custom agent can connect with a token under [Advanced: developer access](#advanced-developer-access).
+Use **hosted MCP OAuth**. Sign in on VH3's page with the email and password you use for VH3 Connect. The server URL is:
+
+```text
+https://mcp.vh3.ai/mcp
+```
+
+<Note>
+If you still have the old Claude developer test connector, delete it before you add this one: **Settings → Developer → Delete VH3**.
+</Note>
 
 ## Connect in Claude
 
@@ -27,9 +35,65 @@ Choose the route that suits you. All three use the same VH3 account and give you
         ```text
         https://mcp.vh3.ai/mcp
         ```
+
+        Use that URL exactly, with no trailing slash and no path after `mcp`. Then choose **Continue**.
+
+        <Frame caption="Add custom connector: name VH3 AI, server URL https://mcp.vh3.ai/mcp. Then choose Continue.">
+          <img
+            src="/images/mcp/claude-add-custom-connector.png"
+            alt="Claude Add custom connector dialog with the name VH3 AI and the server URL https://mcp.vh3.ai/mcp"
+          />
+        </Frame>
       </Step>
-      <Step title="Connect and sign in">
-        Choose **Add**, then **Connect**, and [sign in with your VH3 account](#sign-in-with-your-vh3-account).
+      <Step title="Leave the defaults, then Add">
+        Leave the defaults. The OAuth client stays on **Use Claude's published identity**. Leave request headers empty. Transport stays on **Streamable HTTP**. Then choose **Add**.
+
+        <Frame caption="Leave the defaults: Claude's published identity, no custom headers, and Streamable HTTP. Then click Add.">
+          <img
+            src="/images/mcp/claude-leave-defaults.png"
+            alt="Claude custom connector defaults: Use Claude's published identity selected, Streamable HTTP selected, and the Add button"
+          />
+        </Frame>
+      </Step>
+      <Step title="Connect, and finish connecting on Claude Desktop">
+        Choose **Connect**. On Claude Desktop, the browser may ask you to finish connecting. Choose **Continue connecting** only if you started this from Claude.
+
+        <Frame caption="Claude Desktop asks you to finish connecting. Choose Continue connecting.">
+          <img
+            src="/images/mcp/claude-finish-connecting.png"
+            alt="Finish connecting a connector page with a Continue connecting button"
+          />
+        </Frame>
+      </Step>
+      <Step title="Sign in with your VH3 email and password">
+        A VH3 page opens. Sign in with the email and password you use for VH3 Connect. Your password goes to VH3 only. If sign-in fails, use the [message table](#sign-in-with-your-vh3-account) below.
+
+        <Frame caption="Sign in to VH3 AI with the email and password you use for VH3 Connect.">
+          <img
+            src="/images/mcp/claude-sign-in.png"
+            alt="VH3 AI sign-in page asking for email address and password to connect Claude"
+          />
+        </Frame>
+      </Step>
+      <Step title="Choose Allow">
+        On the VH3 page, choose **Allow**. **Read access** is always on. **Allow actions** is unticked by default. Tick it only if you want Connie to send email, SMS and notifications, create drafts, or queue quotes. Each action still asks you to confirm. Leave **Allow actions** unticked for read-only access. The screenshot shows the box ticked so the label is visible.
+
+        <Frame caption="Allow Claude to use VH3 AI. Allow actions is optional. The box in this screenshot is ticked; leave it unticked for read-only access. Each action still asks you to confirm.">
+          <img
+            src="/images/mcp/claude-allow.png"
+            alt="VH3 consent page titled Allow Claude to use VH3 AI, with Allow actions ticked and Allow and Deny buttons"
+          />
+        </Frame>
+      </Step>
+      <Step title="Confirm the tools have loaded">
+        Wait a few moments. VH3 AI should show `https://mcp.vh3.ai/mcp` and a list of tools such as **Job metrics**, **Get job** and **Get invoice**. Read tools can stay on. You can disconnect VH3 AI in Claude's connector settings at any time. To change the Allow actions choice, disconnect and connect again. If the tools do not appear straight away, quit Claude and open it again.
+
+        <Frame caption="VH3 AI connected at https://mcp.vh3.ai/mcp, with the tool list loaded.">
+          <img
+            src="/images/mcp/claude-tool-permissions.png"
+            alt="Claude connector settings for VH3 AI showing the server URL https://mcp.vh3.ai/mcp and a list of interactive tools such as Job metrics, Get job and Get invoice"
+          />
+        </Frame>
       </Step>
     </Steps>
   </Tab>
@@ -42,11 +106,11 @@ Choose the route that suits you. All three use the same VH3 account and give you
     /plugin install vh3-ai --marketplace vH3-Digital/vh3-ai-claude-plugin
     ```
 
-    On claude.ai or Cowork, open **Customize → Plugins** and upload the plugin zip from the [plugin repository](https://github.com/vH3-Digital/vh3-ai-claude-plugin).
+    On claude.ai or Cowork, open **Customize → Plugins** and upload the plugin zip from the [plugin repository](https://github.com/vH3-Digital/vh3-ai-claude-plugin). The plugin uses the same hosted connector at `https://mcp.vh3.ai/mcp`.
   </Tab>
   <Tab title="Claude directory">
     {/* TODO(#847): replace this paragraph with the Claude Connectors Directory link once the listing is live. Do not invent a URL. */}
-    The VH3 AI listing in the Claude Connectors Directory is coming soon. When it is live, search for **VH3 AI**, choose **Connect**, and sign in.
+    The VH3 AI listing in the Claude Connectors Directory is coming soon. When it is live, search for **VH3 AI**, choose **Connect**, and sign in with the same VH3 account.
   </Tab>
 </Tabs>
 
@@ -96,18 +160,67 @@ In claude.ai and Claude Desktop, many answers open as a card you can use in the 
 | A list of invoices or quotes | A sortable table with a status filter and totals for each currency |
 | One customer or site | Details, job totals, recent jobs and the VH3 customer summary |
 
-## For test customers and early access
+<Note>
+**Claude Code** can use the same hosted server. Run `claude mcp add --transport http vh3-ai https://mcp.vh3.ai/mcp`, then sign in when Claude asks. On Team and Enterprise plans, an Owner may need to allow custom connectors first. Tell your VH3 contact if a tool returns a "not found" error, because a few tools switch on as each release rolls out.
+</Note>
 
-You can connect today, before the listing in the Claude directory goes live.
+## Connect in ChatGPT
 
-- **claude.ai, Claude Desktop or mobile:** open **Customize → Connectors**, choose **Add custom connector**, and enter `https://mcp.vh3.ai/mcp`. Then [sign in with your VH3 account](#sign-in-with-your-vh3-account).
-- **Claude Code:** run `claude mcp add --transport http vh3-ai https://mcp.vh3.ai/mcp`, or install the plugin above.
+Leave the OAuth settings as ChatGPT fills them in. Tick the custom plugin risk acknowledgement when it appears.
 
-On Team and Enterprise plans, an Owner may need to allow custom connectors first. Tell your VH3 contact if a tool returns a "not found" error, because a few tools switch on as each release rolls out.
+<Steps>
+  <Step title="Open Add custom MCP server">
+    Go to [chatgpt.com](https://chatgpt.com) → **Plugins** (left menu) → **Add** (top right) → **Add custom MCP server**.
+  </Step>
+  <Step title="Enter the VH3 AI details">
+    Fill in:
+
+    - **Name:** VH3 AI
+    - **Description:** Connects to the Job and field service operations
+    - **Connection:** Server URL
+    - **URL:** `https://mcp.vh3.ai/mcp`
+    - **Authentication:** OAuth
+  </Step>
+  <Step title="Leave the Advanced OAuth defaults">
+    Open **Advanced OAuth settings** and confirm the hosted defaults below.
+
+    - **Registration method:** Client Identifier Metadata Document (CIMD)
+    - Leave the Callback URL, the CIMD client metadata URL, and the default scopes unchanged
+
+    <Frame caption="Add custom MCP server: name VH3 AI, URL https://mcp.vh3.ai/mcp, Authentication OAuth, and Client Identifier Metadata Document (CIMD). Leave the callback URL, CIMD client metadata URL, and scopes unchanged.">
+      <img
+        src="/images/mcp/chatgpt-add-custom-mcp.png"
+        alt="ChatGPT Add custom MCP server dialog with VH3 AI, server URL https://mcp.vh3.ai/mcp, Authentication OAuth, and CIMD client registration"
+      />
+    </Frame>
+  </Step>
+  <Step title="Create the plugin">
+    Tick **I understand and want to continue**, then click **Create as a plugin**.
+  </Step>
+  <Step title="Connect your VH3 account">
+    Find **VH3 AI** in installed plugins → **Connect** → **Continue to VH3 AI**. Sign in with your VH3 Connect email and password, then **Allow**.
+
+    <Frame caption="Connect VH3 AI, then choose Continue to VH3 AI and sign in with your VH3 Connect email and password.">
+      <img
+        src="/images/mcp/chatgpt-connect.png"
+        alt="ChatGPT Connect VH3 AI dialog with a Continue to VH3 AI button"
+      />
+    </Frame>
+  </Step>
+  <Step title="Test the connection">
+    Open a new chat and ask:
+
+    ```text
+    Using VH3 AI, show me the latest five jobs and their current status.
+    ```
+
+    If ChatGPT retrieves the jobs, the connection is working.
+  </Step>
+</Steps>
 
 ## Available tools
 
-Once connected, Claude can use these tools. They need no `company_id` or `api_key`, because your sign-in identifies your company.
+Once connected, Claude and ChatGPT can use these tools. They need no `company_id` or `api_key`, because your sign-in identifies your company.
 
 ### Jobs and sites
 
@@ -151,10 +264,10 @@ Reports and **Ask Connie** are switching on in stages. **Generate operational re
 </Note>
 
 <Warning>
-`investigate`, the totals tools and `scheduling_suggestions` can take a while on large periods. If Claude reports that a call took too long, narrow the period or the question and ask again.
+`investigate`, the totals tools and `scheduling_suggestions` can take a while on large periods. If Claude or ChatGPT reports that a call took too long, narrow the period or the question and ask again.
 </Warning>
 
-## Troubleshooting a Claude connection
+## Troubleshooting a connection
 
 ### "Add custom connector" is missing
 
@@ -176,388 +289,6 @@ Disconnect and connect again, and tick **Allow actions** on the consent page. Co
 
 Ask your IT team to allow outbound HTTPS to `mcp.vh3.ai`.
 
-## Advanced: developer access
+### ChatGPT stops before the VH3 sign-in
 
-Developers can connect Cursor, Claude Code, n8n and custom agents directly with a Bearer token. This path needs no OAuth sign-in. It talks to the VH3 MCP server at `api.vh3connect.io`, and it works for tools such as Claude Desktop that read a local config file.
-
-<Note>
-Most Claude users should use [Connect in Claude](#connect-in-claude). The direct server also lists `jobs_feed` (an alias for `list_jobs`), and it lists `reports_generate` and `connie_chat` ahead of the connector.
-</Note>
-
-### Server details
-
-| Property | Value |
-|---|---|
-| **Server URL** | `https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream` |
-| **Transport** | Streamable HTTP via `mcp-remote` proxy |
-| **Auth** | Bearer JWT token in `Authorization` header (obtained from `auth/mcp-token`) |
-| **Protocol version** | MCP 2025-06-18 |
-
-<Note>
-If an existing client config still uses a URL ending `/mcp/sse`, change it to `/mcp/stream` and fully restart the client. Your JWT is unchanged.
-</Note>
-
-### Prerequisites
-
-Claude Desktop and Cursor connect to remote MCP servers via a lightweight proxy called [`mcp-remote`](https://www.npmjs.com/package/mcp-remote). It runs automatically through `npx`, which ships with Node.js.
-
-<Steps>
-  <Step title="Install Node.js (if not already installed)">
-    Download the **LTS** installer for your platform from [nodejs.org](https://nodejs.org/en/download):
-
-    - **macOS:** Download the `.pkg` installer from [nodejs.org](https://nodejs.org/en/download), open it, and click through the wizard. No terminal required.
-    - **Windows:** Download the `.msi` installer. Make sure **"Add to PATH"** is checked during installation (this is the default).
-
-    After installing, verify by opening a terminal (macOS: Terminal.app, Windows: Command Prompt) and running:
-
-    ```bash
-    node --version
-    npx --version
-    ```
-
-    Both should return a version number (e.g. `v22.x.x`). If `npx` is not recognised, Node.js is either not installed or not in your system PATH — see [Troubleshooting developer access](#troubleshooting-developer-access) below.
-  </Step>
-  <Step title="Confirm your IT policy allows outbound HTTPS">
-    The MCP proxy makes outbound HTTPS connections to `api.vh3connect.io` and `registry.npmjs.org` (to fetch `mcp-remote` on first use). If your organisation uses a firewall or proxy, ask your IT team to allowlist these domains.
-  </Step>
-</Steps>
-
-<Info>
-**Why Node.js?** Claude Desktop's config file launches local (stdio) MCP processes. The [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) proxy runs locally and opens the HTTPS connection to VH3. This is [the standard pattern](https://modelcontextprotocol.io/quickstart/user) recommended by the MCP specification.
-</Info>
-
-### Get your MCP token
-
-Before connecting any client, you need a long-lived MCP token (valid for 90 days).
-
-<Steps>
-  <Step title="Log in to get a session JWT">
-    Call the login endpoint with your email and password to obtain a standard session token:
-
-    ```bash
-    curl -X POST https://api.vh3connect.io/api:lBQnyyZL/auth/login \
-      -H "Content-Type: application/json" \
-      -d '{"email": "you@company.com", "password": "your-password"}'
-    ```
-
-    Copy the `authToken` from the response.
-  </Step>
-  <Step title="Exchange it for an MCP token">
-    Call the `auth/mcp-token` endpoint using your session token:
-
-    ```bash
-    curl -X POST https://api.vh3connect.io/api:lBQnyyZL/auth/mcp-token \
-      -H "Authorization: Bearer YOUR_SESSION_TOKEN"
-    ```
-
-    The response contains `authToken` (your 90-day MCP token) and `expires_in: 7776000`.
-  </Step>
-  <Step title="Store the token securely">
-    Save the MCP token in an environment variable. Never commit it to source control.
-
-    ```bash
-    export VH3_MCP_TOKEN="eyJhbGci..."
-    ```
-  </Step>
-</Steps>
-
-### Quick start: Claude Desktop
-
-Claude Desktop connects to the VH3 MCP server using the [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) proxy. Requires [Node.js 18+](#prerequisites).
-
-<Steps>
-  <Step title="Open your Claude Desktop config file">
-    The config file location depends on your platform:
-
-    | Platform | Path |
-    |---|---|
-    | **macOS** | `~/Library/Application Support/Claude/claude_desktop_config.json` |
-    | **Windows** | `%APPDATA%\Claude\claude_desktop_config.json` |
-
-    You can also open it from Claude Desktop: **Settings → Developer → Edit Config**.
-
-    Create the file if it does not exist.
-  </Step>
-  <Step title="Add the VH3 server">
-    **macOS:**
-
-    ```json claude_desktop_config.json
-    {
-      "mcpServers": {
-        "vh3-ai": {
-          "command": "npx",
-          "args": [
-            "-y",
-            "mcp-remote",
-            "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream",
-            "--header",
-            "Authorization:${VH3_MCP_TOKEN}"
-          ],
-          "env": {
-            "VH3_MCP_TOKEN": "Bearer YOUR_MCP_TOKEN"
-          }
-        }
-      }
-    }
-    ```
-
-    **Windows:**
-
-    ```json claude_desktop_config.json
-    {
-      "mcpServers": {
-        "vh3-ai": {
-          "command": "cmd",
-          "args": [
-            "/c",
-            "npx",
-            "-y",
-            "mcp-remote",
-            "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream",
-            "--header",
-            "Authorization:${VH3_MCP_TOKEN}"
-          ],
-          "env": {
-            "VH3_MCP_TOKEN": "Bearer YOUR_MCP_TOKEN"
-          }
-        }
-      }
-    }
-    ```
-
-    Replace `YOUR_MCP_TOKEN` with the token from [Get your MCP token](#get-your-mcp-token).
-  </Step>
-  <Step title="Restart Claude Desktop">
-    Quit fully (**Cmd+Q** on macOS, **File → Quit** on Windows — closing the window is not enough) and reopen. You should see a hammer icon in the chat input. Click it to confirm the VH3 tools are listed.
-  </Step>
-  <Step title="Test with a query">
-    Try: *"How many jobs did we complete last week, broken down by engineer?"*
-
-    Claude will call `aggregate_jobs` and return a cited answer.
-  </Step>
-</Steps>
-
-<Warning>
-**Windows users:** You must use `"command": "cmd"` with `"/c"` as the first arg. Claude Desktop spawns the command directly without a shell, so `npx` alone will fail with `spawn npx ENOENT`. Wrapping it in `cmd /c` ensures Windows resolves `npx` via the system PATH.
-</Warning>
-
-<Note>
-The auth token is placed in the `env` block rather than inline in `args`. This is the [recommended pattern](https://www.npmjs.com/package/mcp-remote) — `mcp-remote` can misparse header values containing spaces when they appear directly in the args array on Windows.
-</Note>
-
-### Quick start: Cursor
-
-Go to **Cursor Settings → MCP** and add a new server, or edit `.cursor/mcp.json` in your project root. Requires [Node.js 18+](#prerequisites).
-
-**macOS:**
-
-```json .cursor/mcp.json
-{
-  "mcpServers": {
-    "vh3-ai": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream",
-        "--header",
-        "Authorization:${VH3_MCP_TOKEN}"
-      ],
-      "env": {
-        "VH3_MCP_TOKEN": "Bearer YOUR_MCP_TOKEN"
-      }
-    }
-  }
-}
-```
-
-**Windows:**
-
-```json .cursor/mcp.json
-{
-  "mcpServers": {
-    "vh3-ai": {
-      "command": "cmd",
-      "args": [
-        "/c",
-        "npx",
-        "-y",
-        "mcp-remote",
-        "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream",
-        "--header",
-        "Authorization:${VH3_MCP_TOKEN}"
-      ],
-      "env": {
-        "VH3_MCP_TOKEN": "Bearer YOUR_MCP_TOKEN"
-      }
-    }
-  }
-}
-```
-
-Replace `YOUR_MCP_TOKEN` with your token. See [Get your MCP token](#get-your-mcp-token).
-
-<Note>
-Prefer environment variables over inline tokens. Set `VH3_MCP_TOKEN` in your shell profile and reference it from the config, or use [Cursor Rules](/agent-kits/cursor-rules) alongside the MCP connection to keep tokens out of config files.
-</Note>
-
-### Quick start: Claude Code
-
-Claude Code connects over Streamable HTTP with your Bearer token and needs no Node.js proxy. See [Get your MCP token](#get-your-mcp-token) first.
-
-```bash
-claude mcp add --transport http vh3-ai \
-  https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream \
-  --header "Authorization: Bearer $VH3_MCP_TOKEN"
-```
-
-To skip the token, use the plugin or custom connector under [Connect in Claude](#connect-in-claude).
-
-### Quick start: n8n
-
-Add an **MCP Client Tool** node with the endpoint `https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream`, the **HTTP Streamable** transport, and a **Bearer** credential holding your MCP token. To build workflows without MCP, use the [VH3 AI n8n node](/n8n-node).
-
-### Authentication
-
-The MCP server uses JWT Bearer token authentication. Tokens are obtained via the `auth/mcp-token` endpoint (see [Get your MCP token](#get-your-mcp-token) above).
-
-| Property | Value |
-|---|---|
-| **Header** | `Authorization: Bearer <token>` |
-| **Token lifetime** | 90 days |
-| **Scope** | Automatically resolves your user, company, and API credentials |
-
-The JWT encodes your user identity. All tool calls are automatically scoped to your company, no `company_id` or `api_key` parameters are needed. Cross-tenant access is impossible.
-
-<Warning>
-Never commit your MCP token to source control. Use environment variables and reference them from your MCP client configuration.
-</Warning>
-
-### Troubleshooting developer access
-
-#### `spawn npx ENOENT` (Windows)
-
-Claude Desktop cannot find `npx`. Two possible causes:
-
-1. **Node.js is not installed.** Install it from [nodejs.org](https://nodejs.org/en/download) and restart Claude Desktop.
-2. **Node.js is installed but not in Claude Desktop's PATH.** Use `"command": "cmd"` with `"/c"` as the first arg (see [Windows config above](#quick-start-claude-desktop)). Alternatively, use the full path to npx: `"command": "C:\\Program Files\\nodejs\\npx.cmd"`.
-
-#### `npx is not recognized` (Windows)
-
-Same root cause as above — Node.js is not on the system PATH. Install Node.js using the `.msi` installer (not the zip), which adds it to PATH automatically. After installing, **restart Claude Desktop** (or reboot) so it picks up the new PATH.
-
-#### "Not valid MCP server configuration"
-
-The config JSON is malformed. Common causes:
-
-- **Trailing comma** after the last entry in an object or array.
-- **Two separate JSON objects** instead of one (e.g. `mcpServers` and `preferences` in separate `{}` blocks — they must be siblings in a single root object).
-- **Using `"url"` or `"headers"` keys** — Claude Desktop does not support these. Use the `command` + `mcp-remote` pattern shown above.
-
-Paste your config into [jsonlint.com](https://jsonlint.com) to validate the JSON syntax.
-
-#### Tools don't appear after restart
-
-- Verify you fully quit Claude Desktop (**Cmd+Q** / **File → Quit**), not just closed the window.
-- Check logs: **Settings → Developer → Open Logs Folder** and look for `mcp-remote` stderr output.
-- Verify your token hasn't expired (90-day lifetime). Re-run the [token exchange](#get-your-mcp-token) if needed.
-- Confirm outbound HTTPS to `api.vh3connect.io` and `registry.npmjs.org` is not blocked by a firewall.
-- Confirm the server URL ends `/mcp/stream`, not `/mcp/sse`.
-
-#### Tool calls timeout
-
-`investigate`, `reports_generate`, and `connie_chat` can take 10–17 seconds. Some clients have aggressive timeouts. Increase your client's tool call timeout to at least 25 seconds. `scheduling_suggestions` can take up to 45 seconds, and a live `invoice_summary` or `quote_summary` up to 90 seconds.
-
-#### Further reading
-
-- [MCP Specification](https://modelcontextprotocol.io) — the protocol standard
-- [MCP Debugging Guide](https://modelcontextprotocol.io/docs/tools/debugging) — official troubleshooting
-- [`mcp-remote` on npm](https://www.npmjs.com/package/mcp-remote) — the local proxy for remote MCP servers
-- [Claude Desktop MCP Quickstart](https://modelcontextprotocol.io/quickstart/user) — Anthropic's setup guide
-
-### Using the MCP server from custom agents
-
-For agents built with the Anthropic SDK, OpenAI Agents SDK, or similar frameworks:
-
-<CodeGroup>
-
-```python Python (Anthropic SDK)
-import os
-import anthropic
-
-client = anthropic.Anthropic()
-
-response = client.beta.messages.create(
-    model="claude-opus-4-5",
-    max_tokens=4096,
-    mcp_servers=[
-        {
-            "type": "url",
-            "url": "https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream",
-            "name": "vh3-ai-v2",
-            "authorization_token": os.environ["VH3_MCP_TOKEN"],
-        }
-    ],
-    messages=[{"role": "user", "content": "What needs attention today?"}],
-)
-```
-
-```typescript TypeScript (Streamable HTTP)
-import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
-
-const transport = new StreamableHTTPClientTransport(
-  new URL("https://api.vh3connect.io/x2/mcp/UZkEeuG7/mcp/stream"),
-  {
-    requestInit: {
-      headers: {
-        Authorization: `Bearer ${process.env.VH3_MCP_TOKEN!}`,
-      },
-    },
-  }
-);
-
-const client = new Client({ name: "my-agent", version: "1.0.0" });
-await client.connect(transport);
-
-const tools = await client.listTools();
-console.log(tools); // lists the VH3 tools
-```
-
-</CodeGroup>
-
-### Tool selection guide for agents
-
-When your agent receives a free-form question and needs to decide which tool to call:
-
-| Question pattern | Tool |
-|---|---|
-| "why / root cause / what's causing / investigate" | `investigate` |
-| "how many / rate / trend / top / compare / period over period" | `aggregate_jobs` |
-| "who could take this Job / when could we send someone" | `scheduling_suggestions` |
-| "how much / how many invoices" | `invoice_summary` |
-| "how many quotes / conversion" | `quote_summary` |
-| "which group / resource group name" | `list_resource_groups` |
-| "show me / list / find / get jobs" | `list_jobs` or `jobs_feed` |
-| "what needs attention / alerts / sentinels" | `run_sentinels` |
-| "generate report / briefing / debrief / weekly summary" | `reports_generate` |
-| "similar to / fault like / what else looks like" | `search_outcomes` |
-| "find customer / contact / site" | `contacts_feed` or `search_autocomplete` |
-| "quotes / pricing / quotations" | `list_quotes` or `get_quote` |
-| "invoices / billing / payments" | `list_invoices` or `get_invoice` |
-| Ambiguous / unclear | `aggregate_jobs` first, then offer `investigate` |
-
-For a full system prompt you can paste directly into your agent, see the [Claude.ai Projects](/agent-kits/claude-projects) and [n8n Agent Prompts](/agent-kits/n8n-agents) kits, both include routing logic optimised for agent use.
-
-### Pairing with AGENTS.md
-
-If you're using the MCP server inside a Cursor or Claude Code session, pair it with the [AGENTS.md](/agent-kits/agents-md) file in your project root. The MCP server handles execution; AGENTS.md handles routing logic, field name correctness, and the rules around what IDs to expose to users.
-
-<CardGroup cols={2}>
-  <Card title="MCP Server (this page)" icon="plug">
-    Handles *execution*, connects the client to the actual API, manages auth, returns real data.
-  </Card>
-  <Card title="AGENTS.md" icon="robot">
-    Handles *reasoning*, tells the agent which tool to call, which parameters to pass, and how to present results.
-  </Card>
-</CardGroup>
+Check the server URL is exactly `https://mcp.vh3.ai/mcp`. Authentication stays **OAuth**. Registration method stays **Client Identifier Metadata Document (CIMD)**. Leave the callback URL, the CIMD client metadata URL, and the scopes unchanged, and tick **I understand and want to continue** before **Create as a plugin**. Then use **Connect → Continue to VH3 AI** and sign in with your VH3 Connect email and password.

@@ -98,10 +98,10 @@ Cases + teams turn detection into owned work with status, participants, linked j
 | Surface | Best for | Auth |
 |---------|----------|------|
 | **REST API** | Custom apps, partner portals, server automations | `company_id` + `api_key` (server) or JWT (client) |
-| **MCP server** | Coding agents (Cursor, Claude Code, Claude Desktop, any MCP client) | Per-user JWT, see [MCP setup](/agent-kits/mcp-setup) |
+| **MCP server** | Claude and ChatGPT | VH3 Connect sign-in, see [MCP setup](/agent-kits/mcp-setup) |
 | **n8n node** | Low-code workflow builders, operations engineers | `company_id` + `api_key` in n8n credentials, server-side |
 
-MCP is the fastest path for evaluation: a coding agent gets the full operational tool surface and can call it directly. See [Agent Starter Kits](/agent-kits/overview).
+Connect Claude or ChatGPT and ask about live jobs. See [MCP setup](/agent-kits/mcp-setup).
 
 ## Patterns that work
 
@@ -140,7 +140,7 @@ Build a tool catalogue from this page, point your MCP client at the server, and 
     Three builder paths and worked examples.
   </Card>
   <Card title="MCP setup" icon="plug" href="/agent-kits/mcp-setup">
-    Connect Cursor, Claude, or any MCP client to the live tool surface.
+    Connect Claude or ChatGPT with hosted OAuth.
   </Card>
   <Card title="Deploying secure apps" icon="shield" href="/guides/deploying-secure-apps">
     Auth patterns, credentials, and governance for apps built on the layer.
