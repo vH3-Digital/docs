@@ -23,7 +23,7 @@ The Teams endpoints manage organisational teams, groups of users that can be sco
   mobile code.
 </Warning>
 
-## GET /teams/list
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /teams/list
 
 List all teams for your company.
 
@@ -46,7 +46,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/list" \
 
 ---
 
-## POST /teams/create
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /teams/create
 
 Create a new team.
 
@@ -76,7 +76,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/create" \
 
 ---
 
-## GET /teams/\{team_id\}
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /teams/\{team_id\}
 
 Retrieve a specific team with its members and linked entities.
 
@@ -88,7 +88,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/42" \
 
 ---
 
-## PATCH /teams/\{team_id\}
+## <span className="vh3-method-pill vh3-method-pill--patch">PATCH</span> /teams/\{team_id\}
 
 Update team details.
 
@@ -116,7 +116,7 @@ curl -X PATCH "https://api.vh3connect.io/api:kP8T1CK7/teams/42" \
 
 ---
 
-## GET /teams/\{team_id\}/members
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /teams/\{team_id\}/members
 
 List all members of a team.
 
@@ -128,7 +128,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/42/members" \
 
 ---
 
-## POST /teams/\{team_id\}/members
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /teams/\{team_id\}/members
 
 Add a member to a team.
 
@@ -157,7 +157,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/42/members" \
 
 ---
 
-## DELETE /teams/\{team_id\}/members/\{membership_id\}
+## <span className="vh3-method-pill vh3-method-pill--delete">DELETE</span> /teams/\{team_id\}/members/\{membership_id\}
 
 Remove a member from a team.
 
@@ -172,7 +172,7 @@ curl -X DELETE "https://api.vh3connect.io/api:kP8T1CK7/teams/42/members/99" \
 
 ---
 
-## GET /teams/\{team_id\}/entities
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /teams/\{team_id\}/entities
 
 List all entities linked to a team.
 
@@ -192,7 +192,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/42/entities" \
 
 ---
 
-## POST /teams/\{team_id\}/entities
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /teams/\{team_id\}/entities
 
 Link an entity (customer, site, job type) to a team.
 
@@ -223,7 +223,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/teams/42/entities" \
 
 ---
 
-## DELETE /teams/\{team_id\}/entities/\{link_id\}
+## <span className="vh3-method-pill vh3-method-pill--delete">DELETE</span> /teams/\{team_id\}/entities/\{link_id\}
 
 Unlink an entity from a team.
 
@@ -238,7 +238,7 @@ curl -X DELETE "https://api.vh3connect.io/api:kP8T1CK7/teams/42/entities/77" \
 
 ---
 
-## GET /teams/search
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /teams/search
 
 Search teams by name or description.
 
@@ -261,7 +261,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/teams/search" \
 
 ---
 
-## GET /entities/\{entity_type\}/\{entity_id\}/teams
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /entities/\{entity_type\}/\{entity_id\}/teams
 
 Find which teams a given entity belongs to (reverse lookup).
 
@@ -273,7 +273,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/entities/customer/contact-456/te
 
 ---
 
-## GET /users/\{user_id\}/teams
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /users/\{user_id\}/teams
 
 Get all teams a specific user belongs to.
 

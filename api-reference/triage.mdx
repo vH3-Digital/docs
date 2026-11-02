@@ -7,7 +7,7 @@ description: Classify inbound emails by category, urgency, and routing action
 
 Classify inbound emails against your tenant taxonomy. Returns category, urgency, sentiment, and a deterministic routing decision. Known FM portal senders can short-circuit to `portal_ingest` without AI classification.
 
-## POST /triage/classify
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /triage/classify
 
 Classify a single email.
 
@@ -81,7 +81,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/triage/classify" \
 
 ---
 
-## GET /triage/categories
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /triage/categories
 
 Return the category taxonomy for UI rendering (system default plus tenant overlay).
 

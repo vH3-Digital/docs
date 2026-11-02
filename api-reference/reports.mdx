@@ -22,7 +22,7 @@ The Reports endpoints generate structured operational reports for a time-of-day,
 
 Call `GET /reports/sections` for the section names available on each type.
 
-## POST /reports/generate
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /reports/generate
 
 Generate a report. The request waits for the result and returns structured JSON plus an optional narrative in the same response. With narrative, allow 10–17 seconds and set the client timeout to at least 30 seconds.
 
@@ -135,7 +135,7 @@ The array is ordered by tier (`critical`, `act_now`, `watch`, `informational`), 
 
 ---
 
-## GET /reports/sections
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /reports/sections
 
 Returns the valid `report_type` values and the section names for each type.
 

@@ -25,7 +25,7 @@ BigChange jobs, constraints, stock, groups, and types. Auth: `X-API-Key` header.
 
 Job lifecycle.
 
-### `GET` `/jobs/job`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/jobs/job`
 
 Get job.
 
@@ -35,7 +35,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/jobs/job" \
   --data-urlencode "jobId=12345"
 ```
 
-### `POST` `/jobs/create`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/create`
 
 Create job.
 
@@ -50,7 +50,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/create" \
   }'
 ```
 
-### `POST` `/jobs/edit`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/edit`
 
 Update job.
 
@@ -64,7 +64,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/edit" \
   }'
 ```
 
-### `POST` `/jobs/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/list`
 
 List jobs. **`createdAtFrom` and `createdAtTo` are required.** Max **12 months** between them.
 
@@ -94,7 +94,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/list" \
   }'
 ```
 
-### `POST` `/jobs/cancel`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/cancel`
 
 Cancel job.
 
@@ -108,7 +108,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/cancel" \
   }'
 ```
 
-### `POST` `/jobs/start`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/start`
 
 Start job.
 
@@ -122,7 +122,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/start" \
   }'
 ```
 
-### `POST` `/jobs/result`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/result`
 
 Set result.
 
@@ -141,7 +141,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/result" \
   }'
 ```
 
-### `POST` `/jobs/scheduling`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/scheduling`
 
 Schedule job.
 
@@ -157,7 +157,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/scheduling" \
   }'
 ```
 
-### `POST` `/jobs/scheduling/suggestions`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/scheduling/suggestions`
 
 Candidate slots for resources or vehicles. Each item includes the resource or vehicle, `startAt`, extra distance, extra driving time, estimated cost, and skills.
 
@@ -199,7 +199,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/scheduling/suggestions
   }'
 ```
 
-### `POST` `/jobs/status/history`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/status/history`
 
 Status history.
 
@@ -218,7 +218,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/status/history" \
 
 Scheduling constraints.
 
-### `POST` `/jobs/constraints/create`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/constraints/create`
 
 Create constraint.
 
@@ -231,7 +231,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/constraints/create" \
   }'
 ```
 
-### `POST` `/jobs/constraints/delete`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/constraints/delete`
 
 Delete constraint.
 
@@ -245,7 +245,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/constraints/delete" \
   }'
 ```
 
-### `POST` `/jobs/constraints/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/constraints/list`
 
 List constraints.
 
@@ -264,7 +264,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/constraints/list" \
 
 Parts on jobs.
 
-### `POST` `/jobs/stock/create`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/stock/create`
 
 Add stock line.
 
@@ -279,7 +279,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/stock/create" \
   }'
 ```
 
-### `POST` `/jobs/stock/delete`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/stock/delete`
 
 Remove stock line.
 
@@ -293,7 +293,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/stock/delete" \
   }'
 ```
 
-### `POST` `/jobs/stock/get`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/stock/get`
 
 Get stock line.
 
@@ -307,7 +307,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/stock/get" \
   }'
 ```
 
-### `POST` `/jobs/stock/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/jobs/stock/list`
 
 List stock lines.
 
@@ -326,7 +326,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/jobs/stock/list" \
 
 Multi-job programmes.
 
-### `POST` `/job_groups/create`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/job_groups/create`
 
 Create group.
 
@@ -339,7 +339,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/create" \
   }'
 ```
 
-### `POST` `/job_groups/edit`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/job_groups/edit`
 
 Update group.
 
@@ -353,7 +353,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/edit" \
   }'
 ```
 
-### `POST` `/job_groups/job_group`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/job_groups/job_group`
 
 Get group.
 
@@ -366,7 +366,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/job_group" \
   }'
 ```
 
-### `POST` `/job_groups/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/job_groups/list`
 
 List groups.
 
@@ -380,7 +380,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/list" \
   }'
 ```
 
-### `POST` `/job_groups/status_history`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/job_groups/status_history`
 
 Group status history.
 
@@ -395,7 +395,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/status_history" 
   }'
 ```
 
-### `POST` `/job_groups/job_group_results_as_complete`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/job_groups/job_group_results_as_complete`
 
 Mark complete.
 
@@ -408,7 +408,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/job_group_result
   }'
 ```
 
-### `POST` `/job_groups/job_group_results_as_financially_complete`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/job_groups/job_group_results_as_financially_complete`
 
 Mark financially complete.
 
@@ -425,7 +425,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_groups/job_group_result
 
 Job type catalogue.
 
-### `POST` `/job_types/job_types`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/job_types/job_types`
 
 Get type.
 
@@ -438,7 +438,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/job_types/job_types" \
   }'
 ```
 
-### `POST` `/job_types/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/job_types/list`
 
 List types.
 

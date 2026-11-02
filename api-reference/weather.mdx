@@ -7,7 +7,7 @@ description: Forecast and historical weather for coordinates, jobs, and sites
 
 Weather lookups for field service planning and retrospective analysis. Backed by a third-party weather provider. Responses include hourly conditions and a summary with `outdoor_work_risk` (`low`, `moderate`, or `high`).
 
-## GET /weather/forecast
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /weather/forecast
 
 Forecast weather for a latitude/longitude.
 
@@ -46,7 +46,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/weather/forecast" \
 
 ---
 
-## GET /weather/historical
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /weather/historical
 
 Historical weather for a latitude/longitude and date range.
 
@@ -83,7 +83,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/weather/historical" \
 
 ---
 
-## GET /weather/for-job/\{job_id\}
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /weather/for-job/\{job_id\}
 
 Weather for a specific job. Coordinates and time window are resolved from the intelligence layer.
 
@@ -123,7 +123,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/weather/for-job/FAB310221" \
 
 ---
 
-## GET /weather/for-site
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /weather/for-site
 
 Weather for a customer or site over a date range. Coordinates are resolved from the graph.
 

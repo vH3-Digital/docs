@@ -19,7 +19,7 @@ These endpoints provide per-user login and JWT session management for **interact
 
 ---
 
-## POST /auth/login
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /auth/login
 
 Authenticate a user with email and password. Returns a JWT token valid for 24 hours. The user's tenant is resolved server-side from their account, no API key is required from the client.
 
@@ -56,7 +56,7 @@ curl -X POST "https://api.vh3connect.io/api:lBQnyyZL/auth/login" \
 
 ---
 
-## POST /auth/refresh
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /auth/refresh
 
 Refresh an expiring JWT token. Returns a new token with a fresh 24-hour expiry.
 
@@ -81,7 +81,7 @@ curl -X POST "https://api.vh3connect.io/api:lBQnyyZL/auth/refresh" \
 
 ---
 
-## GET /auth/me
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /auth/me
 
 Get the current user profile from the JWT token. Includes the user's company information.
 
@@ -117,7 +117,7 @@ curl -G "https://api.vh3connect.io/api:lBQnyyZL/auth/me" \
 
 ---
 
-## POST /users/invite
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /users/invite
 
 Invite a new user by email to the authenticated user's company. Returns an invitation token valid for 7 days. **Requires `admin` or `developer` role.**
 
@@ -168,7 +168,7 @@ curl -X POST "https://api.vh3connect.io/api:lBQnyyZL/users/invite" \
 
 ---
 
-## GET /users/list
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /users/list
 
 List all active users belonging to the authenticated user's company. Supports pagination. **Requires `admin` or `developer` role.**
 
@@ -226,7 +226,7 @@ curl -G "https://api.vh3connect.io/api:lBQnyyZL/users/list" \
 
 ---
 
-## DELETE /users/\{user_id\}
+## <span className="vh3-method-pill vh3-method-pill--delete">DELETE</span> /users/\{user_id\}
 
 Soft-delete a user by setting their account to archived. The user will no longer be able to log in. Cannot delete your own account. **Requires `admin` or `developer` role.**
 

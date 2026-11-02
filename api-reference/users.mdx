@@ -15,7 +15,7 @@ The Users endpoints manage the team members associated with your company. They u
 
 ---
 
-## GET /users/list
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /users/list
 
 List all active (non-archived) users for your company.
 
@@ -59,7 +59,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/users/list" \
 
 ---
 
-## GET /users/invites
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /users/invites
 
 List pending (not yet accepted) invitations for your company.
 
@@ -94,7 +94,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/users/invites" \
 
 ---
 
-## POST /users/invite
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /users/invite
 
 Invite a user to your company by email. Sends an invitation email via SendGrid with an accept link. If the email address already exists in the system without a company, they are immediately linked to your company.
 
@@ -141,7 +141,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/users/invite" \
 
 ---
 
-## PUT /users/\{user_id\}/role
+## <span className="vh3-method-pill vh3-method-pill--put">PUT</span> /users/\{user_id\}/role
 
 Update the role of a user within your company. Returns the updated user record.
 
@@ -187,7 +187,7 @@ curl -X PUT "https://api.vh3connect.io/api:kP8T1CK7/users/42/role" \
 
 ---
 
-## DELETE /users/\{user_id\}
+## <span className="vh3-method-pill vh3-method-pill--delete">DELETE</span> /users/\{user_id\}
 
 Archive (soft-delete) a user. The user's record is preserved but `is_archived` is set to `true`, they can no longer log in and will not appear in `GET /users/list`.
 

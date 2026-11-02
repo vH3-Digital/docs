@@ -9,8 +9,8 @@
   --vh3-tag-api-fg: #374151;
   --vh3-tag-integrations-bg: #dcfce7;
   --vh3-tag-integrations-fg: #166534;
-  --vh3-tag-platform-bg: #fef3c7;
-  --vh3-tag-platform-fg: #92400e;
+  --vh3-tag-platform-bg: #ccfbf1;
+  --vh3-tag-platform-fg: #0f766e;
 }
 
 .dark {
@@ -22,8 +22,8 @@
   --vh3-tag-api-fg: #e5e7eb;
   --vh3-tag-integrations-bg: #14532d;
   --vh3-tag-integrations-fg: #bbf7d0;
-  --vh3-tag-platform-bg: #78350f;
-  --vh3-tag-platform-fg: #fde68a;
+  --vh3-tag-platform-bg: #134e4a;
+  --vh3-tag-platform-fg: #99f6e4;
 }
 
 /* Hide Mintlify's unstyled inline tag list under the date (Badges in the entry body are the visual). */
@@ -58,6 +58,9 @@
 }
 
 .vh3-changelog-tag--platform {
+  /* Badge paints from these variables; the background/colour overrides cover the filter chips. */
+  --color-bg: var(--vh3-tag-platform-bg);
+  --color-text: var(--vh3-tag-platform-fg);
   background: var(--vh3-tag-platform-bg) !important;
   color: var(--vh3-tag-platform-fg) !important;
 }

@@ -21,7 +21,7 @@ Engineers and resource groups. Auth: `X-API-Key` header. Base: `https://api.vh3c
 
 Engineers/technicians.
 
-### `GET` `/resources/resource_get`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/resources/resource_get`
 
 Get resource.
 
@@ -31,7 +31,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/resources/resource_get" \
   --data-urlencode "resourceId=100"
 ```
 
-### `POST` `/resources/resource_create`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/resources/resource_create`
 
 Create resource.
 
@@ -45,7 +45,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/resources/resource_create" 
   }'
 ```
 
-### `POST` `/resources/update`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/resources/update`
 
 Update resource.
 
@@ -59,7 +59,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/resources/update" \
   }'
 ```
 
-### `POST` `/resources/resources_list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/resources/resources_list`
 
 List resources.
 
@@ -73,7 +73,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/resources/resources_list" \
   }'
 ```
 
-### `GET` `/resources/skills`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/resources/skills`
 
 Skills assigned to one resource. The page has `items`, `pageNumber`, `pageSize`, and `pageItemCount`. Each item has `resourceId`, `skillId`, `skillName`, and `expiresAt`.
 
@@ -92,7 +92,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/resources/skills" \
   --data-urlencode "pageSize=100"
 ```
 
-### `GET` `/resources/absences`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/resources/absences`
 
 Absences for a resource, a type, a status, and a date window. The page has `items`, `pageNumber`, `pageSize`, and `pageItemCount`. Paging slices the list.
 
@@ -123,7 +123,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/resources/absences" \
 
 Teams.
 
-### `GET` `/resource_groups/resource_group/get`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/resource_groups/resource_group/get`
 
 Get group.
 
@@ -133,7 +133,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/resource_groups/resource_group/g
   --data-urlencode "resourceGroupId=5"
 ```
 
-### `POST` `/resource_groups/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/resource_groups/list`
 
 List groups.
 

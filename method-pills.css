@@ -1,0 +1,72 @@
+/* HTTP method pills on hand-written API reference headings.
+   The method stays inside the heading (a span, then the path) so Mintlify
+   keeps the anchor and the On this page entry. Example:
+
+   ## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /users/list
+
+   Dark text is the calm Mintlify tint. Light text is the 700-tone of the
+   same hue. The wash is 12% of that text colour. */
+
+.vh3-method-pill {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.12em 0.42em 0.08em;
+  border-radius: 0.28rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.045em;
+  line-height: 1.35;
+  vertical-align: 0.08em;
+  text-transform: uppercase;
+}
+
+.vh3-method-pill--get {
+  color: #0f766e;
+  background: color-mix(in srgb, #0f766e 12%, transparent);
+}
+
+.vh3-method-pill--post {
+  color: #1d4ed8;
+  background: color-mix(in srgb, #1d4ed8 12%, transparent);
+}
+
+.vh3-method-pill--put {
+  color: #6d28d9;
+  background: color-mix(in srgb, #6d28d9 12%, transparent);
+}
+
+.vh3-method-pill--patch {
+  color: #4338ca;
+  background: color-mix(in srgb, #4338ca 12%, transparent);
+}
+
+.vh3-method-pill--delete {
+  color: #be123c;
+  background: color-mix(in srgb, #be123c 12%, transparent);
+}
+
+.dark .vh3-method-pill--get {
+  color: #5eead4;
+  background: color-mix(in srgb, #5eead4 12%, transparent);
+}
+
+.dark .vh3-method-pill--post {
+  color: #93c5fd;
+  background: color-mix(in srgb, #93c5fd 12%, transparent);
+}
+
+.dark .vh3-method-pill--put {
+  color: #c4b5fd;
+  background: color-mix(in srgb, #c4b5fd 12%, transparent);
+}
+
+.dark .vh3-method-pill--patch {
+  color: #a5b4fc;
+  background: color-mix(in srgb, #a5b4fc 12%, transparent);
+}
+
+.dark .vh3-method-pill--delete {
+  color: #fda4af;
+  background: color-mix(in srgb, #fda4af 12%, transparent);
+}

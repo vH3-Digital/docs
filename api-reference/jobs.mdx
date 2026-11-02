@@ -7,7 +7,7 @@ description: Job feed, account job feed, punctuality and follow-on work filters,
 
 The Jobs endpoints provide access to your enriched job records, including AI-extracted fault types, outcomes, timings, and relationships to engineers, sites, and customers.
 
-## GET /jobs/feed
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /jobs/feed
 
 Returns a paginated feed of enriched jobs for your company. Supports filtering by entity, status, punctuality, follow-on work, date range, and sort field. All filters are optional and composable as AND conditions. Each row includes `followUp` (`[]` or documented return-visit / parts-on-order lines).
 
@@ -96,7 +96,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed" \
 
 ---
 
-## GET /jobs/feed/account
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /jobs/feed/account
 
 Returns a paginated feed of jobs scoped to a **parent account and all its child contacts**. Pass any contact ID, parent or child, and the endpoint resolves the full hierarchy automatically.
 
@@ -187,7 +187,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/feed/account" \
 
 ---
 
-## GET /jobs/\{job_id\}
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /jobs/\{job_id\}
 
 Returns the full enriched record for a specific job, including AI-extracted fields, linked relationships from the intelligence layer, and timing data.
 
@@ -217,7 +217,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/jobs/12345" \
 
 ---
 
-## POST /aggregate/jobs
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /aggregate/jobs
 
 Job metrics with groupBy dimensions and period comparison. Powers dashboard charts, trend analysis, and punctuality counts.
 

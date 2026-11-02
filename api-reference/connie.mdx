@@ -15,7 +15,7 @@ Connie is VH3 AI's conversational assistant. She has access to the full operatio
   `toolCallOutputs`, usage, and verifying provenance in production UIs.
 </Card>
 
-## POST /connie/chat
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /connie/chat
 
 Send a message to Connie and receive a response grounded in your operational data.
 
@@ -74,7 +74,7 @@ When page-level search is switched on for your company, Connie can answer from y
 
 Library tools always run as the signed-in user in `user_id`. Without a `user_id`, only shared documents are searched, and pages cannot be read or imported.
 
-## POST /connie/chat/voice
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /connie/chat/voice
 
 Send a voice interaction to Connie, designed for voice-first interfaces where the input is a transcribed audio message. Optimised for concise, text-to-speech-friendly responses.
 
@@ -95,7 +95,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/chat/voice" \
 
 ---
 
-## POST /connie/generate-summary
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /connie/generate-summary
 
 Generate an AI summary for a contact, useful for pre-call preparation or account review.
 
@@ -119,7 +119,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/generate-summary" \
 
 ---
 
-## POST /connie/history/search
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /connie/history/search
 
 Search across past conversation history.
 
@@ -135,7 +135,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/connie/history/search" \
 
 ---
 
-## GET /connie/sessions
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /connie/sessions
 
 List chat sessions for a company.
 
@@ -147,7 +147,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/connie/sessions" \
 
 ---
 
-## GET /connie/sessions/\{session_id\}/messages
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /connie/sessions/\{session_id\}/messages
 
 Retrieve all messages for a specific session.
 

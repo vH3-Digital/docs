@@ -25,7 +25,7 @@ POs, series, and lines. Auth: `X-API-Key` header. Base: `https://api.vh3connect.
 
 Procurement.
 
-### `GET` `/purchase_orders/purchase_order`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/purchase_orders/purchase_order`
 
 Get PO.
 
@@ -35,7 +35,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/purchase_order" 
   --data-urlencode "id=4001"
 ```
 
-### `POST` `/purchase_orders/create`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/purchase_orders/create`
 
 Create PO.
 
@@ -49,7 +49,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/create" \
   }'
 ```
 
-### `POST` `/purchase_orders/edit`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/purchase_orders/edit`
 
 Update PO.
 
@@ -62,7 +62,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/edit" \
   }'
 ```
 
-### `POST` `/purchase_orders/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/purchase_orders/list`
 
 List purchase orders. **At least one filter is required.** Date range optional; max **12 months** on `createdAtFrom` → `createdAtTo`.
 
@@ -88,7 +88,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/list" \
   }'
 ```
 
-### `POST` `/purchase_orders/series/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/purchase_orders/series/list`
 
 List series.
 
@@ -102,7 +102,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/series/list
   }'
 ```
 
-### `GET` `/purchase_orders/series`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/purchase_orders/series`
 
 Get series.
 
@@ -116,7 +116,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/series" \
 
 PO lines.
 
-### `GET` `/purchase_orders/line_item`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/purchase_orders/line_item`
 
 Get line.
 
@@ -127,7 +127,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item" \
   --data-urlencode "id=1"
 ```
 
-### `POST` `/purchase_orders/line_item/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/purchase_orders/line_item/list`
 
 List lines.
 
@@ -142,7 +142,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/l
   }'
 ```
 
-### `POST` `/purchase_orders/line_item/create`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/purchase_orders/line_item/create`
 
 Create line.
 
@@ -155,7 +155,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/c
   }'
 ```
 
-### `POST` `/purchase_orders/line_item/edit`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/purchase_orders/line_item/edit`
 
 Update line.
 
@@ -169,7 +169,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/purchase_orders/line_item/e
   }'
 ```
 
-### `POST` `/purchase_orders/line_item/delete`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/purchase_orders/line_item/delete`
 
 Delete line.
 

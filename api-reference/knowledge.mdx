@@ -21,7 +21,7 @@ Send `company_id` and `api_key` in every request, as with the rest of the VH3 AI
 
 ---
 
-## POST /knowledge/documents/search
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /knowledge/documents/search
 
 Find Library documents, and their best matching pages, that answer a question.
 
@@ -86,7 +86,7 @@ When the same document has been uploaded more than once, page-level results show
 
 ---
 
-## POST /knowledge/search
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /knowledge/search
 
 Search across Library documents and customer and account intelligence in one call. Use it for questions either could answer, such as "which customers have a history of door entry faults" or "what does our method statement say about lone working".
 
@@ -143,7 +143,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/knowledge/search" \
 
 ---
 
-## POST /knowledge/documents/upload
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /knowledge/documents/upload
 
 Upload one PDF to your Library. The document goes through the same processing as an upload in VH3 Connect: text extraction, a summary, a page-by-page guide, and indexing for search.
 
@@ -189,7 +189,7 @@ The response returns as soon as the file is stored and read. `status` is `proces
 
 ---
 
-## POST /knowledge/documents/share
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /knowledge/documents/share
 
 Share a Library document with the whole company, or make it private to its owner again.
 
@@ -219,7 +219,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/knowledge/documents/share" 
 
 ---
 
-## POST /knowledge/documents/delete
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /knowledge/documents/delete
 
 Delete a Library document. The file is removed, and the document stops appearing in search, Connie and Tia straight away.
 

@@ -7,7 +7,7 @@ description: Semantic and keyword search across your operational history
 
 The Search endpoints let you find relevant past jobs, outcomes, and intake records by describing what you're looking for in natural language. The platform uses hybrid search, combining meaning-based matching with keyword retrieval, to surface relevant results even when terminology differs.
 
-## POST /search/outcomes
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /search/outcomes
 
 Search across AI-enriched job outcomes. This is the primary search endpoint for finding jobs by what happened, what was done, or what the result was.
 
@@ -38,7 +38,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes" \
 
 ---
 
-## POST /search/outcomes/enriched
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /search/outcomes/enriched
 
 Semantic search over job outcomes with relationship enrichment from the intelligence layer. Same request body and filters as `POST /search/outcomes`. Adds `related_works` grouped by job type, engineer, and site for each hit set.
 
@@ -97,7 +97,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/outcomes/enriched" \
 
 ---
 
-## POST /search/intake
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /search/intake
 
 Search across raw job intake text, the original fault descriptions as entered by dispatchers or customers.
 
@@ -123,7 +123,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/intake" \
 
 ---
 
-## POST /search/intake/enriched
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /search/intake/enriched
 
 Semantic search over job intake text with relationship enrichment, returns richer context by joining linked records to each result.
 
@@ -149,7 +149,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/intake/enriched" \
 
 ---
 
-## GET /search/autocomplete
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /search/autocomplete
 
 Fuzzy / phonetic / email-aware lookup across contacts, persons (site contacts
 and account holders), engineers, jobs, and taxonomy entities. Returns results
@@ -203,7 +203,7 @@ The response groups results under `groups.contacts`, `groups.people`,
 
 ---
 
-## GET /search/autocomplete/diagnose
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /search/autocomplete/diagnose
 
 Health check for the autocomplete index pipeline (always returns 200; inspect `missing`, `populating`, `advice`).
 
@@ -222,7 +222,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/search/autocomplete/diagnose" \
 
 ---
 
-## POST /search/summary-sections
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /search/summary-sections
 
 Hybrid search across **Customer Summary** knowledge sections. Each customer can have up to seven modular sections (overview, job history, equipment, analyses, performance, communication, risk). Each section is indexed independently so you can search one dimension or all of them. Results are ranked without an LLM call.
 
@@ -251,7 +251,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/search/summary-sections" \
 
 ---
 
-## GET /search/summary-sections/by-contact/\{company_id\}/\{contact_id\}
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /search/summary-sections/by-contact/\{company_id\}/\{contact_id\}
 
 Return the full stored Customer Summary for one contact (all sections). Use when you need the complete account brief in a single call rather than a ranked search.
 

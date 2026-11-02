@@ -48,7 +48,7 @@ Implementation notes (May 2026):
 | `seasonal_buying_pattern` | Historical patterns suggesting upcoming demand |
 | `geographic_upsell_cluster` | Concentration of existing customers near prospects |
 
-## POST /sentinels/run
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /sentinels/run
 
 Execute one or more sentinels against your data and return current results.
 
@@ -83,7 +83,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/sentinels/run" \
 
 ---
 
-## POST /sentinels/run/\{sentinel_id\}
+## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /sentinels/run/\{sentinel_id\}
 
 Run a single named sentinel.
 
@@ -111,7 +111,7 @@ curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/sentinels/run/dormant_custo
 
 ---
 
-## GET /sentinels/registry
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /sentinels/registry
 
 Returns all available sentinel definitions and their configuration.
 
@@ -123,7 +123,7 @@ curl -G "https://api.vh3connect.io/api:kP8T1CK7/sentinels/registry" \
 
 ---
 
-## GET /sentinels/results
+## <span className="vh3-method-pill vh3-method-pill--get">GET</span> /sentinels/results
 
 Returns the latest cached sentinel results for your tenant.
 

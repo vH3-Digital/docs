@@ -32,7 +32,7 @@ Combine with `id`, `jobId`, `jobGroupId`, `contactId`, or `reference` (comma-sep
 
 Billing.
 
-### `GET` `/invoices/invoice`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/invoices/invoice`
 
 Get invoice.
 
@@ -42,7 +42,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/invoices/invoice" \
   --data-urlencode "invoiceId=5001"
 ```
 
-### `POST` `/invoices/create`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/invoices/create`
 
 Create invoice.
 
@@ -56,7 +56,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/create" \
   }'
 ```
 
-### `POST` `/invoices/edit`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/invoices/edit`
 
 Update invoice.
 
@@ -69,7 +69,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/edit" \
   }'
 ```
 
-### `POST` `/invoices/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/invoices/list`
 
 List invoices with optional filters and a creation-date range (max **12 months** between `createdAtFrom` and `createdAtTo`).
 
@@ -104,7 +104,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/list" \
   }'
 ```
 
-### `POST` `/invoices/cancel`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/invoices/cancel`
 
 Cancel.
 
@@ -117,7 +117,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/cancel" \
   }'
 ```
 
-### `POST` `/invoices/mark_paid`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/invoices/mark_paid`
 
 Mark paid. Optional `paidAt` (ISO 8601 UTC); defaults to now if omitted. Single timestamp, not a date range.
 
@@ -131,7 +131,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/mark_paid" \
   }'
 ```
 
-### `POST` `/invoices/mark_sent`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/invoices/mark_sent`
 
 Mark sent. Optional `sentAt` (ISO 8601 UTC); defaults to now if omitted.
 
@@ -145,7 +145,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/mark_sent" \
   }'
 ```
 
-### `POST` `/invoices/document/create`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/invoices/document/create`
 
 Generate PDF.
 
@@ -162,7 +162,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/document/create" \
 
 Line-level charges.
 
-### `GET` `/invoices/line_item`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/invoices/line_item`
 
 Get line.
 
@@ -173,7 +173,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item" \
   --data-urlencode "lineItemId=1"
 ```
 
-### `GET` `/invoices/line_item/edit`
+### <span className="vh3-method-pill vh3-method-pill--get">GET</span> `/invoices/line_item/edit`
 
 Update line.
 
@@ -184,7 +184,7 @@ curl -G "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item/edit" \
   --data-urlencode "lineItemId=1"
 ```
 
-### `POST` `/invoices/line_item/create`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/invoices/line_item/create`
 
 Create line.
 
@@ -200,7 +200,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item/create" 
   }'
 ```
 
-### `POST` `/invoices/line_item/delete`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/invoices/line_item/delete`
 
 Delete line.
 
@@ -214,7 +214,7 @@ curl -X POST "https://api.vh3connect.io/api:YdihQNr3/invoices/line_item/delete" 
   }'
 ```
 
-### `POST` `/invoices/line_item/list`
+### <span className="vh3-method-pill vh3-method-pill--post">POST</span> `/invoices/line_item/list`
 
 List lines.
 
