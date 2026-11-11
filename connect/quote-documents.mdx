@@ -1,11 +1,11 @@
 ---
 title: Quote Documents
-description: Work the letter, lines, and price for follow-on work — then ask Salma to propose edits.
+description: Work the letter, lines, costs and price for follow-on work, check the quote before you approve it, and ask Salma to propose edits.
 ---
 
 # Quote Documents
 
-Quote Documents are VH3’s working commercial record for follow-on work. Open **Quote Documents** in the sidebar, review the letter and lines, add catalog parts, check Price against the not-to-exceed (NTE) figure, snapshot a version, then ask Salma to propose edits.
+Quote Documents are VH3’s working commercial record for follow-on work. Open **Quote Documents** in the sidebar, review the letter and lines, add catalog parts, check costs, margin and price against the not-to-exceed (NTE) figure, snapshot a version, then ask Salma to propose edits. Choosing **Approve** checks the quote first.
 
 **Path:** `/quoting/documents`
 
@@ -14,7 +14,7 @@ Quote Documents are VH3’s working commercial record for follow-on work. Open *
 </Card>
 
 <Note>
-**Approve** records an internal checkpoint. Sending the quote to the customer and capturing acceptance still happen outside this screen.
+**Approve** records an internal checkpoint. Sending the quote to the customer happens outside this screen. Record the customer's answer with **Accept** or **Decline**.
 </Note>
 
 ## Browse Quote Documents
@@ -33,61 +33,87 @@ On a phone, the list uses a tighter layout. Open a document at `/quoting/documen
 | Tab | What you do |
 |---|---|
 | **Quote** | Read and edit the commercial letter |
-| **Items** | Review quote lines; add a catalog part |
-| **Price** | Check buckets, VAT, unpriced lines, and NTE |
+| **Quote Items** | Edit, remove and reorder lines; add catalog parts and custom lines; see costs and margin |
+| **Price** | Check buckets, VAT, unpriced lines, NTE, and cost, sell and margin |
 | **Versions** | Snapshot the live document, or open a past version |
+| **Comments** | Leave review notes for your team |
 | **Activity** | Follow who changed what |
 
 The header shows **Total** and **Net**, plus how many lines are still unpriced. An NTE banner appears when the priced net is over or under the agreed cap. You can still **Approve** when the quote is over NTE — the banner says so.
 
+**Show job context** opens a strip with the customer, site, contact, order, engineer and job.
+
 ### Quote
 
-**Commercial Narrative** is the letter:
+**Commercial Narrative** is the letter, in sections such as **Recommended works**, **Parts notes** and **Assumptions & terms**. The source job is collapsed by default; expand it when you need the originating job.
 
-- **Overview** — headline and summary of works
-- **Source Job** — collapsed by default; expand when you need the originating job
-- **Background**, **Recommended works**, **Why needed**, **Exclusions**, **Assumptions**, **Validity**, **Next steps**
+Choose **Edit** to change the letter. If someone else saved first, refresh before you keep typing.
 
-Edit on this tab. If someone else saved first, refresh before you keep typing.
+### Quote Items
 
-### Items
+**Quote Lines** lists description, quantity, unit, cost, sell, and flags such as POA, TBC, or indicative. Indicative labour still shows its sell and joins the draft total — review those hours before you approve.
 
-**Quote Lines** lists description, quantity, unit, sell, and flags such as POA, TBC, or indicative. Indicative labour still shows its sell and joins the draft total — review those hours before you approve.
+Choose **Edit lines** to edit, remove and reorder lines, or add a custom line. **Add part** searches the parts catalog by make, part number, or title. This works on a phone too.
 
-**Add part** searches the parts catalog by make, part number, or title. Set the quantity, then add the line.
+**Costs.** Every line has a unit cost, with where it came from: your catalogue, typed in by your team, or unknown. A blank cost means unknown, and 0 means free. Price a line by **Margin** % or by **Markup** %, and switch between the two as you work. A **Waste / disposal** line type covers disposal charges.
+
+Costs and margin show for your team only. They never appear in the quote text, the preview or the customer email.
 
 ### Price
 
-The Price tab breaks out labour, materials, and the other buckets, then net priced, VAT %, unpriced counts, total, and the NTE row.
+The Price tab breaks out labour, materials, waste and the other buckets, then net priced, VAT %, unpriced counts, total, and the NTE row. Next to the total your team sees cost, sell and margin, and how many of the priced lines that figure covers.
 
 ### Versions
 
 Create a version to checkpoint the live document. Opening an older version is read-only. Salma still works on the live document.
 
+### Comments
+
+The **Comments** tab holds review notes on the quote, the same way comments work on a [Case](/connect/cases).
+
 ### Activity
 
-The Activity tab is the timeline for this document.
+The Activity tab is the timeline for this document: edits, Salma's applied changes, approval check reasons and Client PO changes.
+
+## The approval check
+
+Choosing **Approve** first checks the quote:
+
+- that the priced, POA and TBC lines add up;
+- that the wording agrees with the lines — for example, the wording says a POA item is included, or quotes a price no line matches;
+- that nothing the wording promises is missing a line;
+- that no line is still marked POA or TBC.
+
+Each finding shows on a card with the sentence and the line it concerns. **Fix with Salma** puts a suggested fix in the chat box for you to send.
+
+Your company chooses whether a finding is advice or holds the approval until someone gives a reason. The reason is recorded in Activity. The approval check is switched on per company.
 
 ## Lifecycle
 
 Actions depend on the document’s status and your permissions. Typical ones:
 
-- **Approve** — internal checkpoint (see the note above)
-- **Accept** / **Decline**
+- **Approve** — internal checkpoint, after the approval check (see above)
+- **Accept** / **Decline** — record the customer's answer. Accepting asks for an optional **Client PO**
 - **Reopen** / **Duplicate** / **Archive**
+
+**Client PO.** The Client PO shows on the quote header, apart from the job's order number. Use **Add Client PO** to add or correct it later. Each change is recorded in Activity.
 
 ## Ask Salma
 
-On a Quote Document, **Ask Salma** is scoped to that document — the letter, lines, and price in front of you.
+On a Quote Document, **Ask Salma** is scoped to that document — the letter, lines, costs and price in front of you.
 
 - **Desktop** — right-hand split pane
 - **Phone** — full-screen Ask Salma
 
 In the chat header: **New chat**, **Sessions**, and **Close**. Sessions belong to this document.
 
-Ask in plain language. Answers stream live, with thinking chrome and compact tool chips while Salma works. After a turn, a proposal card can preview narrative and line changes — **Apply** or **Discard**.
+Ask in plain language. Answers stream live, with compact tool chips while Salma works.
 
-In the composer, **+** opens saved prompts. The mic on the composer records a voice note.
+- **Line changes.** Ask Salma to add a part, change a quantity or adjust the labour. Her proposal shows each line change with the new totals, and one **Apply** saves the lines and the wording together. **Discard** drops it. **Undo** puts the last applied change back, as long as nobody has saved the quote since.
+- **Supplier PDFs.** Attach a supplier quote or price list and ask Salma to turn it into quote lines. Available where Library search is switched on for your company.
+- **Hands-free.** Start a call from Ask Salma, say the change, and hear what she proposes. Say "apply" when you are ready. The change is marked **Applied by voice** on her card and in Activity.
+
+In the composer, `/` or **+** opens your [prompts](/connect/prompts). The mic on the composer records a voice note.
 
 ## Automate an estimate
 
@@ -97,5 +123,7 @@ From n8n, Salma › Generate Estimate starts a Quote Run for a job. You must sup
 
 - [Sales and quotes](/connect/sales)
 - [AI assistants](/connect/ai-assistants)
+- [Prompts](/connect/prompts)
+- [Activity](/connect/activity)
 - [Search](/connect/search)
 - [n8n community node](/n8n-node)

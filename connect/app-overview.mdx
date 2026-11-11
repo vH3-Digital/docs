@@ -1,6 +1,6 @@
 ---
 title: App overview
-description: Sidebar map of VH3 Connect — jobs, Quote Documents, Cases, Portal Jobs, Teams, Connie, and admin.
+description: Sidebar map of VH3 Connect — Activity, jobs, Prompts, Quote Documents, Cases, Sentinels, Teams, Connie, and admin.
 ---
 
 # App overview
@@ -15,45 +15,55 @@ On desktop the sidebar starts as an icon rail. Hover or pin it to expand the lab
 
 | Area | Path | Purpose |
 |---|---|---|
-| Dashboard | `/` | Stats and activity tabs |
+| Dashboard | `/` | **Stats** and **Recent Activity** tabs |
+| Activity | `/activity` | The work VH3 AI is doing for your company, live |
 | Jobs | `/jobs` | Active, Planned, Overview (+ job detail drawer) |
-| Knowledge base | `/knowledge` | Documents, upload, Tia |
-| Quote Documents | `/quoting/documents` | VH3 follow-on drafts — letter, lines, Price, Salma |
+| Knowledge base | `/knowledge` | Library documents, upload, Tia |
+| Prompts | `/prompts` | Your own, your team's and VH3 AI's prompts for Connie, Tia and Salma |
 | Sales performance | `/sales` | Quotient quotes |
+| Quote Documents | `/quoting/documents` | VH3 follow-on drafts — letter, lines, costs, price, approval check, Salma |
 | Contacts | `/contacts` | Directory and contact drawer (Connie) |
 | Cases | `/cases` | My Cases / All Cases — status, evidence, Assigned Team |
+| Sentinels | `/sentinels` | Sentinel alerts and opportunities, coverage and settings |
 | Portal Jobs | `/portal-jobs` | Ingest review — Awaiting evaluation, Correct, Incorrect |
 | Teams | `/teams` | Ownership groups for Cases and portfolios |
 | Notifications | `/notifications` | Unread, Read, Cleared |
 | Integrations | `/integrations` | Connected / available systems, CSV upload |
+| Worksheet Pass | `/settings/worksheet-pass` | How engineers' free-text worksheet answers are tidied or rewritten (admins only) |
 
-Company user invites live under Profile → [Users and roles](/connect/users-and-roles).
+**Prompts** and **Sentinels** are switched on per company, so they may be missing from your sidebar.
+
+Company users and invites live under Profile → [Users and roles](/connect/users-and-roles).
 
 ## Header
 
-- **Search** — global overlay (jobs, contacts, and a parts preview); **Advanced search** at `/search` (Create case, Ask Connie).
-- **Ask Connie** — global Connie drawer on every signed-in screen.
+- **Search** — global overlay with jobs, contacts, Library **Documents** and a parts preview; **Advanced search** at `/search` (Create case, Ask Connie).
+- **Ask Connie** — global Connie drawer on every signed-in screen, including hands-free calls.
 
 ## Profile
 
-Open **Profile** (`/profile`) for **User Profile**, **About Company** (API Key and **Manage members**), **Subscription**, and **Invoices** (role-gated). The user menu sits on the sidebar rail.
+Open **Profile** (`/profile`) for **User Profile**, **Passkeys**, **About Company** (API Key), **Manage users**, **Subscription**, and **Invoices** (role-gated). The user menu sits on the sidebar rail.
 
 ## Available today
 
-- Sign-in, invite/join, register, verify, company create, BigChange setup
-- Dashboard **Stats** (prefer this over **Recent Activity** until the activity feed is fully live)
+- Sign-in with a password or a passkey, invite/join, register, verify, company create, BigChange setup
+- Dashboard **Stats**
+- Activity: the live queue, lanes, finished work and the log
 - Jobs Active / Planned / Overview and job detail tabs
-- Knowledge upload/share + Tia
-- Quote Documents (list, letter, lines, Price, versions, activity, Ask Salma)
+- Knowledge base upload, share, Google Drive import and Tia, with page citations in Connie's answers
+- Prompts in every assistant chat, and the Prompts page
+- Quote Documents: lines, costs and margin, price, versions, comments, activity, approval check, Client PO and Ask Salma
 - Sales performance Quotes (Quotient)
 - Contacts + Connie
 - Cases: My Cases / All Cases, Create case on the list, Assigned Team, participants, comments, and activity
+- Sentinels: Overview, Alerts, Opportunities, Coverage and settings
 - Portal Jobs: Awaiting evaluation / Correct / Incorrect, mark a match, overview scores
 - Teams as a sidebar area (`/teams`) and as Assigned Team on a Case
-- Global and advanced search, including a parts preview in header search
+- Global and advanced search, including Library documents and a parts preview in header search
 - Notifications with Read/Clear and filters
 - Integrations portal + CSV **Upload file**
-- Profile invite (Admin/Manager) and company API key
+- Profile: Manage users with invites, resend and revoke, and the company API key
+- Hands-free calls with Connie, Tia and Salma
 
 ## Not in the app yet
 
@@ -61,14 +71,17 @@ Open **Profile** (`/profile`) for **User Profile**, **About Company** (API Key a
 - Dedicated engineers / vehicles / resources pages
 - Jobs **Stats** tab and Sales **Report** tab (present but disabled)
 - Some header-search filters that are not backed yet
-- Voice / communication hub as a first-class nav area
 
 ## Related
 
 - [Dashboard](/connect/dashboard)
+- [Activity](/connect/activity)
+- [Prompts](/connect/prompts)
 - [Quote Documents](/connect/quote-documents)
 - [Cases](/connect/cases)
-- [Portal Jobs](/connect/portal-jobs)
+- [Sentinels](/connect/sentinels)
 - [Teams](/connect/teams)
+- [Worksheet Pass](/connect/worksheet-pass)
+- [Worksheet photos](/connect/worksheet-photos)
 - [Ask Connie](/connect/ask-connie)
 - [Working with your operation](/guides/working-with-your-operation)

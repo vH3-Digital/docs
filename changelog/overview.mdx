@@ -3,6 +3,83 @@ title: Changelog
 description: New features, updates, and fixes shipped in VH3 AI
 ---
 
+<Update label="2026-11-11" description="10–11 November 2026" tags={["Connect", "Integrations", "Platform"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="blue">Connect</Badge>
+  <Badge color="green">Integrations</Badge>
+  <Badge color="gray" className="vh3-changelog-tag vh3-changelog-tag--platform">Platform</Badge>
+</div>
+
+## New features
+
+**The Sentinels page.** **Sentinels** in the sidebar shows what your sentinels have found, in four tabs. **Overview** shows what needs you now, what changed since you last looked, and charts of alerts opened and cleared. **Alerts** and **Opportunities** list everything open, grouped by sentinel, worst first. **Coverage** shows every sentinel, its schedule and when it last checked. Open an alert to see why it fired, the jobs behind it and what to do, then **Acknowledge** or **Snooze** it. The Sentinels page is switched on per company. See [Sentinels](/connect/sentinels).
+
+**Sentinel settings.** Admins and managers switch each sentinel on or off and set when it alerts, such as how many late jobs in a row count as a warning. **Company settings** holds the ignore list for sites, customers, job types and engineers, who receives sentinel emails, and the lowest severity that is emailed. Every change is recorded with who made it.
+
+**The Activity page.** **Activity** in the sidebar shows the work VH3 AI is doing for your company as it happens: jobs syncing and being read, photos described, emails triaged, briefings written, and turns with Connie, Salma and Tia. Each running bar says what the assistant is doing, such as **Searching Jobs**. **View log** lists everything that finished in the last hour. See [Activity](/connect/activity).
+
+**A new sentinel: Concurrent Site Jobs.** It flags a building with a second open job for the same fault, or neighbouring properties sharing one asset such as a gate or aerial. There are now 20 sentinels: 14 for risks and 6 for opportunities.
+
+## Updates
+
+**Sentinel emails carry what changed.** An email lists alerts that are new, alerts that got worse, and reminders for alerts still open: daily for critical, weekly for the rest. Acknowledged and snoozed alerts stay quiet, and no email is sent when nothing has changed.
+
+**Fewer wrong flags from the approval check.** The check leaves not-to-exceed figures out when it compares the wording with the lines, and reads background and assumptions text as context.
+
+**The approval check names lines still POA or TBC.** A quote with lines still marked POA or TBC gets a finding that names each line.
+
+**Cancelled and deleted jobs close in VH3 AI.** Jobs cancelled or deleted in BigChange now close in VH3 AI too, including older ones that were missed.
+
+**Sentinel cards in Claude.** A full sentinel run in Claude now shows its card, with the most severe alert from each sentinel. Ask about one or two sentinels to see up to 10 alerts each. The VH3 AI connector has a new icon that reads on light and dark backgrounds. See [MCP setup](/agent-kits/mcp-setup).
+
+</Update>
+
+<Update label="2026-11-09" description="3–9 November 2026" tags={["Connect", "Connie"]}>
+
+<div className="flex flex-wrap items-center gap-2 mb-4">
+  <Badge color="blue">Connect</Badge>
+  <Badge color="purple">Connie</Badge>
+</div>
+
+## New features
+
+**Costs and profit on Quote Documents.** Every quote line has a unit cost, with where it came from: your catalogue, typed in by your team, or unknown. A blank cost means unknown, and 0 means free. Next to the total your team sees cost, sell and margin, and how many of the priced lines that figure covers. Costs and margin show for your team only. A **Waste / disposal** line type covers disposal charges. See [Quote Documents](/connect/quote-documents).
+
+**Margin or markup.** Price a line by margin % or by markup %, and switch between the two as you work.
+
+**Salma edits the lines.** Ask Salma to add a part, change a quantity or adjust the labour. Her proposal shows each line change with the new totals, and one **Apply** saves the lines and the wording together. **Undo** puts the last applied change back, as long as nobody has saved the quote since.
+
+**Talk to Salma, hands-free.** Start a call from Ask Salma on a Quote Document, say the change, and hear what she proposes. Say "apply" when you are ready. The change is marked **Applied by voice** on her card and in Activity.
+
+**An approval check before you approve.** Choosing **Approve** first checks the quote: that the priced, POA and TBC lines add up, and that the wording agrees with the lines. If the wording says a POA item is included, for example, a card shows the finding with the sentence and the line it concerns. **Fix with Salma** puts a suggested fix in the chat box for you to send. Your company chooses whether a finding is advice or holds the approval until someone gives a reason, which is recorded in Activity. The approval check is switched on per company.
+
+**Client PO.** Accepting a quote asks for an optional Client PO. It shows on the quote header, apart from the job's order number, and can be corrected later. Each change is recorded in Activity.
+
+**Supplier PDFs in Ask Salma.** Attach a supplier quote or price list and ask Salma to turn it into quote lines. Available where Library search is switched on for your company.
+
+**Invites in Manage users.** **Profile → Manage users** lists open and expired invites, with who sent each one and when. Admins **Resend** an invite, which sends a new link and retires the old one, or **Revoke** it. One search box filters invites and users by name or email. See [Users and roles](/connect/users-and-roles).
+
+## Updates
+
+**Join and reset pages say what happened.** An invite link that has expired, been cancelled or already been used says so, with the date and who to ask. An expired password reset link offers **Send a New Link**. Reset links last 30 minutes.
+
+**Deactivate a user.** The deactivate button in Manage users works again. A deactivated user is blocked from signing in. Ask VH3 support to reactivate someone.
+
+**Signing out clears the last account.** Signing out clears the previous account's data from the browser, so the next person to sign in on that device starts clean.
+
+**The message box grows with long messages.** In every agent chat the box grows to about 12 lines, then scrolls.
+
+**Smoother replies from Connie.** The session list and the file drawer stay still while a long reply arrives.
+
+**Early and late figures on the Stats dashboard.** Averages for jobs running early or late are corrected. Jobs more than 8 hours off plan are left out of those averages, so one outlier does not skew the figure.
+
+**Jobs page charts display again.**
+
+**Prompt blanks are colour-coded.** Blanks you fill in show blue and blanks filled from the page you are on show green. Agent avatars show on each prompt's **Sends to** chips.
+
+</Update>
+
 <Update label="2026-11-02" description="25 October – 2 November 2026" tags={["Connie", "Connect", "API"]}>
 
 <div className="flex flex-wrap items-center gap-2 mb-4">

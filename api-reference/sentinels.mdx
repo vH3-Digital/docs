@@ -5,7 +5,7 @@ description: Proactive operational and growth opportunity monitoring
 
 # Sentinels
 
-Sentinels are proactive monitors that continuously watch your operational data for emerging risks and revenue opportunities. They run as structured reads on the operational graph with near-zero AI cost at detection. Thresholds, exclusion filters, and result limits are all configurable per tenant.
+Sentinels are proactive monitors that continuously watch your operational data for emerging risks and revenue opportunities. They run as structured reads on the operational graph with near-zero AI cost at detection. Thresholds, ignore lists, and which sentinels are on are configurable per company.
 
 See `GET /sentinels/registry` for active sentinel IDs and current defaults.
 
@@ -19,34 +19,41 @@ Implementation notes (May 2026):
 
 ## Sentinel types
 
-### Operational (13 sentinels)
+There are 20 sentinels. Most run daily at your company's set time; `sla_breach_cluster` runs every 4 hours. Admins and managers switch sentinels on or off and tune their thresholds on the [Sentinels page](/connect/sentinels) in Connect.
+
+### Operational (14 sentinels)
 
 | Sentinel | What it detects |
 |----------|----------------|
-| `engineer_performance_slip` | Engineers whose completion rates or SLA punctuality have degraded |
-| `site_deterioration` | Sites with increasing fault frequency or repeat visits |
-| `sla_breach_cluster` | Concentrated SLA breaches by geography, engineer, or customer |
-| `scheduling_drift` | Growing gaps between job creation and completion |
-| `repeat_visit_spike` | Abnormal repeat visit rates for specific job types or sites |
-| `first_time_fix_decline` | Drop in first-time-fix rates by engineer or job category |
-| `response_time_degradation` | Increasing time between job raised and first attendance |
-| `workload_imbalance` | Uneven job distribution across engineers |
-| `completion_rate_drop` | Falling job completion rates |
-| `customer_complaint_pattern` | Emerging complaint clusters |
-| `equipment_failure_trend` | Recurring equipment failures at specific sites |
-| `certification_gap` | Engineers approaching or past certification expiry |
-| `data_quality_alert` | Missing or inconsistent data in recent job records |
+| `engineer_performance_slip` | Engineers whose recent jobs keep finishing late or with issues |
+| `fvf_rate_drop` | Engineers whose first-visit fix rate over 30 days falls below the threshold |
+| `workload_imbalance` | Engineers carrying far more, or far less, work than the team's usual load |
+| `site_deterioration` | Sites where issues or overruns have risen over the last 30 days |
+| `repeat_failure_escalation` | Sites where the same kind of job keeps failing within 30 days |
+| `new_problem_site` | Reliable sites that have started having issues in the last 14 days |
+| `sla_breach_cluster` | Sites with several late starts within 7 days |
+| `concurrent_site_jobs` | Buildings with a second open job for the same fault, or neighbours sharing one asset |
+| `customer_risk_escalation` | Customers whose late, unfinished and follow-up jobs add up to a high risk score |
+| `customer_noncomplete_anomaly` | Customers whose share of unfinished jobs has jumped |
+| `scheduling_accuracy_drift` | Job types that keep taking well over their planned time |
+| `carryover_accumulation` | A backlog of unfinished jobs that grows several days running |
+| `data_quality_alert` | Recent completed jobs with missing or inconsistent details |
+| `timing_anomaly_detector` | Jobs whose times don't add up, such as overnight gaps |
 
 ### Growth opportunity (6 sentinels)
 
 | Sentinel | What it detects |
 |----------|----------------|
-| `dormant_customer` | Customers with no recent activity who may be ready for re-engagement |
-| `overdue_service_interval` | Equipment or sites past their recommended service interval |
-| `single_service_cross_sell` | Customers using only one service line, cross-sell candidates |
-| `engineer_flagged_follow_up` | Follow-on work flagged by engineers in job notes |
-| `seasonal_buying_pattern` | Historical patterns suggesting upcoming demand |
-| `geographic_upsell_cluster` | Concentration of existing customers near prospects |
+| `dormant_customer_revival` | Customers with a good job history who have gone quiet for 6 months or more |
+| `service_interval_due` | Customers overdue for a service against their own usual interval |
+| `single_service_customer` | Customers with several jobs but only one type of work |
+| `engineer_flagged_followup` | Recent jobs where the engineer's notes mention a follow-up, parts, an upgrade or a quote |
+| `seasonal_uplift_window` | Customers who usually book a service this month and haven't yet this year |
+| `geographic_cluster_opportunity` | Customers near a site that recently had a service they don't buy yet |
+
+### Alert identity
+
+Each trigger carries a `fingerprint` that stays the same from one run to the next for the same problem. Use it to tell a new alert from one you have already seen.
 
 ## <span className="vh3-method-pill vh3-method-pill--post">POST</span> /sentinels/run
 
@@ -58,7 +65,7 @@ Execute one or more sentinels against your data and return current results.
 |-------|------|----------|-------------|
 | `company_id` | string | Yes | Your tenant identifier |
 | `api_key` | string | Yes | Your tenant API key |
-| `sentinel_ids` | object | No | Specific sentinels to run (omit to run all) |
+| `sentinel_ids` | array of strings | No | Specific sentinels to run (omit to run all) |
 
 ```bash
 curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/sentinels/run" \
@@ -101,7 +108,7 @@ Run a single named sentinel.
 | `api_key` | string | Yes | Your tenant API key |
 
 ```bash
-curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/sentinels/run/dormant_customer" \
+curl -X POST "https://api.vh3connect.io/api:kP8T1CK7/sentinels/run/dormant_customer_revival" \
   -H "Content-Type: application/json" \
   -d '{
     "company_id": "your-company-id",

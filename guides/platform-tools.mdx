@@ -48,9 +48,10 @@ A good integration uses fast tools for triggers and filters, calls synthesis onl
 
 | Tool | Endpoint | What it does |
 |------|----------|--------------|
-| Run sentinel | `POST /sentinels/run` | Execute a specific sentinel query against the live graph |
-| Sentinel digest | `GET /sentinels/digest` | The morning roll-up: what crossed threshold since last digest |
-| Sentinel results | `GET /sentinels/results` | Historical detections, scored and filterable |
+| Run sentinels | `POST /sentinels/run` | Run all sentinels, or the ones named in `sentinel_ids`, against the live graph |
+| Run one sentinel | `POST /sentinels/run/{sentinel_id}` | Run one named sentinel |
+| Sentinel results | `GET /sentinels/results` | The latest run's results, scored by severity |
+| Sentinel registry | `GET /sentinels/registry` | Sentinel IDs, settings, defaults and schedules |
 
 Sentinels run on the data layer. They cost no LLM tokens. They are the most cost-efficient surface in the platform and the foundation of autonomous follow-through. See [Sentinels](/guides/sentinels).
 

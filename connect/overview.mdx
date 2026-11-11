@@ -5,7 +5,7 @@ description: VH3 Connect is the web app where your team reviews jobs, owns Cases
 
 # What is VH3 Connect?
 
-VH3 Connect is where operators work the intelligence layer day to day. You review jobs from your field system, search the operation, open Cases for follow-through, assign Teams, and ask Connie in plain English. Admins connect integrations, invite users, and manage billing from the same app.
+VH3 Connect is where operators work the intelligence layer day to day. You review jobs from your field system, act on sentinel alerts, search the operation, open Cases for follow-through, assign Teams, and ask Connie in plain English. Admins connect integrations, invite users, tune sentinels, and manage billing from the same app.
 
 **Open the app:** [https://app.vh3.ai](https://app.vh3.ai)
 
@@ -15,10 +15,16 @@ API and automation traffic use `https://api.vh3connect.io`. Prefer **app.vh3.ai*
 
 <CardGroup cols={2}>
   <Card title="Run the day" icon="briefcase" href="/connect/dashboard">
-    Dashboard, jobs, contacts, Cases, Portal Jobs, Teams, search, and notifications.
+    Dashboard, Activity, jobs, contacts, Cases, Portal Jobs, Teams, search, and notifications.
+  </Card>
+  <Card title="Sentinels" icon="satellite-dish" href="/connect/sentinels">
+    Alerts and opportunities your sentinels found, with the jobs behind each one.
   </Card>
   <Card title="Ask Connie" icon="message-bot" href="/connect/ask-connie">
-    Company-wide questions, plus Tia on documents and Salma on Quote Documents.
+    Company-wide questions, plus Tia on documents and Salma on Quote Documents. Type, talk hands-free, or pick a prompt.
+  </Card>
+  <Card title="Prompts" icon="scroll" href="/connect/prompts">
+    The questions your team asks most, ready to send.
   </Card>
   <Card title="Knowledge and sales" icon="book" href="/connect/quote-documents">
     Shared documents with Tia, Quote Documents with Salma, and Quotient quotes under Sales performance.
@@ -30,8 +36,8 @@ API and automation traffic use `https://api.vh3connect.io`. Prefer **app.vh3.ai*
 
 ## Who this documentation is for
 
-- **Operators and coordinators** — jobs, Quote Documents, Cases, Portal Jobs, Teams, search, and Connie.
-- **Managers and admins** — invite users, company setup, integrations, and subscription.
+- **Operators and coordinators** — jobs, Quote Documents, Cases, Sentinels, Portal Jobs, Teams, search, and Connie.
+- **Managers and admins** — invite users, company setup, integrations, sentinel settings, and subscription.
 
 Developers building on the platform should use the [API Reference](/api-reference/overview), [Agent Starter Kits](/agent-kits/overview), and [Generative UI](/guides/generative-ui). Those surfaces are separate from Connect as a product.
 
